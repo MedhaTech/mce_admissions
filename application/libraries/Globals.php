@@ -3,7 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Globals {
 
-
     public function userTypes() {
         return array("1"=>"Super Admin","2"=>"Chairman","3"=>"Principal/Director",'4'=>"PRO’s", '5'=>"Accounts Admin", '6'=>"Accounts Staff");
     }

@@ -91,20 +91,17 @@
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               Dashboard
-           
             </p>
           </a>
-        
         </li>
+
         <li class="nav-item ">
           <a href="<?php echo base_url();?>admin/Enquiries" class="nav-link <?=$menu_active = ($menu == "enquiries")? 'active' :''; ?>">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
             Enquiries
-           
             </p>
           </a>
-        
         </li>
    
         <li class="nav-item ">
@@ -115,12 +112,7 @@
            
             </p>
           </a>
-        
-        </li>
-   
-   
-      
-     
+        </li>   
       
       </ul>
     </nav>

@@ -67,7 +67,6 @@ class Admin extends CI_Controller
 		}
 	}
 
-
 	public function enquiries()
 	{
 		if ($this->session->userdata('logged_in')) {
@@ -211,7 +210,7 @@ class Admin extends CI_Controller
 		}else {
 				redirect('admin/timeout');
 		}           
-    }
+  }
 
 	function logout()
 	{

@@ -1,4 +1,5 @@
 <?php
+
 class Admin_model extends CI_Model
 {
   var $shadow = 'f03b919de2cb8a36e9e404e0ad494627'; // INDIA
@@ -26,6 +27,7 @@ class Admin_model extends CI_Model
     $this->db->insert($tableName, $insertData);
     return $this->db->insert_id();
   }
+
 
   public function insertBatch($tableName, $data)
   {
@@ -146,3 +148,4 @@ class Admin_model extends CI_Model
     return $this->db->get('enquiries');
   }
 }
+?>
