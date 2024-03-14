@@ -1,52 +1,59 @@
-<footer class="main-footer">
-    <strong>Copyright &copy; 2024 <a href="">MedhaTech</a>.</strong>
-    All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.2.0
+ <!-- Start Footer Style Two  -->
+ <div class="footer-style-2 ptb--30 bg_image bg_image--1" data-black-overlay="6">
+            <div class="wrapper plr--50 plr_sm--20">
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                        <div class="inner">
+                            <div class="logo text-center text-sm-start mb_sm--20">
+                                <a href="#">
+                                    <img src="<?php echo base_url();?>themes/images/logo/MCE_logo1.png" alt="Logo images" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                        <div class="inner text-center">
+                            <ul class="social-share rn-lg-size d-flex justify-content-center liststyle">
+                                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fab fa-skype"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12 col-sm-12 col-12">
+                        <div class="inner text-lg-end text-center mt_md--20 mt_sm--20">
+                            <div class="text">
+                                <p>Copyright © 2022 Rainbow-Themes. All Rights Reserved.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Footer Style Two  -->
     </div>
-  </footer>
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
+    <!-- JS
+============================================ -->
+    <!-- Modernizer JS -->
+    <script src="<?php echo base_url();?>themes/js/vendor/modernizr.min.js"></script>
+    <!-- jQuery JS -->
+    <script src="<?php echo base_url();?>themes/js/vendor/jquery.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="<?php echo base_url();?>themes/js/vendor/bootstrap.min.js"></script>
+    <script src="<?php echo base_url();?>themes/js/vendor/stellar.js"></script>
+    <script src="<?php echo base_url();?>themes/js/vendor/particles.js"></script>
+    <script src="<?php echo base_url();?>themes/js/vendor/masonry.js"></script>
+    <script src="<?php echo base_url();?>themes/js/vendor/stickysidebar.js"></script>
+    <script src="<?php echo base_url();?>themes/js/plugins/plugins.js"></script>
+    <script src="<?php echo base_url();?>themes/js/vendor/js.cookie.js"></script>
+    <script src="<?php echo base_url();?>themes/js/vendor/jquery.style.switcher.js"></script>
+    <script src="<?php echo base_url();?>themes/js/vendor/jquery-one-page-nav.js"></script>
+    <!-- Main JS -->
+    <script src="<?php echo base_url();?>themes/js/main.js"></script>
 
-<!-- jQuery -->
-<script src="<?php echo base_url();?>assets/plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="<?php echo base_url();?>assets/plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
-<!-- Bootstrap 4 -->
-<script src="<?php echo base_url();?>assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="<?php echo base_url();?>assets/plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="<?php echo base_url();?>assets/plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="<?php echo base_url();?>assets/plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="<?php echo base_url();?>assets/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="<?php echo base_url();?>assets/plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="<?php echo base_url();?>assets/plugins/moment/moment.min.js"></script>
-<script src="<?php echo base_url();?>assets/plugins/daterangepicker/daterangepicker.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="<?php echo base_url();?>assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="<?php echo base_url();?>assets/plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="<?php echo base_url();?>assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<script src="<?php echo base_url();?>assets/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="<?php echo base_url();?>assets/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="<?php echo base_url();?>assets/js/pages/dashboard.js"></script>
+
 </body>
+
 </html>
