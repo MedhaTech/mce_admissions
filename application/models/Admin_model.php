@@ -147,5 +147,10 @@ class Admin_model extends CI_Model
     $this->db->order_by('reg_date', 'DESC');
     return $this->db->get('enquiries');
   }
+
+
+  public function get_stream_by_id($stream_id)
+  {
+    return $this->db->get_where('streams', array('stream_id' => $stream_id))->row_array();
+  }
 }
-?>

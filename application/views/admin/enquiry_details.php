@@ -175,32 +175,32 @@
                   <div class="col">
                     <div class="form-group">
                       <label class="form-label">Course</label>
-                      <?php echo form_dropdown('course', $course_options, '', 'class="form-control" id="course"'); ?>
+                      <?php   echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control" id="course"');  ?>
                       <span class="text-danger"><?php echo form_error('course'); ?></span>
                     </div>
                   </div>
                   <div class="col">
                     <div class="form-group">
-                      <label class="form-label">DSC-1 </label>
-                      <?php $dsc_options = array("" => "Select");
-                      echo form_dropdown('dsc_1', $dsc_options, (set_value('dsc_1')) ? set_value('dsc_1') : '', 'class="form-control" id="dsc_1" disabled'); ?>
-                      <span class="text-danger"><?php echo form_error('dsc_1'); ?></span>
+                      <label class="form-label">State </label>
+                      <?php $state_options = array("" => "Select");
+                      echo form_dropdown('state', $state_options, (set_value('state')) ? set_value('state') : '', 'class="form-control" id="state" '); ?>
+                      <span class="text-danger"><?php echo form_error('state'); ?></span>
                     </div>
                   </div>
                   <div class="col">
                     <div class="form-group">
-                      <label class="form-label">DSC-2 </label>
-                      <?php $dsc_options = array("" => "Select");
-                      echo form_dropdown('dsc_2', $dsc_options, (set_value('dsc_2')) ? set_value('dsc_2') : '', 'class="form-control" id="dsc_2" disabled'); ?>
-                      <span class="text-danger"><?php echo form_error('dsc_2'); ?></span>
+                      <label class="form-label">City </label>
+                      <?php $city_options = array("" => "Select");
+                      echo form_dropdown('city', $city_options, (set_value('city')) ? set_value('city') : '', 'class="form-control" id="city" '); ?>
+                      <span class="text-danger"><?php echo form_error('city'); ?></span>
                     </div>
                   </div>
                   <div class="col">
                     <div class="form-group">
                       <label class="form-label">Type</label>
-                      <input type="text" class="form-control" id="aided_unaided" name="aided_unaided" placeholder="" readonly>
-                      <?php // $type_options = array(""=>"Select","Aided"=>"Aided","UnAided"=>"UnAided");
-                      //    echo form_dropdown('aided_unaided', $type_options, '','class="form-control input-xs" id="aided_unaided"'); 
+                      <!-- <input type="text" class="form-control" id="aided_unaided" name="aided_unaided" placeholder="" readonly> -->
+                      <?php  $type_options = array(""=>"Select","Aided"=>"Aided","UnAided"=>"UnAided");
+                         echo form_dropdown('aided_unaided', $type_options, '','class="form-control input-xs" id="aided_unaided"'); 
                       ?>
                       <span class="text-danger"><?php echo form_error('aided_unaided'); ?></span>
                     </div>
@@ -299,127 +299,7 @@
       $('#update_comments').prop("disabled", true);
       $('#insert').prop("disabled", true);
 
-      $("#course22").change(function() {
-        event.preventDefault();
-        var course = $("#course").val();
-
-        if (course == "BA") {
-          var myOptions = {
-            ' ': 'Select',
-            JPE: 'JPE',
-            JPK: 'JPK',
-            HES: 'HES',
-            HEK: 'HEK',
-            PES: 'PES'
-          };
-        }
-        if (course == "BBA") {
-          var myOptions = {
-            BBA: 'BBA',
-          };
-        }
-        if (course == "BCA") {
-          var myOptions = {
-            BCA: 'BCA',
-          };
-        }
-        if (course == "BSC") {
-          var myOptions = {
-            ' ': 'Select',
-            CBZ: 'CBZ',
-            CZMB: 'CZMB',
-            CBBT: 'CBBT',
-            PMCs: 'PMCs',
-            PCM: 'PCM'
-          };
-        }
-        if (course == "BCOM") {
-          var myOptions = {
-            BCOM: 'BCOM',
-          };
-        }
-        if (course == "B.VOC") {
-          var myOptions = {
-            ' ': 'Select',
-            IT: 'IT',
-            RM: 'RM'
-          };
-        }
-
-        $('select[name="combination"]').empty();
-        //  $('select[name="combination"]').append($('<option></option>').val(val).html(text));
-        var mySelect = $('#combination');
-        $.each(myOptions, function(val, text) {
-          mySelect.append(
-            $('<option></option>').val(val).html(text)
-          );
-        });
-      });
-
-      $("#course1").change(function() {
-
-        event.preventDefault();
-        var course = $("#course").val();
-        if (course == "") {
-          alert("Please select all fields..!");
-        } else {
-          var page = base_url + 'admin/getFeeCombination';
-          $.ajax({
-            'type': 'POST',
-            'url': page,
-            'data': {
-              'course': course
-            },
-            'dataType': 'json',
-            'cache': false,
-            'success': function(data) {
-              $('select[name="combination"]').empty();
-              var mySelect = $('#combination');
-              $.each(data, function(val, text) {
-                mySelect.append(
-                  $('<option></option>').val(val).html(text)
-                );
-              });
-              if (course == "BCOM") {
-                mySelect.append(
-                  $('<option></option>').val("BCOM UA").html("BCOM UA")
-                );
-              }
-            }
-          });
-        }
-      });
-
-      $("#course").change(function() {
-        event.preventDefault();
-
-        var course = $("#course").val();
-
-        if (course == ' ') {
-          alert("Please Select Course");
-        } else {
-          $.ajax({
-            'type': 'POST',
-            'url': base_url + 'admin/combinationsDropdown',
-            'data': {
-              'course': course,
-              'flag': 'S'
-            },
-            'dataType': 'text',
-            'cache': false,
-            'success': function(data) {
-              $('select[name="dsc_1"]').empty();
-              $('select[name="dsc_1"]').append(data);
-              $('select[name="dsc_1"]').removeAttr("disabled");
-
-              $('select[name="dsc_2"]').empty();
-              $('select[name="dsc_2"]').append(data);
-              $('select[name="dsc_2"]').removeAttr("disabled");
-            }
-          });
-
-        }
-      });
+   
 
       $("#dsc_1").change(function() {
         event.preventDefault();
@@ -463,65 +343,7 @@
         // 			return progType;
       }
 
-      $("#combination").change(function() {
-
-        event.preventDefault();
-        var course = $("#course").val();
-        var combination = $("#combination").val();
-        var category = $("#category").val();
-
-        var aua = changeAUA(combination);
-        $('#aided_unaided').val(aua);
-
-        if (combination == "BCOM UA") {
-          combination = "BCOM";
-        }
-
-        if (combination != "" && category != '') {
-          var page = base_url + 'admin/getFee';
-          $.ajax({
-            'type': 'POST',
-            'url': page,
-            'data': {
-              'course': course,
-              'combination': combination,
-              'category': category
-            },
-            'dataType': 'json',
-            'cache': false,
-            'success': function(data) {
-              $('#proposed_amount').val(data);
-              var final_amount = finalAmount();
-              $('#final_amount').val(finalAmount);
-            }
-          });
-        }
-      });
-
-      function changeAUA(combination) {
-        var res = null;
-
-        if (combination == "JPE") res = "UnAided";
-        if (combination == "HES") res = "Aided";
-        if (combination == "HEK") res = "Aided";
-        if (combination == "PES") res = "Aided";
-        if (combination == "PCM") res = "Aided";
-        if (combination == "CBZ") res = "Aided";
-        if (combination == "CZMB") res = "UnAided";
-        if (combination == "CBBT") res = "UnAided";
-        if (combination == "PCMs") res = "UnAided";
-        if (combination == "BCA") res = "UnAided";
-        if (combination == "BCA MQ") res = "UnAided";
-        if (combination == "BBA") res = "UnAided";
-        if (combination == "BCOM") res = "Aided";
-        if (combination == "BCOM MQ") res = "UnAided";
-        if (combination == "BCOM UA") res = "UnAided";
-        if (combination == "RM") res = "UnAided";
-        if (combination == "IT") res = "UnAided";
-
-        return res;
-
-      }
+     
 
       $("#category1").change(function() {
         event.preventDefault();

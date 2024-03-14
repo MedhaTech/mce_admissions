@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h4><?= $currentAcademicYear . ' ' . $page_title; ?></h4>
+            <h4></h4>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -36,9 +36,8 @@
               <div class="col-2">
                 <div class="form-group">
                   <label for="course">Academic Year</label>
-                  <?php $cdate = date('Y');
-                  //   $current_academic_year = ($cdate).'-'.($cdate+1);
-                  echo form_dropdown('academic_year', $academicYear, $academicYear, 'class="form-control" id="academic_year"'); ?>
+                  <?php
+                  echo form_dropdown('academic_year', $academicYear, $academic_year, 'class="form-control" id="academic_year"'); ?>
                   <span class="text-danger"><?php echo form_error('academic_year'); ?></span>
                 </div>
               </div>
@@ -51,8 +50,8 @@
               </div>
               <div class="col-5">
               <div class="form-group">
-                  <label for="course">Programme</label>
-                  <?php 
+                  <label for="course">Course</label>
+                  <?php // $course_options = array("" => "Select", "BA"=>"BA","BBA"=>"BBA", "BCA"=>"BCA", "BSC"=>"BSC", "BCOM"=>"BCOM", "B.VOC"=>"B.VOC");
                   echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control" id="course"'); ?>
                   <span class="text-danger"><?php echo form_error('course'); ?></span>
                 </div>
@@ -61,8 +60,8 @@
             <div class="form-row">
               <div class="col">
                 <div class="form-group">
-                  <label for="text">Mobile</label>
-                  <input type="number" name="mobile" id="mobile" class="form-control" value="<?php echo (set_value('mobile')) ? set_value('mobile') : $mobile; ?>">
+                  <label for="mobile">Mobile</label>
+                  <input type="text" name="mobile" id="mobile" class="form-control" value="<?php echo (set_value('mobile')) ? set_value('mobile') : $mobile; ?>">
                   <span class="text-danger"><?php echo form_error('mobile'); ?></span>
                 </div>
               </div>
@@ -75,26 +74,26 @@
               </div>
             </div>
             <div class="form-row">
-             
+              
               <div class="col">
                 <div class="form-group">
-                  <label for="dsc-1">Select State </label>
+                  <label for="course">State </label>
                   <?php $state_options = array("" => "Select","Karnataka"=>"Karnataka");
-                  echo form_dropdown('state', $state_options, (set_value('state')) ? set_value('state') : $state, 'class="form-control" id="state" '); ?>
+                  echo form_dropdown('state', $state_options, (set_value('state')) ? set_value('state') : $state, 'class="form-control" id="state"'); ?>
                   <span class="text-danger"><?php echo form_error('state'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
-                  <label for="dsc-2">Select City </label>
+                  <label for="course">City </label>
                   <?php $city_options = array("" => "Select","Banglore"=>"Banglore");
-                  echo form_dropdown('city', $city_options, (set_value('city')) ? set_value('city') : $city, 'class="form-control" id="city" '); ?>
+                   echo form_dropdown('city', $city_options, (set_value('city')) ? set_value('city') : $city, 'class="form-control" id="city"'); ?>
                   <span class="text-danger"><?php echo form_error('city'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
-                  <label for="exam_board">10+2 Exam Board</label>
+                  <label for="course">12th Exam Board</label>
                   <?php $exam_board_options = array("" => "Select", "CBSE" => "CBSE", "ICSE" => "ICSE", "Karnataka State Board" => "Karnataka State Board", "AP State Board" => "AP State Board", "Other State Board" => "Other State Board");
                   echo form_dropdown('exam_board', $exam_board_options, $exam_board, 'class="form-control" id="exam_board"'); ?>
                   <span class="text-danger"><?php echo form_error('exam_board'); ?></span>
@@ -102,12 +101,11 @@
               </div>
               <div class="col">
                 <div class="form-group">
-                  <label for="register_number">10+2 Register Number</label>
+                  <label for="course">12th Register Number</label>
                   <input type="text" name="register_number" id="register_number" class="form-control" value="<?php echo (set_value('register_number')) ? set_value('register_number') : $register_number; ?>">
                   <span class="text-danger"><?php echo form_error('register_number'); ?></span>
                 </div>
               </div>
-
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">10+2 Percentage / Grade</label>
@@ -121,7 +119,7 @@
             <div class="form-group row">
               <div class="col-sm-2"> &nbsp;</div>
               <div class="col-sm-10 text-right">
-                <button type="submit" class="btn btn-danger btn-sm" name="Update" id="Update"><i class="fas fa-edit"></i> Submit </button>
+                <button type="submit" class="btn btn-danger btn-sm" name="Update" id="Update"><i class="fas fa-edit"></i> Update </button>
                 <?php echo anchor('admin/enquiries/', '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Cancel', 'class="btn btn-info btn-sm" '); ?>
               </div>
             </div>
