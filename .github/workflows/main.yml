@@ -1,0 +1,28 @@
+
+name: Deployment
+
+on:
+  push:
+    branches: main
+jobs:
+  
+  
+  Deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Development
+        if: github.ref == 'refs/heads/main'
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          HOSTNAME: ${{ secrets.HOSTNAME }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 400 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${{secrets.HOSTNAME}} '
+            cd /var/www/html/test &&
+            git checkout main &&
+            git pull origin main 
+            
+
+      
+  
