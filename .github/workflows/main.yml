@@ -20,10 +20,6 @@ jobs:
           echo "$PRIVATE_KEY" > private_key && chmod 400 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ec2-user@${{secrets.HOSTNAME}} '
             cd /var/www/html/test &&
-            ls -la &&
-            git branch &&
-            git remote -v &&
-            git checkout main &&
             git pull origin main '
             
 
