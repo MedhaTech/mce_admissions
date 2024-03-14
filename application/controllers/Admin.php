@@ -98,11 +98,11 @@ class Admin extends CI_Controller
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['academicYear'] = $this->globals->academicYear();
 
-			$data['course_options'] = array(" " => "Select") + $this->globals->courses();
+			$data['course_options'] = array(" " => "Select") + $this->courses();
 
 			$this->form_validation->set_rules('academic_year', 'Academic Year', 'required');
 			$this->form_validation->set_rules('student_name', 'Applicant Name', 'required');
-			
+
 			$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]|is_unique[enquiries.mobile]');
 			$this->form_validation->set_rules('email', 'Email', 'trim|valid_email');
 			$this->form_validation->set_rules('course', 'Course', 'required');
@@ -116,7 +116,7 @@ class Admin extends CI_Controller
 				$data['action'] = 'admin/newEnquiry';
 				$data['academic_year'] = $this->input->post('academic_year');
 				$data['student_name'] = $this->input->post('student_name');
-				
+
 				$data['mobile'] = $this->input->post('mobile');
 				$data['email'] = $this->input->post('email');
 				$data['course'] = $this->input->post('course');
@@ -131,7 +131,7 @@ class Admin extends CI_Controller
 				$course_id = $this->input->post('course');
 				$course = $data['course_options'][$course_id];
 
-			
+
 				$insertDetails = array(
 					'academic_year' => $this->input->post('academic_year'),
 					'student_name' => strtoupper($this->input->post('student_name')),
@@ -142,7 +142,7 @@ class Admin extends CI_Controller
 					'course' => $course,
 					'state' => $this->input->post('state'),
 					'city' => $this->input->post('city'),
-					
+
 					'exam_board' => strtoupper($this->input->post('exam_board')),
 					'register_number' => $this->input->post('register_number'),
 					'status' => '1',
@@ -166,51 +166,156 @@ class Admin extends CI_Controller
 		}
 	}
 
-    public function enquiryDetails($id){
+	public function enquiryDetails($id)
+	{
 		if ($this->session->userdata('logged_in')) {
 			$sess = $this->session->userdata('logged_in');
 			$data['id'] = $sess['id'];
 			$data['username'] = $sess['username'];
 			$data['role'] = $sess['role'];
-			
+
 			$data['page_title'] = 'Enquiries';
 			$data['menu'] = 'enquiries';
-			
-			$data['course_options'] = array(" " => "Select")+$this->globals->courses();
-			
+
+			$data['course_options'] = array(" " => "Select") + $this->courses();
+
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
-			
-			$data['feeCourses'] = array(""=>"Select") + $this->getFeeCourses();
-			$data['languages'] = array(""=>"Select") + $this->globals->languages();
-			
+
+			$data['feeCourses'] = array("" => "Select") + $this->getFeeCourses();
+			$data['languages'] = array("" => "Select") + $this->globals->languages();
+
 			$data['enquiryDetails'] = $this->admin_model->getDetails('enquiries', $id)->row();
 			// var_dump($this->db->last_query());
-			$data['comments'] = $this->admin_model->getDetails('enq_comments','enq_id', $id)->result();
-		   
-            $this->admin_template->show('admin/enquiry_details',$data);
-            
-		}else {
-				redirect('admin/timeout');
-		}
-    }
+			$data['comments'] = $this->admin_model->getDetails('enq_comments', 'enq_id', $id)->result();
 
-	function getFeeCourses(){
+			$this->admin_template->show('admin/enquiry_details', $data);
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+
+	function editEnquiry($id)
+	{
 		if ($this->session->userdata('logged_in')) {
 			$sess = $this->session->userdata('logged_in');
 			$data['id'] = $sess['id'];
 			$data['username'] = $sess['username'];
 			$data['role'] = $sess['role'];
-			
+
+			$data['page_title'] = 'Edit Enquiry';
+			$data['menu'] = 'enquiries';
+			$data['userTypes'] = $this->globals->userTypes();
+
+			$data['academicYear'] = $this->globals->academicYear();
+			$data['course_options'] = array(" " => "Select") + $this->courses();
+
+
+			$this->form_validation->set_rules('academic_year', 'Academic Year', 'required');
+			$this->form_validation->set_rules('student_name', 'Applicant Name', 'required');
+
+			$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]');
+			$this->form_validation->set_rules('email', 'Email', 'trim|valid_email');
+			$this->form_validation->set_rules('course', 'Course', 'required');
+			$this->form_validation->set_rules('state', 'State', 'required');
+			$this->form_validation->set_rules('city', 'City', 'required');
+			$this->form_validation->set_rules('register_grade', '10+2 Percentage / Grade', 'required');
+			$this->form_validation->set_rules('exam_board', 'Exam Board', 'required');
+			$this->form_validation->set_rules('register_number', 'Register Number', 'required');
+
+			if ($this->form_validation->run() === FALSE) {
+				$data['action'] = 'admin/editEnquiry/' . $id;
+
+				$enquiryDetails = $this->admin_model->getDetails('enquiries', $id)->row();
+
+
+				$data['academic_year'] = $enquiryDetails->academic_year;
+				$data['student_name'] = $enquiryDetails->student_name;
+
+				$data['mobile'] = $enquiryDetails->mobile;
+				$data['email'] =  $enquiryDetails->email;
+				$data['course'] =  $enquiryDetails->course_id;
+				$data['state'] =  $enquiryDetails->state;
+				$data['city'] =  $enquiryDetails->city;
+				$data['exam_board'] =  $enquiryDetails->exam_board;
+				$data['register_number'] =  $enquiryDetails->register_number;
+				$data['register_grade'] = $enquiryDetails->register_grade;
+				$this->admin_template->show('admin/edit_enquiry', $data);
+			} else {
+				$course_id = $this->input->post('course');
+				$course = $data['course_options'][$course_id];
+
+
+
+				$updateDetails = array(
+					'student_name' => strtoupper($this->input->post('student_name')),
+					'register_grade' => $this->input->post('register_grade'),
+					'mobile' => $this->input->post('mobile'),
+					'email' => strtolower($this->input->post('email')),
+					'course_id' => $this->input->post('course'),
+					'course' => $course,
+					'state' => $this->input->post('state'),
+					'city' => $this->input->post('city'),
+
+					'exam_board' => strtoupper($this->input->post('exam_board')),
+					'register_number' => $this->input->post('register_number')
+				);
+
+				$result = $this->admin_model->updateDetails('enquiries', $id, $updateDetails);
+				if ($result) {
+					$this->session->set_flashdata('message', 'Enquiry Details updated successfully...!');
+					$this->session->set_flashdata('status', 'alert-success');
+				} else {
+					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				}
+
+				redirect('admin/enquiryDetails/' . $id, 'refresh');
+			}
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+	function courses()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$sess = $this->session->userdata('logged_in');
+			$data['id'] = $sess['id'];
+			$data['username'] = $sess['username'];
+			$data['role'] = $sess['role'];
+
+			$details = $this->admin_model->getDetails('departments', '')->result();
+
+			$result = array();
+			foreach ($details as $details1) {
+				$row = $this->admin_model->get_stream_by_id($details1->stream_id);
+				$result[$details1->department_id] = $row['stream_short_name'] . ' - ' . $details1->department_name;
+			}
+
+			return $result;
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	function getFeeCourses()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$sess = $this->session->userdata('logged_in');
+			$data['id'] = $sess['id'];
+			$data['username'] = $sess['username'];
+			$data['role'] = $sess['role'];
+
 			$courses = $this->globals->courseFees();
 			$result = array_keys($courses);
 			$result = array_combine($result, $result);
 			return $result;
-
-		}else {
-				redirect('admin/timeout');
-		}           
-  }
+		} else {
+			redirect('admin/timeout');
+		}
+	}
 
 	function logout()
 	{
