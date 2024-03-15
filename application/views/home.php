@@ -67,6 +67,14 @@
                             </div>
                             <div class="col-md-4 col-sm-6">
                                 <div class="card p-4 bg-gray border">
+                                    <!-- SUCCESS -->
+                                    <div class="row">
+                                        <div class="col-md-12 text-center">
+                                            <i class="far fa-check-circle fa-5x text-success"></i>
+                                            <h6 class="text-success">Thanks for submission</h6>
+                                        </div>
+                                    </div>
+                                    <!-- END SUCCESS -->
                                     <form action="">
                                         <div class="row">
                                             <div class="col-md-12">
@@ -87,25 +95,30 @@
                                                 <div class="form-group">
                                                     <select class="form-control form-control-sm">
                                                         <option>Select Programme</option>
-                                                        <option>option 2</option>
-                                                        <option>option 3</option>
-                                                        <option>option 4</option>
-                                                        <option>option 5</option>
+                                                        <option value="1">option 2</option>
+                                                        <option value="2">option 3</option>
+                                                        <option value="3">option 4</option>
+                                                        <option value="4">option 5</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <select class="form-control form-control-sm">
                                                         <option>Select State</option>
-                                                        <option>option 2</option>
-                                                        <option>option 3</option>
-                                                        <option>option 4</option>
-                                                        <option>option 5</option>
+                                                        <option value="1">option 2</option>
+                                                        <option value="2">option 3</option>
+                                                        <option value="3">option 4</option>
+                                                        <option value="4">option 5</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <input type="text" class="form-control form-control-sm"
                                                         id="exam_board" name="email"
                                                         placeholder="Enter 10+2 Exam Board*">
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        id="exam_board" name="email"
+                                                        placeholder="Enter 10+2 Exam Reg. Number*">
                                                 </div>
                                                 <div class="form-group">
                                                     <input type="text" class="form-control form-control-sm"
@@ -127,6 +140,8 @@
                                             </div>
                                         </div>
                                     </form>
+
+
                                 </div>
 
                             </div>
