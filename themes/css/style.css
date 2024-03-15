@@ -10147,7 +10147,7 @@ img.react-parallax-bgimage {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 0;
+  padding: 10px 0;
   flex-wrap: wrap;
 }
 @media only screen and (max-width: 767px) {
@@ -10955,7 +10955,7 @@ Page Title Area
   margin-top: -20px;
 }
 .section-title h2.title {
-  font-size: 60px;
+  font-size: 40px;
   margin-bottom: 8px;
 }
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
@@ -15757,7 +15757,9 @@ BLog Details Styles
     margin-bottom: 25px;
   }
 }
-
+.form-group {
+  margin-bottom: 10px;
+}
 /*------------------------
     BLog Contact Form  
 --------------------------*/
