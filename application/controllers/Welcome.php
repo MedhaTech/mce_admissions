@@ -19,6 +19,8 @@ class Welcome extends CI_Controller {
 
 		    $data['pageTitle'] = "B.Tech Admissions Open 2024-25 | Malnad College of Engineering";
 			$data['activeMenu'] = "home";
+			$data['course_options'] = array(" " => "Select Branch") + $this->courses();
+			$data['states'] = array(" " => "Select State") + $this->globals->states();
 			$this->welcome_template->show('home', $data);
 
 	}
@@ -34,7 +36,7 @@ class Welcome extends CI_Controller {
 				$result[$details1->department_id] = $row['stream_short_name'] . ' - ' . $details1->department_name;
 			}
 
-		 
+		 return $result;
 
 	}
 }

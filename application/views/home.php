@@ -58,84 +58,151 @@
                     style="background-image:url('themes/images/bg/bg-image-11.jpg');">
                     <div class="container">
                         <div class="row">
-                            <div class="col-md-8 col-sm-6">
+                            <div class="col-md-4 col-sm-12">
                                 <div class="inner">
                                     <h2 class="text-white">Take the first step towards success: <span
                                             class="text-warning">admissions are currently open in MCE.</span></h2>
                                     <span class="text-white">Choose From 20+ Specializations</span>
                                 </div>
                             </div>
-                            <div class="col-md-4 col-sm-6">
+                            <div class="col-md-8 col-sm-12">
                                 <div class="card p-4 bg-gray border">
                                     <!-- SUCCESS -->
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         <div class="col-md-12 text-center">
                                             <i class="far fa-check-circle fa-5x text-success"></i>
                                             <h6 class="text-success">Thanks for submission</h6>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <!-- END SUCCESS -->
                                     <form action="">
                                         <div class="row">
                                             <div class="col-md-12">
 
                                                 <h5 class="text-danger">B.Tech Admissions Open 2024-25</h5>
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control form-control-sm" id="name"
-                                                        name="name" placeholder="Enter Name*">
+                                                <div class="row">
+                                                    <div class="form-group col-4">
+                                                        <label class="label">Student Full Name (As per SSLC)</label>
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            id="name" name="name" placeholder="Enter Student Name">
+                                                    </div>
+                                                    <div class="form-group col-4">
+                                                        <label class="label">Student Mobile</label>
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            id="mobile" name="email" placeholder="Enter Student Mobile">
+                                                    </div>
+                                                    <div class="form-group col-4">
+                                                        <label class="label">Student Email</label>
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            id="email" name="email" placeholder="Enter Student Email">
+                                                    </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control form-control-sm" id="mobile"
-                                                        name="email" placeholder="Enter Mobile*">
+                                                <div class="row">
+                                                    <div class="form-group col-4">
+                                                        <label class="label">Parent/Guardian Name</label>
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            id="name" name="name"
+                                                            placeholder="Enter Parent/Guardian Name*">
+                                                    </div>
+                                                    <div class="form-group col-4">
+                                                        <label class="label">Parent/Guardian Mobile</label>
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            id="mobile" name="email"
+                                                            placeholder="Enter Parent/Guardian Mobile">
+                                                    </div>
+                                                    <div class="form-group col-4">
+                                                        <label class="label">Parent/Guardian Email</label>
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            id="email" name="email"
+                                                            placeholder="Enter Parent/Guardian Email">
+                                                    </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control form-control-sm" id="email"
-                                                        name="email" placeholder="Enter Email*">
+                                                <div class="row">
+                                                    <div class="form-group col-4">
+                                                        <label class="label">SSLC Percentage/Grade</label>
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            id="exam_board" name="email"
+                                                            placeholder="Enter 10+2 Exam Board*">
+                                                    </div>
+                                                    <div class="form-group col-4">
+                                                        <label class="label">PUC-I(10+1) Percentage/Grade</label>
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            id="exam_board" name="email"
+                                                            placeholder="Enter 10+2 Exam Reg. Number*">
+                                                    </div>
+                                                    <div class="form-group col-4">
+                                                        <label class="label">PUC-II(10+2) Percentage/Grade</label>
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            id="percentage" name="email"
+                                                            placeholder="Enter 10+2 Percentage/Grade*">
+                                                    </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <select class="form-control form-control-sm">
-                                                        <option>Select Programme</option>
-                                                        <option value="1">option 2</option>
-                                                        <option value="2">option 3</option>
-                                                        <option value="3">option 4</option>
-                                                        <option value="4">option 5</option>
-                                                    </select>
+                                                <div class="row">
+                                                    <div class="form-group col-4">
+                                                        <label class="label">Branch Preference-I</label>
+                                                        <?php 
+                                                            echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control form-control-sm" id="course"'); 
+                                                        ?>
+                                                        <span
+                                                            class="text-danger"><?php echo form_error('course'); ?></span>
+                                                    </div>
+                                                    <div class="form-group col-4">
+                                                        <label class="label">Branch Preference-II</label>
+                                                        <?php 
+                                                            echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control form-control-sm" id="course"'); 
+                                                        ?>
+                                                        <span
+                                                            class="text-danger"><?php echo form_error('course'); ?></span>
+                                                    </div>
+                                                    <div class="form-group col-4">
+                                                        <label class="label">Branch Preference-III</label>
+                                                        <?php 
+                                                            echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control form-control-sm" id="course"'); 
+                                                        ?>
+                                                        <span
+                                                            class="text-danger"><?php echo form_error('course'); ?></span>
+                                                    </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <select class="form-control form-control-sm">
-                                                        <option>Select State</option>
-                                                        <option value="1">option 2</option>
-                                                        <option value="2">option 3</option>
-                                                        <option value="3">option 4</option>
-                                                        <option value="4">option 5</option>
-                                                    </select>
+
+                                                <div class="row">
+                                                    <div class="form-group col-4">
+                                                        <label class="label">State</label>
+                                                        <?php $state_options = array(""=>"Select State","Anadhra Pradesh" => "Andhra Pradesh");
+                                                            echo form_dropdown('state', $states, (set_value('state')) ? set_value('state') : $course, 'class="form-control form-control-sm" id="state"'); 
+                                                        ?>
+                                                        <span
+                                                            class="text-danger"><?php echo form_error('state'); ?></span>
+                                                    </div>
+                                                    <div class="form-group col-4">
+                                                        <label class="label">City</label>
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            id="email" name="email" placeholder="Enter Student Email">
+                                                    </div>
+                                                    <div class="form-group col-4">
+                                                        <label class="label">Gender</label>
+                                                        <?php $gender_options = array(" "=>"Select Gender","Male"=>"Male","Female"=>"Female","Not Prefer to Say"=>"Not Prefer to Say");
+                                                            echo form_dropdown('gender', $gender_options, (set_value('gender')) ? set_value('gender') : 'gender', 'class="form-control form-control-sm" id="gender"'); 
+                                                        ?>
+                                                        <span
+                                                            class="text-danger"><?php echo form_error('gender'); ?></span>
+                                                    </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        id="exam_board" name="email"
-                                                        placeholder="Enter 10+2 Exam Board*">
+
+                                                <div class="row">
+                                                    <div class="form-group col-8">
+                                                        <input type="checkbox" class="form-check-input" id="applyCheck">
+                                                        <label class="form-check-label text-gray font--12"
+                                                            for="applyCheck">
+                                                            I agree to receive information regarding my
+                                                            enquiry*</label>
+                                                    </div>
+                                                    <div class="form-group col-4">
+                                                        <button class="rn-button-style--2 btn_solid btn-size-sm"
+                                                            type="submit" value="submit" name="submit" id="submit">Apply
+                                                            Now</button>
+                                                    </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        id="exam_board" name="email"
-                                                        placeholder="Enter 10+2 Exam Reg. Number*">
-                                                </div>
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        id="percentage" name="email"
-                                                        placeholder="Enter 10+2 Percentage/Grade*">
-                                                </div>
-                                                <div class="form-group">
-                                                    <input type="checkbox" class="form-check-input" id="applyCheck">
-                                                    <label class="form-check-label text-gray font--12" for="applyCheck">
-                                                        I agree to receive information regarding my
-                                                        enquiry*</label>
-                                                </div>
-                                                <div class="form-group">
-                                                    <button class="rn-button-style--2 btn_solid btn-size-sm"
-                                                        type="submit" value="submit" name="submit" id="submit">Apply
-                                                        Now</button>
-                                                </div>
+
 
                                             </div>
                                         </div>
