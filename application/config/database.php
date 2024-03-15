@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'mceadm',
+	'hostname' => '15.206.117.153',
+	'username' => 'admin',
+	'password' => 'Mcehassan@mysql2023',
+	'database' => 'mce_campus',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
