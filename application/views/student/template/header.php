@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>Dashboard</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -41,7 +41,7 @@
       <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
-      <a href="<?php echo base_url();?>admin/dashboard" class="nav-link">Home</a>
+      <a href="<?php echo base_url();?>student/dashboard" class="nav-link">Home</a>
     </li>
    
   </ul>
@@ -74,9 +74,9 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
-  <a href="<?php echo base_url();?>admin/dashboard" class="brand-link">
+  <a href="<?php echo base_url();?>Student/dashboard" class="brand-link">
    
-    <span class="brand-text font-weight-light">Admin</span>
+    <span class="brand-text font-weight-light">Student</span>
   </a>
 
   <!-- Sidebar -->
@@ -91,7 +91,7 @@
         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
         <li class="nav-item ">
-          <a href="<?php echo base_url();?>admin/dashboard" class="nav-link <?=$menu_active = ($menu == "dashboard")? 'active' :''; ?>">
+          <a href="<?php echo base_url();?>student/dashboard" class="nav-link <?=$menu_active = ($menu == "dashboard")? 'active' :''; ?>">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               Dashboard
@@ -100,19 +100,10 @@
         </li>
 
         <li class="nav-item ">
-          <a href="<?php echo base_url();?>admin/Enquiries" class="nav-link <?=$menu_active = ($menu == "enquiries")? 'active' :''; ?>">
+          <a href="<?php echo base_url();?>student/logout" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
-            Enquiries
-            </p>
-          </a>
-        </li>
-   
-        <li class="nav-item ">
-          <a href="<?php echo base_url();?>admin/newEnquiry" class="nav-link <?=$menu_active = ($menu == "newEnquiry")? 'active' :''; ?>">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>
-            New Enquiry
+           Logout
            
             </p>
           </a>

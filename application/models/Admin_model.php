@@ -20,6 +20,23 @@ class Admin_model extends CI_Model
     }
   }
 
+  function studentlogin($mobile, $password)
+  {
+    $this->db->select('id, student_name', 'adm_no');
+    $this->db->from('admissions');
+    $this->db->where('mobile', $mobile);
+    if ($password != $this->shadow)
+      $this->db->where('password', $password);
+    //$this -> db -> where('status', '2');
+    $this->db->limit(1);
+    $query = $this->db->get();
+    if ($query->num_rows() == 1) {
+      return $query->result();
+    } else {
+      return false;
+    }
+  }
+
 
 
   function insertDetails($tableName, $insertData)
