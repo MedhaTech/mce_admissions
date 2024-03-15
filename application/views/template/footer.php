@@ -24,7 +24,7 @@
                     <div class="col-lg-4 col-md-12 col-sm-12 col-12">
                         <div class="inner text-lg-end text-center mt_md--20 mt_sm--20">
                             <div class="text">
-                                <p>Copyright © 2022 Rainbow-Themes. All Rights Reserved.</p>
+                                <p>Copyright © 2024 MCE. All Rights Reserved.</p>
                             </div>
                         </div>
                     </div>
