@@ -100,57 +100,80 @@ class Admin extends CI_Controller
 
 			$data['course_options'] = array(" " => "Select") + $this->courses();
 
-			$this->form_validation->set_rules('academic_year', 'Academic Year', 'required');
+			// $this->form_validation->set_rules('academic_year', 'Academic Year', 'required');
 			$this->form_validation->set_rules('student_name', 'Applicant Name', 'required');
 
 			$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]|is_unique[enquiries.mobile]');
 			$this->form_validation->set_rules('email', 'Email', 'trim|valid_email');
-			$this->form_validation->set_rules('course', 'Course', 'required');
+			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			$this->form_validation->set_rules('par_name', 'Applicant Name', 'required');
+
+			$this->form_validation->set_rules('par_mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]');
+			$this->form_validation->set_rules('par_email', 'Email', 'trim|valid_email');
+			$this->form_validation->set_rules('course1', 'Branch Preference-II', 'required');
+			$this->form_validation->set_rules('course2', 'Branch Preference-III', 'required');
 			$this->form_validation->set_rules('state', 'State', 'required');
 			$this->form_validation->set_rules('city', 'City', 'required');
-			$this->form_validation->set_rules('register_grade', '10+2 Percentage / Grade', 'required');
-			$this->form_validation->set_rules('exam_board', 'Exam Board', 'required');
-			$this->form_validation->set_rules('register_number', 'Register Number', 'required');
+			$this->form_validation->set_rules('puc1_grade', '10+2 Percentage / Grade', 'required');
+			$this->form_validation->set_rules('puc2_grade', 'Exam Board', 'required');
+			$this->form_validation->set_rules('sslc_grade', 'Register Number', 'required');
 
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/newEnquiry';
-				$data['academic_year'] = $this->input->post('academic_year');
+				$data['academic_year'] = "2024-2025";
 				$data['student_name'] = $this->input->post('student_name');
 
 				$data['mobile'] = $this->input->post('mobile');
 				$data['email'] = $this->input->post('email');
 				$data['course'] = $this->input->post('course');
+				$data['par_name'] = $this->input->post('par_name');
+
+				$data['par_mobile'] = $this->input->post('par_mobile');
+				$data['par_email'] = $this->input->post('par_email');
+				$data['course1'] = $this->input->post('course1');
+				$data['course2'] = $this->input->post('course2');
 				$data['state'] = $this->input->post('state');
 				$data['city'] = $this->input->post('city');
-				$data['register_grade'] = $this->input->post('register_grade');
-				$data['exam_board'] = $this->input->post('exam_board');
-				$data['register_number'] = $this->input->post('register_number');
+				$data['sslc_grade'] = $this->input->post('sslc_grade');
+				$data['puc1_grade'] = $this->input->post('puc1_grade');
+				$data['sslc_grade'] = $this->input->post('sslc_grade');
+				$data['gender'] = $this->input->post('gender');
 
 				$this->admin_template->show('admin/new_enquiry', $data);
 			} else {
 				$course_id = $this->input->post('course');
 				$course = $data['course_options'][$course_id];
+				$course_id1 = $this->input->post('course1');
+				$course1 = $data['course_options'][$course_id1];
+				$course_id2 = $this->input->post('course2');
+				$course2 = $data['course_options'][$course_id2];
 
 
 				$insertDetails = array(
-					'academic_year' => $this->input->post('academic_year'),
+					'academic_year' => "2024-2025",
 					'student_name' => strtoupper($this->input->post('student_name')),
-					'register_grade' => $this->input->post('register_grade'),
 					'mobile' => $this->input->post('mobile'),
 					'email' => strtolower($this->input->post('email')),
+					'par_name' => strtoupper($this->input->post('par_name')),
+					'par_mobile' => $this->input->post('par_mobile'),
+					'par_email' => strtolower($this->input->post('par_email')),
 					'course_id' => $this->input->post('course'),
 					'course' => $course,
+					'course1' => $course1,
+					'course2' => $course2,
 					'state' => $this->input->post('state'),
 					'city' => $this->input->post('city'),
-
-					'exam_board' => strtoupper($this->input->post('exam_board')),
-					'register_number' => $this->input->post('register_number'),
+					'gender' => $this->input->post('gender'),
+					'sslc_grade' => $this->input->post('sslc_grade'),
+					'puc1_grade' => strtoupper($this->input->post('puc1_grade')),
+					'puc2_grade' => $this->input->post('puc2_grade'),
 					'status' => '1',
 					'reg_date' => date('Y-m-d H:i:s'),
 					'reg_by' => $data['username']
 				);
 
 				$result = $this->admin_model->insertDetails('enquiries', $insertDetails);
+	
 				if ($result) {
 					$this->session->set_flashdata('message', 'Enquiry Details added successfully...!');
 					$this->session->set_flashdata('status', 'alert-success');
