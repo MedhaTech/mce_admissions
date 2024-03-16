@@ -201,6 +201,9 @@ class Admin extends CI_Controller
 			$data['menu'] = 'enquiries';
 
 			$data['course_options'] = array(" " => "Select") + $this->courses();
+			$data['quota_options'] = array(" " => "Select") + $this->globals->quota();
+			$data['subquota_options'] = array(" " => "Select") + $this->globals->sub_quota();
+			$data['type_options'] = array(" " => "Select") + $this->globals->category();
 
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
@@ -338,6 +341,166 @@ class Admin extends CI_Controller
 		} else {
 			redirect('admin/timeout');
 		}
+	}
+
+	function updateComments($enq_id)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$sess = $this->session->userdata('logged_in');
+			$data['id'] = $sess['id'];
+			$data['username'] = $sess['username'];
+			$data['role'] = $sess['role'];
+
+			
+			$data['page_title'] = 'Enquiries';
+			$data['menu'] = 'enquiries';
+			
+	        $comments = $this->input->post('comments');
+	        $status = $this->input->post('status');
+	        $old_status = $this->input->post('old_status');
+	        
+	        if($status != $old_status){
+	            $updateDetails = array('status' => $status);
+    	        $result = $this->admin_model->updateDetails('enquiries', $enq_id, $updateDetails);
+	        }
+	        
+	        $insertDetails = array('enq_id' => $enq_id,
+ 	            				    'comments' => $this->input->post('comments'),
+ 	            					'given_by' => $data['username'],
+ 	            					'given_on' => date('Y-m-d h:i:s')
+ 	        					);
+
+	        $result = $this->admin_model->insertDetails('enq_comments', $insertDetails);
+	        if($result){
+	            $this->session->set_flashdata('message', 'Comments updated successfully...!');
+	            $this->session->set_flashdata('status', 'alert-success');
+	        }else{
+	            $this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+	            $this->session->set_flashdata('status', 'alert-warning');
+	        }
+
+	        redirect('admin/enquiryDetails/'.$enq_id, 'refresh');
+
+	    }else{
+	      redirect('admin', 'refresh');
+	    }
+	}
+
+	function getFee(){
+		if ($this->session->userdata('logged_in')) {
+			$sess = $this->session->userdata('logged_in');
+			$data['id'] = $sess['id'];
+			$data['username'] = $sess['username'];
+			$data['role'] = $sess['role'];
+
+			
+			$course = $this->input->post('course');
+			
+            
+            $details = [
+				"aided_unaided" => "Aided",
+				"category" => "2",
+				"college_fee_total" => "6000",
+				"combination" => "",
+				"course" => "BTECH",
+				"id" => "4",
+				"mgt_fee_total" => "9000",
+				"total_fee" => "40800"
+			];
+			
+			print_r(json_encode($details));
+
+		}else {
+				redirect('admin/timeout');
+		}
+    }
+
+
+
+	function admitStudent()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$sess = $this->session->userdata('logged_in');
+			$data['id'] = $sess['id'];
+			$data['username'] = $sess['username'];
+			$data['role'] = $sess['role'];
+			
+			$data['page_title'] = 'Admit Studnet';
+			$data['menu'] = 'admissions';
+			
+			$id = $this->input->post('id');
+			$aided_unaided = $this->input->post('aided_unaided');
+			
+			$course = $this->input->post('course');
+		
+			
+			$course_val = $this->input->post('course_val');
+			
+			$category = $this->input->post('category');
+			
+			$college_fee_total = $this->input->post('college_fee_total');
+			$mgt_fee_total = $this->input->post('mgt_fee_total');
+			
+			$proposed_amount = $this->input->post('proposed_amount');   
+			$additional_amount = $this->input->post('additional_amount');   
+			$concession_type = $this->input->post('concession_type');   
+			$concession_fee = $this->input->post('concession_fee');   
+			$final_amount = $this->input->post('final_amount');   
+		
+			
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+            
+            $updateDetails = array('status' => '6');
+    	    $res = $this->admin_model->updateDetails($id, $updateDetails,'enquiries' );
+    	   
+    	    $app_number = $this->admin_model->getAppNo($currentAcademicYear)->row()->cnt;
+    	    $app_number = $app_number+1;
+            $strlen = strlen(($app_number));
+            if($strlen == 1){  $app_number = "000".$app_number; }
+            if($strlen == 2){  $app_number = "00".$app_number; }
+            if($strlen == 3){  $app_number = "0".$app_number; }
+    	    $app_no = date('y').$app_number;
+    	    
+            $enquiryDetails = $this->admin_model->getDetails('enquiries', $id)->row();
+
+            $OTP = strtoupper(substr(md5(time()), 0, 6));
+            
+            $insertDetails = array('flow' => '0',
+                                    'academic_year' => $enquiryDetails->academic_year,
+                                    'enq_id' => $id,
+                                    'app_no' => $app_no,
+                                    'course_id' => $course,
+                                    'course' => $course_val,
+                               
+                                    'student_name' => strtoupper($enquiryDetails->student_name),
+                                    'mobile' => $enquiryDetails->mobile,
+                                    'email' => strtolower($enquiryDetails->email),
+                                    'father_name' => strtoupper($enquiryDetails->father_name),
+                                    'exam_board' => $enquiryDetails->sslc_grade,
+                                    'register_number' => "12345",
+ 	            					'password' => md5($OTP),
+ 	            					'aided_unaided' => $aided_unaided,
+ 	            					'category' => "12345",
+ 	            					'college_fee_total' => $college_fee_total,
+ 	            					'mgt_fee_total' => $mgt_fee_total,
+ 	            					'proposed_amount' => $proposed_amount,
+ 	            					'additional_amount' => $additional_amount,
+ 	            					'concession_type' => $concession_type,
+ 	            					'concession_fee' => $concession_fee,
+ 	            					'final_amount' => $final_amount,
+ 	            					'status' => '1',
+ 	            					'admit_date' => date('Y-m-d h:i:s'),
+ 	            					'admit_by' => $data['username']
+ 	        					);
+ 	        					
+            $result = $this->admin_model->insertDetails('admissions', $insertDetails);
+            
+            
+            print_r($this->db->last_query());
+
+	    }else{
+	      redirect('admin', 'refresh');
+	    }
 	}
 
 	function logout()
