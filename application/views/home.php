@@ -67,6 +67,8 @@
                             </div>
                             <div class="col-md-8 col-sm-12">
                                 <div class="card p-4 bg-gray border">
+                                    <?php if($this->session->flashdata('status')) :?>
+                                   
                                     <!-- SUCCESS -->
                                     <!-- <div class="row">
                                         <div class="col-md-12 text-center">
@@ -75,7 +77,12 @@
                                         </div>
                                     </div> -->
                                     <!-- END SUCCESS -->
-                                    <form action="">
+                                    <!-- <p><?php echo $this->session->flashdata('status'); ?></p> -->
+                                    
+                                    <?php endif; ?>
+                                    
+                                <?php echo validation_errors(); ?>
+                                 <?php echo form_open_multipart($action, 'class="user"'); ?>
                                         <div class="row">
                                             <div class="col-md-12">
 
@@ -89,7 +96,7 @@
                                                     <div class="form-group col-4">
                                                         <label class="label">Student Mobile</label>
                                                         <input type="text" class="form-control form-control-sm"
-                                                            id="mobile" name="email" placeholder="Enter Student Mobile">
+                                                            id="mobile" name="mobile" placeholder="Enter Student Mobile">
                                                     </div>
                                                     <div class="form-group col-4">
                                                         <label class="label">Student Email</label>
@@ -101,19 +108,19 @@
                                                     <div class="form-group col-4">
                                                         <label class="label">Parent/Guardian Name</label>
                                                         <input type="text" class="form-control form-control-sm"
-                                                            id="name" name="name"
+                                                            id="par_name" name="par_name"
                                                             placeholder="Enter Parent/Guardian Name*">
                                                     </div>
                                                     <div class="form-group col-4">
                                                         <label class="label">Parent/Guardian Mobile</label>
                                                         <input type="text" class="form-control form-control-sm"
-                                                            id="mobile" name="email"
+                                                            id="par_mobile" name="par_mobile"
                                                             placeholder="Enter Parent/Guardian Mobile">
                                                     </div>
                                                     <div class="form-group col-4">
                                                         <label class="label">Parent/Guardian Email</label>
                                                         <input type="text" class="form-control form-control-sm"
-                                                            id="email" name="email"
+                                                            id="par_email" name="par_email"
                                                             placeholder="Enter Parent/Guardian Email">
                                                     </div>
                                                 </div>
@@ -121,20 +128,20 @@
                                                     <div class="form-group col-4">
                                                         <label class="label">SSLC Percentage/Grade</label>
                                                         <input type="text" class="form-control form-control-sm"
-                                                            id="exam_board" name="email"
-                                                            placeholder="Enter 10+2 Exam Board*">
+                                                            id="sslc_grade" name="sslc_grade"
+                                                            placeholder="Enter SSLC Percentage/Grade*">
                                                     </div>
                                                     <div class="form-group col-4">
                                                         <label class="label">PUC-I(10+1) Percentage/Grade</label>
                                                         <input type="text" class="form-control form-control-sm"
-                                                            id="exam_board" name="email"
-                                                            placeholder="Enter 10+2 Exam Reg. Number*">
+                                                            id="puc1_grade" name="puc1_grade"
+                                                            placeholder="Enter PUC-I(10+1) Percentage/Grade*">
                                                     </div>
                                                     <div class="form-group col-4">
                                                         <label class="label">PUC-II(10+2) Percentage/Grade</label>
                                                         <input type="text" class="form-control form-control-sm"
-                                                            id="percentage" name="email"
-                                                            placeholder="Enter 10+2 Percentage/Grade*">
+                                                            id="puc2_grade" name="puc2_grade"
+                                                            placeholder="Enter PUC-II(10+2) Percentage/Grade*">
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -149,18 +156,18 @@
                                                     <div class="form-group col-4">
                                                         <label class="label">Branch Preference-II</label>
                                                         <?php 
-                                                            echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control form-control-sm" id="course"'); 
+                                                            echo form_dropdown('course1', $course_options, (set_value('course1')) ? set_value('course1') : $course1, 'class="form-control form-control-sm" id="course1"'); 
                                                         ?>
                                                         <span
-                                                            class="text-danger"><?php echo form_error('course'); ?></span>
+                                                            class="text-danger"><?php echo form_error('course1'); ?></span>
                                                     </div>
                                                     <div class="form-group col-4">
                                                         <label class="label">Branch Preference-III</label>
                                                         <?php 
-                                                            echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control form-control-sm" id="course"'); 
+                                                            echo form_dropdown('course2', $course_options, (set_value('course2')) ? set_value('course2') : $course2, 'class="form-control form-control-sm" id="course2"'); 
                                                         ?>
                                                         <span
-                                                            class="text-danger"><?php echo form_error('course'); ?></span>
+                                                            class="text-danger"><?php echo form_error('course2'); ?></span>
                                                     </div>
                                                 </div>
 
@@ -168,7 +175,7 @@
                                                     <div class="form-group col-4">
                                                         <label class="label">State</label>
                                                         <?php $state_options = array(""=>"Select State","Anadhra Pradesh" => "Andhra Pradesh");
-                                                            echo form_dropdown('state', $states, (set_value('state')) ? set_value('state') : $course, 'class="form-control form-control-sm" id="state"'); 
+                                                            echo form_dropdown('state', $states, (set_value('state')) ? set_value('state') : $state, 'class="form-control form-control-sm" id="state"'); 
                                                         ?>
                                                         <span
                                                             class="text-danger"><?php echo form_error('state'); ?></span>
@@ -176,7 +183,7 @@
                                                     <div class="form-group col-4">
                                                         <label class="label">City</label>
                                                         <input type="text" class="form-control form-control-sm"
-                                                            id="email" name="email" placeholder="Enter Student Email">
+                                                            id="city" name="city" placeholder="Enter City">
                                                     </div>
                                                     <div class="form-group col-4">
                                                         <label class="label">Gender</label>
@@ -190,7 +197,7 @@
 
                                                 <div class="row">
                                                     <div class="form-group col-8">
-                                                        <input type="checkbox" class="form-check-input" id="applyCheck">
+                                                        <input type="checkbox" class="form-check-input" id="applyCheck" onclick="enable()">
                                                         <label class="form-check-label text-gray font--12"
                                                             for="applyCheck">
                                                             I agree to receive information regarding my
@@ -198,15 +205,16 @@
                                                     </div>
                                                     <div class="form-group col-4">
                                                         <button class="rn-button-style--2 btn_solid btn-size-sm"
-                                                            type="submit" value="submit" name="submit" id="submit">Apply
+                                                            type="submit" value="submit" name="submit" id="submit" disabled="true">Apply
                                                             Now</button>
+                                                            
                                                     </div>
                                                 </div>
 
 
                                             </div>
                                         </div>
-                                    </form>
+                                        <?php echo form_close(); ?>
 
 
                                 </div>
