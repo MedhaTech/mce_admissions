@@ -170,4 +170,11 @@ class Admin_model extends CI_Model
   {
     return $this->db->get_where('streams', array('stream_id' => $stream_id))->row_array();
   }
+
+  public function getAppNo($academic_year)
+  {
+      $this->db->select('COUNT(id) as cnt');
+      $this->db->where('academic_year',$academic_year);
+      return $this->db->get('admissions');    
+  }
 }

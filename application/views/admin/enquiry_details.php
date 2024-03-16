@@ -54,7 +54,7 @@
                 <th width="20%">Applicant Name</th>
                 <td width="80%"><?= $enquiryDetails->student_name; ?></td>
               </tr>
-             
+
               <tr>
                 <th>Mobile</th>
                 <td><?= $enquiryDetails->mobile; ?></td>
@@ -175,57 +175,50 @@
                   <div class="col">
                     <div class="form-group">
                       <label class="form-label">Course</label>
-                      <?php   echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control" id="course"');  ?>
+                      <?php echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control" id="course"');  ?>
                       <span class="text-danger"><?php echo form_error('course'); ?></span>
                     </div>
                   </div>
                   <div class="col">
                     <div class="form-group">
-                      <label class="form-label">State </label>
+                      <label class="form-label">Quota </label>
                       <?php $state_options = array("" => "Select");
-                      echo form_dropdown('state', $state_options, (set_value('state')) ? set_value('state') : '', 'class="form-control" id="state" '); ?>
-                      <span class="text-danger"><?php echo form_error('state'); ?></span>
+                      echo form_dropdown('quota', $quota_options, (set_value('quota')) ? set_value('quota') : '', 'class="form-control" id="quota" '); ?>
+                      <span class="text-danger"><?php echo form_error('quota'); ?></span>
                     </div>
                   </div>
                   <div class="col">
                     <div class="form-group">
-                      <label class="form-label">City </label>
-                      <?php $city_options = array("" => "Select");
-                      echo form_dropdown('city', $city_options, (set_value('city')) ? set_value('city') : '', 'class="form-control" id="city" '); ?>
-                      <span class="text-danger"><?php echo form_error('city'); ?></span>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-group">
-                      <label class="form-label">Type</label>
-                      <!-- <input type="text" class="form-control" id="aided_unaided" name="aided_unaided" placeholder="" readonly> -->
-                      <?php  $type_options = array(""=>"Select","Aided"=>"Aided","UnAided"=>"UnAided");
-                         echo form_dropdown('aided_unaided', $type_options, '','class="form-control input-xs" id="aided_unaided"'); 
-                      ?>
-                      <span class="text-danger"><?php echo form_error('aided_unaided'); ?></span>
+                      <label class="form-label">Sub Quota </label>
+                      <?php
+                      echo form_dropdown('subquota', $subquota_options, (set_value('subquota')) ? set_value('subquota') : '', 'class="form-control" id="subquota" '); ?>
+                      <span class="text-danger"><?php echo form_error('subquota'); ?></span>
                     </div>
                   </div>
                   <div class="col">
                     <div class="form-group">
                       <label class="form-label">Category</label>
-                      <?php $category_options = array("" => "Select", "GM" => "GM", "SC" => "SC", "ST" => "ST", "C-1" => "C-1", "2A" => "2A", "2B" => "2B", "3A" => "3A", "3B" => "3B");
-                      echo form_dropdown('category', $category_options, '', 'class="form-control input-xs" id="category" disabled'); ?>
-                      <span class="text-danger"><?php echo form_error('category'); ?></span>
+                      <!-- <input type="text" class="form-control" id="aided_unaided" name="aided_unaided" placeholder="" readonly> -->
+                      <?php
+                      echo form_dropdown('aided_unaided', $type_options, '', 'class="form-control input-xs" id="aided_unaided"');
+                      ?>
+                      <span class="text-danger"><?php echo form_error('aided_unaided'); ?></span>
                     </div>
                   </div>
+
                 </div>
 
                 <div class="form-row">
                   <div class="col-4">
                     <div class="form-group">
-                      <label class="form-label">College Fee Amount</label>
-                      <input type="text" class="form-control" id="college_fee_total" name="college_fee_total" placeholder="College Fee" readonly>
+                      <label class="form-label">Total Demand Fee</label>
+                      <input type="text" class="form-control" id="demand_fee_total" name="demand_fee_total" placeholder="Total demand fee" readonly>
                     </div>
                   </div>
                   <div class="col-4">
                     <div class="form-group">
-                      <label class="form-label">Mgt. Fee Amount</label>
-                      <input type="text" class="form-control" id="mgt_fee_total" name="mgt_fee_total" placeholder="Mgt. Fee" readonly>
+                      <label class="form-label">Corpus Fee</label>
+                      <input type="number" class="form-control" id="corpus_fee" name="corpus_fee" placeholder="Corpus Fee" min="0" value="0">
                     </div>
                   </div>
                   <div class="col-4">
@@ -236,13 +229,8 @@
                   </div>
                 </div>
                 <div class="form-row">
-                  <div class="col-4">
-                    <div class="form-group">
-                      <label class="form-label">Additional Amount (if any)</label>
-                      <input type="text" class="form-control" id="additional_amount" name="additional_amount" placeholder="Enter Additional Fee" value="0">
-                    </div>
-                  </div>
-                  <div class="col-4">
+
+                  <div class="col">
                     <div class="form-group">
                       <label class="form-label">Concession Type</label>
                       <?php $concession_type_options = array("" => "Select", "Sports Quota" => "Sports Quota", "Management Quota" => "Management Quota");
@@ -250,32 +238,29 @@
 
                     </div>
                   </div>
-                  <div class="col-4">
+                  <div class="col">
                     <div class="form-group">
                       <label class="form-label">Concession Amount (if any)</label>
                       <input type="text" class="form-control" id="concession_fee" name="concession_fee" placeholder="Enter Concession Fee" value="0">
                     </div>
                   </div>
+
                 </div>
                 <div class="form-row">
-                  <div class="col-6">
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Additional Amount (if any)</label>
+                      <input type="text" class="form-control" id="additional_amount" name="additional_amount" placeholder="Enter Additional Fee" value="0">
+                    </div>
+                  </div>
+
+                  <div class="col">
                     <div class="form-group">
                       <label class="form-label">Finalised Fee</label>
                       <input type="text" class="form-control" id="final_amount" name="final_amount" placeholder="Enter Finalized Fee" readonly>
                     </div>
                   </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label class="form-label">First Language</label>
-                      <?php echo form_dropdown('lang_1', $languages, (set_value('lang_1')) ? set_value('lang_1') : '', 'class="form-control" id="lang_1"'); ?>
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label class="form-label">Second Language</label>
-                      <?php echo form_dropdown('lang_2', $languages, (set_value('lang_2')) ? set_value('lang_2') : '', 'class="form-control" id="lang_2"'); ?>
-                    </div>
-                  </div>
+
                 </div>
                 <div class="row">
                   <div class="col">
@@ -299,125 +284,48 @@
       $('#update_comments').prop("disabled", true);
       $('#insert').prop("disabled", true);
 
-   
-
-      $("#dsc_1").change(function() {
-        event.preventDefault();
-        checkType();
-      });
-
-      $("#dsc_2").change(function() {
-        event.preventDefault();
-        checkType();
-      });
 
 
-      function checkType() {
-        var dsc_1 = $("#dsc_1").val();
-        var dsc_2 = $("#dsc_2").val();
-        var progType = null;
-        $.ajax({
-          'type': 'POST',
-          'url': base_url + 'admin/checkProgType',
-          'data': {
-            'dsc_1': dsc_1,
-            'dsc_2': dsc_2
-          },
-          'dataType': 'text',
-          'cache': false,
-          'success': function(data) {
-            // 	console.log(data);
-            if (data) {
-              $('#aided_unaided').val(data);
-              $('#category').val('');
-              $('#category').prop("disabled", false);
 
-              $('#proposed_amount').val('');
-              $('#additional_amount').val('0');
-              $('#concession_fee').val('0');
-              $('#concession_type').val('');
-              $('#final_amount').val('');
-            }
-          }
-        });
-        // 			return progType;
-      }
 
-     
 
-      $("#category1").change(function() {
+      $("#aided_unaided").change(function() {
         event.preventDefault();
         var course = $("#course").val();
-        var combination = $("#combination").val();
-        var category = $("#category").val();
+        var subquota = $("#subquota").val();
+        var quota = $("#quota").val();
 
-        if (combination == "BCOM UA") {
-          combination = "BCOM";
-        }
 
-        if (combination != "" && category != '') {
+        if (subquota != "" && quota != '') {
           var page = base_url + 'admin/getFee';
           $.ajax({
             'type': 'POST',
             'url': page,
             'data': {
               'course': course,
-              'combination': combination,
-              'category': category
+              'quota': quota,
+              'subquota': subquota
             },
             'dataType': 'json',
             'cache': false,
             'success': function(data) {
-              $('#proposed_amount').val(data);
+              $('#demand_fee_total').val(data.total_fee);
+              var demand =data.total_fee;
+              var corpus = $("#corpus_fee").val();
+              var proposed = parseInt(demand) + parseInt(corpus);
+              $('#proposed_amount').val(proposed);
               var final_amount = finalAmount();
               $('#final_amount').val(finalAmount);
             }
           });
         }
       });
-
-      $("#category").change(function() {
+      $("#additional_amount").change(function() {
         event.preventDefault();
-        var course = $("#course").val();
-        var course_val = $("#course option:selected").text();
-
-        var dsc_1 = $("#dsc_1").val();
-        var dsc_1_val = $("#dsc_1 option:selected").text();
-
-        var dsc_2 = $("#dsc_2").val();
-        var dsc_2_val = $("#dsc_2 option:selected").text();
-
-        var category = $("#category").val();
-        var aided_unaided = $("#aided_unaided").val();
-
-        if (aided_unaided != "" && category != '') {
-          var page = base_url + 'admin/getFee';
-          $.ajax({
-            'type': 'POST',
-            'url': page,
-            'data': {
-              'course': course,
-              'course_val': course_val,
-              'dsc_1': dsc_1,
-              'dsc_2': dsc_2,
-              'dsc_1_val': dsc_1_val,
-              'dsc_2_val': dsc_2_val,
-              'category': category,
-              'aided_unaided': aided_unaided
-            },
-            'dataType': 'json',
-            'cache': false,
-            'success': function(data) {
-              // console.log(data); 
-              $('#proposed_amount').val(parseInt(data.total_fee));
-              $('#college_fee_total').val(parseInt(data.college_fee_total));
-              $('#mgt_fee_total').val(parseInt(data.mgt_fee_total));
-              var final_amount = finalAmount();
-              $('#final_amount').val(finalAmount);
-            }
-          });
-        }
+        var final_amount = finalAmount();
+        $('#final_amount').val(finalAmount);
       });
+ 
 
       $("#additional_amount").change(function() {
         event.preventDefault();
@@ -430,8 +338,17 @@
         var final_amount = finalAmount();
         $('#final_amount').val(finalAmount);
       });
+      $("#corpus_fee").change(function() {
+        event.preventDefault();
+        var final_amount = finalAmount();
+        $('#final_amount').val(finalAmount);
+      });
 
       function finalAmount() {
+        var demand = $("#demand_fee_total").val();
+         var corpus = $("#corpus_fee").val();
+              var proposed = parseInt(demand) + parseInt(corpus);
+              $('#proposed_amount').val(proposed);
         var proposed_amount = $("#proposed_amount").val();
         var additional_amount = $("#additional_amount").val();
         var concession_fee = $("#concession_fee").val();
@@ -474,9 +391,9 @@
 
 
 
-      $('#final_amount').on('keyup', function() {
+      $("#aided_unaided").change(function() {
 
-        if (this.value.length >= 3) {
+        if (this.value.length >= 1) {
           $('#insert').prop("disabled", false);
         } else {
           $('#insert').prop("disabled", true);
@@ -490,17 +407,13 @@
         var course = $("#course").val();
         var course_val = $("#course option:selected").text();
 
-        var dsc_1 = $("#dsc_1").val();
-        var dsc_1_val = $("#dsc_1 option:selected").text();
-
-        var dsc_2 = $("#dsc_2").val();
-        var dsc_2_val = $("#dsc_2 option:selected").text();
+     
 
         var category = $("#category").val();
         var aided_unaided = $("#aided_unaided").val();
 
-        var college_fee_total = $("#college_fee_total").val();
-        var mgt_fee_total = $("#mgt_fee_total").val();
+        var college_fee_total = $("#demand_fee_total").val();
+        var mgt_fee_total = $("#corpus_fee").val();
 
         var proposed_amount = $("#proposed_amount").val();
         var additional_amount = $("#additional_amount").val();
@@ -508,8 +421,7 @@
         var concession_fee = $("#concession_fee").val();
         var final_amount = $('#final_amount').val();
 
-        var lang_1 = $('#lang_1').val();
-        var lang_2 = $('#lang_2').val();
+
 
         $.ajax({
           'type': 'POST',
@@ -518,13 +430,7 @@
             "id": id,
             "aided_unaided": aided_unaided,
             'course': course,
-            'course_val': course_val,
-            'dsc_1': dsc_1,
-            'dsc_2': dsc_2,
-            'dsc_1_val': dsc_1_val,
-            'dsc_2_val': dsc_2_val,
-            'lang_1': lang_1,
-            'lang_2': lang_2,
+            'course_val':course_val,
             "category": category,
             "college_fee_total": college_fee_total,
             "mgt_fee_total": mgt_fee_total,

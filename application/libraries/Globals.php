@@ -97,6 +97,25 @@ class Globals
         );
     }
 
+    public function category()
+    {
+        return array(
+           
+            "1G" => "1G",
+            "1GR" => "1GR",
+            "2AG" => "2AG",
+            "2AGR" => "2AGR",
+            "2BG" => "2BG",
+            "2BGR" => "2BGR",
+            "3AG" => "3AG",
+            "3AGR" => "3AGR",
+            "3AGRK" => "3AGRK",
+            "3BG" => "3BG",
+            "GM" => "GM",
+            "SCG" => "SCG"
+        );
+    }
+
 
     public function states(){
         return array(
