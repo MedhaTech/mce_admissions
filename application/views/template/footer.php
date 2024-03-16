@@ -56,4 +56,15 @@
 
 </body>
 
+<script>
+    function enable(){
+        var applyCheck = document.getElementById("applyCheck");
+        var submit = document.getElementById("submit");
+        if(applyCheck.checked){
+            submit.removeAttribute("disabled")
+        } else{
+            submit.disabled="true";
+        }
+    }
+ </script>
 </html>

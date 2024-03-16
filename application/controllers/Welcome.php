@@ -21,8 +21,81 @@ class Welcome extends CI_Controller {
 			$data['activeMenu'] = "home";
 			$data['course_options'] = array(" " => "Select Branch") + $this->courses();
 			$data['states'] = array(" " => "Select State") + $this->globals->states();
-			$this->welcome_template->show('home', $data);
+			
+	//Including validation library
+				$this->load->library('form_validation');
+	
+				$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+	
+				$this->form_validation->set_rules('name', 'Name', 'required|min_length[5]|max_length[15]');
+				$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]|is_unique[enquiries.mobile]');
+				$this->form_validation->set_rules('email', 'Email', 'trim|valid_email');
+				$this->form_validation->set_rules('par_name', 'Parent Name', 'required|min_length[5]|max_length[15]');
+				$this->form_validation->set_rules('par_mobile', 'Parent Mobile', 'required|regex_match[/^[0-9]{10}$/]|is_unique[enquiries.mobile]');
+				$this->form_validation->set_rules('par_email', 'Parent Email', 'trim|valid_email');
+				$this->form_validation->set_rules('sslc_grade', 'Sslc Percentage', 'required');
+				$this->form_validation->set_rules('puc1_grade', '1Puc Percentage', 'required');
+				$this->form_validation->set_rules('puc2_grade', '2Puc Percentage', 'required');
+				$this->form_validation->set_rules('course', 'Course', 'required');
+				$this->form_validation->set_rules('course1', 'Course 1', 'required');
+				$this->form_validation->set_rules('course2', 'Course 2', 'required');
+				$this->form_validation->set_rules('state', 'State', 'required');
+				$this->form_validation->set_rules('city', 'City', 'required');
+				$this->form_validation->set_rules('gender', 'Gender', 'required');
+	
+				if ($this->form_validation->run() === FALSE) {
+					$data['action'] = 'welcome';
+					$data['student_name'] = $this->input->post('name');
+					$data['mobile'] = $this->input->post('mobile');
+					$data['email'] = $this->input->post('email');
+					$data['par_name'] = $this->input->post('par_name');
+					$data['par_mobile'] = $this->input->post('par_mobile');
+					$data['par_email'] = $this->input->post('par_email');
+					$data['sslc_grade'] = $this->input->post('sslc_grade');
+					$data['puc1_grade'] = $this->input->post('puc1_grade');
+					$data['puc2_grade'] = $this->input->post('puc2_grade');
+					$data['course'] = $this->input->post('course');
+					$data['course1'] = $this->input->post('course1');
+					$data['course2'] = $this->input->post('course1');
+					$data['state'] = $this->input->post('state');
+					$data['city'] = $this->input->post('city');
+					$data['gender'] = $this->input->post('gender');
+	
+					
+				
 
+					$this->welcome_template->show('home', $data);
+				} else {
+				//Setting values for tabel columns
+				$insertDetails = array(
+				'academic_year' => "2024-2025",
+				'student_name' => $this->input->post('name'),
+				'mobile' => $this->input->post('mobile'),
+				'email' => $this->input->post('email'),
+				'par_name' => $this->input->post('par_name'),
+				'par_mobile' => $this->input->post('par_mobile'),
+				'par_email' => $this->input->post('par_email'),
+				'sslc_grade' => $this->input->post('sslc_grade'),
+				'puc1_grade' => $this->input->post('puc1_grade'),
+				'puc2_grade' => $this->input->post('puc2_grade'),
+				'course' => $this->input->post('course'),
+				'course1' => $this->input->post('course1'),
+				'course2' => $this->input->post('course2'),
+				'state' => $this->input->post('state'),
+				'city' => $this->input->post('city'),
+				'gender' => $this->input->post('gender'),
+				'status' => '1',
+				'reg_date' => date('Y-m-d H:i:s')
+				);
+	
+	
+				$result = $this->admin_model->insertDetails('enquiries', $insertDetails);
+				$this->session->set_flashdata('status', $data);
+				
+				redirect('welcome', 'refresh');
+
+				}
+		
 	}
 
 	function courses()
