@@ -114,6 +114,43 @@
             <div class="form-row">
               <div class="col">
                 <div class="form-group">
+                  <label for="dsc-1">State </label>
+                  <?php $state_options = array("" => "Select", "Karnataka" => "Karnataka");
+                  echo form_dropdown('state', $state_options, (set_value('state')) ? set_value('state') : $state, 'class="form-control" id="state" '); ?>
+                  <span class="text-danger"><?php echo form_error('state'); ?></span>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="dsc-2">City </label>
+                  <input type="text" name="city" id="city" class="form-control" value="<?php echo (set_value('city')) ? set_value('city') : $city; ?>">
+                  <span class="text-danger"><?php echo form_error('city'); ?></span>
+                </div>
+              </div>
+
+            </div>
+            <div class="form-row">
+
+              <div class="col">
+                <div class="form-group">
+                  <label for="dsc-2">Adhaar Number </label>
+                  <input type="text" name="adhaar" id="adhaar" class="form-control" value="<?php echo (set_value('adhaar')) ? set_value('adhaar') : $adhaar; ?>">
+                  <span class="text-danger"><?php echo form_error('adhaar'); ?></span>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="dsc-2">Gender </label>
+                  <?php $gender_options = array(" " => "Select Gender", "Male" => "Male", "Female" => "Female", "Not Prefer to Say" => "Not Prefer to Say");
+                  echo form_dropdown('gender', $gender_options, (set_value('gender')) ? set_value('gender') : 'gender', 'class="form-control" id="gender"');
+                  ?>
+                  <span class="text-danger"><?php echo form_error('gender'); ?></span>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col">
+                <div class="form-group">
                   <label for="course">Branch Preference-I
                   </label>
                   <?php
@@ -139,33 +176,6 @@
                   <span class="text-danger"><?php echo form_error('course2'); ?></span>
                 </div>
               </div>
-            </div>
-            <div class="form-row">
-            <div class="col">
-               <div class="form-group">
-                 <label for="dsc-1">State </label>
-                 <?php $state_options = array("" => "Select","Karnataka"=>"Karnataka");
-                 echo form_dropdown('state', $state_options, (set_value('state')) ? set_value('state') : $state, 'class="form-control" id="state" '); ?>
-                 <span class="text-danger"><?php echo form_error('state'); ?></span>
-               </div>
-             </div>
-             <div class="col">
-               <div class="form-group">
-                 <label for="dsc-2">City </label>
-                 <input type="text" name="city" id="city" class="form-control" value="<?php echo (set_value('city')) ? set_value('city') : $city; ?>">
-                                                            <span class="text-danger"><?php echo form_error('city'); ?></span>
-               </div>
-             </div>
-             <div class="col">
-               <div class="form-group">
-                 <label for="dsc-2">Gender </label>
-                 <?php $gender_options = array(" "=>"Select Gender","Male"=>"Male","Female"=>"Female","Not Prefer to Say"=>"Not Prefer to Say");
-                                                            echo form_dropdown('gender', $gender_options, (set_value('gender')) ? set_value('gender') : 'gender', 'class="form-control" id="gender"'); 
-                                                        ?>
-                                                        <span
-                                                            class="text-danger"><?php echo form_error('gender'); ?></span>
-               </div>
-             </div>
             </div>
 
 

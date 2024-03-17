@@ -11,7 +11,7 @@ class Globals
 
     public function enquiryStatus()
     {
-        return array("1" => "New", "2" => "Working", "3" => "On-Hold", "4" => "Archived", "5" => "Bad Data", "6" => "Admitted");
+        return array("1" => "New", "2" => "Working", "3" => "On-Hold", "4" => "Archived", "5" => "Bad Data", "6" => "Admitted", "7" => "Seat Blocked");
     }
 
     public function enquiryStatusColor()
