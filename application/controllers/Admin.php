@@ -114,9 +114,9 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('course2', 'Branch Preference-III', 'required');
 			$this->form_validation->set_rules('state', 'State', 'required');
 			$this->form_validation->set_rules('city', 'City', 'required');
-			$this->form_validation->set_rules('puc1_grade', '10+2 Percentage / Grade', 'required');
-			$this->form_validation->set_rules('puc2_grade', 'Exam Board', 'required');
-			$this->form_validation->set_rules('sslc_grade', 'Register Number', 'required');
+			$this->form_validation->set_rules('adhaar', 'Adhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.adhaar]');
+			$this->form_validation->set_rules('puc1_grade', 'PUC-I(10+1) Percentage/Grade', 'required');
+			$this->form_validation->set_rules('sslc_grade', 'SSLC Percentage/Grade', 'required');
 
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/newEnquiry';
@@ -138,6 +138,7 @@ class Admin extends CI_Controller
 				$data['puc1_grade'] = $this->input->post('puc1_grade');
 				$data['sslc_grade'] = $this->input->post('sslc_grade');
 				$data['gender'] = $this->input->post('gender');
+				$data['adhaar'] = $this->input->post('adhaar');
 
 				$this->admin_template->show('admin/new_enquiry', $data);
 			} else {
@@ -164,6 +165,7 @@ class Admin extends CI_Controller
 					'state' => $this->input->post('state'),
 					'city' => $this->input->post('city'),
 					'gender' => $this->input->post('gender'),
+					'adhaar' => $this->input->post('adhaar'),
 					'sslc_grade' => $this->input->post('sslc_grade'),
 					'puc1_grade' => strtoupper($this->input->post('puc1_grade')),
 					'puc2_grade' => $this->input->post('puc2_grade'),
@@ -249,6 +251,7 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('register_grade', '10+2 Percentage / Grade', 'required');
 			$this->form_validation->set_rules('exam_board', 'Exam Board', 'required');
 			$this->form_validation->set_rules('register_number', 'Register Number', 'required');
+			$this->form_validation->set_rules('adhaar', 'Adhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.adhaar]');
 
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/editEnquiry/' . $id;
