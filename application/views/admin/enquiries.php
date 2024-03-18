@@ -22,17 +22,17 @@
   		<div class="container-fluid">
   			<div class="d-sm-flex align-items-center justify-content-between mb-4">
   				<h1 class="h5 mb-0 text-gray-800 font-weight-bold"></h1>
-  				<?php echo anchor('admin/newEnquiry', '<span class="icon"><i class="fas fa-plus"></i></span><span class="text">New Enquiry</span>', 'class="btn btn-primary btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
+  				<?php echo anchor('admin/newEnquiry', '<span class="icon"><i class="fas fa-plus"></i></span><span class="text"> New Enquiry</span>', 'class="btn btn-primary btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
   			</div>
 
   			<div class="card shadow mb-4">
   				<div class="card-body">
-  					<div class="table-responsive">
+				  <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
   						<?php
 							if (count($enquiries)) {
-								$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="dataTable" >');
+								$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 								$this->table->set_template($table_setup);
-								$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'State', 'City', 'Status', 'Reg. Date');
+								$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Status', 'Reg. Date');
 								$this->table->set_heading($print_fields);
 
 								$i = 1;
@@ -43,8 +43,7 @@
 										anchor('admin/enquiryDetails/' . $enquiries1->id, $enquiries1->student_name),
 										$enquiries1->mobile,
 										$enquiries1->course,
-										$enquiries1->state,
-										$enquiries1->city,
+										$enquiries1->adhaar,
 										'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
 										date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
 									);

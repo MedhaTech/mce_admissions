@@ -61,6 +61,10 @@ class Admin extends CI_Controller
 			$data['username'] = $session_data['username'];
 			$data['pageTitle'] = "Dashboard";
 			$data['activeMenu'] = "dashboard";
+			$data['enquiryStatus'] = $this->globals->enquiryStatus();
+			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['course_options'] = $this->admin_model->getDetails('departments', '')->result();
 			$this->admin_template->show('admin/Dashboard', $data);
 		} else {
 			redirect('admin', 'refresh');
@@ -504,6 +508,23 @@ class Admin extends CI_Controller
 	    }else{
 	      redirect('admin', 'refresh');
 	    }
+	}
+
+	function Enquirieslist()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['username'] = $session_data['username'];
+			$data['pageTitle'] = "Enquiries List";
+			$data['activeMenu'] = "Enquirieslist";
+			$data['enquiryStatus'] = $this->globals->enquiryStatus();
+			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['course_options'] = $this->admin_model->getDetails('departments', '')->result();
+			$this->admin_template->show('admin/Enquirieslist', $data);
+		} else {
+			redirect('admin', 'refresh');
+		}
 	}
 
 	function logout()
