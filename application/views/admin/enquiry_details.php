@@ -116,11 +116,11 @@
               </tr>
               <tr>
                 <th>PUC-I(10+1) Percentage/Grade</th>
-                <td><?= $enquiryDetails->puc_grade; ?></td>
+                <td><?= $enquiryDetails->puc1_grade; ?></td>
               </tr>
               <tr>
                 <th>PUC-II(10+2) Percentage/Grade</th>
-                <td><?= $enquiryDetails->puc1_grade; ?></td>
+                <td><?= $enquiryDetails->puc2_grade; ?></td>
               </tr>
             </table>
           </div>
@@ -213,7 +213,7 @@
                 <div class="form-row">
                   <div class="col">
                     <div class="form-group">
-                      <label class="form-label">Course</label>
+                      <label class="form-label">Department</label>
                       <?php echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control" id="course"');  ?>
                       <span class="text-danger"><?php echo form_error('course'); ?></span>
                     </div>
@@ -250,19 +250,19 @@
                 <div class="form-row">
                   <div class="col-4">
                     <div class="form-group">
-                      <label class="form-label">University Fee</label>
+                      <label class="form-label">Tution Fee</label>
                       <input type="text" class="form-control" id="demand_fee_total" name="demand_fee_total" placeholder="Total demand fee" readonly>
                     </div>
                   </div>
                   <div class="col-4">
                     <div class="form-group">
-                      <label class="form-label">Corpus Fee</label>
+                      <label class="form-label">Corpus Fund</label>
                       <input type="number" class="form-control" id="corpus_fee" name="corpus_fee" placeholder="Corpus Fee" min="0" value="0">
                     </div>
                   </div>
                   <div class="col-4">
                     <div class="form-group">
-                      <label class="form-label">MTES Corpus Fee</label>
+                      <label class="form-label">MTES Corpus Fund</label>
                       <input type="number" class="form-control" id="corpus_fee_mtes" name="corpus_fee_mtes" placeholder="MTES Corpus Fee" min="0" value="0">
                     </div>
                   </div>
@@ -336,7 +336,7 @@
                 <div class="form-row">
                   <div class="col">
                     <div class="form-group">
-                      <label class="form-label">Course</label>
+                      <label class="form-label">Department</label>
                       <?php echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control" id="course"');  ?>
                       <span class="text-danger"><?php echo form_error('course'); ?></span>
                     </div>
@@ -373,19 +373,19 @@
                 <div class="form-row">
                   <div class="col-4">
                     <div class="form-group">
-                      <label class="form-label">University Fee</label>
+                      <label class="form-label">Tution Fee</label>
                       <input type="text" class="form-control" id="demand_fee_total" name="demand_fee_total" placeholder="Total demand fee" readonly>
                     </div>
                   </div>
                   <div class="col-4">
                     <div class="form-group">
-                      <label class="form-label">Corpus Fee</label>
+                      <label class="form-label">Corpus Fund</label>
                       <input type="number" class="form-control" id="corpus_fee" name="corpus_fee" placeholder="Corpus Fee" min="0" value="0">
                     </div>
                   </div>
                   <div class="col-4">
                     <div class="form-group">
-                      <label class="form-label">MTES Corpus Fee</label>
+                      <label class="form-label">MTES Corpus Fund</label>
                       <input type="number" class="form-control" id="corpus_fee_mtes" name="corpus_fee_mtes" placeholder="MTES Corpus Fee" min="0" value="0">
                     </div>
                   </div>

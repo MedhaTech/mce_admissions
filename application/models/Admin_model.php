@@ -177,4 +177,12 @@ class Admin_model extends CI_Model
       $this->db->where('academic_year',$academic_year);
       return $this->db->get('admissions');    
   }
+
+  public function get_intakecount_by_dept($dept)
+  {
+      $this->db->select('COUNT(id) as cnt');
+      $this->db->where('course_id',$dept);
+      $this->db->where('status',"6");
+      return $this->db->get('enquiries');    
+  }
 }
