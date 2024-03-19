@@ -66,6 +66,46 @@ class Student extends CI_Controller {
 			redirect('admin', 'refresh');
 		}
 	}
+
+	function admissiondetails()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['username'] = $session_data['username'];
+			$data['pageTitle'] = "Admissiondetails";
+			$data['activeMenu'] = "admissiondetails";
+			$this->student_template->show('student/admission_details');
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+	function personaldetails()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['username'] = $session_data['username'];
+			$data['pageTitle'] = "Personaldetails";
+			$data['activeMenu'] = "personaldetails";
+			$this->student_template->show('student/personal_details');
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+	function educationdetails()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['username'] = $session_data['username'];
+			$data['pageTitle'] = "Educationdetails";
+			$data['activeMenu'] = "educationdetails";
+			$this->student_template->show('student/education_details');
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
 	function logout()
 	{
 		$this->session->unset_userdata('logged_in');

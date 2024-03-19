@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dashboard</title>
+  <title>Student Login</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -41,7 +41,7 @@
       <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
-      <a href="<?php echo base_url();?>student/dashboard" class="nav-link">Home</a>
+      <a href="<?php echo base_url();?>student/dashboard" class="nav-link">Maland College of Engineering</a>
     </li>
    
   </ul>
@@ -53,7 +53,7 @@
       <a class="nav-link" data-widget="navbar-search" href="#" role="button">
         <i class="fas fa-search"></i>
       </a>
-
+         
     </li>
 
 
@@ -74,9 +74,9 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
-  <a href="<?php echo base_url();?>Student/dashboard" class="brand-link">
+  <a href="<?php echo base_url();?>Student/logout" class="brand-link">
    
-    <span class="brand-text font-weight-light">Student</span>
+    <span class="brand-text font-weight-light">logout</span>
   </a>
 
   <!-- Sidebar -->
@@ -90,6 +90,17 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
+        
+        <!-- <li class="nav-item ">
+          <a href="<?php echo base_url();?>student/logout" class="nav-link">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+           Logout
+           
+            </p>
+          </a>
+        </li>    -->
+
         <li class="nav-item ">
           <a href="<?php echo base_url();?>student/dashboard" class="nav-link <?=$menu_active = ($menu == "dashboard")? 'active' :''; ?>">
             <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -100,14 +111,58 @@
         </li>
 
         <li class="nav-item ">
-          <a href="<?php echo base_url();?>student/logout" class="nav-link">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
+          <a href="<?php echo base_url();?>student/dashboard" class="nav-link <?=$menu_active = ($menu == "dashboard")? 'active' :''; ?>">
+          <i class="nav-icon far fa-circle text-danger"></i>
             <p>
-           Logout
-           
+              Payment
             </p>
           </a>
-        </li>   
+        </li>
+
+        <li class="nav-item ">
+          <a href="<?php echo base_url();?>student/admissiondetails" class="nav-link <?=$menu_active = ($menu == "admissiondetails")? 'active' :''; ?>">
+          <i class="nav-icon far fa-circle text-info"></i>
+            <p>
+              Admission Details
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item ">
+          <a href="<?php echo base_url();?>student/personaldetails" class="nav-link <?=$menu_active = ($menu == "personaldetails")? 'active' :''; ?>">
+          <i class="nav-icon far fa-circle text-info"></i>
+            <p>
+              Personal Details
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item ">
+          <a href="<?php echo base_url();?>student/educationdetails" class="nav-link <?=$menu_active = ($menu == "educationdetails")? 'active' :''; ?>">
+          <i class="nav-icon far fa-circle text-info"></i>
+            <p>
+              Education Details
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item ">
+          <a href="<?php echo base_url();?>student/dashboard" class="nav-link <?=$menu_active = ($menu == "dashboard")? 'active' :''; ?>">
+          <i class="nav-icon far fa-circle text-info"></i>
+            <p>
+              Documents
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item ">
+          <a href="<?php echo base_url();?>student/dashboard" class="nav-link <?=$menu_active = ($menu == "dashboard")? 'active' :''; ?>">
+          <i class="nav-icon far fa-circle text-info"></i>
+            <p>
+              Finish
+            </p>
+          </a>
+        </li>
       
       </ul>
     </nav>
