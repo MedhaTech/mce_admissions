@@ -41,6 +41,7 @@ class Welcome extends CI_Controller {
 				$this->form_validation->set_rules('course2', 'Course 2', 'required');
 				$this->form_validation->set_rules('state', 'State', 'required');
 				$this->form_validation->set_rules('city', 'City', 'required');
+				$this->form_validation->set_rules('adhaar', 'Adhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.adhaar]');
 				$this->form_validation->set_rules('gender', 'Gender', 'required');
 	
 				if ($this->form_validation->run() === FALSE) {
@@ -59,6 +60,7 @@ class Welcome extends CI_Controller {
 					$data['course2'] = $this->input->post('course1');
 					$data['state'] = $this->input->post('state');
 					$data['city'] = $this->input->post('city');
+					$data['adhaar'] = $this->input->post('adhaar');
 					$data['gender'] = $this->input->post('gender');
 	
 					
@@ -66,6 +68,14 @@ class Welcome extends CI_Controller {
 
 					$this->welcome_template->show('home', $data);
 				} else {
+
+					$course_id = $this->input->post('course');
+					$course = $data['course_options'][$course_id];
+					$course_id1 = $this->input->post('course1');
+					$course1 = $data['course_options'][$course_id1];
+					$course_id2 = $this->input->post('course2');
+					$course2 = $data['course_options'][$course_id2];
+	
 				//Setting values for tabel columns
 				$insertDetails = array(
 				'academic_year' => "2024-2025",
@@ -78,11 +88,13 @@ class Welcome extends CI_Controller {
 				'sslc_grade' => $this->input->post('sslc_grade'),
 				'puc1_grade' => $this->input->post('puc1_grade'),
 				'puc2_grade' => $this->input->post('puc2_grade'),
-				'course' => $this->input->post('course'),
-				'course1' => $this->input->post('course1'),
-				'course2' => $this->input->post('course2'),
+				'course_id' => $this->input->post('course'),
+				'course' => $course,
+				'course1' => $course1,
+				'course2' => $course2,
 				'state' => $this->input->post('state'),
 				'city' => $this->input->post('city'),
+				'adhaar' => $this->input->post('adhaar'),
 				'gender' => $this->input->post('gender'),
 				'status' => '1',
 				'reg_date' => date('Y-m-d H:i:s')
@@ -90,7 +102,7 @@ class Welcome extends CI_Controller {
 	
 	
 				$result = $this->admin_model->insertDetails('enquiries', $insertDetails);
-				$this->session->set_flashdata('status', $data);
+				$this->session->set_flashdata($data);
 				
 				redirect('welcome', 'refresh');
 
