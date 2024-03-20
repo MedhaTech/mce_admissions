@@ -202,6 +202,14 @@
                                                             class="text-danger"><?php echo form_error('city'); ?></span>
                                                     </div>
                                                     <div class="form-group col-4">
+                                                        <label class="label">Sports/Cultural Activities<span class="text-danger">*</span></label>
+                                                        <?php $sports_options = array(" "=>"Select Sports","State"=>"State","National"=>"National","International"=>"International");
+                                                            echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : 'sports', 'class="form-control form-control-sm" id="sports"'); 
+                                                        ?>
+                                                        <span
+                                                            class="text-danger"><?php echo form_error('gender'); ?></span>
+                                                    </div>
+                                                    <div class="form-group col-4">
                                                         <label class="label">Aadhar Number<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm"
                                                             id="adhaar" name="adhaar" placeholder="Enter Aadhar No">
