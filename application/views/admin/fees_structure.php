@@ -1,45 +1,32 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-  	<!-- Content Header (Page header) -->
-  	<section class="content-header">
-  		<div class="container-fluid">
-  			<div class="row mb-2">
-  				<div class="col-sm-6">
-  					<h4><?= $currentAcademicYear . ' ' . $page_title; ?></h4>
-  				</div>
-  				<div class="col-sm-6">
-  					<ol class="breadcrumb float-sm-right">
-  						<li class="breadcrumb-item"><a href="#">Home</a></li>
-  						<li class="breadcrumb-item active"><?=  $page_title; ?></li>
-  					</ol>
-  				</div>
-  			</div>
-  		</div><!-- /.container-fluid -->
-  	</section>
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+          <!-- Main content -->
+          <div class="content">
+              <div class="container-fluid">
+                  <div class="row">
+                      <div class="col-lg-12 mb-4">
 
-  	<!-- Main content -->
-  	
-      <div class="container-fluid">
-<div class="row">
-      <div class="col-lg-12 mb-4">
-                  
-        <div class="card shadow mb-4">
-            <div class="card-header">
-                <h6 class="m-0 font-weight-bold text-primary">Fee Structure</h6>
-            </div>
-            <div class="card-body">
-                <table class="table table-hover table-bordered">
-                    <thead>
-                    <tr>
-                        <th>S.No</th>
-                        <th>Course</th>
-                        <th>Aided</th>
-                        <th>UnAided</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                             
-                            <?php $i=1;
+                          <div class="card mb-4">
+                              <div class="card-header">
+                                  <h3 class="card-title">
+                                      <?=$page_title;?>
+                                  </h3>
+                              </div>
+                              <div class="card-body">
+                                  <table class="table table-hover">
+                                      <thead>
+                                          <tr>
+                                              <th width="5%">S.No</th>
+                                              <th width="55%">Department and Quota</th>
+                                              <th width="20%">Aided</th>
+                                              <th width="20%">UnAided</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+
+                                          <?php $i=1;
                             foreach ($feeDetails as $key=>$val) {
                                 
                                 echo "<tr>";
@@ -58,23 +45,24 @@
                                 echo "</tr>";
                                 
                                 ?>
-                        <!-- <tr>
+                                          <!-- <tr>
                             <td>1</td>
                             <td><?php echo $fee->quota; ?></td>
                             <td><a href="<?php echo base_url('admin/viewfeesturcture/'); ?>"><?php echo $fee->total_demand; ?></a></td>
                             <td><a href="<?php echo base_url('admin/viewfeesturcture/'); ?>"><?php echo $fee->total_demand; ?></a></td>
                         </tr> -->
-                            <?php } ?>
-                        
-               
-                    
-                </table>
-            </div>
-        </div>
-      </div>
-       
-</div>
-</div> </div>
-      <!-- End of Main Content -->
+                                          <?php } ?>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
+
+                  </div>
+              </div>
+          </div>
+      </section>
+
+
 
   </div>
+  <!-- End of Main Content -->

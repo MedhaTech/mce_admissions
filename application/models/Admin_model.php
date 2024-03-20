@@ -64,6 +64,14 @@ class Admin_model extends CI_Model
     return $this->db->get($tableName);
   }
 
+  function getDetailsFilter($select, $id, $tableName)
+  {
+    $this->db->select($select);
+    if($id)
+    $this->db->where('id', $id);
+    return $this->db->get($tableName);
+  }
+
   function getDetailsbyfield($id, $fieldId, $tableName)
   {
     $this->db->where($fieldId, $id);

@@ -26,7 +26,7 @@ $.widget.bridge('uibutton', $.ui.button)
 <!-- Sparkline -->
 <script src="<?php echo base_url();?>assets/plugins/sparklines/sparkline.js"></script>
 <!-- JQVMap -->
-<script src="<?php echo base_url();?>assets/plugins/jqvmap/jquery.vmap.min.js"></script>
+<!-- <script src="<?php echo base_url();?>assets/plugins/jqvmap/jquery.vmap.min.js"></script> -->
 <script src="<?php echo base_url();?>assets/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
 <!-- jQuery Knob Chart -->
 <script src="<?php echo base_url();?>assets/plugins/jquery-knob/jquery.knob.min.js"></script>
@@ -61,21 +61,23 @@ $.widget.bridge('uibutton', $.ui.button)
 
 
 <script>
-  $(function () {
+$(function() {
     $("#example1").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        "responsive": true,
+        "lengthChange": false,
+        "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
     });
-  });
+});
 </script>
 </body>
 
