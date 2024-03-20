@@ -47,8 +47,8 @@
   </ul>
 
   <!-- Right navbar links -->
-  <ul class="navbar-nav ml-auto">
-    <!-- Navbar Search -->
+  <!-- <ul class="navbar-nav ml-auto">
+    Navbar Search
     <li class="nav-item">
       <a class="nav-link" data-widget="navbar-search" href="#" role="button">
         <i class="fas fa-search"></i>
@@ -67,16 +67,16 @@
         <i class="fas fa-th-large"></i>
       </a>
     </li>
-  </ul>
+  </ul> -->
 </nav>
 <!-- /.navbar -->
 
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
-  <a href="<?php echo base_url();?>Student/logout" class="brand-link">
+  <a href="<?php echo base_url();?>Student/dashboard" class="brand-link">
    
-    <span class="brand-text font-weight-light">logout</span>
+    <span class="brand-text font-weight-light">MCE</span>
   </a>
 
   <!-- Sidebar -->
@@ -160,6 +160,24 @@
           <i class="nav-icon far fa-circle text-info"></i>
             <p>
               Finish
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item ">
+          <a href="<?php echo base_url();?>student" class="nav-link <?=$menu_active = ($menu == "dashboard")? 'active' :''; ?>">
+          <i class="nav-icon far fa-circle text-info"></i>
+            <p>
+              Change Password
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item ">
+          <a href="<?php echo base_url();?>student/logout" class="nav-link <?=$menu_active = ($menu == "dashboard")? 'active' :''; ?>">
+          <i class="nav-icon fas fa-lock"></i>
+            <p>
+              Logout
             </p>
           </a>
         </li>

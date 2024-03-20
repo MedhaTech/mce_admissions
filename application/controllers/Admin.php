@@ -527,6 +527,60 @@ class Admin extends CI_Controller
 		}
 	}
 
+	function feestructure()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['username'] = $session_data['username'];
+			$data['pageTitle'] = "Feestructure";
+			$data['activeMenu'] = "feestructure";
+			
+			$fee_structure = $this->admin_model->getDetails('fee_structure', '')->result();
+		$feeDetails = array();
+		// echo "<pre>";
+
+		foreach($fee_structure as $fee1){
+			$quota = $fee1->quota;    
+			if (array_key_exists($quota,$feeDetails)){
+				if(array_key_exists($fee1->sub_quota,$feeDetails[$quota])){
+					$category =  array("total_demand" => $fee1->total_demand, 'id' => $fee1->id);
+					array_push($feeDetails[$quota][$fee1->sub_quota], $category);
+				}else{
+					$category =  array("total_demand" => $fee1->total_demand, 'id' => $fee1->id);
+					$feeDetails[$quota][$fee1->sub_quota] = $category;
+				}
+				} else{
+					// echo 'noo';
+					$category = array("total_demand" => $fee1->total_demand, 'id' => $fee1->id);
+					$sub_quota =  array($fee1->sub_quota => $category);
+					$feeDetails[$quota] = $sub_quota;
+				}	 
+				//  echo "<br>";
+			
+		}
+		    $data['feeDetails']=$feeDetails;
+			// print_r($feeDetails);
+			$this->admin_template->show('admin/fees_structure',$data);
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+	function editFeeStructure($id)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['username'] = $session_data['username'];
+			$data['pageTitle'] = "Edit Fee Structure";
+			$data['activeMenu'] = "editFeeStructure";
+			$data['fee_structure'] = $this->admin_model->get_details_by_id($id,'id','fee_structure');
+			
+			$this->admin_template->show('admin/editFeeStructure',$data);
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
 	function logout()
 	{
 		$this->session->unset_userdata('logged_in');
