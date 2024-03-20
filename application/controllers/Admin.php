@@ -20,7 +20,7 @@ class Admin extends CI_Controller
 		$this->form_validation->set_rules('username', 'Username', 'trim|required');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|callback_check_database');
 		if ($this->form_validation->run() == FALSE) {
-			$data['pageTitle'] = "Admin Login";
+			$data['page_title'] = "Admin Login";
 			$data['action'] = 'admin';
 
 			$this->login_template->show('admin/Login', $data);
@@ -59,8 +59,8 @@ class Admin extends CI_Controller
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
 			$data['username'] = $session_data['username'];
-			$data['pageTitle'] = "Dashboard";
-			$data['activeMenu'] = "dashboard";
+			$data['page_title'] = "Dashboard";
+			$data['menu'] = "dashboard";
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
@@ -515,8 +515,8 @@ class Admin extends CI_Controller
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
 			$data['username'] = $session_data['username'];
-			$data['pageTitle'] = "Enquiries List";
-			$data['activeMenu'] = "Enquirieslist";
+			$data['page_title'] = "Enquiries List";
+			$data['menu'] = "Enquirieslist";
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
@@ -532,31 +532,35 @@ class Admin extends CI_Controller
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
 			$data['username'] = $session_data['username'];
-			$data['pageTitle'] = "Feestructure";
-			$data['activeMenu'] = "feestructure";
+			$data['page_title'] = "Fee Structure";
+			$data['menu'] = "feestructure";
 			
 			$fee_structure = $this->admin_model->getDetails('fee_structure', '')->result();
-		$feeDetails = array();
-		// echo "<pre>";
-
-		foreach($fee_structure as $fee1){
+			$feeDetails = array();
+			
+			foreach($fee_structure as $fee1){
 			$quota = $fee1->quota;    
-			if (array_key_exists($quota,$feeDetails)){
-				if(array_key_exists($fee1->sub_quota,$feeDetails[$quota])){
+		
+			if($fee1->department_id){
+				$dept_name = $this->admin_model->getDetailsbyfield($fee1->department_id,'department_id','departments')->row();
+				$dept_name = $dept_name->department_name;
+				$quota1 = $fee1->quota.' - '.$dept_name;    
+			}else{
+				$quota1 = $fee1->quota;    
+			}
+			if (array_key_exists($quota1,$feeDetails)){
+				if(array_key_exists($fee1->sub_quota,$feeDetails[$quota1])){
 					$category =  array("total_demand" => $fee1->total_demand, 'id' => $fee1->id);
-					array_push($feeDetails[$quota][$fee1->sub_quota], $category);
+					array_push($feeDetails[$quota1][$fee1->sub_quota], $category);
 				}else{
 					$category =  array("total_demand" => $fee1->total_demand, 'id' => $fee1->id);
-					$feeDetails[$quota][$fee1->sub_quota] = $category;
+					$feeDetails[$quota1][$fee1->sub_quota] = $category;
 				}
 				} else{
-					// echo 'noo';
 					$category = array("total_demand" => $fee1->total_demand, 'id' => $fee1->id);
 					$sub_quota =  array($fee1->sub_quota => $category);
-					$feeDetails[$quota] = $sub_quota;
+					$feeDetails[$quota1] = $sub_quota;
 				}	 
-				//  echo "<br>";
-			
 		}
 		    $data['feeDetails']=$feeDetails;
 			// print_r($feeDetails);
@@ -571,11 +575,82 @@ class Admin extends CI_Controller
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
 			$data['username'] = $session_data['username'];
-			$data['pageTitle'] = "Edit Fee Structure";
-			$data['activeMenu'] = "editFeeStructure";
+			$data['page_title'] = "Edit Fee Structure";
+			$data['menu'] = "feestructure";
+
 			$data['fee_structure'] = $this->admin_model->get_details_by_id($id,'id','fee_structure');
+
+			$this->form_validation->set_rules('e_learning_fee', 'E Learning Fee', 'numeric|required');
+			$this->form_validation->set_rules('eligibility_fee', 'Eligibility Fee', 'numeric|required');
+			$this->form_validation->set_rules('e_consortium_fee', 'e Consortium Fee', 'numeric|required');
+			$this->form_validation->set_rules('sport_fee', 'Sport Fee', 'numeric|required');
+			$this->form_validation->set_rules('sports_development_fee', 'Sports Development Fee', 'numeric|required');
+			$this->form_validation->set_rules('career_guidance_counseling_fee','Career Guidance & Counseling fee', 'numeric|required');
+			$this->form_validation->set_rules('university_development_fund', 'University Development Fund', 'numeric|required');
+			$this->form_validation->set_rules('promotion_of_indian_cultural_activities_fee', 'Promotion of Indian Cultural Activities Fee', 'numeric|required');
+			$this->form_validation->set_rules('teachers_development_fee', 'Teachers Development Fee', 'numeric|required');
+			$this->form_validation->set_rules('student_development_fee', 'Student Development Fee', 'numeric|required');
+			$this->form_validation->set_rules('indian_red_cross_membership_fee', 'Indian Red Cross Membership Fee', 'numeric|required');
+			$this->form_validation->set_rules('women_cell_fee', 'Women Cell Fee', 'numeric|required');
+			$this->form_validation->set_rules('nss_fee', 'NSS Fee', 'numeric|required');
+			$this->form_validation->set_rules('university_registration_fee', 'University Registration Fee', 'numeric|required');
+			$this->form_validation->set_rules('total_university_fee', 'TOTAL UNIVERSITY FEE', 'numeric|required');
+			$this->form_validation->set_rules('admission_fee', 'Admission Fee', 'numeric|required');
+			$this->form_validation->set_rules('processing_fee_paid_at_kea', 'Processing Fee paid at KEA', 'numeric|required');
+			$this->form_validation->set_rules('tution_fee', 'Tution Fee', 'numeric|required');
+			$this->form_validation->set_rules('college_other_fee', 'COLLEGE OTHER FEE', 'numeric|required');
+			$this->form_validation->set_rules('total_tution_fee', 'TOTAL TUTION FEE', 'numeric|required');
+			$this->form_validation->set_rules('total_demand', 'TOTAL DEMAND', 'numeric|required');
+			$this->form_validation->set_rules('skill_development_fee', 'Skill Development Fee', 'numeric|required');
+			$this->form_validation->set_rules('corpus_fund', 'Corpus Fund', 'numeric|required');
+
+			if ($this->form_validation->run() === FALSE) {
+
+				$this->admin_template->show('admin/editFeeStructure',$data);
+			}else{
+
+				$updateDetails = array(
+					'e_learning_fee' => $this->input->post('e_learning_fee'),
+					'eligibility_fee' => $this->input->post('eligibility_fee'),
+					'e_consortium_fee' => strtolower($this->input->post('e_consortium_fee')),
+					'sport_fee' => $this->input->post('sport_fee'),
+					'sports_development_fee' => $this->input->post('sports_development_fee'),
+					'career_guidance_counseling_fee' => $this->input->post('career_guidance_counseling_fee'),
+					'university_development_fund' => strtoupper($this->input->post('university_development_fund')),
+					'promotion_of_indian_cultural_activities_fee' => $this->input->post('promotion_of_indian_cultural_activities_fee'),
+					'teachers_development_fee' => $this->input->post('teachers_development_fee'),
+					'student_development_fee' => $this->input->post('student_development_fee'),
+					'indian_red_cross_membership_fee' => $this->input->post('indian_red_cross_membership_fee'),
+					'women_cell_fee' => $this->input->post('women_cell_fee'),
+					'nss_fee' => $this->input->post('nss_fee'),
+					'university_registration_fee' => $this->input->post('university_registration_fee'),
+					'total_university_fee' => $this->input->post('total_university_fee'),
+					'admission_fee' => $this->input->post('admission_fee'),
+					'processing_fee_paid_at_kea' => $this->input->post('processing_fee_paid_at_kea'),
+					'tution_fee' => $this->input->post('tution_fee'),
+					'college_other_fee' => $this->input->post('college_other_fee'),
+					'total_tution_fee' => $this->input->post('total_tution_fee'),
+					'total_demand' => $this->input->post('total_demand'),
+					'skill_development_fee' => $this->input->post('skill_development_fee'),
+					'corpus_fund' => $this->input->post('corpus_fund')
+				);
+
+				$result = $this->admin_model->updateDetails('fee_structure', $id, $updateDetails);
+
+				if ($result) {
+					$this->session->set_flashdata('message', 'Fee Structure Details are updated successfully...!');
+					$this->session->set_flashdata('status', 'alert-success');
+				} else {
+					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				}
+
+				redirect('admin/feestructure', 'refresh');
+
+			}
 			
-			$this->admin_template->show('admin/editFeeStructure',$data);
+ 			
+			
 		} else {
 			redirect('admin', 'refresh');
 		}
