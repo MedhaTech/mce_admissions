@@ -41,6 +41,7 @@ class Welcome extends CI_Controller {
 				$this->form_validation->set_rules('course2', 'Course 2', 'required');
 				$this->form_validation->set_rules('state', 'State', 'required');
 				$this->form_validation->set_rules('city', 'City', 'required');
+				$this->form_validation->set_rules('sports', 'Sports', 'required');
 				$this->form_validation->set_rules('adhaar', 'Adhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.adhaar]');
 				$this->form_validation->set_rules('gender', 'Gender', 'required');
 	
@@ -60,6 +61,7 @@ class Welcome extends CI_Controller {
 					$data['course2'] = $this->input->post('course1');
 					$data['state'] = $this->input->post('state');
 					$data['city'] = $this->input->post('city');
+					$data['sports'] = $this->input->post('sports');
 					$data['adhaar'] = $this->input->post('adhaar');
 					$data['gender'] = $this->input->post('gender');
 	
@@ -94,6 +96,7 @@ class Welcome extends CI_Controller {
 				'course2' => $course2,
 				'state' => $this->input->post('state'),
 				'city' => $this->input->post('city'),
+				'sports' => $this->input->post('sports'),
 				'adhaar' => $this->input->post('adhaar'),
 				'gender' => $this->input->post('gender'),
 				'status' => '1',
