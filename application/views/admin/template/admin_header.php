@@ -127,6 +127,16 @@
             </li>
 
             <li class="nav-item ">
+              <a href="<?php echo base_url(); ?>admin/feestructure" class="nav-link <?= $menu_active = ($menu == "feestructure") ? 'active' : ''; ?>">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  Fees Structure
+
+                </p>
+              </a>
+            </li>
+
+            <li class="nav-item ">
               <a href="<?php echo base_url(); ?>admin/logout" class="nav-link">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
