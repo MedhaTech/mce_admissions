@@ -147,6 +147,16 @@
                   <span class="text-danger"><?php echo form_error('gender'); ?></span>
                 </div>
               </div>
+              <div class="col">
+                <div class="form-group">
+                <label class="label">Sports/Cultural Activities<span class="text-danger">*</span></label>
+                                                        <?php $sports_options = array(" "=>"Select Sports","State"=>"State","National"=>"National","International"=>"International");
+                                                            echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : 'sports', 'class="form-control " id="sports"'); 
+                                                        ?>
+                                                        <span
+                                                            class="text-danger"><?php echo form_error('sports'); ?></span>
+                </div>
+              </div>
             </div>
             <div class="form-row">
               <div class="col">

@@ -248,24 +248,56 @@
                 </div>
 
                 <div class="form-row">
-                  <div class="col">
+                  <div class="col-4">
                     <div class="form-group">
                       <label class="form-label">Tution Fee</label>
                       <input type="text" class="form-control" id="demand_fee_total" name="demand_fee_total" placeholder="Total demand fee" readonly>
                     </div>
                   </div>
-                  <div class="col">
+                  <div class="col-4">
                     <div class="form-group">
                       <label class="form-label">Corpus Fund</label>
                       <input type="number" class="form-control" id="corpus_fee" name="corpus_fee" placeholder="Corpus Fee" min="0" value="0">
                     </div>
                   </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label class="form-label">MTES Corpus Fund</label>
+                      <input type="number" class="form-control" id="corpus_fee_mtes" name="corpus_fee_mtes" placeholder="MTES Corpus Fee" min="0" value="0">
+                    </div>
+                  </div>
+                 
+                </div>
+                <div class="form-row">
+                <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Proposed Fee Amount</label>
+                      <input type="text" class="form-control" id="proposed_amount" name="proposed_amount" placeholder="Enter Proposed Fee" readonly>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Concession Type</label>
+                      <?php $concession_type_options = array("" => "Select", "Sports Quota" => "Sports Quota", "Management Quota" => "Management Quota");
+                      echo form_dropdown('concession_type', $concession_type_options, '', 'class="form-control input-xs" id="concession_type"'); ?>
 
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Concession Amount (if any)</label>
+                      <input type="text" class="form-control" id="concession_fee" name="concession_fee" placeholder="Enter Concession Fee" value="0">
+                    </div>
+                  </div>
 
                 </div>
-
                 <div class="form-row">
-
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Additional Amount (if any)</label>
+                      <input type="text" class="form-control" id="additional_amount" name="additional_amount" placeholder="Enter Additional Fee" value="0">
+                    </div>
+                  </div>
 
                   <div class="col">
                     <div class="form-group">
@@ -321,7 +353,7 @@
                     <div class="form-group">
                       <label class="form-label">Sub Quota </label>
                       <?php
-                      echo form_dropdown('subquota', $subquota_options, (set_value('subquota')) ? set_value('subquota') : '', 'class="form-control" id="subquota" disabled '); ?>
+                      echo form_dropdown('subquota', $subquota_options, (set_value('subquota')) ? set_value('subquota') : '', 'class="form-control" id="subquota" '); ?>
                       <span class="text-danger"><?php echo form_error('subquota'); ?></span>
                     </div>
                   </div>
@@ -339,27 +371,54 @@
                 </div>
 
                 <div class="form-row">
-                  <div class="col">
+                  <div class="col-4">
                     <div class="form-group">
                       <label class="form-label">Tution Fee</label>
                       <input type="text" class="form-control" id="demand_fee_total" name="demand_fee_total" placeholder="Total demand fee" readonly>
                     </div>
                   </div>
-                  <div class="col">
+                  <div class="col-4">
                     <div class="form-group">
                       <label class="form-label">Corpus Fund</label>
                       <input type="number" class="form-control" id="corpus_fee" name="corpus_fee" placeholder="Corpus Fee" min="0" value="0">
                     </div>
                   </div>
-
-
-                </div>
-
-                <div class="form-row">
-                  <div class="col">
+                  <div class="col-4">
                     <div class="form-group">
                       <label class="form-label">MTES Corpus Fund</label>
                       <input type="number" class="form-control" id="corpus_fee_mtes" name="corpus_fee_mtes" placeholder="MTES Corpus Fee" min="0" value="0">
+                    </div>
+                  </div>
+                 
+                </div>
+                <div class="form-row">
+                <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Proposed Fee Amount</label>
+                      <input type="text" class="form-control" id="proposed_amount" name="proposed_amount" placeholder="Enter Proposed Fee" readonly>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Concession Type</label>
+                      <?php $concession_type_options = array("" => "Select", "Sports Quota" => "Sports Quota", "Management Quota" => "Management Quota");
+                      echo form_dropdown('concession_type', $concession_type_options, '', 'class="form-control input-xs" id="concession_type"'); ?>
+
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Concession Amount (if any)</label>
+                      <input type="text" class="form-control" id="concession_fee" name="concession_fee" placeholder="Enter Concession Fee" value="0">
+                    </div>
+                  </div>
+
+                </div>
+                <div class="form-row">
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Additional Amount (if any)</label>
+                      <input type="text" class="form-control" id="additional_amount" name="additional_amount" placeholder="Enter Additional Fee" value="0">
                     </div>
                   </div>
 
@@ -375,13 +434,13 @@
                   <div class="col">
                     <div class="form-group">
                       <label class="form-label">Cash / DD Details</label>
-                      <input type="text" class="form-control" id="cash" name="cash" placeholder="Cash / DD Details">
+                      <input type="text" class="form-control" id="cash" name="cash" placeholder="Cash / DD Details" >
                     </div>
                   </div>
                   <div class="col">
                     <div class="form-group">
                       <label class="form-label">Bank Name</label>
-                      <input type="text" class="form-control" id="bank" name="bank" placeholder="Bank Name">
+                      <input type="text" class="form-control" id="bank" name="bank" placeholder="Bank Name" >
                     </div>
                   </div>
                   <div class="col">
@@ -393,10 +452,10 @@
                   <div class="col">
                     <div class="form-group">
                       <label class="form-label">Amount</label>
-                      <input type="text" class="form-control" id="bank" name="bank" placeholder="Amount">
+                      <input type="text" class="form-control" id="bank" name="bank" placeholder="Amount" >
                     </div>
                   </div>
-
+                 
                 </div>
                 <div class="row">
                   <div class="col">
@@ -446,8 +505,8 @@
             'dataType': 'json',
             'cache': false,
             'success': function(data) {
-              $('#demand_fee_total').val(data.total_demand);
-              var demand = data.total_demand;
+              $('#demand_fee_total').val(data.total_fee);
+              var demand =data.total_fee;
               var corpus = $("#corpus_fee").val();
               var proposed = parseInt(demand) + parseInt(corpus);
               $('#proposed_amount').val(proposed);
@@ -462,7 +521,7 @@
         var final_amount = finalAmount();
         $('#final_amount').val(finalAmount);
       });
-
+ 
 
       $("#additional_amount").change(function() {
         event.preventDefault();
@@ -483,10 +542,13 @@
 
       function finalAmount() {
         var demand = $("#demand_fee_total").val();
-        var corpus = $("#corpus_fee").val();
-        var proposed = parseInt(demand) + parseInt(corpus);
-       
-        var final_amount = parseInt(proposed);
+         var corpus = $("#corpus_fee").val();
+              var proposed = parseInt(demand) + parseInt(corpus);
+              $('#proposed_amount').val(proposed);
+        var proposed_amount = $("#proposed_amount").val();
+        var additional_amount = $("#additional_amount").val();
+        var concession_fee = $("#concession_fee").val();
+        var final_amount = parseInt(proposed_amount) + parseInt(additional_amount) - parseInt(concession_fee);
         return final_amount;
       }
 
@@ -546,7 +608,7 @@
         var course = $("#course").val();
         var course_val = $("#course option:selected").text();
 
-
+     
 
         var category = $("#category").val();
         var aided_unaided = $("#aided_unaided").val();
@@ -569,7 +631,7 @@
             "id": id,
             "aided_unaided": aided_unaided,
             'course': course,
-            'course_val': course_val,
+            'course_val':course_val,
             "category": category,
             "college_fee_total": college_fee_total,
             "mgt_fee_total": mgt_fee_total,
@@ -594,32 +656,6 @@
         });
 
       });
-
-
-    	$("#quota").change(function(){
-			event.preventDefault();
-	            	
-			var quota = $("#quota").val();
-			
-			if(quota == ' '){
-			   alert("Please Select Quota");
-			}else{
-			  $.ajax({'type':'POST',
-				'url':base_url+'admin/subquotaDropdown',
-				'data':{'quota':quota, 'flag':'S'},
-				'dataType':'text',
-				'cache':false,
-				'success':function(data){
-					$('select[name="subquota"]').empty();
-					$('select[name="subquota"]').append(data);
-					$('select[name="subquota"]').removeAttr("disabled");
-		
-				}
-			  });
-			  
-			}
-		});
-		
 
 
     });

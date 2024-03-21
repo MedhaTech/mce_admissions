@@ -67,8 +67,8 @@ class Admin_model extends CI_Model
   function getDetailsFilter($select, $id, $tableName)
   {
     $this->db->select($select);
-    if($id)
-    $this->db->where('id', $id);
+    if ($id)
+      $this->db->where('id', $id);
     return $this->db->get($tableName);
   }
 
@@ -77,6 +77,7 @@ class Admin_model extends CI_Model
     $this->db->where($fieldId, $id);
     return $this->db->get($tableName);
   }
+
 
   function getDetailsbyfield2($id1, $value1, $id2, $value2, $tableName)
   {
@@ -181,16 +182,32 @@ class Admin_model extends CI_Model
 
   public function getAppNo($academic_year)
   {
-      $this->db->select('COUNT(id) as cnt');
-      $this->db->where('academic_year',$academic_year);
-      return $this->db->get('admissions');    
+    $this->db->select('COUNT(id) as cnt');
+    $this->db->where('academic_year', $academic_year);
+    return $this->db->get('admissions');
   }
 
   public function get_intakecount_by_dept($dept)
   {
-      $this->db->select('COUNT(id) as cnt');
-      $this->db->where('course_id',$dept);
-      $this->db->where('status',"6");
-      return $this->db->get('enquiries');    
+    $this->db->select('COUNT(id) as cnt');
+    $this->db->where('course_id', $dept);
+    $this->db->where('status', "6");
+    return $this->db->get('enquiries');
+  }
+  function getFee($course, $quota, $sub_quota)
+  {
+    $this->db->where('department_id', $course);
+    $this->db->where('quota', $quota);
+    $this->db->where('sub_quota', $sub_quota);
+    return $this->db->get('fee_structure');
+  }
+
+
+  function getsubquota($id)
+  {
+    $this->db->distinct();
+    $this->db->select('sub_quota');
+    $this->db->where('quota', $id);
+    return $this->db->get("fee_structure");
   }
 }
