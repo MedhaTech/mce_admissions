@@ -28,17 +28,18 @@
 
                                           <?php $i=1;
                             foreach ($feeDetails as $key=>$val) {
-                                
                                 echo "<tr>";
                                 echo "<td>".$i++.".</td>";
                                 echo "<td>".$key."</td>";
                                 if (array_key_exists('Aided',$val)){
-                                    echo "<td>".anchor('admin/editFeeStructure/'.$val['Aided']['id'],number_format($val['Aided']['total_demand']),0)."</td>";
+                                    $aided_total_fee = $val['Aided']['total_demand'] + $val['Aided']['corpus_fund'];
+                                    echo "<td>".anchor('admin/editFeeStructure/'.$val['Aided']['id'],number_format($aided_total_fee),0)."</td>";
                                 }else{
                                     echo "<td> -- </td>";
                                 }
                                 if (array_key_exists('UnAided',$val)){
-                                    echo "<td>".anchor('admin/editFeeStructure/'.$val['UnAided']['id'],number_format($val['UnAided']['total_demand']),0)."</td>";
+                                    $unaided_total_fee = $val['UnAided']['total_demand'] + $val['UnAided']['corpus_fund'];
+                                    echo "<td>".anchor('admin/editFeeStructure/'.$val['UnAided']['id'],number_format($unaided_total_fee),0)."</td>";
                                 }else{
                                     echo "<td> -- </td>";
                                 }
@@ -48,8 +49,8 @@
                                           <!-- <tr>
                             <td>1</td>
                             <td><?php echo $fee->quota; ?></td>
-                            <td><a href="<?php echo base_url('admin/viewfeesturcture/'); ?>"><?php echo $fee->total_demand; ?></a></td>
-                            <td><a href="<?php echo base_url('admin/viewfeesturcture/'); ?>"><?php echo $fee->total_demand; ?></a></td>
+                            <td><a href="<?php echo base_url('admin/viewfeesturcture/'); ?>"><?php echo ($fee->total_demand + $fee->corpus_fund); ?></a></td>
+                            <td><a href="<?php echo base_url('admin/viewfeesturcture/'); ?>"><?php echo ($fee->total_demand + $fee->corpus_fund); ?></a></td>
                         </tr> -->
                                           <?php } ?>
                                   </table>

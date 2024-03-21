@@ -29,7 +29,7 @@ if($_SERVER['HTTP_HOST']=="127.0.0.1")
 }
 else
 {
-    $base_url = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "https");
+    $base_url = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
 }
 
 $base_url .= "://".$_SERVER['HTTP_HOST'];
