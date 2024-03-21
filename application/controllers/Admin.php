@@ -605,7 +605,37 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('corpus_fund', 'Corpus Fund', 'numeric|required');
 
 			if ($this->form_validation->run() === FALSE) {
+				$data['action'] = 'admin/editFeeStructure/' . $id;
 
+				$feeDetails = $this->admin_model->getDetails('fee_structure', $id)->row();
+
+
+				// $this->admin_template->show('admin/editFeeStructure',$data);
+
+				$data['e_learning_fee'] = $feeDetails->e_learning_fee;
+				$data['eligibility_fee'] = $feeDetails->eligibility_fee;
+
+				$data['e_consortium_fee'] = $feeDetails->e_consortium_fee;
+				$data['sport_fee'] =  $feeDetails->sport_fee;
+				$data['sports_development_fee'] =  $feeDetails->sports_development_fee;
+				$data['career_guidance_counseling_fee'] =  $feeDetails->career_guidance_counseling_fee;
+				$data['university_development_fund'] =  $feeDetails->university_development_fund;
+				$data['promotion_of_indian_cultural_activities_fee'] =  $feeDetails->promotion_of_indian_cultural_activities_fee;
+				$data['teachers_development_fee'] =  $feeDetails->teachers_development_fee;
+				$data['student_development_fee'] = $feeDetails->student_development_fee;
+				$data['indian_red_cross_membership_fee'] = $feeDetails->indian_red_cross_membership_fee;
+				$data['women_cell_fee'] = $feeDetails->women_cell_fee;
+				$data['nss_fee'] = $feeDetails->nss_fee;
+				$data['university_registration_fee'] = $feeDetails->university_registration_fee;
+				$data['total_university_fee'] = $feeDetails->total_university_fee;
+				$data['admission_fee'] = $feeDetails->admission_fee;
+				$data['processing_fee_paid_at_kea'] = $feeDetails->processing_fee_paid_at_kea;
+				$data['tution_fee'] = $feeDetails->tution_fee;
+				$data['college_other_fee'] = $feeDetails->college_other_fee;
+				$data['total_tution_fee'] = $feeDetails->total_tution_fee;
+				$data['total_demand'] = $feeDetails->total_demand;
+				$data['skill_development_fee'] = $feeDetails->skill_development_fee;
+				$data['corpus_fund'] = $feeDetails->corpus_fund;
 				$this->admin_template->show('admin/editFeeStructure',$data);
 			}else{
 
@@ -635,7 +665,9 @@ class Admin extends CI_Controller
 					'corpus_fund' => $this->input->post('corpus_fund')
 				);
 
-				$result = $this->admin_model->updateDetails('fee_structure', $id, $updateDetails);
+				$result = $this->admin_model->updateDetails($id, $updateDetails,'fee_structure');
+				// var_dump($this->db->last_query());
+				// die();
 
 				if ($result) {
 					$this->session->set_flashdata('message', 'Fee Structure Details are updated successfully...!');

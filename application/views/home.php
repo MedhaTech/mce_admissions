@@ -70,12 +70,12 @@
                                     <?php if($this->session->flashdata('status')) :?>
                                    
                                     <!-- SUCCESS -->
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         <div class="col-md-12 text-center">
                                             <i class="far fa-check-circle fa-5x text-success"></i>
                                             <h6 class="text-success">Thanks for submission</h6>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <!-- END SUCCESS -->
                                     <!-- <p><?php echo $this->session->flashdata('status'); ?></p> -->
                                     
@@ -86,7 +86,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
 
-                                                <h5 class="text-danger">B.Tech Admissions Open 2024-25</h5>
+                                                <h5 class="text-danger">B.E Admissions Open for 2024-25</h5>
                                                 <div class="row">
                                                     <div class="form-group col-4">
                                                         <label class="label">Student Full Name (As per SSLC)</label>
@@ -112,7 +112,7 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="form-group col-4">
-                                                        <label class="label">Parent/Guardian Name<span class="text-danger">*</span></label>
+                                                        <label class="label"> Parent/Guardian<br> Name<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm"
                                                             id="par_name" name="par_name"
                                                             placeholder="Enter Parent/Guardian Name*">
@@ -120,7 +120,7 @@
                                                             class="text-danger"><?php echo form_error('par_name'); ?></span>
                                                     </div>
                                                     <div class="form-group col-4">
-                                                        <label class="label">Parent/Guardian Mobile<span class="text-danger">*</span></label>
+                                                        <label class="label"> Parent/Guardian<br> Mobile<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm"
                                                             id="par_mobile" name="par_mobile"
                                                             placeholder="Enter Parent/Guardian Mobile">
@@ -128,7 +128,7 @@
                                                             class="text-danger"><?php echo form_error('par_mobile'); ?></span>
                                                     </div>
                                                     <div class="form-group col-4">
-                                                        <label class="label">Parent/Guardian Email</label>
+                                                        <label class="label"> Parent/Guardian<br> Email</label>
                                                         <input type="text" class="form-control form-control-sm"
                                                             id="par_email" name="par_email"
                                                             placeholder="Enter Parent/Guardian Email">
@@ -136,7 +136,7 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="form-group col-4">
-                                                        <label class="label">SSLC Percentage/Grade<span class="text-danger">*</span></label>
+                                                        <label class="label">SSLC Percentage/<br>Grade<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm"
                                                             id="sslc_grade" name="sslc_grade"
                                                             placeholder="Enter SSLC Percentage/Grade*">
@@ -144,7 +144,7 @@
                                                             class="text-danger"><?php echo form_error('sslc_grade'); ?></span>
                                                     </div>
                                                     <div class="form-group col-4">
-                                                        <label class="label">PUC-I(10+1) Percentage/Grade<span class="text-danger">*</span></label>
+                                                        <label class="label">PUC-I(10+1) Percentage/<br>Grade<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-sm"
                                                             id="puc1_grade" name="puc1_grade"
                                                             placeholder="Enter PUC-I(10+1) Percentage/Grade*">
@@ -152,7 +152,7 @@
                                                             class="text-danger"><?php echo form_error('puc1_grade'); ?></span>
                                                     </div>
                                                     <div class="form-group col-4">
-                                                        <label class="label">PUC-II(10+2) Percentage/Grade</label>
+                                                        <label class="label">PUC-II(10+2) Percentage/<br>Grade</label>
                                                         <input type="text" class="form-control form-control-sm"
                                                             id="puc2_grade" name="puc2_grade"
                                                             placeholder="Enter PUC-II(10+2) Percentage/Grade*">
@@ -207,7 +207,7 @@
                                                             echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : 'sports', 'class="form-control form-control-sm" id="sports"'); 
                                                         ?>
                                                         <span
-                                                            class="text-danger"><?php echo form_error('gender'); ?></span>
+                                                            class="text-danger"><?php echo form_error('sports'); ?></span>
                                                     </div>
                                                     <div class="form-group col-4">
                                                         <label class="label">Aadhar Number<span class="text-danger">*</span></label>
