@@ -16,6 +16,7 @@
                               </div>
                               <div class="card-body">
                                   <?php echo form_open('admin/editFeeStructure/' . $fee_structure['id'],'class="user" enctype="multipart/form-data"'); ?>
+                                  <!-- <?php echo form_open_multipart($action, 'class="user"'); ?> -->
                                   <div class="col-md-8 offset-1">
                                       <div class="form-group row">
                                           <label for="staticEmail"
