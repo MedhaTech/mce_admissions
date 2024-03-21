@@ -118,6 +118,7 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('course2', 'Branch Preference-III', 'required');
 			$this->form_validation->set_rules('state', 'State', 'required');
 			$this->form_validation->set_rules('city', 'City', 'required');
+			$this->form_validation->set_rules('sports', 'Sports', 'required');
 			$this->form_validation->set_rules('adhaar', 'Adhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.adhaar]');
 			$this->form_validation->set_rules('puc1_grade', 'PUC-I(10+1) Percentage/Grade', 'required');
 			$this->form_validation->set_rules('sslc_grade', 'SSLC Percentage/Grade', 'required');
@@ -138,6 +139,7 @@ class Admin extends CI_Controller
 				$data['course2'] = $this->input->post('course2');
 				$data['state'] = $this->input->post('state');
 				$data['city'] = $this->input->post('city');
+				$data['sports'] = $this->input->post('sports');
 				$data['sslc_grade'] = $this->input->post('sslc_grade');
 				$data['puc1_grade'] = $this->input->post('puc1_grade');
 				$data['sslc_grade'] = $this->input->post('sslc_grade');
@@ -168,6 +170,7 @@ class Admin extends CI_Controller
 					'course2' => $course2,
 					'state' => $this->input->post('state'),
 					'city' => $this->input->post('city'),
+					'sports' => $this->input->post('sports'),
 					'gender' => $this->input->post('gender'),
 					'adhaar' => $this->input->post('adhaar'),
 					'sslc_grade' => $this->input->post('sslc_grade'),
@@ -400,20 +403,31 @@ class Admin extends CI_Controller
 			$data['username'] = $sess['username'];
 			$data['role'] = $sess['role'];
 
+			if($this->input->post('quota')=="MGMT")
+			{
+				
+				$course = $this->input->post('course');
+			}
+			else
+			{
+				$course =0;
+			}
 			
-			$course = $this->input->post('course');
+			$quota = $this->input->post('quota');
+			$sub_quota = $this->input->post('subquota');
 			
-            
-            $details = [
-				"aided_unaided" => "Aided",
-				"category" => "2",
-				"college_fee_total" => "6000",
-				"combination" => "",
-				"course" => "BTECH",
-				"id" => "4",
-				"mgt_fee_total" => "9000",
-				"total_fee" => "40800"
-			];
+			$details = $this->admin_model->getFee($course, $quota, $sub_quota)->row();
+			// var_dump($this->db->last_query());
+            // $details = [
+			// 	"aided_unaided" => "Aided",
+			// 	"category" => "2",
+			// 	"college_fee_total" => "6000",
+			// 	"combination" => "",
+			// 	"course" => "BTECH",
+			// 	"id" => "4",
+			// 	"mgt_fee_total" => "9000",
+			// 	"total_fee" => "40800"
+			// ];
 			
 			print_r(json_encode($details));
 
@@ -687,6 +701,33 @@ class Admin extends CI_Controller
 			redirect('admin', 'refresh');
 		}
 	}
+
+	function subquotaDropdown(){
+		if ($this->session->userdata('logged_in')) {
+			$sess = $this->session->userdata('logged_in');
+			$data['id'] = $sess['id'];
+			$data['username'] = $sess['username'];
+			$data['role'] = $sess['role'];
+			
+			$quota = $this->input->post('quota');
+			
+			
+			$details = $this->admin_model->getsubquota($quota)->result();
+			
+			$result = array();
+		
+    	        $result[] = '<option value=" ">Select</option>';
+    	     			    
+			foreach($details as $details1){
+			    $result[] = '<option value="'.$details1->sub_quota.'">'.$details1->sub_quota.'</option>';
+			}
+			
+			print_r($result);
+
+		}else {
+				redirect('admin/timeout');
+		}
+    }
 
 	function logout()
 	{
