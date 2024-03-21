@@ -37,29 +37,29 @@
               <div class="col">
                 <div class="form-group">
                   <label for="student_name">School Level</label>
-                  <input type="text" name="schl_level" id="schl_level" class="form-control" placeholder="Enter School Level">
-                  <span class="text-danger"><?php echo form_error('schl_level'); ?></span>
+                  <input type="text" name="school_level" id="school_level" class="form-control" placeholder="Enter School Level">
+                  <span class="text-danger"><?php echo form_error('school_level'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="text">School Type</label>
-                  <input type="text" name="schl_type" id="schl_type" class="form-control" placeholder="Enter School Type">
-                  <span class="text-danger"><?php echo form_error('schl_type'); ?></span>
+                  <input type="text" name="school_type" id="school_type" class="form-control" placeholder="Enter School Type">
+                  <span class="text-danger"><?php echo form_error('school_type'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="email">School Board</label>
-                  <input type="text" name="schl_board" id="schl_board" class="form-control" placeholder="Enter School Board">
-                  <span class="text-danger"><?php echo form_error('schl_board'); ?></span>
+                  <input type="text" name="school_board" id="school_board" class="form-control" placeholder="Enter School Board">
+                  <span class="text-danger"><?php echo form_error('school_board'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="email">School Name</label>
-                  <input type="text" name="schl_name" id="schl_name" class="form-control" placeholder="Enter School Name">
-                  <span class="text-danger"><?php echo form_error('schl_name'); ?></span>
+                  <input type="text" name="school_name" id="school_name" class="form-control" placeholder="Enter School Name">
+                  <span class="text-danger"><?php echo form_error('school_name'); ?></span>
                 </div>
               </div>
 
@@ -70,29 +70,29 @@
               <div class="col">
                 <div class="form-group">
                   <label for="par_name">School City</label>
-                  <input type="text" name="schl_city" id="schl_city" class="form-control" placeholder="Enter School City">
-                  <span class="text-danger"><?php echo form_error('schl_city'); ?></span>
+                  <input type="text" name="school_city" id="school_city" class="form-control" placeholder="Enter School City">
+                  <span class="text-danger"><?php echo form_error('school_city'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="text">School Year</label>
-                  <input type="number" name="schl_yr" id="schl_yr" class="form-control" placeholder="Enter School Year">
-                  <span class="text-danger"><?php echo form_error('schl_yr'); ?></span>
+                  <input type="number" name="school_year" id="school_year" class="form-control" placeholder="Enter School Year">
+                  <span class="text-danger"><?php echo form_error('school_year'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="email">School State</label>
-                  <input type="text" name="schl_state" id="schl_state" class="form-control" placeholder="Enter School State">
-                  <span class="text-danger"><?php echo form_error('schl_state'); ?></span>
+                  <input type="text" name="school_state" id="school_state" class="form-control" placeholder="Enter School State">
+                  <span class="text-danger"><?php echo form_error('school_state'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="email">School Country</label>
-                  <input type="text" name="schl_country" id="schl_country" class="form-control" placeholder="Enter School Country">
-                  <span class="text-danger"><?php echo form_error('schl_country'); ?></span>
+                  <input type="text" name="school_country" id="school_country" class="form-control" placeholder="Enter School Country">
+                  <span class="text-danger"><?php echo form_error('school_country'); ?></span>
                 </div>
               </div>
 
@@ -104,23 +104,23 @@
               <div class="col">
                 <div class="form-group">
                   <label for="exam_board">Medium of Instruction</label>
-                  <input type="text" name="schl_mdm" id="schl_mdm" class="form-control" placeholder="Enter Medium of Instruction">
-                  <span class="text-danger"><?php echo form_error('schl_mdm'); ?></span>
+                  <input type="text" name="school_medium" id="school_medium" class="form-control" placeholder="Enter Medium of Instruction">
+                  <span class="text-danger"><?php echo form_error('school_medium'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">Percentage</label>
-                  <input type="text" name="schl_percentage" id="schl_percentage" class="form-control" placeholder="Enter School Percentage">
-                  <span class="text-danger"><?php echo form_error('schl_percentage'); ?></span>
+                  <input type="text" name="school_percentage" id="school_percentage" class="form-control" placeholder="Enter School Percentage">
+                  <span class="text-danger"><?php echo form_error('school_percentage'); ?></span>
                 </div>
               </div>
 
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">Marks Card No</label>
-                  <input type="text" name="schl_mrks" id="schl_mrks" class="form-control" placeholder="Enter School Percentage">
-                  <span class="text-danger"><?php echo form_error('schl_mrks'); ?></span>
+                  <input type="text" name="school_marks" id="school_marks" class="form-control" placeholder="Enter School Percentage">
+                  <span class="text-danger"><?php echo form_error('school_marks'); ?></span>
                 </div>
               </div>
 
@@ -138,8 +138,8 @@
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">PU College Type</label>
-                  <input type="text" name="pu_typ" id="pu_typ" class="form-control" placeholder="Enter PU College Type">
-                  <span class="text-danger"><?php echo form_error('pu_typ'); ?></span>
+                  <input type="text" name="pu_type" id="pu_type" class="form-control" placeholder="Enter PU College Type">
+                  <span class="text-danger"><?php echo form_error('pu_type'); ?></span>
                 </div>
               </div>
              <div class="col">
@@ -164,8 +164,8 @@
               <div class="col">
                 <div class="form-group">
                   <label for="exam_board">PU College City</label>
-                  <input type="text" name="pu_city" id="pu_city" class="form-control" placeholder="Enter PU College City">
-                  <span class="text-danger"><?php echo form_error('pu_city'); ?></span>
+                  <input type="text" name="pu_clg_city" id="pu_clg_city" class="form-control" placeholder="Enter PU College City">
+                  <span class="text-danger"><?php echo form_error('pu_clg_city'); ?></span>
                 </div>
               </div>
               <div class="col">
@@ -197,8 +197,8 @@
               <div class="col">
                 <div class="form-group">
                   <label for="exam_board">PU Medium of Instruction</label>
-                  <input type="text" name="pu_mdm" id="pu_mdm" class="form-control" placeholder="Enter PU Medium of Instruction">
-                  <span class="text-danger"><?php echo form_error('pu_mdm'); ?></span>
+                  <input type="text" name="pu_medium" id="pu_medium" class="form-control" placeholder="Enter PU Medium of Instruction">
+                  <span class="text-danger"><?php echo form_error('pu_medium'); ?></span>
                 </div>
               </div>
               <div class="col">
@@ -263,8 +263,8 @@
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">PU PCM Total</label>
-                  <input type="text" name="pcm_total" id="pcm_total" class="form-control" placeholder="Enter PCM Total">
-                  <span class="text-danger"><?php echo form_error('pcm_total'); ?></span>
+                  <input type="text" name="pu_pcm_total" id="pu_pcm_total" class="form-control" placeholder="Enter PCM Total">
+                  <span class="text-danger"><?php echo form_error('pu_pcm_total'); ?></span>
                 </div>
               </div>
               
@@ -275,29 +275,29 @@
               <div class="col">
                 <div class="form-group">
                   <label for="exam_board">Diploma College Level</label>
-                  <input type="text" name="dplm_level" id="dplm_level" class="form-control" placeholder="Enter Diploma College Level">
-                  <span class="text-danger"><?php echo form_error('dplm_level'); ?></span>
+                  <input type="text" name="diploma_level" id="diploma_level" class="form-control" placeholder="Enter Diploma College Level">
+                  <span class="text-danger"><?php echo form_error('diploma_level'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">Diploma College Type</label>
-                  <input type="text" name="dplm_type" id="dplm_type" class="form-control" placeholder="Enter Diploma College Type">
-                  <span class="text-danger"><?php echo form_error('dplm_type'); ?></span>
+                  <input type="text" name="diploma_type" id="diploma_type" class="form-control" placeholder="Enter Diploma College Type">
+                  <span class="text-danger"><?php echo form_error('diploma_type'); ?></span>
                 </div>
               </div>
              <div class="col">
                 <div class="form-group">
                   <label for="register_number">Diploma College Board</label>
-                  <input type="text" name="dplm_board" id="dplm_board" class="form-control" placeholder="Enter Diploma College Board">
-                  <span class="text-danger"><?php echo form_error('dplm_board'); ?></span>
+                  <input type="text" name="diploma_board" id="diploma_board" class="form-control" placeholder="Enter Diploma College Board">
+                  <span class="text-danger"><?php echo form_error('diploma_board'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">Diploma College Name</label>
-                  <input type="text" name="dplm_clg_name" id="dplm_clg_name" class="form-control" placeholder="Enter Diploma College Name">
-                  <span class="text-danger"><?php echo form_error('dplm_clg_name'); ?></span>
+                  <input type="text" name="diploma_clg_name" id="diploma_clg_name" class="form-control" placeholder="Enter Diploma College Name">
+                  <span class="text-danger"><?php echo form_error('diploma_clg_name'); ?></span>
                 </div>
               </div>
 
@@ -308,29 +308,29 @@
               <div class="col">
                 <div class="form-group">
                   <label for="exam_board">Diploma College City</label>
-                  <input type="text" name="dplm_city" id="dplm_city" class="form-control" placeholder="Enter Diploma College City">
-                  <span class="text-danger"><?php echo form_error('dplm_city'); ?></span>
+                  <input type="text" name="diploma_city" id="diploma_city" class="form-control" placeholder="Enter Diploma College City">
+                  <span class="text-danger"><?php echo form_error('diploma_city'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">Diploma College Year</label>
-                  <input type="text" name="dplm_yr" id="dplm_yr" class="form-control" placeholder="Enter Diploma College Year">
-                  <span class="text-danger"><?php echo form_error('dplm_yr'); ?></span>
+                  <input type="text" name="diploma_year" id="diploma_year" class="form-control" placeholder="Enter Diploma College Year">
+                  <span class="text-danger"><?php echo form_error('diploma_year'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">Diploma College State</label>
-                  <input type="text" name="dplm_state" id="dplm_state" class="form-control" placeholder="Enter Diploma College State">
-                  <span class="text-danger"><?php echo form_error('dplm_state'); ?></span>
+                  <input type="text" name="diploma_state" id="diploma_state" class="form-control" placeholder="Enter Diploma College State">
+                  <span class="text-danger"><?php echo form_error('diploma_state'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">Diploma College Country</label>
-                  <input type="text" name="dplm_country" id="dplm_country" class="form-control" placeholder="Enter Diploma College Country">
-                  <span class="text-danger"><?php echo form_error('dplm_country'); ?></span>
+                  <input type="text" name="diploma_country" id="diploma_country" class="form-control" placeholder="Enter Diploma College Country">
+                  <span class="text-danger"><?php echo form_error('diploma_country'); ?></span>
                 </div>
               </div>
 
@@ -341,22 +341,22 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Diploma Medium of Instruction</label>
-                    <input type="text" name="dplm_mdm" id="dplm_mdm" class="form-control" placeholder="Enter Diploma Medium of Instruction">
-                    <span class="text-danger"><?php echo form_error('dplm_mdm'); ?></span>
+                    <input type="text" name="diploma_medium" id="diploma_medium" class="form-control" placeholder="Enter Diploma Medium of Instruction">
+                    <span class="text-danger"><?php echo form_error('diploma_medium'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Diploma Percentage</label>
-                    <input type="text" name="dplm_percentage" id="dplm_percentage" class="form-control" placeholder="Enter Diploma Percentage">
-                    <span class="text-danger"><?php echo form_error('dplm_percentage'); ?></span>
+                    <input type="text" name="diploma_percentage" id="diploma_percentage" class="form-control" placeholder="Enter Diploma Percentage">
+                    <span class="text-danger"><?php echo form_error('diploma_percentage'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Diploma Marks Card No</label>
-                    <input type="text" name="dplm_marks" id="dplm_marks" class="form-control" placeholder="Enter Diploma Marks">
-                    <span class="text-danger"><?php echo form_error('dplm_marks'); ?></span>
+                    <input type="text" name="diploma_marks" id="diploma_marks" class="form-control" placeholder="Enter Diploma Marks">
+                    <span class="text-danger"><?php echo form_error('diploma_marks'); ?></span>
                 </div>
                 </div>
 
@@ -367,29 +367,29 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Degree College Level</label>
-                    <input type="text" name="dgr_level" id="dgr_level" class="form-control" placeholder="Enter Degree College Level">
-                    <span class="text-danger"><?php echo form_error('dgr_level'); ?></span>
+                    <input type="text" name="degree_level" id="degree_level" class="form-control" placeholder="Enter Degree College Level">
+                    <span class="text-danger"><?php echo form_error('degree_level'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Degree College Type</label>
-                    <input type="text" name="dgr_typ" id="dgr_typ" class="form-control"  placeholder="Enter Degree College Type">
-                    <span class="text-danger"><?php echo form_error('dgr_typ'); ?></span>
+                    <input type="text" name="degree_type" id="degree_type" class="form-control"  placeholder="Enter Degree College Type">
+                    <span class="text-danger"><?php echo form_error('degree_type'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Degree College Board</label>
-                    <input type="text" name="dgr_board" id="dgr_board" class="form-control"  placeholder="Enter Degree College Board">
-                    <span class="text-danger"><?php echo form_error('dgr_board'); ?></span>
+                    <input type="text" name="degree_board" id="degree_board" class="form-control"  placeholder="Enter Degree College Board">
+                    <span class="text-danger"><?php echo form_error('degree_board'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Degree College Name</label>
-                    <input type="text" name="dgr_name" id="dgr_name" class="form-control"  placeholder="Enter Degree College Name">
-                    <span class="text-danger"><?php echo form_error('dgr_name'); ?></span>
+                    <input type="text" name="degree_name" id="degree_name" class="form-control"  placeholder="Enter Degree College Name">
+                    <span class="text-danger"><?php echo form_error('degree_name'); ?></span>
                 </div>
                 </div>
 
@@ -400,29 +400,29 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Degree College City</label>
-                    <input type="text" name="dgr_city" id="dgr_city" class="form-control"  placeholder="Enter Degree College City">
-                    <span class="text-danger"><?php echo form_error('dgr_city'); ?></span>
+                    <input type="text" name="degree_city" id="degree_city" class="form-control"  placeholder="Enter Degree College City">
+                    <span class="text-danger"><?php echo form_error('degree_city'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Degree College Year</label>
-                    <input type="text" name="dgr_yr" id="dgr_yr" class="form-control"  placeholder="Enter Degree College Year">
-                    <span class="text-danger"><?php echo form_error('dgr_yr'); ?></span>
+                    <input type="text" name="degree_year" id="degree_year" class="form-control"  placeholder="Enter Degree College Year">
+                    <span class="text-danger"><?php echo form_error('degree_year'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Degree College State</label>
-                    <input type="text" name="dgr_state" id="dgr_state" class="form-control"  placeholder="Enter Degree College State">
-                    <span class="text-danger"><?php echo form_error('dgr_state'); ?></span>
+                    <input type="text" name="degree_state" id="degree_state" class="form-control"  placeholder="Enter Degree College State">
+                    <span class="text-danger"><?php echo form_error('degree_state'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Degree College Country</label>
-                    <input type="text" name="dgr_country" id="dgr_country" class="form-control"  placeholder="Enter Degree College Country">
-                    <span class="text-danger"><?php echo form_error('dgr_country'); ?></span>
+                    <input type="text" name="degree_country" id="degree_country" class="form-control"  placeholder="Enter Degree College Country">
+                    <span class="text-danger"><?php echo form_error('degree_country'); ?></span>
                 </div>
                 </div>
 
@@ -433,22 +433,22 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Degree Medium of Instruction</label>
-                    <input type="text" name="dgr_mdm" id="dgr_mdm" class="form-control"  placeholder="Enter Degree Medium of Instruction">
-                    <span class="text-danger"><?php echo form_error('dgr_mdm'); ?></span>
+                    <input type="text" name="degree_medium" id="degree_medium" class="form-control"  placeholder="Enter Degree Medium of Instruction">
+                    <span class="text-danger"><?php echo form_error('degree_medium'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Degree Percentage</label>
-                    <input type="text" name="dgr_percentage" id="dgr_percentage" class="form-control" placeholder="Enter Degree Percentage">
-                    <span class="text-danger"><?php echo form_error('dgr_percentage'); ?></span>
+                    <input type="text" name="degree_percentage" id="degree_percentage" class="form-control" placeholder="Enter Degree Percentage">
+                    <span class="text-danger"><?php echo form_error('degree_percentage'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Degree Marks Card No</label>
-                    <input type="text" name="dgr_markscard_no" id="dgr_markscard_no" class="form-control" placeholder="Enter Degree Marks Card Number">
-                    <span class="text-danger"><?php echo form_error('dgr_markscard_no'); ?></span>
+                    <input type="text" name="degree_markscard_no" id="degree_markscard_no" class="form-control" placeholder="Enter Degree Marks Card Number">
+                    <span class="text-danger"><?php echo form_error('degree_markscard_no'); ?></span>
                 </div>
                 </div>
 
@@ -470,117 +470,3 @@
       </div>
     </section>
   </div>
-  <script>
-    $(document).ready(function() {
-
-      var base_url = '<?php echo base_url(); ?>';
-
-      $('#mobile').keypress(function(e) {
-        if ($(this).val().length < 10) {
-          var a = [];
-          var k = e.which;
-
-          for (i = 48; i < 58; i++)
-            a.push(i);
-
-          if (!(a.indexOf(k) >= 0))
-            e.preventDefault();
-        } else {
-          event.preventDefault();
-          return false;
-        }
-      });
-
-      $('#email').keyup(function() {
-        $(this).val($(this).val().toLowerCase());
-      });
-
-      $("#course1").change(function() {
-        event.preventDefault();
-        var course = $("#course").val();
-
-        if (course == "BA") {
-          var myOptions = {
-            ' ': 'Select',
-            JPE: 'JPE',
-            JPK: 'JPK',
-            HES: 'HES',
-            HEK: 'HEK',
-            PES: 'PES'
-          };
-        }
-        if (course == "BBA") {
-          var myOptions = {
-            BBA: 'BBA',
-          };
-        }
-        if (course == "BCA") {
-          var myOptions = {
-            BCA: 'BCA',
-          };
-        }
-        if (course == "BSC") {
-          var myOptions = {
-            ' ': 'Select',
-            CBZ: 'CBZ',
-            CZMB: 'CZMB',
-            CBBT: 'CBBT',
-            PMCs: 'PMCs',
-            PCM: 'PCM'
-          };
-        }
-        if (course == "BCOM") {
-          var myOptions = {
-            BCOM: 'BCOM',
-          };
-        }
-        if (course == "B.VOC") {
-          var myOptions = {
-            ' ': 'Select',
-            IT: 'IT',
-            RM: 'RM'
-          };
-        }
-
-        $('select[name="combination"]').empty();
-        //  $('select[name="combination"]').append($('<option></option>').val(val).html(text));
-        var mySelect = $('#combination');
-        $.each(myOptions, function(val, text) {
-          mySelect.append(
-            $('<option></option>').val(val).html(text)
-          );
-        });
-      });
-
-      $("#course").change(function() {
-        event.preventDefault();
-
-        var course = $("#course").val();
-
-        if (course == ' ') {
-          alert("Please Select Course");
-        } else {
-          $.ajax({
-            'type': 'POST',
-            'url': base_url + 'admin/combinationsDropdown',
-            'data': {
-              'course': course,
-              'flag': 'S'
-            },
-            'dataType': 'text',
-            'cache': false,
-            'success': function(data) {
-              $('select[name="dsc_1"]').empty();
-              $('select[name="dsc_1"]').append(data);
-              $('select[name="dsc_1"]').removeAttr("disabled");
-
-              $('select[name="dsc_2"]').empty();
-              $('select[name="dsc_2"]').append(data);
-              $('select[name="dsc_2"]').removeAttr("disabled");
-            }
-          });
-
-        }
-      });
-    });
-  </script>

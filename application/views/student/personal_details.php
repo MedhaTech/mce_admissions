@@ -53,15 +53,15 @@
               <div class="col">
                 <div class="form-group">
                   <label for="email">Current Address</label>
-                  <input type="text" name="crnt_address" id="crnt_address" class="form-control" placeholder="Enter Current Address">
-                  <span class="text-danger"><?php echo form_error('crnt_address'); ?></span>
+                  <input type="text" name="current_address" id="current_address" class="form-control" placeholder="Enter Current Address">
+                  <span class="text-danger"><?php echo form_error('current_address'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="email">Current City</label>
-                  <input type="text" name="crnt_city" id="crnt_city" class="form-control" placeholder="Enter Current City">
-                  <span class="text-danger"><?php echo form_error('crnt_city'); ?></span>
+                  <input type="text" name="current_city" id="current_city" class="form-control" placeholder="Enter Current City">
+                  <span class="text-danger"><?php echo form_error('current_city'); ?></span>
                 </div>
               </div>
 
@@ -72,29 +72,29 @@
               <div class="col">
                 <div class="form-group">
                   <label for="par_name">Current State</label>
-                  <input type="text" name="crnt_state" id="crnt_state" class="form-control" placeholder="Enter Current State">
-                  <span class="text-danger"><?php echo form_error('crnt_state'); ?></span>
+                  <input type="text" name="current_state" id="current_state" class="form-control" placeholder="Enter Current State">
+                  <span class="text-danger"><?php echo form_error('current_state'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="text">Current Pincode</label>
-                  <input type="number" name="crnt_pincode" id="crnt_pincode" class="form-control" placeholder="Enter Current Pincode">
-                  <span class="text-danger"><?php echo form_error('crnt_pincode'); ?></span>
+                  <input type="number" name="current_pincode" id="current_pincode" class="form-control" placeholder="Enter Current Pincode">
+                  <span class="text-danger"><?php echo form_error('current_pincode'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="email">Current Country</label>
-                  <input type="text" name="crnt_country" id="crnt_country" class="form-control" placeholder="Enter Current Country">
-                  <span class="text-danger"><?php echo form_error('crnt_country'); ?></span>
+                  <input type="text" name="current_country" id="current_country" class="form-control" placeholder="Enter Current Country">
+                  <span class="text-danger"><?php echo form_error('current_country'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="email">Current Phone</label>
-                  <input type="text" name="crnt_phone" id="crnt_phone" class="form-control" placeholder="Enter Current Phone">
-                  <span class="text-danger"><?php echo form_error('crnt_phone'); ?></span>
+                  <input type="text" name="current_phone" id="current_phone" class="form-control" placeholder="Enter Current Phone">
+                  <span class="text-danger"><?php echo form_error('current_phone'); ?></span>
                 </div>
               </div>
 
@@ -106,30 +106,30 @@
               <div class="col">
                 <div class="form-group">
                   <label for="exam_board">Permanent Address</label>
-                  <input type="text" name="prmt_address" id="prmt_address" class="form-control" placeholder="Enter Permanent Address">
-                  <span class="text-danger"><?php echo form_error('prmt_address'); ?></span>
+                  <input type="text" name="per_address" id="per_address" class="form-control" placeholder="Enter Permanent Address">
+                  <span class="text-danger"><?php echo form_error('per_address'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">Permanent City</label>
-                  <input type="text" name="prmt_city" id="prmt_city" class="form-control" placeholder="Enter Permanent City">
-                  <span class="text-danger"><?php echo form_error('prmt_city'); ?></span>
+                  <input type="text" name="per_city" id="per_city" class="form-control" placeholder="Enter Permanent City">
+                  <span class="text-danger"><?php echo form_error('per_city'); ?></span>
                 </div>
               </div>
 
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">Permanent State</label>
-                  <input type="text" name="prmt_state" id="prmt_state" class="form-control" placeholder="Enter Permanent State">
-                  <span class="text-danger"><?php echo form_error('prmt_state'); ?></span>
+                  <input type="text" name="per_state" id="per_state" class="form-control" placeholder="Enter Permanent State">
+                  <span class="text-danger"><?php echo form_error('per_state'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">Permanent Pincode</label>
-                  <input type="text" name="prmt_pincode" id="prmt_pincode" class="form-control" placeholder="Enter Permanent Pincode">
-                  <span class="text-danger"><?php echo form_error('prmt_pincode'); ?></span>
+                  <input type="text" name="per_pincode" id="per_pincode" class="form-control" placeholder="Enter Permanent Pincode">
+                  <span class="text-danger"><?php echo form_error('per_pincode'); ?></span>
                 </div>
               </div>
               
@@ -141,15 +141,15 @@
               <div class="col">
                 <div class="form-group">
                   <label for="exam_board">Permanent Country</label>
-                  <input type="text" name="prmt_country" id="prmt_country" class="form-control" placeholder="Enter Permanent Country">
-                  <span class="text-danger"><?php echo form_error('prmt_counter'); ?></span>
+                  <input type="text" name="per_country" id="per_country" class="form-control" placeholder="Enter Permanent Country">
+                  <span class="text-danger"><?php echo form_error('per_country'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">Permanent Phone</label>
-                  <input type="text" name="prmt_phone" id="prmt_phone" class="form-control" placeholder="Enter Permanent Phone">
-                  <span class="text-danger"><?php echo form_error('prmt_phone'); ?></span>
+                  <input type="text" name="per_phone" id="per_phone" class="form-control" placeholder="Enter Permanent Phone">
+                  <span class="text-danger"><?php echo form_error('per_phone'); ?></span>
                 </div>
               </div>
              <div class="col">
@@ -292,8 +292,8 @@
               <div class="col">
                 <div class="form-group">
                   <label for="exam_board">Mother Tongue</label>
-                  <input type="text" name="mthr_tongue" id="mthr_tongue" class="form-control" placeholder="Enter Mother Tongue">
-                  <span class="text-danger"><?php echo form_error('mthr_tongue'); ?></span>
+                  <input type="text" name="mother_tongue" id="mother_tongue" class="form-control" placeholder="Enter Mother Tongue">
+                  <span class="text-danger"><?php echo form_error('mother_tongue'); ?></span>
                 </div>
               </div>
               <div class="col">
@@ -306,8 +306,8 @@
              <div class="col">
                 <div class="form-group">
                   <label for="register_number">Type of Disability</label>
-                  <input type="text" name="typ_of_disability" id="typ_of_disability" class="form-control" placeholder="Enter Type of Disability">
-                  <span class="text-danger"><?php echo form_error('typ_of_disability'); ?></span>
+                  <input type="text" name="type_of_disability" id="type_of_disability" class="form-control" placeholder="Enter Type of Disability">
+                  <span class="text-danger"><?php echo form_error('type_of_disability'); ?></span>
                 </div>
               </div>
               <div class="col">
@@ -398,22 +398,22 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Traveling From</label>
-                    <input type="text" name="trvlg_frm" id="trvlg_frm" class="form-control" placeholder="Enter Travelling From">
-                    <span class="text-danger"><?php echo form_error('trvlg_frm'); ?></span>
+                    <input type="text" name="travelling_from" id="travelling_from" class="form-control" placeholder="Enter Travelling From">
+                    <span class="text-danger"><?php echo form_error('travelling_from'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Traveling To</label>
-                    <input type="text" name="trvlg_to" id="trvlg_to" class="form-control" placeholder="Enter Travelling To">
-                    <span class="text-danger"><?php echo form_error('trvlg_to'); ?></span>
+                    <input type="text" name="travelling_to" id="travelling_to" class="form-control" placeholder="Enter Travelling To">
+                    <span class="text-danger"><?php echo form_error('travelling_to'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Father Occupation</label>
-                    <input type="text" name="fthr_occupation" id="fthr_occupation" class="form-control" placeholder="Enter Father Occupation">
-                    <span class="text-danger"><?php echo form_error('fthr_occupation'); ?></span>
+                    <input type="text" name="father_occupation" id="father_occupation" class="form-control" placeholder="Enter Father Occupation">
+                    <span class="text-danger"><?php echo form_error('father_occupation'); ?></span>
                 </div>
                 </div>
 
@@ -424,29 +424,29 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Father PAN No</label>
-                    <input type="text" name="fthr_pan" id="fthr_pan" class="form-control" placeholder="Enter Father Pan Number">
-                    <span class="text-danger"><?php echo form_error('fthr_pan'); ?></span>
+                    <input type="text" name="father_pan" id="father_pan" class="form-control" placeholder="Enter Father Pan Number">
+                    <span class="text-danger"><?php echo form_error('father_pan'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Father Name</label>
-                    <input type="text" name="fthr_name" id="fthr_name" class="form-control" placeholder="Enter Father Name">
-                    <span class="text-danger"><?php echo form_error('fthr_name'); ?></span>
+                    <input type="text" name="father_name" id="father_name" class="form-control" placeholder="Enter Father Name">
+                    <span class="text-danger"><?php echo form_error('father_name'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Father Name as per SSLC</label>
-                    <input type="text" name="fthr_name_sslc" id="fthr_name_sslc" class="form-control" placeholder="Enter Father Name as per SSLC">
-                    <span class="text-danger"><?php echo form_error('fthr_name_ssla'); ?></span>
+                    <input type="text" name="father_name_sslc" id="father_name_sslc" class="form-control" placeholder="Enter Father Name as per SSLC">
+                    <span class="text-danger"><?php echo form_error('father_name_sslc'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Father Annual Income</label>
-                    <input type="text" name="fthr_income" id="fthr_income" class="form-control" placeholder="Enter Fther Annual Income">
-                    <span class="text-danger"><?php echo form_error('fthr_income'); ?></span>
+                    <input type="text" name="father_income" id="father_income" class="form-control" placeholder="Enter Fther Annual Income">
+                    <span class="text-danger"><?php echo form_error('father_income'); ?></span>
                 </div>
                 </div>
 
@@ -457,29 +457,29 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Father Address</label>
-                    <input type="text" name="fthr_address" id="fthr_address" class="form-control" placeholder="Enter Father Address">
-                    <span class="text-danger"><?php echo form_error('fthr_address'); ?></span>
+                    <input type="text" name="father_address" id="father_address" class="form-control" placeholder="Enter Father Address">
+                    <span class="text-danger"><?php echo form_error('father_address'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Father EmailID</label>
-                    <input type="text" name="fthr_email" id="fthr_email" class="form-control" placeholder="Enter Father EmailID">
-                    <span class="text-danger"><?php echo form_error('fthr_email'); ?></span>
+                    <input type="text" name="father_email" id="father_email" class="form-control" placeholder="Enter Father EmailID">
+                    <span class="text-danger"><?php echo form_error('father_email'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Father City</label>
-                    <input type="text" name="fthr_city" id="fthr_city" class="form-control" placeholder="Enter Father City">
-                    <span class="text-danger"><?php echo form_error('fthr_city'); ?></span>
+                    <input type="text" name="father_city" id="father_city" class="form-control" placeholder="Enter Father City">
+                    <span class="text-danger"><?php echo form_error('father_city'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Father State</label>
-                    <input type="text" name="fthr_state" id="fthr_state" class="form-control" placeholder="Enter Father State">
-                    <span class="text-danger"><?php echo form_error('fthr_state'); ?></span>
+                    <input type="text" name="father_state" id="father_state" class="form-control" placeholder="Enter Father State">
+                    <span class="text-danger"><?php echo form_error('father_state'); ?></span>
                 </div>
                 </div>
 
@@ -490,29 +490,29 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Father Pincode</label>
-                    <input type="text" name="fthr_pincode" id="fthr_pincode" class="form-control" placeholder="Enter Father Pincode">
-                    <span class="text-danger"><?php echo form_error('fthr_pincode'); ?></span>
+                    <input type="text" name="father_pincode" id="father_pincode" class="form-control" placeholder="Enter Father Pincode">
+                    <span class="text-danger"><?php echo form_error('father_pincode'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Father Country</label>
-                    <input type="text" name="fthr_country" id="fthr_country" class="form-control" placeholder="Enter Father Country">
-                    <span class="text-danger"><?php echo form_error('fthr_country'); ?></span>
+                    <input type="text" name="father_country" id="father_country" class="form-control" placeholder="Enter Father Country">
+                    <span class="text-danger"><?php echo form_error('father_country'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Father Mobile 1</label>
-                    <input type="text" name="fthr_mbl1" id="fthr_mbl1" class="form-control" placeholder="Enter Father Mobile 1">
-                    <span class="text-danger"><?php echo form_error('fthr_mbl1'); ?></span>
+                    <input type="text" name="father_mbl1" id="father_mbl1" class="form-control" placeholder="Enter Father Mobile 1">
+                    <span class="text-danger"><?php echo form_error('father_mbl1'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Father Mobile 2</label>
-                    <input type="text" name="fthr_mbl2" id="fthr_mbl2" class="form-control" placeholder="Enter Father Mobile 2">
-                    <span class="text-danger"><?php echo form_error('fthr_mbl2'); ?></span>
+                    <input type="text" name="father_mbl2" id="father_mbl2" class="form-control" placeholder="Enter Father Mobile 2">
+                    <span class="text-danger"><?php echo form_error('father_mbl2'); ?></span>
                 </div>
                 </div>
 
@@ -523,29 +523,29 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Father Telephone</label>
-                    <input type="text" name="fthr_tel" id="fthr_tel" class="form-control" placeholder="Enter Father Telephone">
-                    <span class="text-danger"><?php echo form_error('fthr_tel'); ?></span>
+                    <input type="text" name="father_tel" id="father_tel" class="form-control" placeholder="Enter Father Telephone">
+                    <span class="text-danger"><?php echo form_error('father_tel'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Mother Occupation</label>
-                    <input type="text" name="mthr_occupation" id="mthr_occupation" class="form-control" placeholder="Enter Mother Occupation">
-                    <span class="text-danger"><?php echo form_error('mthr_occupation'); ?></span>
+                    <input type="text" name="mother_occupation" id="mother_occupation" class="form-control" placeholder="Enter Mother Occupation">
+                    <span class="text-danger"><?php echo form_error('mother_occupation'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Mother Pan no</label>
-                    <input type="text" name="mthr_pan" id="mthr_pan" class="form-control" placeholder="Enter Mother Pan No">
-                    <span class="text-danger"><?php echo form_error('mthr_pan'); ?></span>
+                    <input type="text" name="mother_pan" id="mother_pan" class="form-control" placeholder="Enter Mother Pan No">
+                    <span class="text-danger"><?php echo form_error('mother_pan'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Mother Name</label>
-                    <input type="text" name="mthr_name" id="mthr_name" class="form-control" placeholder="Enter Mother Name">
-                    <span class="text-danger"><?php echo form_error('mthr_name'); ?></span>
+                    <input type="text" name="mother_name" id="mother_name" class="form-control" placeholder="Enter Mother Name">
+                    <span class="text-danger"><?php echo form_error('mother_name'); ?></span>
                 </div>
                 </div>
 
@@ -556,29 +556,29 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Mother  Annual Income</label>
-                    <input type="text" name="mthr_income" id="mthr_income" class="form-control" placeholder="Enter Mother Income">
-                    <span class="text-danger"><?php echo form_error('mthr_income'); ?></span>
+                    <input type="text" name="mother_income" id="mother_income" class="form-control" placeholder="Enter Mother Income">
+                    <span class="text-danger"><?php echo form_error('mother_income'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Mother Address</label>
-                    <input type="text" name="mthr_address" id="mthr_address" class="form-control" placeholder="Enter Mother Address">
-                    <span class="text-danger"><?php echo form_error('mthr_address'); ?></span>
+                    <input type="text" name="mother_address" id="mother_address" class="form-control" placeholder="Enter Mother Address">
+                    <span class="text-danger"><?php echo form_error('mother_address'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Mother EmailID</label>
-                    <input type="text" name="mthr_email" id="mthr_email" class="form-control" placeholder="Enter Mother EmailId">
-                    <span class="text-danger"><?php echo form_error('mthr_email'); ?></span>
+                    <input type="text" name="mother_email" id="mother_email" class="form-control" placeholder="Enter Mother EmailId">
+                    <span class="text-danger"><?php echo form_error('mother_email'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Mother City</label>
-                    <input type="text" name="mthr_city" id="mthr_city" class="form-control" placeholder="Enter Mother City">
-                    <span class="text-danger"><?php echo form_error('mthr_city'); ?></span>
+                    <input type="text" name="mother_city" id="mother_city" class="form-control" placeholder="Enter Mother City">
+                    <span class="text-danger"><?php echo form_error('mother_city'); ?></span>
                 </div>
                 </div>
 
@@ -589,29 +589,29 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Mother State</label>
-                    <input type="text" name="mthr_state" id="mthr_state" class="form-control" placeholder="Enter Mother State">
-                    <span class="text-danger"><?php echo form_error('mthr_state'); ?></span>
+                    <input type="text" name="mother_state" id="mother_state" class="form-control" placeholder="Enter Mother State">
+                    <span class="text-danger"><?php echo form_error('mother_state'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Mother Pincode</label>
-                    <input type="text" name="mthr_pincode" id="mthr_pincode" class="form-control" placeholder="Enter Mother Pincode">
-                    <span class="text-danger"><?php echo form_error('mthr_pincode'); ?></span>
+                    <input type="text" name="mother_pincode" id="mother_pincode" class="form-control" placeholder="Enter Mother Pincode">
+                    <span class="text-danger"><?php echo form_error('mother_pincode'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Mother Country</label>
-                    <input type="text" name="mthr_country" id="mthr_country" class="form-control" placeholder="Enter Mother Country">
-                    <span class="text-danger"><?php echo form_error('mthr_country'); ?></span>
+                    <input type="text" name="mother_country" id="mother_country" class="form-control" placeholder="Enter Mother Country">
+                    <span class="text-danger"><?php echo form_error('mother_country'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Mother Mobile 1</label>
-                    <input type="text" name="mthr_mbl1" id="mthr_mbl1" class="form-control" placeholder="Enter Mother Mobile 1">
-                    <span class="text-danger"><?php echo form_error('mthr_mbl1'); ?></span>
+                    <input type="text" name="mother_mbl1" id="mother_mbl1" class="form-control" placeholder="Enter Mother Mobile 1">
+                    <span class="text-danger"><?php echo form_error('mother_mbl1'); ?></span>
                 </div>
                 </div>
 
@@ -622,29 +622,29 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Mother Mobile 2</label>
-                    <input type="text" name="mthr_mbl2" id="mthr_mbl2" class="form-control" placeholder="Enter Mother Mobile 2">
-                    <span class="text-danger"><?php echo form_error('mthr_mbl2'); ?></span>
+                    <input type="text" name="mother_mbl2" id="mother_mbl2" class="form-control" placeholder="Enter Mother Mobile 2">
+                    <span class="text-danger"><?php echo form_error('mother_mbl2'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Mother Telephone</label>
-                    <input type="text" name="mbl_tel" id="mbl_tel" class="form-control" placeholder="Enter Mother Telephone">
-                    <span class="text-danger"><?php echo form_error('mbl_tel'); ?></span>
+                    <input type="text" name="mother_tel" id="mother_tel" class="form-control" placeholder="Enter Mother Telephone">
+                    <span class="text-danger"><?php echo form_error('mother_tel'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Guardian Occupation</label>
-                    <input type="text" name="gar_occupation" id="gar_occupation" class="form-control" placeholder="Enter Guardian Occupation">
-                    <span class="text-danger"><?php echo form_error('gar_occupation'); ?></span>
+                    <input type="text" name="guardian_occupation" id="guardian_occupation" class="form-control" placeholder="Enter Guardian Occupation">
+                    <span class="text-danger"><?php echo form_error('guardian_occupation'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Guardian Name</label>
-                    <input type="text" name="gar_name" id="gar_name" class="form-control" placeholder="Enter Guardian Name">
-                    <span class="text-danger"><?php echo form_error('gar_name'); ?></span>
+                    <input type="text" name="guardian_name" id="guardian_name" class="form-control" placeholder="Enter Guardian Name">
+                    <span class="text-danger"><?php echo form_error('guardian_name'); ?></span>
                 </div>
                 </div>
 
@@ -655,29 +655,29 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Guardian Address</label>
-                    <input type="text" name="gar_address" id="gar_address" class="form-control" placeholder="Enter Guardian Address">
-                    <span class="text-danger"><?php echo form_error('gar_address'); ?></span>
+                    <input type="text" name="guardian_address" id="guardian_address" class="form-control" placeholder="Enter Guardian Address">
+                    <span class="text-danger"><?php echo form_error('guardian_address'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Guardian City</label>
-                    <input type="text" name="gar_city" id="gar_city" class="form-control" placeholder="Enter Guardian City">
-                    <span class="text-danger"><?php echo form_error('gar_city'); ?></span>
+                    <input type="text" name="guardian_city" id="guardian_city" class="form-control" placeholder="Enter Guardian City">
+                    <span class="text-danger"><?php echo form_error('guardian_city'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Guardian State</label>
-                    <input type="text" name="gar_state" id="gar_state" class="form-control" placeholder="Enter Guardian State">
-                    <span class="text-danger"><?php echo form_error('gar_state'); ?></span>
+                    <input type="text" name="guardian_state" id="guardian_state" class="form-control" placeholder="Enter Guardian State">
+                    <span class="text-danger"><?php echo form_error('guardian_state'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Guardian Pincode</label>
-                    <input type="text" name="gar_pincode" id="gar_pincode" class="form-control" placeholder="Enter Guardian Pincode">
-                    <span class="text-danger"><?php echo form_error('gar_pincode'); ?></span>
+                    <input type="text" name="guardian_pincode" id="guardian_pincode" class="form-control" placeholder="Enter Guardian Pincode">
+                    <span class="text-danger"><?php echo form_error('guardian_pincode'); ?></span>
                 </div>
                 </div>
 
@@ -688,29 +688,29 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Guardian Mobile 1</label>
-                    <input type="text" name="gar_mbl1" id="gar_mbl1" class="form-control" placeholder="Enter Guardian Mobile 1">
-                    <span class="text-danger"><?php echo form_error('gar_mbl1'); ?></span>
+                    <input type="text" name="guardian_mbl1" id="guardian_mbl1" class="form-control" placeholder="Enter Guardian Mobile 1">
+                    <span class="text-danger"><?php echo form_error('guardian_mbl1'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Guardian Mobile 2</label>
-                    <input type="text" name="gar_mbl2" id="gar_mbl2" class="form-control" placeholder="Enter Guardian Mobile 2">
-                    <span class="text-danger"><?php echo form_error('gar_mbl2'); ?></span>
+                    <input type="text" name="guardian_mbl2" id="guardian_mbl2" class="form-control" placeholder="Enter Guardian Mobile 2">
+                    <span class="text-danger"><?php echo form_error('guardian_mbl2'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Guardian Telephone</label>
-                    <input type="text" name="gar_tel" id="gar_tel" class="form-control" placeholder="Enter Guardian Telephone">
-                    <span class="text-danger"><?php echo form_error('gar_tel'); ?></span>
+                    <input type="text" name="guardian_tel" id="guardian_tel" class="form-control" placeholder="Enter Guardian Telephone">
+                    <span class="text-danger"><?php echo form_error('guardian_tel'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Father Office Address</label>
-                    <input type="text" name="fthr_ofc_address" id="fthr_ofc_address" class="form-control" placeholder="Enter Father Office Address">
-                    <span class="text-danger"><?php echo form_error('fthr_ofc_address'); ?></span>
+                    <input type="text" name="father_ofc_address" id="father_ofc_address" class="form-control" placeholder="Enter Father Office Address">
+                    <span class="text-danger"><?php echo form_error('father_ofc_address'); ?></span>
                 </div>
                 </div>
 
@@ -721,29 +721,29 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Father Office City</label>
-                    <input type="text" name="fthr_ofc_city" id="fthr_ofc_city" class="form-control" placeholder="Enter Father Office City">
-                    <span class="text-danger"><?php echo form_error('fthr_ofc_city'); ?></span>
+                    <input type="text" name="father_ofc_city" id="father_ofc_city" class="form-control" placeholder="Enter Father Office City">
+                    <span class="text-danger"><?php echo form_error('father_ofc_city'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Father Office State</label>
-                    <input type="text" name="fthr_ofc_state" id="fthr_ofc_state" class="form-control" placeholder="Enter Father Office State">
-                    <span class="text-danger"><?php echo form_error('fthr_ofc_state'); ?></span>
+                    <input type="text" name="father_ofc_state" id="father_ofc_state" class="form-control" placeholder="Enter Father Office State">
+                    <span class="text-danger"><?php echo form_error('father_ofc_state'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Father Office Country</label>
-                    <input type="text" name="fthr_ofc_country" id="fthr_ofc_country" class="form-control" placeholder="Enter Father Office Country">
-                    <span class="text-danger"><?php echo form_error('fthr_ofc_country'); ?></span>
+                    <input type="text" name="father_ofc_country" id="father_ofc_country" class="form-control" placeholder="Enter Father Office Country">
+                    <span class="text-danger"><?php echo form_error('father_ofc_country'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Father Office Pincode</label>
-                    <input type="text" name="fthr_ofc_pincode" id="fthr_ofc_pincode" class="form-control" placeholder="Enter Father Office Pincode">
-                    <span class="text-danger"><?php echo form_error('fthr_ofc_pincode'); ?></span>
+                    <input type="text" name="father_ofc_pincode" id="father_ofc_pincode" class="form-control" placeholder="Enter Father Office Pincode">
+                    <span class="text-danger"><?php echo form_error('father_ofc_pincode'); ?></span>
                 </div>
                 </div>
 
@@ -754,29 +754,29 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Father Office EmailID</label>
-                    <input type="text" name="fthr_ofc_email" id="fthr_ofc_email" class="form-control" placeholder="Enter Father Office EmailId">
-                    <span class="text-danger"><?php echo form_error('fthr_ofc_email'); ?></span>
+                    <input type="text" name="father_ofc_email" id="father_ofc_email" class="form-control" placeholder="Enter Father Office EmailId">
+                    <span class="text-danger"><?php echo form_error('father_ofc_email'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Father Office Mobile No 1</label>
-                    <input type="text" name="fthr_ofc_mbl1" id="fthr_ofc_mbl1" class="form-control" placeholder="Enter Father Office Mobile 1">
-                    <span class="text-danger"><?php echo form_error('fthr_ofc_mbl1'); ?></span>
+                    <input type="text" name="father_ofc_mbl1" id="father_ofc_mbl1" class="form-control" placeholder="Enter Father Office Mobile 1">
+                    <span class="text-danger"><?php echo form_error('father_ofc_mbl1'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Father Office Mobile No 2</label>
-                    <input type="text" name="fthr_ofc_mbl2" id="fthr_ofc_mbl2" class="form-control" placeholder="Enter Father Office Mobile 2">
-                    <span class="text-danger"><?php echo form_error('fthr_ofc_mbl2'); ?></span>
+                    <input type="text" name="father_ofc_mbl2" id="father_ofc_mbl2" class="form-control" placeholder="Enter Father Office Mobile 2">
+                    <span class="text-danger"><?php echo form_error('father_ofc_mbl2'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Father Office Phone with STDCode</label>
-                    <input type="text" name="fthr_std" id="fthr_std" class="form-control" placeholder="Enter Father Office Phone with STD Code">
-                    <span class="text-danger"><?php echo form_error('fthr_std'); ?></span>
+                    <input type="text" name="father_std" id="father_std" class="form-control" placeholder="Enter Father Office Phone with STD Code">
+                    <span class="text-danger"><?php echo form_error('father_std'); ?></span>
                 </div>
                 </div>
 
@@ -787,29 +787,29 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Mother Office Address</label>
-                    <input type="text" name="mthr_ofc_address" id="mthr_ofc_address" class="form-control" placeholder="Enter Mother Office Address">
-                    <span class="text-danger"><?php echo form_error('mthr_ofc_address'); ?></span>
+                    <input type="text" name="mother_ofc_address" id="mother_ofc_address" class="form-control" placeholder="Enter Mother Office Address">
+                    <span class="text-danger"><?php echo form_error('mother_ofc_address'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Mother Office City</label>
-                    <input type="text" name="mthr_ofc_city" id="mthr_ofc_city" class="form-control" placeholder="Enter Mother Office City">
-                    <span class="text-danger"><?php echo form_error('mthr_ofc_city'); ?></span>
+                    <input type="text" name="mother_ofc_city" id="mother_ofc_city" class="form-control" placeholder="Enter Mother Office City">
+                    <span class="text-danger"><?php echo form_error('mother_ofc_city'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Mother Office State</label>
-                    <input type="text" name="mthr_ofc_state" id="mthr_ofc_state" class="form-control" placeholder="Enter Mother Office State">
-                    <span class="text-danger"><?php echo form_error('mthr_ofc_state'); ?></span>
+                    <input type="text" name="mother_ofc_state" id="mother_ofc_state" class="form-control" placeholder="Enter Mother Office State">
+                    <span class="text-danger"><?php echo form_error('mother_ofc_state'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Mother Office Country</label>
-                    <input type="text" name="mthr_ofc_country" id="mthr_ofc_country" class="form-control" placeholder="Enter Mother Office Country">
-                    <span class="text-danger"><?php echo form_error('mthr_ofc_country'); ?></span>
+                    <input type="text" name="mother_ofc_country" id="mother_ofc_country" class="form-control" placeholder="Enter Mother Office Country">
+                    <span class="text-danger"><?php echo form_error('mother_ofc_country'); ?></span>
                 </div>
                 </div>
 
@@ -820,29 +820,29 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Mother Office PinCode</label>
-                    <input type="text" name="mthr_ofc_pincode" id="mthr_ofc_pincode" class="form-control" placeholder="Enter Mother Office Pincode">
-                    <span class="text-danger"><?php echo form_error('mthr_ofc_pincode'); ?></span>
+                    <input type="text" name="mother_ofc_pincode" id="mother_ofc_pincode" class="form-control" placeholder="Enter Mother Office Pincode">
+                    <span class="text-danger"><?php echo form_error('mother_ofc_pincode'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Mother Office EmailID</label>
-                    <input type="text" name="mthr_ofc_email" id="mthr_ofc_email" class="form-control" placeholder="Enter Mother Office EmailId">
-                    <span class="text-danger"><?php echo form_error('mthr_ofc_email'); ?></span>
+                    <input type="text" name="mother_ofc_email" id="mother_ofc_email" class="form-control" placeholder="Enter Mother Office EmailId">
+                    <span class="text-danger"><?php echo form_error('mother_ofc_email'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Mother Office Mobile No 1</label>
-                    <input type="text" name="mthr_ofc_mbl1" id="mthr_ofc_mbl1" class="form-control" placeholder="Enter Mother Office Mobile 1">
-                    <span class="text-danger"><?php echo form_error('mthr_ofc_mbl1'); ?></span>
+                    <input type="text" name="mother_ofc_mbl1" id="mother_ofc_mbl1" class="form-control" placeholder="Enter Mother Office Mobile 1">
+                    <span class="text-danger"><?php echo form_error('mother_ofc_mbl1'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Mother Office Mobile No 2</label>
-                    <input type="text" name="mthr_ofc_mbl2" id="mthr_ofc_mbl2" class="form-control" placeholder="Enter Mother Office Mobile 2">
-                    <span class="text-danger"><?php echo form_error('mthr_ofc_mbl2'); ?></span>
+                    <input type="text" name="mother_ofc_mbl2" id="mother_ofc_mbl2" class="form-control" placeholder="Enter Mother Office Mobile 2">
+                    <span class="text-danger"><?php echo form_error('mother_ofc_mbl2'); ?></span>
                 </div>
                 </div>
 
@@ -853,29 +853,29 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Mother Office Phone with STDCode</label>
-                    <input type="text" name="mthr_std" id="mthr_std" class="form-control" placeholder="Enter Mother Office Phone with STD code">
-                    <span class="text-danger"><?php echo form_error('mthr_std'); ?></span>
+                    <input type="text" name="mother_std" id="mother_std" class="form-control" placeholder="Enter Mother Office Phone with STD code">
+                    <span class="text-danger"><?php echo form_error('mother_std'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Guardian Office Address</label>
-                    <input type="text" name="gar_ofc_address" id="gar_ofc_address" class="form-control" placeholder="Enter Guardian Office Address">
-                    <span class="text-danger"><?php echo form_error('gar_ofc_address'); ?></span>
+                    <input type="text" name="guardian_ofc_address" id="guardian_ofc_address" class="form-control" placeholder="Enter Guardian Office Address">
+                    <span class="text-danger"><?php echo form_error('guardian_ofc_address'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Guardian Office City</label>
-                    <input type="text" name="gar_ofc_city" id="gar_ofc_city" class="form-control" placeholder="Enter Guardian office City">
-                    <span class="text-danger"><?php echo form_error('gar_ofc_city'); ?></span>
+                    <input type="text" name="guardian_ofc_city" id="guardian_ofc_city" class="form-control" placeholder="Enter Guardian office City">
+                    <span class="text-danger"><?php echo form_error('guardian_ofc_city'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Guardian Office State</label>
-                    <input type="text" name="gar_ofc_state" id="gar_ofc_state" class="form-control" placeholder="Enter Guardian Office State">
-                    <span class="text-danger"><?php echo form_error('gar_ofc_state'); ?></span>
+                    <input type="text" name="guardian_ofc_state" id="guardian_ofc_state" class="form-control" placeholder="Enter Guardian Office State">
+                    <span class="text-danger"><?php echo form_error('guardian_ofc_state'); ?></span>
                 </div>
                 </div>
 
@@ -886,29 +886,29 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Guardian Office Country</label>
-                    <input type="text" name="gar_ofc_country" id="gar_ofc_country" class="form-control" placeholder="Enter Guardian Office Country">
-                    <span class="text-danger"><?php echo form_error('gar_ofc_country'); ?></span>
+                    <input type="text" name="guardian_ofc_country" id="guardian_ofc_country" class="form-control" placeholder="Enter Guardian Office Country">
+                    <span class="text-danger"><?php echo form_error('guardian_ofc_country'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Guardian Office Pincode</label>
-                    <input type="text" name="gar_ofc_pincode" id="gar_ofc_pincode" class="form-control" placeholder="Enter Guardian Office Pincode">
-                    <span class="text-danger"><?php echo form_error('gar_ofc_pincode'); ?></span>
+                    <input type="text" name="guardian_ofc_pincode" id="guardian_ofc_pincode" class="form-control" placeholder="Enter Guardian Office Pincode">
+                    <span class="text-danger"><?php echo form_error('guardian_ofc_pincode'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Guardian Office EmailID</label>
-                    <input type="text" name="gar_ofc_email" id="gar_ofc_email" class="form-control" placeholder="Enter Guardian Office EmailId">
-                    <span class="text-danger"><?php echo form_error('gar_ofc_email'); ?></span>
+                    <input type="text" name="guardian_ofc_email" id="guardian_ofc_email" class="form-control" placeholder="Enter Guardian Office EmailId">
+                    <span class="text-danger"><?php echo form_error('guardian_ofc_email'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Guardian Office Mobile 1</label>
-                    <input type="text" name="gar_ofc_mbl1" id="gar_ofc_mbl1" class="form-control" placeholder="Enter Guardian Office Mobile 1">
-                    <span class="text-danger"><?php echo form_error('gar_ofc_mbl1'); ?></span>
+                    <input type="text" name="guardian_ofc_mbl1" id="guardian_ofc_mbl1" class="form-control" placeholder="Enter Guardian Office Mobile 1">
+                    <span class="text-danger"><?php echo form_error('guardian_ofc_mbl1'); ?></span>
                 </div>
                 </div>
 
@@ -919,15 +919,15 @@
                 <div class="col">
                 <div class="form-group">
                     <label for="exam_board">Guardian Office Mobile 2</label>
-                    <input type="text" name="gar_ofc_mbl2" id="gar_ofc_mbl2" class="form-control" placeholder="Enter Guardian Office mobile 2">
-                    <span class="text-danger"><?php echo form_error('gar_ofc_mbl2'); ?></span>
+                    <input type="text" name="guardian_ofc_mbl2" id="guardian_ofc_mbl2" class="form-control" placeholder="Enter Guardian Office mobile 2">
+                    <span class="text-danger"><?php echo form_error('guardian_ofc_mbl2'); ?></span>
                 </div>
                 </div>
                 <div class="col">
                 <div class="form-group">
                     <label for="register_number">Guardian Office Phone with STDCode</label>
-                    <input type="text" name="gar_std" id="grd_std" class="form-control" placeholder="Enter Guardian Office Phone with STD Code">
-                    <span class="text-danger"><?php echo form_error('grd_std'); ?></span>
+                    <input type="text" name="guardian_std" id="guardian_std" class="form-control" placeholder="Enter Guardian Office Phone with STD Code">
+                    <span class="text-danger"><?php echo form_error('guardian_std'); ?></span>
                 </div>
                 </div>
 
