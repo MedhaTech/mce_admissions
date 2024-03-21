@@ -20,9 +20,28 @@
                                   <div class="col-md-8 offset-1">
                                       <div class="form-group row">
                                           <label for="staticEmail"
+                                              class="col-md-5 col-form-label text-right">Department</label>
+                                          <div class="col-md-7">
+                                              <?php 
+                                                if($fee_structure['department_id']){
+                                                    $dept1 = $this->admin_model->getDetailsbyfield($fee_structure['department_id'],'department_id','departments')->row();
+                                                    $dept_name = $dept1->department_name;
+                                                }else{
+                                                    $dept_name = "All Departments";
+                                                }
+                                            ?>
+                                              <input type="text" name="department" id="department" class="form-control"
+                                                  value="<?php echo (set_value('department'))?set_value('department'):$dept_name;?>"
+                                                  readonly>
+                                              <span class="text-danger"></span>
+                                          </div>
+                                      </div>
+
+                                      <div class="form-group row">
+                                          <label for="staticEmail"
                                               class="col-md-5 col-form-label text-right">Quota</label>
                                           <div class="col-md-7">
-                                              <input type="text" name="quota" id="department" class="form-control"
+                                              <input type="text" name="quota" id="quota" class="form-control"
                                                   value="<?php echo (set_value('quota'))?set_value('quota'):$fee_structure['quota'];?>"
                                                   readonly>
                                               <span class="text-danger"></span>
@@ -244,9 +263,8 @@
                                           </div>
                                       </div>
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">COLLEGE
-                                              OTHER
-                                              FEE</label>
+                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">College
+                                              Other Fee</label>
                                           <div class="col-md-7">
                                               <input type="text" name="college_other_fee" id="college_other_fee"
                                                   class="form-control"
@@ -254,7 +272,17 @@
                                               <span class="text-danger"></span>
                                           </div>
                                       </div>
-
+                                      <div class="form-group row">
+                                          <label for="staticEmail"
+                                              class="col-md-5 col-form-label text-right font-weight-bold">Skill
+                                              Development Fee</label>
+                                          <div class="col-md-7">
+                                              <input type="text" name="skill_development_fee" id="skill_development_fee"
+                                                  class="form-control"
+                                                  value="<?php echo (set_value('skill_development_fee'))?set_value('skill_development_fee'):$fee_structure['skill_development_fee'];?>">
+                                              <span class="text-danger"></span>
+                                          </div>
+                                      </div>
                                       <div class="form-group row">
                                           <label for="staticEmail"
                                               class="col-md-5 col-form-label text-right font-weight-bold">TOTAL
@@ -283,17 +311,7 @@
                                           </div>
                                       </div>
                                       <hr />
-                                      <div class="form-group row">
-                                          <label for="staticEmail"
-                                              class="col-md-5 col-form-label text-right font-weight-bold">SKILL
-                                              DEVELOPMENT FEE</label>
-                                          <div class="col-md-7">
-                                              <input type="text" name="skill_development_fee" id="skill_development_fee"
-                                                  class="form-control"
-                                                  value="<?php echo (set_value('skill_development_fee'))?set_value('skill_development_fee'):$fee_structure['skill_development_fee'];?>">
-                                              <span class="text-danger"></span>
-                                          </div>
-                                      </div>
+
                                       <div class="form-group row">
                                           <label for="staticEmail"
                                               class="col-md-5 col-form-label text-right font-weight-bold">CORPUS
@@ -432,6 +450,11 @@ $(document).ready(function() {
         calFeeTotal();
     });
 
+    $("#skill_development_fee").change(function() {
+        event.preventDefault();
+        calFeeTotal();
+    });
+
     function calFeeTotal() {
         var e_learning_fee = parseInt($('#e_learning_fee').val());
         var eligibility_fee = parseInt($('#eligibility_fee').val());
@@ -450,6 +473,7 @@ $(document).ready(function() {
         var university_registration_fee = parseInt($('#university_registration_fee').val());
 
 
+
         var total_university_fee = e_learning_fee + eligibility_fee + e_consortium_fee + sport_fee +
             sports_development_fee + career_guidance_counseling_fee + university_development_fund +
             promotion_of_indian_cultural_activities_fee + teachers_development_fee +
@@ -460,8 +484,10 @@ $(document).ready(function() {
         var processing_fee_paid_at_kea = parseInt($('#processing_fee_paid_at_kea').val());
         var tution_fee = parseInt($('#tution_fee').val());
         var college_other_fee = parseInt($('#college_other_fee').val());
+        var skill_development_fee = parseInt($('#skill_development_fee').val());
 
-        var total_tution_fee = admission_fee + processing_fee_paid_at_kea + tution_fee + college_other_fee;
+        var total_tution_fee = admission_fee + processing_fee_paid_at_kea + tution_fee + college_other_fee +
+            skill_development_fee;
 
         var total_demand = total_tution_fee + total_university_fee;
 
