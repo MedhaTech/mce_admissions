@@ -38,23 +38,30 @@
                 <div class="form-group">
                 <label class="label">Student Full Name (As per SSLC)</label>
                   <input type="text" class="form-control"
-                   id="name" name="name" placeholder="Enter Student Name">
+                   id="student_name" name="student_name" placeholder="Enter Student Name">
                   <span
-                  class="text-danger"><?php echo form_error('name'); ?></span>
+                  class="text-danger"><?php echo form_error('student_name'); ?></span>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="text">First Name</label>
+                  <input type="text" name="first_name" id="first_name" class="form-control" placeholder="Enter First Name">
+                  <span class="text-danger"><?php echo form_error('first_name'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="text">Middle Name</label>
-                  <input type="text" name="middlename" id="middlename" class="form-control" placeholder="Enter Middle Name">
-                  <span class="text-danger"><?php echo form_error('middlename'); ?></span>
+                  <input type="text" name="middle_name" id="middle_name" class="form-control" placeholder="Enter Middle Name">
+                  <span class="text-danger"><?php echo form_error('middle_name'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="email">Last Name</label>
-                  <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Enter Last Name">
-                  <span class="text-danger"><?php echo form_error('lastname'); ?></span>
+                  <input type="text" name="last_name" id="lastname" class="form-control" placeholder="Enter Last Name">
+                  <span class="text-danger"><?php echo form_error('last_name'); ?></span>
                 </div>
               </div>
 
@@ -73,7 +80,7 @@
                 <div class="form-group">
                   <label for="text">USN</label>
                   <input type="text" name="usn" id="usn" class="form-control" placeholder="Enter USN">
-                  <span class="text-danger"><?php echo form_error('clg_code'); ?></span>
+                  <span class="text-danger"><?php echo form_error('usn'); ?></span>
                 </div>
               </div>
               <div class="col">
@@ -134,8 +141,8 @@
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">Special Quota</label>
-                  <input type="text" name="spl_quota" id="spl_quota" class="form-control" placeholder="Enter Special Quota">
-                  <span class="text-danger"><?php echo form_error('spl_quota'); ?></span>
+                  <input type="text" name="special_quota" id="special_quota" class="form-control" placeholder="Enter Special Quota">
+                  <span class="text-danger"><?php echo form_error('special_quota'); ?></span>
                 </div>
               </div>
 
@@ -145,15 +152,15 @@
                 <div class="form-group">
                   <label for="dsc-1">Category Claimed</label>
                   <?php $state_options = array("" => "Select", "Karnataka" => "General");
-                  echo form_dropdown('ctg_claimed', $state_options, (set_value('ctg_claimed')) ? set_value('state') : $state, 'class="form-control" id="ctg_claimed" placeholder="Select Category clained" '); ?>
-                  <span class="text-danger"><?php echo form_error('ctg_claimed'); ?></span>
+                  echo form_dropdown('categoryg_claimed', $state_options, (set_value('categoryg_claimed')) ? set_value('categoryg_claimed') : $state, 'class="form-control" id="categoryg_claimed" placeholder="Select Category clained" '); ?>
+                  <span class="text-danger"><?php echo form_error('categoryg_claimed'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="dsc-2">Category Allocated</label>
-                  <input type="text" name="ctg_allocated" id="ctg_allocated" class="form-control" placeholder="Enter Category Allocated">
-                  <span class="text-danger"><?php echo form_error('ctg_allocated'); ?></span>
+                  <input type="text" name="category_allocated" id="category_allocated" class="form-control" placeholder="Enter Category Allocated">
+                  <span class="text-danger"><?php echo form_error('category_allocated'); ?></span>
                 </div>
               </div>
 
@@ -164,15 +171,15 @@
               <div class="col">
                 <div class="form-group">
                   <label for="exam_board">Admission Date</label>
-                  <input type="text" name="adms_date" id="adms_date" class="form-control" placeholder="Enter Admission Date">
-                  <span class="text-danger"><?php echo form_error('adms_date'); ?></span>
+                  <input type="text" name="admission_date" id="admission_date" class="form-control" placeholder="Enter Admission Date">
+                  <span class="text-danger"><?php echo form_error('admission_date'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">Admission Number</label>
-                  <input type="text" name="adms_num" id="adms_num" class="form-control" placeholder="Enter Admission Number">
-                  <span class="text-danger"><?php echo form_error('adms_num'); ?></span>
+                  <input type="text" name="admission_number" id="admission_number" class="form-control" placeholder="Enter Admission Number">
+                  <span class="text-danger"><?php echo form_error('admission_number'); ?></span>
                 </div>
               </div>
 
@@ -217,8 +224,8 @@
                   <label for="course">Admission Year
                   </label>
                   <?php
-                  echo form_dropdown('adms_yr', $course_options, (set_value('adms_yr')) ? set_value('adms_yr') : $course1, 'class="form-control" id="adms_yr" placeholder="select"'); ?>
-                  <span class="text-danger"><?php echo form_error('adms_yr'); ?></span>
+                  echo form_dropdown('admission_year', $course_options, (set_value('admission_year')) ? set_value('admission_year') : $course1, 'class="form-control" id="adms_yr" placeholder="select"'); ?>
+                  <span class="text-danger"><?php echo form_error('admission_year'); ?></span>
                 </div>
               </div>
               <div class="col">
@@ -235,23 +242,23 @@
               <div class="col">
                 <div class="form-group">
                   <label for="exam_board">Admission Type</label>
-                  <input type="text" name="adms_type" id="adms_type" class="form-control" placeholder="Enter Admission Type">
-                  <span class="text-danger"><?php echo form_error('adms_type'); ?></span>
+                  <input type="text" name="admission_type" id="admission_type" class="form-control" placeholder="Enter Admission Type">
+                  <span class="text-danger"><?php echo form_error('admission_type'); ?></span>
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">Admission Based On</label>
-                  <input type="text" name="adms_based_on" id="adms_based_on" class="form-control" placeholder="Enter Admission Based On">
-                  <span class="text-danger"><?php echo form_error('adms_based_on'); ?></span>
+                  <input type="text" name="admission_based_on" id="admission_based_on" class="form-control" placeholder="Enter Admission Based On">
+                  <span class="text-danger"><?php echo form_error('admission_based_on'); ?></span>
                 </div>
               </div>
 
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">Blood Group</label>
-                  <input type="text" name="blood_grp" id="blood_grp" class="form-control" placeholder="Enter Blood Group">
-                  <span class="text-danger"><?php echo form_error('blood_grp'); ?></span>
+                  <input type="text" name="blood_group" id="blood_group" class="form-control" placeholder="Enter Blood Group">
+                  <span class="text-danger"><?php echo form_error('blood_group'); ?></span>
                 </div>
               </div>
 
@@ -269,16 +276,16 @@
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">College Fees Receipt No</label>
-                  <input type="text" name="clg_fee_recp_no" id="clg_fee_recp_no" class="form-control" placeholder="Enter College Fee Receip No">
-                  <span class="text-danger"><?php echo form_error('clg_fee_recp_no'); ?></span>
+                  <input type="text" name="clg_fee_recpt_no" id="clg_fee_recpt_no" class="form-control" placeholder="Enter College Fee Receip No">
+                  <span class="text-danger"><?php echo form_error('clg_fee_recpt_no'); ?></span>
                 </div>
               </div>
 
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">College Fees Receipt Date</label>
-                  <input type="text" name="clg_fee_recp_date" id="clg_fee_recp_date" class="form-control" placeholder="Enter College Fee Receip Date">
-                  <span class="text-danger"><?php echo form_error('clg_fee_recp_date'); ?></span>
+                  <input type="text" name="clg_fee_recpt_date" id="clg_fee_recpt_date" class="form-control" placeholder="Enter College Fee Receip Date">
+                  <span class="text-danger"><?php echo form_error('clg_fee_recpt_date'); ?></span>
                 </div>
               </div>
 
@@ -296,16 +303,16 @@
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">CET/COMEDK Fees Receipt No</label>
-                  <input type="text" name="cet_fee_recp_no" id="cet_fee_recp_no" class="form-control" placeholder="Enter Cet Fee Receipt Number">
-                  <span class="text-danger"><?php echo form_error('cet_fee_recp_no'); ?></span>
+                  <input type="text" name="cet_fee_recpt_no" id="cet_fee_recpt_no" class="form-control" placeholder="Enter Cet Fee Receipt Number">
+                  <span class="text-danger"><?php echo form_error('cet_fee_recpt_no'); ?></span>
                 </div>
               </div>
 
               <div class="col">
                 <div class="form-group">
                   <label for="register_number">CET/COMEDK Fees Receipt Date</label>
-                  <input type="text" name="cet_fee_recp_date" id="cet_fee_recp_date" class="form-control" placeholder="Enter Cet Fee Receipt Date">
-                  <span class="text-danger"><?php echo form_error('cet_fee_recp_date'); ?></span>
+                  <input type="text" name="cet_fee_recpt_date" id="cet_fee_recpt_date" class="form-control" placeholder="Enter Cet Fee Receipt Date">
+                  <span class="text-danger"><?php echo form_error('cet_fee_recpt_date'); ?></span>
                 </div>
               </div>
 
