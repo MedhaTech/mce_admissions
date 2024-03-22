@@ -3,16 +3,16 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
+        <div class="row">
+          <!-- <div class="col-sm-6">
             <h4><?= $currentAcademicYear . ' ' . $page_title; ?></h4>
-          </div>
-          <div class="col-sm-6">
+          </div> -->
+          <!-- <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active"><?= $page_title; ?></li>
             </ol>
-          </div>
+          </div> -->
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -23,7 +23,7 @@
 
         <!-- <h1 class="h3 mb-2 text-gray-800"> Grievance Tickets </h1> -->
 
-        <div class="card shadow mb-4">
+        <div class="card shadow">
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary"><?= $page_title; ?></h6>
           </div>
@@ -34,21 +34,21 @@
 
             <div class="form-row">
 
-              <div class="col">
+              <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                   <label for="student_name">Student Full Name (As per SSLC)</label>
                   <input type="text" name="student_name" id="student_name" class="form-control" value="<?php echo (set_value('student_name')) ? set_value('student_name') : $student_name; ?>">
                   <span class="text-danger"><?php echo form_error('student_name'); ?></span>
                 </div>
               </div>
-              <div class="col">
+              <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                   <label for="text">Student Mobile</label>
                   <input type="number" name="mobile" id="mobile" class="form-control" value="<?php echo (set_value('mobile')) ? set_value('mobile') : $mobile; ?>">
                   <span class="text-danger"><?php echo form_error('mobile'); ?></span>
                 </div>
               </div>
-              <div class="col">
+              <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                   <label for="email">Student Email</label>
                   <input type="text" name="email" id="email" class="form-control" value="<?php echo (set_value('email')) ? set_value('email') : $email; ?>">
@@ -60,21 +60,21 @@
 
             <div class="form-row">
 
-              <div class="col">
+              <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                   <label for="par_name">Parent/Guardian Name</label>
                   <input type="text" name="par_name" id="par_name" class="form-control" value="<?php echo (set_value('par_name')) ? set_value('par_name') : $par_name; ?>">
                   <span class="text-danger"><?php echo form_error('par_name'); ?></span>
                 </div>
               </div>
-              <div class="col">
+              <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                   <label for="text">Parent/Guardian Mobile</label>
                   <input type="number" name="par_mobile" id="par_mobile" class="form-control" value="<?php echo (set_value('par_mobile')) ? set_value('par_mobile') : $par_mobile; ?>">
                   <span class="text-danger"><?php echo form_error('par_mobile'); ?></span>
                 </div>
               </div>
-              <div class="col">
+              <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                   <label for="email">Parent/Guardian Email</label>
                   <input type="text" name="par_email" id="par_email" class="form-control" value="<?php echo (set_value('par_email')) ? set_value('par_email') : $par_email; ?>">
@@ -87,14 +87,14 @@
             <div class="form-row">
 
 
-              <div class="col">
+              <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                   <label for="exam_board">SSLC Percentage/Grade</label>
                   <input type="text" name="sslc_grade" id="sslc_grade" class="form-control" value="<?php echo (set_value('sslc_grade')) ? set_value('sslc_grade') : $sslc_grade; ?>">
                   <span class="text-danger"><?php echo form_error('sslc_grade'); ?></span>
                 </div>
               </div>
-              <div class="col">
+              <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                   <label for="register_number">PUC-I(10+1) Percentage/Grade</label>
                   <input type="text" name="puc1_grade" id="puc1_grade" class="form-control" value="<?php echo (set_value('puc1_grade')) ? set_value('puc1_grade') : $puc1_grade; ?>">
@@ -102,7 +102,7 @@
                 </div>
               </div>
 
-              <div class="col">
+              <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                   <label for="register_number">PUC-II(10+2) Percentage/Grade</label>
                   <input type="text" name="puc2_grade" id="puc2_grade" class="form-control" value="<?php echo (set_value('puc2_grade')) ? set_value('puc2_grade') : $puc2_grade; ?>">
@@ -112,7 +112,7 @@
 
             </div>
             <div class="form-row">
-              <div class="col">
+              <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                   <label for="dsc-1">State </label>
                   <?php $state_options = array("" => "Select", "Karnataka" => "Karnataka");
@@ -120,25 +120,34 @@
                   <span class="text-danger"><?php echo form_error('state'); ?></span>
                 </div>
               </div>
-              <div class="col">
+              <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                   <label for="dsc-2">City </label>
                   <input type="text" name="city" id="city" class="form-control" value="<?php echo (set_value('city')) ? set_value('city') : $city; ?>">
                   <span class="text-danger"><?php echo form_error('city'); ?></span>
                 </div>
               </div>
+              <div class="col-md-4 col-sm-12">
+                <div class="form-group">
+                  <label for="dsc-2">Category</label>
+                  <?php
+                  echo form_dropdown('category', $type_options, '', 'class="form-control input-xs" id="category"');
+                  ?>
+                  <span class="text-danger"><?php echo form_error('category'); ?></span>
+                </div>
+              </div>
 
             </div>
             <div class="form-row">
 
-              <div class="col">
+              <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                   <label for="dsc-2">Adhaar Number </label>
                   <input type="text" name="adhaar" id="adhaar" class="form-control" value="<?php echo (set_value('adhaar')) ? set_value('adhaar') : $adhaar; ?>">
                   <span class="text-danger"><?php echo form_error('adhaar'); ?></span>
                 </div>
               </div>
-              <div class="col">
+              <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                   <label for="dsc-2">Gender </label>
                   <?php $gender_options = array(" " => "Select Gender", "Male" => "Male", "Female" => "Female", "Not Prefer to Say" => "Not Prefer to Say");
@@ -147,19 +156,18 @@
                   <span class="text-danger"><?php echo form_error('gender'); ?></span>
                 </div>
               </div>
-              <div class="col">
+              <div class="col-md-4 col-sm-12">
                 <div class="form-group">
-                <label class="label">Sports/Cultural Activities<span class="text-danger">*</span></label>
-                                                        <?php $sports_options = array(" "=>"Select Sports","State"=>"State","National"=>"National","International"=>"International");
-                                                            echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : 'sports', 'class="form-control " id="sports"'); 
-                                                        ?>
-                                                        <span
-                                                            class="text-danger"><?php echo form_error('sports'); ?></span>
+                    <label class="label">Sports/Cultural Activities<span class="text-danger">*</span></label>
+                    <?php $sports_options = array(" "=>"Select Sports","State"=>"State","National"=>"National","International"=>"International");
+                    echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : 'sports', 'class="form-control " id="sports"'); 
+                    ?>
+                    <span  class="text-danger"><?php echo form_error('sports'); ?></span>                                                  
                 </div>
               </div>
             </div>
             <div class="form-row">
-              <div class="col">
+              <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                   <label for="course">Branch Preference-I
                   </label>
@@ -168,7 +176,7 @@
                   <span class="text-danger"><?php echo form_error('course'); ?></span>
                 </div>
               </div>
-              <div class="col">
+              <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                   <label for="course">Branch Preference-II
                   </label>
@@ -177,7 +185,7 @@
                   <span class="text-danger"><?php echo form_error('course1'); ?></span>
                 </div>
               </div>
-              <div class="col">
+              <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                   <label for="course">Branch Preference-III
                   </label>

@@ -103,6 +103,7 @@ class Admin extends CI_Controller
 			$data['academicYear'] = $this->globals->academicYear();
 
 			$data['course_options'] = array(" " => "Select") + $this->courses();
+			$data['type_options'] = array(" " => "Select") + $this->globals->category();
 
 			// $this->form_validation->set_rules('academic_year', 'Academic Year', 'required');
 			$this->form_validation->set_rules('student_name', 'Applicant Name', 'required');
@@ -118,6 +119,7 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('course2', 'Branch Preference-III', 'required');
 			$this->form_validation->set_rules('state', 'State', 'required');
 			$this->form_validation->set_rules('city', 'City', 'required');
+			$this->form_validation->set_rules('category', 'Category', 'required');
 			$this->form_validation->set_rules('sports', 'Sports', 'required');
 			$this->form_validation->set_rules('adhaar', 'Adhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.adhaar]');
 			$this->form_validation->set_rules('puc1_grade', 'PUC-I(10+1) Percentage/Grade', 'required');
@@ -139,6 +141,7 @@ class Admin extends CI_Controller
 				$data['course2'] = $this->input->post('course2');
 				$data['state'] = $this->input->post('state');
 				$data['city'] = $this->input->post('city');
+				$data['category'] = $this->input->post('category');
 				$data['sports'] = $this->input->post('sports');
 				$data['sslc_grade'] = $this->input->post('sslc_grade');
 				$data['puc1_grade'] = $this->input->post('puc1_grade');
@@ -170,6 +173,7 @@ class Admin extends CI_Controller
 					'course2' => $course2,
 					'state' => $this->input->post('state'),
 					'city' => $this->input->post('city'),
+					'category' => $this->input->post('category'),
 					'sports' => $this->input->post('sports'),
 					'gender' => $this->input->post('gender'),
 					'adhaar' => $this->input->post('adhaar'),

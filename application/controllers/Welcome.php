@@ -21,6 +21,7 @@ class Welcome extends CI_Controller {
 			$data['activeMenu'] = "home";
 			$data['course_options'] = array(" " => "Select Branch") + $this->courses();
 			$data['states'] = array(" " => "Select State") + $this->globals->states();
+			$data['type_options'] = array(" " => "Select") + $this->globals->category();
 			
 	//Including validation library
 				$this->load->library('form_validation');
@@ -44,6 +45,7 @@ class Welcome extends CI_Controller {
 				$this->form_validation->set_rules('sports', 'Sports', 'required');
 				$this->form_validation->set_rules('adhaar', 'Adhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.adhaar]');
 				$this->form_validation->set_rules('gender', 'Gender', 'required');
+				$this->form_validation->set_rules('category', 'Category', 'required');
 	
 				if ($this->form_validation->run() === FALSE) {
 					$data['action'] = 'welcome';
@@ -64,7 +66,7 @@ class Welcome extends CI_Controller {
 					$data['sports'] = $this->input->post('sports');
 					$data['adhaar'] = $this->input->post('adhaar');
 					$data['gender'] = $this->input->post('gender');
-	
+					$data['category'] = $this->input->post('category');
 					
 				
 
@@ -99,6 +101,7 @@ class Welcome extends CI_Controller {
 				'sports' => $this->input->post('sports'),
 				'adhaar' => $this->input->post('adhaar'),
 				'gender' => $this->input->post('gender'),
+				'category' => $this->input->post('category'),
 				'status' => '1',
 				'reg_date' => date('Y-m-d H:i:s')
 				);
