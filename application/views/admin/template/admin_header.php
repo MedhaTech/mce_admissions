@@ -29,7 +29,7 @@
     <link rel="stylesheet"
         href="<?php echo base_url(); ?>assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/adminlte.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/adminlte.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet"
         href="<?php echo base_url(); ?>assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
@@ -74,15 +74,12 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="<?php echo base_url(); ?>admin/dashboard" class="brand-link">
-
-                <span class="brand-text font-weight-light">Admin</span>
+                <span class="brand-text font-weight-light">Campus</span>
             </a>
 
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
-
-
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
@@ -99,13 +96,48 @@
                                 </p>
                             </a>
                         </li>
-
+                        <li class="nav-header">ENQUIRIES</li>
+                        <!-- <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    All Enquiries
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="pages/charts/chartjs.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>ChartJS</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/flot.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Flot</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/inline.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Inline</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/uplot.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>uPlot</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li> -->
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/Enquiries"
                                 class="nav-link <?= $menu_active = ($menu == "enquiries") ? 'active' : ''; ?>">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <i class="nav-icon fas fa-th"></i>
                                 <p>
-                                    Enquiries
+                                    All Enquiries
                                 </p>
                             </a>
                         </li>
@@ -113,28 +145,36 @@
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/newEnquiry"
                                 class="nav-link <?= $menu_active = ($menu == "newEnquiry") ? 'active' : ''; ?>">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <i class="nav-icon fas fa-plus"></i>
                                 <p>
                                     New Enquiry
 
                                 </p>
                             </a>
                         </li>
-
+                        <li class="nav-header">SETTINGS</li>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/feestructure"
                                 class="nav-link <?= $menu_active = ($menu == "feestructure") ? 'active' : ''; ?>">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <i class="nav-icon fas fa-bars"></i>
                                 <p>
                                     Fee Structure
 
                                 </p>
                             </a>
                         </li>
-
+                        <li class="nav-item ">
+                            <a href="<?php echo base_url(); ?>admin/feestructure"
+                                class="nav-link <?= $menu_active = ($menu == "changePassword") ? 'active' : ''; ?>">
+                                <i class="nav-icon fas fa-fingerprint"></i>
+                                <p>
+                                    Change Password
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/logout" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
                                 <p>
                                     Logout
 

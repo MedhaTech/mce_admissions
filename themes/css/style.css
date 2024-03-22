@@ -75,8 +75,8 @@
 /**
  * Reset Styels
  */
-@import url("https://fonts.googleapis.com/css?family=Montserrat:400,400i,500,600,700,800,900|Poppins:300,400,500,600,700,700i&display=swap");
-
+@import url("https://fonts.googleapis.com/css?family=Nunito:400,400i,500,600,700,800,900|Poppins:300,400,500,600,700,700i&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -4323,7 +4323,7 @@ Copyright (c) 2015 Daniel Eden
     Google Font  
 ===================================*/
 /*----------------------------------------
-font-family: 'Montserrat', sans-serif;
+font-family: 'Nunito', sans-serif;
 font-family: 'Poppins', sans-serif;
 
 -------------------------------------*/
@@ -12457,7 +12457,7 @@ Footer Styles
   color: #ffffff;
   font-size: 75px;
   font-weight: 900;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Nunito", sans-serif;
   line-height: 90px;
 }
 
@@ -14513,7 +14513,7 @@ Slider Styles
   font-size: 125px;
   font-weight: 900;
   text-transform: uppercase;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Nunito", sans-serif;
   font-weight: 900;
   line-height: 130px;
 }
@@ -14818,7 +14818,7 @@ Slider Styles
   color: #1f1f25;
   font-size: 75px;
   font-weight: 900;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Nunito", sans-serif;
   line-height: 90px;
   text-transform: inherit;
   width: 70%;
@@ -16050,7 +16050,7 @@ Call To Action Wrapper
   color: #ffffff;
   font-size: 75px;
   font-weight: 900;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Nunito", sans-serif;
   line-height: 90px;
 }
 
