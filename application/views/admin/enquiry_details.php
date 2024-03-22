@@ -3,16 +3,16 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
+        <div class="row">
+          <!-- <div class="col-sm-6">
             <h4></h4>
-          </div>
-          <div class="col-sm-6">
+          </div> -->
+          <!-- <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active"><?= $page_title; ?></li>
             </ol>
-          </div>
+          </div> -->
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -20,7 +20,17 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        
+
+        <?php if ($this->session->flashdata('message')) { ?>
+          <div align="center" class="alert <?= $this->session->flashdata('status'); ?>" id="msg">
+            <?php echo $this->session->flashdata('message') ?>
+          </div>
+        <?php } ?>
+
+        <div class="card mb-4 border-top-<?= $enquiryStatusColor[$enquiryDetails->status]; ?>">
+          <div class="card-body">
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
           <div class="col-md-6 text-left">
             <span class="badge badge-<?= $enquiryStatusColor[$enquiryDetails->status]; ?>"><?= $enquiryStatus[$enquiryDetails->status]; ?></span>
             <h1 class="h4 mb-0 text-gray-800"><?= $enquiryDetails->student_name . ' Details'; ?></h1>
@@ -32,29 +42,20 @@
                   <span class="icon text-white-50">
                     <i class="fas fa-lock"></i>
                   </span>
-                  <span class="text">Block Seat</span>
+                  <span class="text"> Block Seat</span>
                 </button>
                 <button class="btn btn-info btn-sm btn-icon-split" id="admit_student" name="admit_student">
                   <span class="icon text-white-50">
                     <i class="fas fa-user"></i>
                   </span>
-                  <span class="text">Admit Student</span>
+                  <span class="text"> Admit Student</span>
                 </button>
               <?php } ?>
-              <?php echo anchor('admin/editEnquiry/' . $enquiryDetails->id, '<span class="icon"><i class="fas fa-edit"></i></span><span class="text">Edit</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
+              <?php echo anchor('admin/editEnquiry/' . $enquiryDetails->id, '<span class="icon"><i class="fas fa-edit"></i></span> <span class="text">Edit</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
             <?php } ?>
-            <?php echo anchor('admin/enquiries', '<span class="icon"><i class="fas fa-arrow-left"></i></span><span class="text">Back to List</span>', 'class="btn btn-secondary btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
+            <?php echo anchor('admin/enquiries', '<span class="icon"><i class="fas fa-arrow-left"></i></span> <span class="text">Back to List</span>', 'class="btn btn-secondary btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
           </div>
         </div>
-
-        <?php if ($this->session->flashdata('message')) { ?>
-          <div align="center" class="alert <?= $this->session->flashdata('status'); ?>" id="msg">
-            <?php echo $this->session->flashdata('message') ?>
-          </div>
-        <?php } ?>
-
-        <div class="card mb-4 border-top-<?= $enquiryStatusColor[$enquiryDetails->status]; ?>">
-          <div class="card-body">
             <table class="table">
               <tr>
                 <th width="20%">Applicant Name</th>
@@ -109,6 +110,10 @@
               <tr>
                 <th>City</th>
                 <td><?= $enquiryDetails->city; ?></td>
+              </tr>
+              <tr>
+                <th>Category</th>
+                <td><?= $enquiryDetails->category; ?></td>
               </tr>
               <tr>
                 <th>SSLC Percentage/Grade</th>
