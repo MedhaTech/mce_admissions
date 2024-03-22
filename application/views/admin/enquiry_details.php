@@ -257,20 +257,40 @@
                   <div class="col">
                     <div class="form-group">
                       <label class="form-label">Corpus Fund</label>
-                      <input type="number" class="form-control" id="corpus_fee" name="corpus_fee" placeholder="Corpus Fee" min="0" value="0">
+                      <input type="text" class="form-control" id="corpus_fee" name="corpus_fee" placeholder="Corpus Fee" readonly>
                     </div>
                   </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Finalised Fee</label>
+                      <input type="text" class="form-control" id="proposed_amount" name="proposed_amount" placeholder="Finalised Fee" readonly>
+                    </div>
+                  </div>
+                  
 
 
                 </div>
 
                 <div class="form-row">
-
-
+                
                   <div class="col">
                     <div class="form-group">
-                      <label class="form-label">Finalised Fee</label>
-                      <input type="text" class="form-control" id="final_amount" name="final_amount" placeholder="Enter Finalized Fee" readonly>
+                      <label class="form-label">Concession Type</label>
+                      <?php $concession_type_options = array("" => "Select", "Sports Quota" => "Sports Quota", "Management Quota" => "Management Quota");
+                      echo form_dropdown('concession_type', $concession_type_options, '', 'class="form-control input-xs" id="concession_type"'); ?>
+
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Concession Amount (if any)</label>
+                      <input type="text" class="form-control" id="concession_fee" name="concession_fee" placeholder="Enter Concession Fee" value="0">
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Payable Fee</label>
+                      <input type="text" class="form-control" id="final_amount" name="final_amount" placeholder="Payable Fee" readonly>
                     </div>
                   </div>
 
@@ -448,7 +468,8 @@
             'success': function(data) {
               $('#demand_fee_total').val(data.total_demand);
               var demand = data.total_demand;
-              var corpus = $("#corpus_fee").val();
+              $('#corpus_fee').val(data.corpus_fund);
+              var corpus = data.corpus_fund;
               var proposed = parseInt(demand) + parseInt(corpus);
               $('#proposed_amount').val(proposed);
               var final_amount = finalAmount();
@@ -485,8 +506,8 @@
         var demand = $("#demand_fee_total").val();
         var corpus = $("#corpus_fee").val();
         var proposed = parseInt(demand) + parseInt(corpus);
-       
-        var final_amount = parseInt(proposed);
+        var concession_fee = $("#concession_fee").val();
+        var final_amount = parseInt(proposed) - parseInt(concession_fee);
         return final_amount;
       }
 
