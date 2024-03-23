@@ -300,8 +300,7 @@
 
                                       <div class="form-group row">
                                           <label for="staticEmail"
-                                              class="col-md-5 col-form-label text-right font-weight-bold">TOTAL
-                                              DEMAND</label>
+                                              class="col-md-5 col-form-label text-right font-weight-bold">TOTAL COLLEGE FEE</label>
                                           <div class="col-md-7">
                                               <input type="text" name="total_demand" id="total_demand"
                                                   class="form-control"

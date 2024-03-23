@@ -172,6 +172,12 @@
                             </a>
                         </li>
                         <li class="nav-item ">
+                            <a href="<?php echo base_url(); ?>admin/reports" class="nav-link <?= $menu_active = ($menu == "reports") ? 'active' : ''; ?>">
+                                <i class="nav-icon fas fa-chart-pie"></i>
+                                <p>Reports</p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/feestructure" class="nav-link <?= $menu_active = ($menu == "changePassword") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-fingerprint"></i>
                                 <p>
