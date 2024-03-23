@@ -255,8 +255,8 @@
                 <div class="form-row">
                   <div class="col">
                     <div class="form-group">
-                      <label class="form-label">Tution Fee</label>
-                      <input type="text" class="form-control" id="demand_fee_total" name="demand_fee_total" placeholder="Total demand fee" readonly>
+                      <label class="form-label">College Fee</label>
+                      <input type="text" class="form-control" id="demand_fee_total" name="demand_fee_total" placeholder="Total College fee" readonly>
                     </div>
                   </div>
                   <div class="col">
@@ -367,7 +367,7 @@
                   <div class="col">
                     <div class="form-group">
                       <label class="form-label">Tution Fee</label>
-                      <input type="text" class="form-control" id="demand_fee_total" name="demand_fee_total" placeholder="Total demand fee" readonly>
+                      <input type="text" class="form-control" id="demand_fee_total" name="demand_fee_total" placeholder="Total College fee" readonly>
                     </div>
                   </div>
                   <div class="col">

@@ -104,12 +104,13 @@ class Admin extends CI_Controller
 
 			$data['course_options'] = array(" " => "Select") + $this->courses();
 			$data['type_options'] = array(" " => "Select") + $this->globals->category();
+			$data['states'] = array(" " => "Select State") + $this->globals->states();
 
 			// $this->form_validation->set_rules('academic_year', 'Academic Year', 'required');
 			$this->form_validation->set_rules('student_name', 'Applicant Name', 'required');
 
 			$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]|is_unique[enquiries.mobile]');
-			$this->form_validation->set_rules('email', 'Email', 'trim|valid_email');
+			$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
 			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
 			$this->form_validation->set_rules('par_name', 'Applicant Name', 'required');
 
@@ -119,6 +120,7 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('course2', 'Branch Preference-III', 'required');
 			$this->form_validation->set_rules('state', 'State', 'required');
 			$this->form_validation->set_rules('city', 'City', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
 			$this->form_validation->set_rules('category', 'Category', 'required');
 			$this->form_validation->set_rules('sports', 'Sports', 'required');
 			$this->form_validation->set_rules('adhaar', 'Adhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.adhaar]');
@@ -618,7 +620,7 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('tution_fee', 'Tution Fee', 'numeric|required');
 			$this->form_validation->set_rules('college_other_fee', 'COLLEGE OTHER FEE', 'numeric|required');
 			$this->form_validation->set_rules('total_tution_fee', 'TOTAL TUTION FEE', 'numeric|required');
-			$this->form_validation->set_rules('total_demand', 'TOTAL DEMAND', 'numeric|required');
+			$this->form_validation->set_rules('total_demand', 'TOTAL COLLEGE FEE', 'numeric|required');
 			$this->form_validation->set_rules('skill_development_fee', 'Skill Development Fee', 'numeric|required');
 			$this->form_validation->set_rules('corpus_fund', 'Corpus Fund', 'numeric|required');
 
@@ -666,11 +668,22 @@ class Admin extends CI_Controller
 				}
 
 				redirect('admin/feestructure', 'refresh');
-
 			}
-			
- 			
-			
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+	function reports()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['username'] = $session_data['username'];
+			$data['page_title'] = "Reports";
+			$data['menu'] = "reports";
+
+			$this->admin_template->show('admin/reports',$data);
+
 		} else {
 			redirect('admin', 'refresh');
 		}

@@ -188,7 +188,7 @@
                                                 <div class="row">
                                                     <div class="form-group col-md-4 col-sm-12">
                                                         <label class="state">State<span class="text-danger">*</span></label>
-                                                        <?php $state_options = array(""=>"Select State","Anadhra Pradesh" => "Andhra Pradesh");
+                                                        <?php 
                                                             echo form_dropdown('state', $states, (set_value('state')) ? set_value('state') : $state, 'class="form-control form-control-sm" id="state"'); 
                                                         ?>
                                                         <span
