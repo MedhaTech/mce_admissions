@@ -111,7 +111,7 @@
         </li>
 
         <li class="nav-item ">
-          <a href="<?php echo base_url();?>student/dashboard" class="nav-link <?=$menu_active = ($menu == "dashboard")? 'active' :''; ?>">
+          <a href="<?php echo base_url();?>student/admissionfee" class="nav-link <?=$menu_active = ($menu == "dashboard")? 'active' :''; ?>">
           <i class="nav-icon far fa-circle text-danger"></i>
             <p>
             Admission Fee
@@ -156,7 +156,7 @@
         </li>
 
         <li class="nav-item ">
-          <a href="<?php echo base_url();?>student/dashboard" class="nav-link <?=$menu_active = ($menu == "dashboard")? 'active' :''; ?>">
+          <a href="<?php echo base_url();?>student/finish" class="nav-link <?=$menu_active = ($menu == "finish")? 'active' :''; ?>">
           <i class="nav-icon far fa-circle text-info"></i>
             <p>
               Finish
