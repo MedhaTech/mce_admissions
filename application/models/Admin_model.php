@@ -227,6 +227,7 @@ class Admin_model extends CI_Model
     $this->db->order_by('puc1_grade', 'DESC');
     return $this->db->get('enquiries');
   }
+ 
   function getEnquiries_non($academic_year)
   {
     $this->db->where('academic_year', $academic_year);
@@ -256,4 +257,12 @@ class Admin_model extends CI_Model
     $this->db->order_by('reg_date', 'DESC');
     return $this->db->get('enquiries');
   }
+ 
+
+  function getDepartments(){
+    $this->db->select('departments.department_id, departments.stream_id, streams.stream_name, streams.stream_short_name, departments.department_name, departments.department_short_name, departments.intake, departments.mgmt_intake, departments.college_intake, departments.comed_k_intake, departments.kea_intake');
+    $this->db->join('streams','streams.stream_id = departments.stream_id');
+    return $this->db->get('departments');
+  }
 }
+ 

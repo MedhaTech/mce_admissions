@@ -106,6 +106,32 @@ class Student extends CI_Controller {
 		}
 	}
 
+	function finish()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['username'] = $session_data['username'];
+			$data['pageTitle'] = "Finish";
+			$data['activeMenu'] = "finish";
+			$this->student_template->show('student/finish');
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+	function admissionfee()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['username'] = $session_data['username'];
+			$data['pageTitle'] = "Admissionfee";
+			$data['activeMenu'] = "admissionfee";
+			$this->student_template->show('student/admission_fee');
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
 	function logout()
 	{
 		$this->session->unset_userdata('logged_in');
