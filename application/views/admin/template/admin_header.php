@@ -145,7 +145,7 @@
                         <li class="nav-header">ADMISSIONS</li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-pie"></i>
+                                <i class="nav-icon fas fa-table"></i>
                                 <p>
                                     Admissions
                                     <i class="right fas fa-angle-left"></i>
@@ -156,6 +156,48 @@
                                     <a href="<?php echo base_url(); ?>admin/admissions" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>All Admissions</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url(); ?>admin/admissions/1" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Processing</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url(); ?>admin/admissions/2" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Submitted</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url(); ?>admin/admissions/3" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>On-hold</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url(); ?>admin/admissions/4" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Confirmed</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url(); ?>admin/admissions/5" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Rejected</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url(); ?>admin/admissions/6" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Cancelled</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url(); ?>admin/admissions/7" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Archieved</p>
                                     </a>
                                 </li>
                               

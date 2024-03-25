@@ -51,7 +51,7 @@
 									
 										$row['stream_short_name'] . ' - ' . $enquiries1->department_name,
                                         '<span class="badge bg-success">'.$count.'/'.$enquiries1->intake.'</span>',
-                                        '<span class="badge bg-success">'.$count.'/'.$enquiries1->management_intake.'</span>'
+                                        '<span class="badge bg-success">'.$count.'/'.$enquiries1->mgmt_intake.'</span>'
 									);
 									$this->table->add_row($result_array);
 								}

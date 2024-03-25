@@ -210,4 +210,21 @@ class Admin_model extends CI_Model
     $this->db->where('quota', $id);
     return $this->db->get("fee_structure");
   }
+  function fetchDetails2($select, $field1, $value1, $field2, $value2, $tableName){
+    $this->db->select($select);
+    if($value1 != null){
+      $this->db->where($field1,$value1);
+    }
+    if($value2 != null){
+      $this->db->where($field2,$value2);
+    }
+    return $this->db->get($tableName);
+  }
+
+  function getEnquiries_per($academic_year)
+  {
+    $this->db->where('academic_year', $academic_year);
+    $this->db->order_by('puc1_grade', 'DESC');
+    return $this->db->get('enquiries');
+  }
 }
