@@ -11,7 +11,7 @@
                           <ul class="nav nav-pills ml-auto">
                               <li class="nav-item">
                                   <button class="btn btn-danger btn-sm" id="get_details" type="submit">Download</button>
-                                  <!-- <?php echo anchor('admin/report/1/1', '<span class="icon"><i class="fas fa-plus"></i></span><span class="text">Download</span>', 'class="btn btn-dark btn-sm" id="get_details'); ?> -->
+                                  <?php echo anchor('admin/reports', '<span class="icon"><i class="fas fa-arrow-left"></i></span> <span class="text">Back to List</span>', 'class="btn btn-secondary btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
                               </li>
                               <!-- <li class="nav-item">
                                   <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
@@ -143,7 +143,52 @@
                   });
 
               }
+              if (report == "5") {
+                  $.ajax({
+                      'type': 'POST',
+                      'url': base_url + 'admin/report/5/1',
+                      'data': {
+                          'report': report
+                      },
+                      'dataType': 'json',
+                      'cache': false,
+                      'success': function(data) {
+                          var filename = "⁠Non-Karnataka Enquiries Report.xls";
+                          var $a = $("<a>");
+                          $a.attr("href", data.file);
+                          $("body").append($a);
+                          $a.attr("download", filename);
+                          $a[0].click();
+                          $a.remove();
+                          $("#get_details").html('Download');
+                          $("#get_details").prop('disabled', false);
+                      }
+                  });
 
+              }
+              if (report == "6") {
+                  $.ajax({
+                      'type': 'POST',
+                      'url': base_url + 'admin/report/6/1',
+                      'data': {
+                          'report': report
+                      },
+                      'dataType': 'json',
+                      'cache': false,
+                      'success': function(data) {
+                          var filename = "⁠Sports Quota Enquiries Report.xls";
+                          var $a = $("<a>");
+                          $a.attr("href", data.file);
+                          $("body").append($a);
+                          $a.attr("download", filename);
+                          $a[0].click();
+                          $a.remove();
+                          $("#get_details").html('Download');
+                          $("#get_details").prop('disabled', false);
+                      }
+                  });
+
+              }
 
 
           });

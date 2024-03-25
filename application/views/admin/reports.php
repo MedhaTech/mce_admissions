@@ -10,7 +10,7 @@
                           <div class="card">
                               <div class="card-header">
                                   <h3 class="card-title">
-                                      Reports List
+                                      Enquiries Report
                                   </h3>
                               </div>
                               <div class="card-body">
@@ -19,10 +19,10 @@
                                       <li><?php echo anchor('admin/report/2', 'More than 45% PUC Enquiries List'); ?> </li>
                                       <li><?php echo anchor('admin/report/3', 'Less than 45% PUC Enquiries List'); ?> </li>
                                       <li><?php echo anchor('admin/report/4', 'PUC % wise report '); ?> </li>
-                                      <li><?php echo anchor('admin/report/5', '⁠Interested Course wise Report'); ?> </li>
-                                      <li><?php echo anchor('admin/report/6', '⁠Non-Karnataka Enquires List'); ?> </li>
-                                      <li><?php echo anchor('admin/report/7', '⁠Category wise Enquires List'); ?> </li>
-                                      <li><?php echo anchor('admin/report/8', '⁠Sports Quota Enquires List'); ?> </li>
+                                      <li><?php echo anchor('admin/report_department', '⁠Interested Course wise Report'); ?> </li>
+                                      <li><?php echo anchor('admin/report/5', '⁠Non-Karnataka Enquires List'); ?> </li>
+                                      <li><?php echo anchor('admin/report/report_category', '⁠Category wise Enquires List'); ?> </li>
+                                      <li><?php echo anchor('admin/report/6', '⁠Sports Quota Enquires List'); ?> </li>
 
 
                                   </ul>
@@ -30,7 +30,55 @@
                           </div>
 
                       </div>
+                      
+                      <div class="col-lg-6">
+                          <div class="card">
+                              <div class="card-header">
+                                  <h3 class="card-title">
+                                      Accounts Report
+                                  </h3>
+                              </div>
+                              <div class="card-body">
+                                  <ul>
 
+
+                                      <li><?php echo anchor('', 'Day Book Report'); ?> </li>
+                                      <li><?php echo anchor('', 'DCB Report'); ?> </li>
+                                      <li><?php echo anchor('', 'Student wise Fee Report'); ?> </li>
+                                      <li><?php echo anchor('', 'Fee Balance Report'); ?> </li>
+                                      <li><?php echo anchor('', 'Corpus Fund Overall Fee Report'); ?> </li>
+                                      <li><?php echo anchor('', 'Corpus Fund Balance Fee Report'); ?> </li>
+
+
+
+                                  </ul>
+                              </div>
+                          </div>
+
+                      </div>
+                      <div class="col-lg-6">
+                          <div class="card">
+                              <div class="card-header">
+                                  <h3 class="card-title">
+                                      Admissions Report
+                                  </h3>
+                              </div>
+                              <div class="card-body">
+                                  <ul>
+
+                                      <li><?php echo anchor('', 'Course wise Student Admitted Count'); ?> </li>
+                                      <li><?php echo anchor('', 'Students Details Report'); ?> </li>
+                                      <li><?php echo anchor('', 'Admission Scroll Report'); ?> </li>
+                                      <li><?php echo anchor('', 'Category wise Admissions Report'); ?> </li>
+                                      <li><?php echo anchor('', 'Admission Year Book'); ?> </li>
+
+
+
+                                  </ul>
+                              </div>
+                          </div>
+
+                      </div>
                   </div>
               </div>
           </div>
