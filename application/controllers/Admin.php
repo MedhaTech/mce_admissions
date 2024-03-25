@@ -550,6 +550,51 @@ class Admin extends CI_Controller
 		}
 	}
 
+	function departments()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['username'] = $session_data['username'];
+			$data['page_title'] = "Departments";
+			$data['menu'] = "departments";
+
+			$data['details'] = $this->admin_model->getDepartments()->result();
+			// print_r($details); die;
+			// $feeDetails = array();
+
+			// foreach ($fee_structure as $fee1) {
+			// 	$quota = $fee1->quota;
+
+			// 	if ($fee1->department_id) {
+			// 		$dept_name = $this->admin_model->getDetailsbyfield($fee1->department_id, 'department_id', 'departments')->row();
+			// 		$dept_name = $dept_name->department_name;
+			// 		$quota1 = $fee1->quota . ' - ' . $dept_name;
+			// 	} else {
+			// 		$quota1 = $fee1->quota;
+			// 	}
+			// 	if (array_key_exists($quota1, $feeDetails)) {
+			// 		if (array_key_exists($fee1->sub_quota, $feeDetails[$quota1])) {
+			// 			$category =  array("total_demand" => $fee1->total_demand, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
+			// 			array_push($feeDetails[$quota1][$fee1->sub_quota], $category);
+			// 		} else {
+			// 			$category =  array("total_demand" => $fee1->total_demand, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
+			// 			$feeDetails[$quota1][$fee1->sub_quota] = $category;
+			// 		}
+			// 	} else {
+			// 		$category = array("total_demand" => $fee1->total_demand, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
+			// 		$sub_quota =  array($fee1->sub_quota => $category);
+			// 		$feeDetails[$quota1] = $sub_quota;
+			// 	}
+			// }
+			// $data['feeDetails'] = $feeDetails;
+			// // print_r($feeDetails);d
+			$this->admin_template->show('admin/departments', $data);
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+
 	function feestructure()
 	{
 		if ($this->session->userdata('logged_in')) {
