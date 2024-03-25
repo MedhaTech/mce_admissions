@@ -114,7 +114,7 @@
           <a href="<?php echo base_url();?>student/dashboard" class="nav-link <?=$menu_active = ($menu == "dashboard")? 'active' :''; ?>">
           <i class="nav-icon far fa-circle text-danger"></i>
             <p>
-              Payment
+            Admission Fee
             </p>
           </a>
         </li>
