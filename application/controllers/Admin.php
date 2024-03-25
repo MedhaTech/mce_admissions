@@ -188,7 +188,7 @@ class Admin extends CI_Controller
 				);
 
 				$result = $this->admin_model->insertDetails('enquiries', $insertDetails);
-	
+
 				if ($result) {
 					$this->session->set_flashdata('message', 'Enquiry Details added successfully...!');
 					$this->session->set_flashdata('status', 'alert-success');
@@ -367,64 +367,62 @@ class Admin extends CI_Controller
 			$data['username'] = $sess['username'];
 			$data['role'] = $sess['role'];
 
-			
+
 			$data['page_title'] = 'Enquiries';
 			$data['menu'] = 'enquiries';
-			
-	        $comments = $this->input->post('comments');
-	        $status = $this->input->post('status');
-	        $old_status = $this->input->post('old_status');
-	        
-	        if($status != $old_status){
-	            $updateDetails = array('status' => $status);
-    	        $result = $this->admin_model->updateDetails('enquiries', $enq_id, $updateDetails);
-	        }
-	        
-	        $insertDetails = array('enq_id' => $enq_id,
- 	            				    'comments' => $this->input->post('comments'),
- 	            					'given_by' => $data['username'],
- 	            					'given_on' => date('Y-m-d h:i:s')
- 	        					);
 
-	        $result = $this->admin_model->insertDetails('enq_comments', $insertDetails);
-	        if($result){
-	            $this->session->set_flashdata('message', 'Comments updated successfully...!');
-	            $this->session->set_flashdata('status', 'alert-success');
-	        }else{
-	            $this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
-	            $this->session->set_flashdata('status', 'alert-warning');
-	        }
+			$comments = $this->input->post('comments');
+			$status = $this->input->post('status');
+			$old_status = $this->input->post('old_status');
 
-	        redirect('admin/enquiryDetails/'.$enq_id, 'refresh');
+			if ($status != $old_status) {
+				$updateDetails = array('status' => $status);
+				$result = $this->admin_model->updateDetails('enquiries', $enq_id, $updateDetails);
+			}
 
-	    }else{
-	      redirect('admin', 'refresh');
-	    }
+			$insertDetails = array(
+				'enq_id' => $enq_id,
+				'comments' => $this->input->post('comments'),
+				'given_by' => $data['username'],
+				'given_on' => date('Y-m-d h:i:s')
+			);
+
+			$result = $this->admin_model->insertDetails('enq_comments', $insertDetails);
+			if ($result) {
+				$this->session->set_flashdata('message', 'Comments updated successfully...!');
+				$this->session->set_flashdata('status', 'alert-success');
+			} else {
+				$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+				$this->session->set_flashdata('status', 'alert-warning');
+			}
+
+			redirect('admin/enquiryDetails/' . $enq_id, 'refresh');
+		} else {
+			redirect('admin', 'refresh');
+		}
 	}
 
-	function getFee(){
+	function getFee()
+	{
 		if ($this->session->userdata('logged_in')) {
 			$sess = $this->session->userdata('logged_in');
 			$data['id'] = $sess['id'];
 			$data['username'] = $sess['username'];
 			$data['role'] = $sess['role'];
 
-			if($this->input->post('quota')=="MGMT")
-			{
-				
+			if ($this->input->post('quota') == "MGMT") {
+
 				$course = $this->input->post('course');
+			} else {
+				$course = 0;
 			}
-			else
-			{
-				$course =0;
-			}
-			
+
 			$quota = $this->input->post('quota');
 			$sub_quota = $this->input->post('subquota');
-			
+
 			$details = $this->admin_model->getFee($course, $quota, $sub_quota)->row();
 			// var_dump($this->db->last_query());
-            // $details = [
+			// $details = [
 			// 	"aided_unaided" => "Aided",
 			// 	"category" => "2",
 			// 	"college_fee_total" => "6000",
@@ -434,13 +432,12 @@ class Admin extends CI_Controller
 			// 	"mgt_fee_total" => "9000",
 			// 	"total_fee" => "40800"
 			// ];
-			
-			print_r(json_encode($details));
 
-		}else {
-				redirect('admin/timeout');
+			print_r(json_encode($details));
+		} else {
+			redirect('admin/timeout');
 		}
-    }
+	}
 
 
 
@@ -451,83 +448,89 @@ class Admin extends CI_Controller
 			$data['id'] = $sess['id'];
 			$data['username'] = $sess['username'];
 			$data['role'] = $sess['role'];
-			
+
 			$data['page_title'] = 'Admit Studnet';
 			$data['menu'] = 'admissions';
-			
+
 			$id = $this->input->post('id');
 			$aided_unaided = $this->input->post('aided_unaided');
-			
+
 			$course = $this->input->post('course');
-		
-			
+
+
 			$course_val = $this->input->post('course_val');
-			
+
 			$category = $this->input->post('category');
-			
+
 			$college_fee_total = $this->input->post('college_fee_total');
 			$mgt_fee_total = $this->input->post('mgt_fee_total');
-			
-			$proposed_amount = $this->input->post('proposed_amount');   
-			$additional_amount = $this->input->post('additional_amount');   
-			$concession_type = $this->input->post('concession_type');   
-			$concession_fee = $this->input->post('concession_fee');   
-			$final_amount = $this->input->post('final_amount');   
-		
-			
+
+			$proposed_amount = $this->input->post('proposed_amount');
+			$additional_amount = $this->input->post('additional_amount');
+			$concession_type = $this->input->post('concession_type');
+			$concession_fee = $this->input->post('concession_fee');
+			$final_amount = $this->input->post('final_amount');
+
+
 			$currentAcademicYear = $this->globals->currentAcademicYear();
-            
-            $updateDetails = array('status' => '6');
-    	    $res = $this->admin_model->updateDetails($id, $updateDetails,'enquiries' );
-    	   
-    	    $app_number = $this->admin_model->getAppNo($currentAcademicYear)->row()->cnt;
-    	    $app_number = $app_number+1;
-            $strlen = strlen(($app_number));
-            if($strlen == 1){  $app_number = "000".$app_number; }
-            if($strlen == 2){  $app_number = "00".$app_number; }
-            if($strlen == 3){  $app_number = "0".$app_number; }
-    	    $app_no = date('y').$app_number;
-    	    
-            $enquiryDetails = $this->admin_model->getDetails('enquiries', $id)->row();
 
-            $OTP = strtoupper(substr(md5(time()), 0, 6));
-            
-            $insertDetails = array('flow' => '0',
-                                    'academic_year' => $enquiryDetails->academic_year,
-                                    'enq_id' => $id,
-                                    'app_no' => $app_no,
-                                    'course_id' => $course,
-                                    'course' => $course_val,
-                               
-                                    'student_name' => strtoupper($enquiryDetails->student_name),
-                                    'mobile' => $enquiryDetails->mobile,
-                                    'email' => strtolower($enquiryDetails->email),
-                                    'father_name' => strtoupper($enquiryDetails->father_name),
-                                    'exam_board' => $enquiryDetails->sslc_grade,
-                                    'register_number' => "12345",
- 	            					'password' => md5($OTP),
- 	            					'aided_unaided' => $aided_unaided,
- 	            					'category' => "12345",
- 	            					'college_fee_total' => $college_fee_total,
- 	            					'mgt_fee_total' => $mgt_fee_total,
- 	            					'proposed_amount' => $proposed_amount,
- 	            					'additional_amount' => $additional_amount,
- 	            					'concession_type' => $concession_type,
- 	            					'concession_fee' => $concession_fee,
- 	            					'final_amount' => $final_amount,
- 	            					'status' => '1',
- 	            					'admit_date' => date('Y-m-d h:i:s'),
- 	            					'admit_by' => $data['username']
- 	        					);
- 	        					
-            $result = $this->admin_model->insertDetails('admissions', $insertDetails);
-            
-            
-            print_r($this->db->last_query());
+			$updateDetails = array('status' => '6');
+			$res = $this->admin_model->updateDetails($id, $updateDetails, 'enquiries');
 
-	    }else{
-	      redirect('admin', 'refresh');
-	    }
+			$app_number = $this->admin_model->getAppNo($currentAcademicYear)->row()->cnt;
+			$app_number = $app_number + 1;
+			$strlen = strlen(($app_number));
+			if ($strlen == 1) {
+				$app_number = "000" . $app_number;
+			}
+			if ($strlen == 2) {
+				$app_number = "00" . $app_number;
+			}
+			if ($strlen == 3) {
+				$app_number = "0" . $app_number;
+			}
+			$app_no = date('y') . $app_number;
+
+			$enquiryDetails = $this->admin_model->getDetails('enquiries', $id)->row();
+
+			$OTP = strtoupper(substr(md5(time()), 0, 6));
+
+			$insertDetails = array(
+				'flow' => '0',
+				'academic_year' => $enquiryDetails->academic_year,
+				'enq_id' => $id,
+				'app_no' => $app_no,
+				'course_id' => $course,
+				'course' => $course_val,
+
+				'student_name' => strtoupper($enquiryDetails->student_name),
+				'mobile' => $enquiryDetails->mobile,
+				'email' => strtolower($enquiryDetails->email),
+				'father_name' => strtoupper($enquiryDetails->father_name),
+				'exam_board' => $enquiryDetails->sslc_grade,
+				'register_number' => "12345",
+				'password' => md5($OTP),
+				'aided_unaided' => $aided_unaided,
+				'category' => "12345",
+				'college_fee_total' => $college_fee_total,
+				'mgt_fee_total' => $mgt_fee_total,
+				'proposed_amount' => $proposed_amount,
+				'additional_amount' => $additional_amount,
+				'concession_type' => $concession_type,
+				'concession_fee' => $concession_fee,
+				'final_amount' => $final_amount,
+				'status' => '1',
+				'admit_date' => date('Y-m-d h:i:s'),
+				'admit_by' => $data['username']
+			);
+
+			$result = $this->admin_model->insertDetails('admissions', $insertDetails);
+
+
+			print_r($this->db->last_query());
+		} else {
+			redirect('admin', 'refresh');
+		}
 	}
 
 	function Enquirieslist()
@@ -554,37 +557,37 @@ class Admin extends CI_Controller
 			$data['username'] = $session_data['username'];
 			$data['page_title'] = "Fee Structure";
 			$data['menu'] = "feestructure";
-			
+
 			$fee_structure = $this->admin_model->getDetails('fee_structure', '')->result();
 			$feeDetails = array();
-			
-			foreach($fee_structure as $fee1){
-			$quota = $fee1->quota;    
-		
-			if($fee1->department_id){
-				$dept_name = $this->admin_model->getDetailsbyfield($fee1->department_id,'department_id','departments')->row();
-				$dept_name = $dept_name->department_name;
-				$quota1 = $fee1->quota.' - '.$dept_name;    
-			}else{
-				$quota1 = $fee1->quota;    
-			}
-			if (array_key_exists($quota1,$feeDetails)){
-				if(array_key_exists($fee1->sub_quota,$feeDetails[$quota1])){
-					$category =  array("total_demand" => $fee1->total_demand, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
-					array_push($feeDetails[$quota1][$fee1->sub_quota], $category);
-				}else{
-					$category =  array("total_demand" => $fee1->total_demand, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
-					$feeDetails[$quota1][$fee1->sub_quota] = $category;
+
+			foreach ($fee_structure as $fee1) {
+				$quota = $fee1->quota;
+
+				if ($fee1->department_id) {
+					$dept_name = $this->admin_model->getDetailsbyfield($fee1->department_id, 'department_id', 'departments')->row();
+					$dept_name = $dept_name->department_name;
+					$quota1 = $fee1->quota . ' - ' . $dept_name;
+				} else {
+					$quota1 = $fee1->quota;
 				}
-				} else{
+				if (array_key_exists($quota1, $feeDetails)) {
+					if (array_key_exists($fee1->sub_quota, $feeDetails[$quota1])) {
+						$category =  array("total_demand" => $fee1->total_demand, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
+						array_push($feeDetails[$quota1][$fee1->sub_quota], $category);
+					} else {
+						$category =  array("total_demand" => $fee1->total_demand, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
+						$feeDetails[$quota1][$fee1->sub_quota] = $category;
+					}
+				} else {
 					$category = array("total_demand" => $fee1->total_demand, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
 					$sub_quota =  array($fee1->sub_quota => $category);
 					$feeDetails[$quota1] = $sub_quota;
-				}	 
-		}
-		    $data['feeDetails']=$feeDetails;
+				}
+			}
+			$data['feeDetails'] = $feeDetails;
 			// print_r($feeDetails);
-			$this->admin_template->show('admin/fees_structure',$data);
+			$this->admin_template->show('admin/fees_structure', $data);
 		} else {
 			redirect('admin', 'refresh');
 		}
@@ -598,14 +601,14 @@ class Admin extends CI_Controller
 			$data['page_title'] = "Edit Fee Structure";
 			$data['menu'] = "feestructure";
 
-			$data['fee_structure'] = $this->admin_model->get_details_by_id($id,'id','fee_structure');
+			$data['fee_structure'] = $this->admin_model->get_details_by_id($id, 'id', 'fee_structure');
 
 			$this->form_validation->set_rules('e_learning_fee', 'E Learning Fee', 'numeric|required');
 			$this->form_validation->set_rules('eligibility_fee', 'Eligibility Fee', 'numeric|required');
 			$this->form_validation->set_rules('e_consortium_fee', 'e Consortium Fee', 'numeric|required');
 			$this->form_validation->set_rules('sport_fee', 'Sport Fee', 'numeric|required');
 			$this->form_validation->set_rules('sports_development_fee', 'Sports Development Fee', 'numeric|required');
-			$this->form_validation->set_rules('career_guidance_counseling_fee','Career Guidance & Counseling fee', 'numeric|required');
+			$this->form_validation->set_rules('career_guidance_counseling_fee', 'Career Guidance & Counseling fee', 'numeric|required');
 			$this->form_validation->set_rules('university_development_fund', 'University Development Fund', 'numeric|required');
 			$this->form_validation->set_rules('promotion_of_indian_cultural_activities_fee', 'Promotion of Indian Cultural Activities Fee', 'numeric|required');
 			$this->form_validation->set_rules('teachers_development_fee', 'Teachers Development Fee', 'numeric|required');
@@ -625,9 +628,9 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('corpus_fund', 'Corpus Fund', 'numeric|required');
 
 			if ($this->form_validation->run() === FALSE) {
-				$data['action'] = 'admin/editFeeStructure/' . $id;				
-				$this->admin_template->show('admin/editFeeStructure',$data);
-			}else{
+				$data['action'] = 'admin/editFeeStructure/' . $id;
+				$this->admin_template->show('admin/editFeeStructure', $data);
+			} else {
 
 				$updateDetails = array(
 					'e_learning_fee' => $this->input->post('e_learning_fee'),
@@ -655,7 +658,7 @@ class Admin extends CI_Controller
 					'corpus_fund' => $this->input->post('corpus_fund')
 				);
 
-				$result = $this->admin_model->updateDetails($id, $updateDetails,'fee_structure');
+				$result = $this->admin_model->updateDetails($id, $updateDetails, 'fee_structure');
 				// var_dump($this->db->last_query());
 				// die();
 
@@ -682,39 +685,221 @@ class Admin extends CI_Controller
 			$data['page_title'] = "Reports";
 			$data['menu'] = "reports";
 
-			$this->admin_template->show('admin/reports',$data);
-
+			$this->admin_template->show('admin/reports', $data);
 		} else {
 			redirect('admin', 'refresh');
 		}
 	}
 
-	function subquotaDropdown(){
+	function subquotaDropdown()
+	{
 		if ($this->session->userdata('logged_in')) {
 			$sess = $this->session->userdata('logged_in');
 			$data['id'] = $sess['id'];
 			$data['username'] = $sess['username'];
 			$data['role'] = $sess['role'];
-			
-			$quota = $this->input->post('quota');
-			
-			
-			$details = $this->admin_model->getsubquota($quota)->result();
-			
-			$result = array();
-		
-    	        $result[] = '<option value=" ">Select</option>';
-    	     			    
-			foreach($details as $details1){
-			    $result[] = '<option value="'.$details1->sub_quota.'">'.$details1->sub_quota.'</option>';
-			}
-			
-			print_r($result);
 
-		}else {
-				redirect('admin/timeout');
+			$quota = $this->input->post('quota');
+
+
+			$details = $this->admin_model->getsubquota($quota)->result();
+
+			$result = array();
+
+			$result[] = '<option value=" ">Select</option>';
+
+			foreach ($details as $details1) {
+				$result[] = '<option value="' . $details1->sub_quota . '">' . $details1->sub_quota . '</option>';
+			}
+
+			print_r($result);
+		} else {
+			redirect('admin/timeout');
 		}
-    }
+	}
+
+	public function admissions($status = null)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$sess = $this->session->userdata('logged_in');
+			$data['id'] = $sess['id'];
+			$data['username'] = $sess['username'];
+			$data['role'] = $sess['role'];
+
+			$data['admissionStatus'] = $this->globals->admissionStatus();
+
+			$data['page_title'] = ($status) ? $data['admissionStatus'][$status] . ' Admissions' : 'All Admissions';
+			$data['menu'] = 'admissions';
+
+			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissions'] = $this->admin_model->fetchDetails2('id, app_no, adm_no, reg_no, course, category, student_name, mobile, status, official_email', 'status', $status, 'academic_year', $data['currentAcademicYear'], 'admissions')->result();
+
+			$this->admin_template->show('admin/admissions', $data);
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function report($report, $download = '')
+	{
+		if ($this->session->userdata('logged_in')) {
+			$sess = $this->session->userdata('logged_in');
+			$data['id'] = $sess['id'];
+			$data['username'] = $sess['username'];
+			$data['role'] = $sess['role'];
+			$data['page_title'] = 'Reports';
+			$data['menu'] = 'reports';
+			$data['report_type'] = $report;
+			$enquiryStatus = $this->globals->enquiryStatus();
+			$enquiryStatusColor = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+
+			if ($report == 1) {
+				$enquiries = $this->admin_model->getEnquiries($data['currentAcademicYear'])->result();
+
+				if (count($enquiries)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'SSLC Grade', 'PUC-I Grade', 'Status', 'Reg. Date');
+					$this->table->set_heading($print_fields);
+
+					$i = 1;
+					foreach ($enquiries as $enquiries1) {
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$enquiries1->student_name,
+							$enquiries1->mobile,
+							$enquiries1->course,
+							$enquiries1->adhaar,
+							$enquiries1->sslc_grade,
+							$enquiries1->puc1_grade,
+							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
+						);
+						$this->table->add_row($result_array);
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+			}
+			if ($report == 2) {
+				$enquiries = $this->admin_model->getEnquiries($data['currentAcademicYear'])->result();
+
+				if (count($enquiries)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'SSLC Grade', 'PUC-I Grade', 'Status', 'Reg. Date');
+					$this->table->set_heading($print_fields);
+
+					$i = 1;
+					foreach ($enquiries as $enquiries1) {
+						if ($enquiries1->puc1_grade > 45) {
+							$result_array = array(
+								$i++,
+								//   $enquiries1->academic_year,
+								$enquiries1->student_name,
+								$enquiries1->mobile,
+								$enquiries1->course,
+								$enquiries1->adhaar,
+								$enquiries1->sslc_grade,
+								$enquiries1->puc1_grade,
+								'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
+								date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
+							);
+							$this->table->add_row($result_array);
+						}
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+			}
+			if ($report == 3) {
+				$enquiries = $this->admin_model->getEnquiries($data['currentAcademicYear'])->result();
+
+				if (count($enquiries)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'SSLC Grade', 'PUC-I Grade', 'Status', 'Reg. Date');
+					$this->table->set_heading($print_fields);
+
+					$i = 1;
+					foreach ($enquiries as $enquiries1) {
+						if ($enquiries1->puc1_grade < 45) {
+							$result_array = array(
+								$i++,
+								//   $enquiries1->academic_year,
+								$enquiries1->student_name,
+								$enquiries1->mobile,
+								$enquiries1->course,
+								$enquiries1->adhaar,
+								$enquiries1->sslc_grade,
+								$enquiries1->puc1_grade,
+								'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
+								date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
+							);
+							$this->table->add_row($result_array);
+						}
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+			}
+			if ($report == 4) {
+				$enquiries = $this->admin_model->getEnquiries_per($data['currentAcademicYear'])->result();
+
+				if (count($enquiries)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'SSLC Grade', 'PUC-I Grade', 'Status', 'Reg. Date');
+					$this->table->set_heading($print_fields);
+
+					$i = 1;
+					foreach ($enquiries as $enquiries1) {
+					
+							$result_array = array(
+								$i++,
+								//   $enquiries1->academic_year,
+								$enquiries1->student_name,
+								$enquiries1->mobile,
+								$enquiries1->course,
+								$enquiries1->adhaar,
+								$enquiries1->sslc_grade,
+								$enquiries1->puc1_grade,
+								'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
+								date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
+							);
+							$this->table->add_row($result_array);
+						
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+			}
+
+
+
+
+
+			if ($download == 1) {
+				$response =  array(
+					'op' => 'ok',
+					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
+				);
+				die(json_encode($response));
+			} else {
+				$data['enquiries'] = $details;
+				$this->admin_template->show('admin/report_download', $data);
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
 
 	function timeout()
 	{
