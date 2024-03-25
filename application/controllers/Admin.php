@@ -860,27 +860,91 @@ class Admin extends CI_Controller
 
 					$i = 1;
 					foreach ($enquiries as $enquiries1) {
-					
-							$result_array = array(
-								$i++,
-								//   $enquiries1->academic_year,
-								$enquiries1->student_name,
-								$enquiries1->mobile,
-								$enquiries1->course,
-								$enquiries1->adhaar,
-								$enquiries1->sslc_grade,
-								$enquiries1->puc1_grade,
-								'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
-								date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
-							);
-							$this->table->add_row($result_array);
-						
+
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$enquiries1->student_name,
+							$enquiries1->mobile,
+							$enquiries1->course,
+							$enquiries1->adhaar,
+							$enquiries1->sslc_grade,
+							$enquiries1->puc1_grade,
+							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
+						);
+						$this->table->add_row($result_array);
 					}
 					$details = $this->table->generate();
 				} else {
 					$details = 'No student details found';
 				}
 			}
+			if ($report == 5) {
+				$enquiries = $this->admin_model->getEnquiries_non($data['currentAcademicYear'])->result();
+
+				if (count($enquiries)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'State', 'SSLC Grade', 'PUC-I Grade', 'Status', 'Reg. Date');
+					$this->table->set_heading($print_fields);
+
+					$i = 1;
+					foreach ($enquiries as $enquiries1) {
+
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$enquiries1->student_name,
+							$enquiries1->mobile,
+							$enquiries1->course,
+							$enquiries1->adhaar,
+							$enquiries1->state,
+							$enquiries1->sslc_grade,
+							$enquiries1->puc1_grade,
+							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
+						);
+						$this->table->add_row($result_array);
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+			}
+			if ($report == 6) {
+				$enquiries = $this->admin_model->getEnquiries_sports($data['currentAcademicYear'])->result();
+
+				if (count($enquiries)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Sports', 'SSLC Grade', 'PUC-I Grade', 'Status', 'Reg. Date');
+					$this->table->set_heading($print_fields);
+
+					$i = 1;
+					foreach ($enquiries as $enquiries1) {
+
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$enquiries1->student_name,
+							$enquiries1->mobile,
+							$enquiries1->course,
+							$enquiries1->adhaar,
+							$enquiries1->sports,
+							$enquiries1->sslc_grade,
+							$enquiries1->puc1_grade,
+							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
+						);
+						$this->table->add_row($result_array);
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+			}
+
 
 
 
@@ -900,6 +964,140 @@ class Admin extends CI_Controller
 			redirect('admin/timeout');
 		}
 	}
+
+	public function report_department($download = '')
+	{
+		if ($this->session->userdata('logged_in')) {
+			$sess = $this->session->userdata('logged_in');
+			$data['id'] = $sess['id'];
+			$data['username'] = $sess['username'];
+			$data['role'] = $sess['role'];
+			$data['page_title'] = 'Reports';
+			$data['menu'] = 'reports';
+			$data['report_type'] = $report;
+			$enquiryStatus = $this->globals->enquiryStatus();
+			$enquiryStatusColor = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['course_options'] = array(" " => "Select") + $this->courses();
+			$data['action'] = 'admin/report_department';
+			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			if ($this->form_validation->run() === FALSE) {
+
+				$this->admin_template->show('admin/report_department', $data);
+			} else {
+				$data['course'] = $this->input->post('course');
+
+				$enquiries = $this->admin_model->getEnquiries_course($data['currentAcademicYear'], $data['course'])->result();
+
+				if (count($enquiries)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'SSLC Grade', 'PUC-I Grade', 'Status', 'Reg. Date');
+					$this->table->set_heading($print_fields);
+
+					$i = 1;
+					foreach ($enquiries as $enquiries1) {
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$enquiries1->student_name,
+							$enquiries1->mobile,
+							$enquiries1->course,
+							$enquiries1->adhaar,
+							$enquiries1->sslc_grade,
+							$enquiries1->puc1_grade,
+							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
+						);
+						$this->table->add_row($result_array);
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+				if ($download == 1) {
+					$response =  array(
+						'op' => 'ok',
+						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
+					);
+					die(json_encode($response));
+				} else {
+					$data['enquiries'] = $details;
+					$this->admin_template->show('admin/report_department', $data);
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+	public function report_category($download = '')
+	{
+		if ($this->session->userdata('logged_in')) {
+			$sess = $this->session->userdata('logged_in');
+			$data['id'] = $sess['id'];
+			$data['username'] = $sess['username'];
+			$data['role'] = $sess['role'];
+			$data['page_title'] = 'Reports';
+			$data['menu'] = 'reports';
+			$data['report_type'] = $report;
+			$enquiryStatus = $this->globals->enquiryStatus();
+			$enquiryStatusColor = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['course_options'] = array(" " => "Select") + $this->courses();
+			$data['type_options'] = array(" " => "Select") + $this->globals->category();
+			$data['action'] = 'admin/report_category';
+			$this->form_validation->set_rules('category', 'Category', 'required');
+			if ($this->form_validation->run() === FALSE) {
+
+				$this->admin_template->show('admin/report_category', $data);
+			} else {
+				$data['category'] = $this->input->post('category');
+
+				$enquiries = $this->admin_model->getEnquiries_category($data['currentAcademicYear'], $data['category'])->result();
+
+				if (count($enquiries)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'SSLC Grade', 'PUC-I Grade', 'Status', 'Reg. Date');
+					$this->table->set_heading($print_fields);
+
+					$i = 1;
+					foreach ($enquiries as $enquiries1) {
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$enquiries1->student_name,
+							$enquiries1->mobile,
+							$enquiries1->course,
+							$enquiries1->adhaar,
+							$enquiries1->sslc_grade,
+							$enquiries1->puc1_grade,
+							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
+						);
+						$this->table->add_row($result_array);
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+				if ($download == 1) {
+					$response =  array(
+						'op' => 'ok',
+						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
+					);
+					die(json_encode($response));
+				} else {
+					$data['enquiries'] = $details;
+					$this->admin_template->show('admin/report_category', $data);
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+
 
 	function timeout()
 	{

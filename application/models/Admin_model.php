@@ -227,4 +227,33 @@ class Admin_model extends CI_Model
     $this->db->order_by('puc1_grade', 'DESC');
     return $this->db->get('enquiries');
   }
+  function getEnquiries_non($academic_year)
+  {
+    $this->db->where('academic_year', $academic_year);
+    $this->db->where('state!=', 'Karnataka');
+    $this->db->where('state!=', 'KA');
+    $this->db->order_by('reg_date', 'DESC');
+    return $this->db->get('enquiries');
+  }
+  function getEnquiries_sports($academic_year)
+  {
+    $this->db->where('academic_year', $academic_year);
+    $this->db->where('sports!=', '');
+    $this->db->order_by('reg_date', 'DESC');
+    return $this->db->get('enquiries');
+  }
+  function getEnquiries_course($academic_year,$course)
+  {
+    $this->db->where('academic_year', $academic_year);
+    $this->db->where('course_id', $course);
+    $this->db->order_by('reg_date', 'DESC');
+    return $this->db->get('enquiries');
+  }
+  function getEnquiries_category($academic_year,$category)
+  {
+    $this->db->where('academic_year', $academic_year);
+    $this->db->where('category', $category);
+    $this->db->order_by('reg_date', 'DESC');
+    return $this->db->get('enquiries');
+  }
 }
