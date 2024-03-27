@@ -302,9 +302,9 @@
                                           <label for="staticEmail"
                                               class="col-md-5 col-form-label text-right font-weight-bold">TOTAL COLLEGE FEE</label>
                                           <div class="col-md-7">
-                                              <input type="text" name="total_demand" id="total_demand"
+                                              <input type="text" name="total_college_fee" id="total_college_fee"
                                                   class="form-control"
-                                                  value="<?php echo (set_value('total_demand'))?set_value('total_demand'):$fee_structure['total_demand'];?>"
+                                                  value="<?php echo (set_value('total_college_fee'))?set_value('total_college_fee'):$fee_structure['total_college_fee'];?>"
                                                   readonly>
                                               <span class="text-danger"></span>
                                           </div>
@@ -488,11 +488,11 @@ $(document).ready(function() {
         var total_tution_fee = admission_fee + processing_fee_paid_at_kea + tution_fee + college_other_fee +
             skill_development_fee;
 
-        var total_demand = total_tution_fee + total_university_fee;
+        var total_college_fee = total_tution_fee + total_university_fee;
 
         $('#total_university_fee').val(total_university_fee);
         $('#total_tution_fee').val(total_tution_fee);
-        $('#total_demand').val(total_demand);
+        $('#total_college_fee').val(total_college_fee);
     }
 
 });
