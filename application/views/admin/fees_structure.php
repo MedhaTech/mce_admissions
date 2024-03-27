@@ -32,13 +32,13 @@
                                 echo "<td>".$i++.".</td>";
                                 echo "<td>".$key."</td>";
                                 if (array_key_exists('Aided',$val)){
-                                    $aided_total_fee = $val['Aided']['total_college_fee'] + $val['Aided']['corpus_fund'];
+                                    $aided_total_fee = $val['Aided']['final_fee'];
                                     echo "<td>".anchor('admin/editFeeStructure/'.$val['Aided']['id'],number_format($aided_total_fee),0)."</td>";
                                 }else{
                                     echo "<td> -- </td>";
                                 }
                                 if (array_key_exists('UnAided',$val)){
-                                    $unaided_total_fee = $val['UnAided']['total_college_fee'] + $val['UnAided']['corpus_fund'];
+                                    $unaided_total_fee = $val['UnAided']['final_fee'];
                                     echo "<td>".anchor('admin/editFeeStructure/'.$val['UnAided']['id'],number_format($unaided_total_fee),0)."</td>";
                                 }else{
                                     echo "<td> -- </td>";
@@ -49,8 +49,8 @@
                                           <!-- <tr>
                             <td>1</td>
                             <td><?php echo $fee->quota; ?></td>
-                            <td><a href="<?php echo base_url('admin/viewfeesturcture/'); ?>"><?php echo ($fee->total_college_fee + $fee->corpus_fund); ?></a></td>
-                            <td><a href="<?php echo base_url('admin/viewfeesturcture/'); ?>"><?php echo ($fee->total_college_fee + $fee->corpus_fund); ?></a></td>
+                            <td><a href="<?php echo base_url('admin/viewfeesturcture/'); ?>"><?php echo ($fee->final_fee); ?></a></td>
+                            <td><a href="<?php echo base_url('admin/viewfeesturcture/'); ?>"><?php echo ($fee->final_fee); ?></a></td>
                         </tr> -->
                                           <?php } ?>
                                   </table>

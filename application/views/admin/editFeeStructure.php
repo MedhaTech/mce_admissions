@@ -300,7 +300,8 @@
 
                                       <div class="form-group row">
                                           <label for="staticEmail"
-                                              class="col-md-5 col-form-label text-right font-weight-bold">TOTAL COLLEGE FEE</label>
+                                              class="col-md-5 col-form-label text-right font-weight-bold">TOTAL COLLEGE
+                                              FEE</label>
                                           <div class="col-md-7">
                                               <input type="text" name="total_college_fee" id="total_college_fee"
                                                   class="form-control"
@@ -319,6 +320,19 @@
                                               <input type="text" name="corpus_fund" id="corpus_fund"
                                                   class="form-control"
                                                   value="<?php echo (set_value('corpus_fund'))?set_value('corpus_fund'):$fee_structure['corpus_fund'];?>">
+                                              <span class="text-danger"></span>
+                                          </div>
+                                      </div>
+                                      <hr />
+
+                                      <div class="form-group row">
+                                          <label for="staticEmail"
+                                              class="col-md-5 col-form-label text-right font-weight-bold">OVERALL FINAL
+                                              FEE</label>
+                                          <div class="col-md-7">
+                                              <input type="text" name="final_fee" id="final_fee" class="form-control"
+                                                  value="<?php echo (set_value('final_fee'))?set_value('final_fee'):$fee_structure['final_fee'];?>"
+                                                  readonly>
                                               <span class="text-danger"></span>
                                           </div>
                                       </div>
@@ -454,6 +468,11 @@ $(document).ready(function() {
         calFeeTotal();
     });
 
+    $("#corpus_fund").change(function() {
+        event.preventDefault();
+        calFeeTotal();
+    });
+
     function calFeeTotal() {
         var e_learning_fee = parseInt($('#e_learning_fee').val());
         var eligibility_fee = parseInt($('#eligibility_fee').val());
@@ -471,8 +490,6 @@ $(document).ready(function() {
         var nss_fee = parseInt($('#nss_fee').val());
         var university_registration_fee = parseInt($('#university_registration_fee').val());
 
-
-
         var total_university_fee = e_learning_fee + eligibility_fee + e_consortium_fee + sport_fee +
             sports_development_fee + career_guidance_counseling_fee + university_development_fund +
             promotion_of_indian_cultural_activities_fee + teachers_development_fee +
@@ -485,14 +502,19 @@ $(document).ready(function() {
         var college_other_fee = parseInt($('#college_other_fee').val());
         var skill_development_fee = parseInt($('#skill_development_fee').val());
 
+        var corpus_fund = parseInt($('#corpus_fund').val());
+
         var total_tution_fee = admission_fee + processing_fee_paid_at_kea + tution_fee + college_other_fee +
             skill_development_fee;
 
         var total_college_fee = total_tution_fee + total_university_fee;
 
+        var final_fee = total_college_fee + corpus_fund;
+
         $('#total_university_fee').val(total_university_fee);
         $('#total_tution_fee').val(total_tution_fee);
         $('#total_college_fee').val(total_college_fee);
+        $('#final_fee').val(final_fee);
     }
 
 });

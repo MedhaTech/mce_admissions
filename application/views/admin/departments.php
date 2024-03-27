@@ -9,13 +9,13 @@
                       <div class="col-lg-12">
 
                           <div class="card">
-                              <div class="card-header">
+                              <div class="card-header bg-gray-light">
                                   <h3 class="card-title">
                                       <?=$page_title;?>
                                   </h3>
                               </div>
                               <div class="card-body1">
-                                  <table class="table table-hover text-center table-bordered">
+                                  <table class="table table-hover text-center table-sm table-bordered">
                                       <thead>
                                           <tr>
                                               <th width="5%">S.NO</th>

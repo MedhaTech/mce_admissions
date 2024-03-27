@@ -2,11 +2,11 @@
   <div class="content-wrapper">
       <section class="content-header">
           <div class="container-fluid">
-              <div class="card card-info shadow">
-                  <div class="card-header">
-                      <h3 class="card-title">
-                          <?=$page_title;?>
-                      </h3>
+              <div class="card">
+                  <div class="card-header bg-gray-light">
+                      <div class="card-title">
+                          <h6 class="m-0"><?= $page_title; ?></h6>
+                      </div>
                       <div class="card-tools">
                           <ul class="nav nav-pills ml-auto">
                               <li class="nav-item">
@@ -19,7 +19,6 @@
                       </div>
                   </div>
                   <div class="card-body">
-
                       <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
                           <?php
 							if (count($enquiries)) {
