@@ -460,13 +460,12 @@ class Admin extends CI_Controller
 
 			$course_val = $this->input->post('course_val');
 
-			$category = $this->input->post('category');
+			$corpus = $this->input->post('corpus');
 
-			$college_fee_total = $this->input->post('college_fee_total');
-			$mgt_fee_total = $this->input->post('mgt_fee_total');
+			$total_tution_fee = $this->input->post('total_tution_fee');
+			$total_university_fee = $this->input->post('total_university_fee');
 
-			$proposed_amount = $this->input->post('proposed_amount');
-			$additional_amount = $this->input->post('additional_amount');
+			$total_college_fee = $this->input->post('total_college_fee');
 			$concession_type = $this->input->post('concession_type');
 			$concession_fee = $this->input->post('concession_fee');
 			$final_amount = $this->input->post('final_amount');
@@ -475,7 +474,7 @@ class Admin extends CI_Controller
 			$currentAcademicYear = $this->globals->currentAcademicYear();
 
 			$updateDetails = array('status' => '6');
-			$res = $this->admin_model->updateDetails($id, $updateDetails, 'enquiries');
+			 $res = $this->admin_model->updateDetails($id, $updateDetails, 'enquiries');
 
 			$app_number = $this->admin_model->getAppNo($currentAcademicYear)->row()->cnt;
 			$app_number = $app_number + 1;
@@ -500,25 +499,19 @@ class Admin extends CI_Controller
 				'academic_year' => $enquiryDetails->academic_year,
 				'enq_id' => $id,
 				'app_no' => $app_no,
-				'course_id' => $course,
-				'course' => $course_val,
+				'dept_id' => $course,
+				
 
 				'student_name' => strtoupper($enquiryDetails->student_name),
 				'mobile' => $enquiryDetails->mobile,
 				'email' => strtolower($enquiryDetails->email),
 				'father_name' => strtoupper($enquiryDetails->father_name),
-				'exam_board' => $enquiryDetails->sslc_grade,
-				'register_number' => "12345",
+				
+				
 				'password' => md5($OTP),
-				'aided_unaided' => $aided_unaided,
-				'category' => "12345",
-				'college_fee_total' => $college_fee_total,
-				'mgt_fee_total' => $mgt_fee_total,
-				'proposed_amount' => $proposed_amount,
-				'additional_amount' => $additional_amount,
-				'concession_type' => $concession_type,
-				'concession_fee' => $concession_fee,
-				'final_amount' => $final_amount,
+				'category_alloted' => $aided_unaided,
+				'category_claimed' => $aided_unaided,
+				
 				'status' => '1',
 				'admit_date' => date('Y-m-d h:i:s'),
 				'admit_by' => $data['username']
@@ -526,8 +519,28 @@ class Admin extends CI_Controller
 
 			$result = $this->admin_model->insertDetails('admissions', $insertDetails);
 
-
-			print_r($this->db->last_query());
+			$insertDetails1 = array(
+				'student_id' => $result,
+				'academic_year' => $enquiryDetails->academic_year,
+				'student_name' => strtoupper($enquiryDetails->student_name),
+				'dept_id' =>$course,
+				'year' => date("y"),
+				'total_university_fee' =>$total_university_fee,
+				'total_tution_fee'=>$total_tution_fee,
+				'total_college_fee' =>$total_college_fee,
+				'corpus_fund' => $corpus,
+				'final_fee' =>$final_amount,
+				'consession_type' =>$concession_type,
+				'consession_amount'=>$concession_fee,
+				'status' => '1',
+				'last_updated_on' => date('Y-m-d h:i:s'),
+				'last_updated_by' => $data['username']
+				
+			);
+			
+			$result = $this->admin_model->insertDetails('fee_master', $insertDetails1);
+			
+			
 		} else {
 			redirect('admin', 'refresh');
 		}
@@ -778,7 +791,7 @@ class Admin extends CI_Controller
 
 			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
-			$data['admissions'] = $this->admin_model->fetchDetails2('id, app_no, adm_no, reg_no, course, category, student_name, mobile, status, official_email', 'status', $status, 'academic_year', $data['currentAcademicYear'], 'admissions')->result();
+			$data['admissions'] = $this->admin_model->fetchDetails2('id, app_no, adm_no, student_name, mobile, status', 'status', $status, 'academic_year', $data['currentAcademicYear'], 'admissions')->result();
 
 			$this->admin_template->show('admin/admissions', $data);
 		} else {

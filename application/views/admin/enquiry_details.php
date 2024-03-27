@@ -255,8 +255,8 @@
                 <div class="form-row">
                   <div class="col">
                     <div class="form-group">
-                      <label class="form-label">College Fee</label>
-                      <input type="text" class="form-control" id="demand_fee_total" name="demand_fee_total" placeholder="Total College fee" readonly>
+                      <label class="form-label">University Fee</label>
+                      <input type="text" class="form-control" id="total_university_fee" name="total_university_fee" placeholder="Total College fee" readonly>
                     </div>
                   </div>
                   <div class="col">
@@ -267,8 +267,8 @@
                   </div>
                   <div class="col">
                     <div class="form-group">
-                      <label class="form-label">Finalised Fee</label>
-                      <input type="text" class="form-control" id="proposed_amount" name="proposed_amount" placeholder="Finalised Fee" readonly>
+                      <label class="form-label">Tution Fee</label>
+                      <input type="text" class="form-control" id="total_tution_fee" name="total_tution_fee" placeholder="Finalised Fee" readonly>
                     </div>
                   </div>
                   
@@ -294,12 +294,30 @@
                   </div>
                   <div class="col">
                     <div class="form-group">
-                      <label class="form-label">Payable Fee</label>
-                      <input type="text" class="form-control" id="final_amount" name="final_amount" placeholder="Payable Fee" readonly>
+                      <label class="form-label">College Fee</label>
+                      <input type="text" class="form-control" id="total_college_fee" name="total_college_fee" placeholder="Payable Fee" readonly>
                     </div>
                   </div>
 
                 </div>
+
+                <div class="form-row">
+                
+               
+                <div class="col">
+                  <div class="form-group">
+                    <label class="form-label">Remarks</label>
+                    <input type="text" class="form-control" id="remarks" name="remarks" placeholder="Enter remarks" >
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-group">
+                    <label class="form-label">Final Fee</label>
+                    <input type="text" class="form-control" id="final_amount" name="final_amount" placeholder="Payable Fee" readonly>
+                  </div>
+                </div>
+
+              </div>
                 <div class="row">
                   <div class="col">
                     <button type="button" class="btn btn-secondary btn-sm tx-13" data-dismiss="modal">Close</button>
@@ -367,7 +385,7 @@
                   <div class="col">
                     <div class="form-group">
                       <label class="form-label">Tution Fee</label>
-                      <input type="text" class="form-control" id="demand_fee_total" name="demand_fee_total" placeholder="Total College fee" readonly>
+                      <input type="text" class="form-control" id="total_university_fee" name="total_university_fee" placeholder="Total College fee" readonly>
                     </div>
                   </div>
                   <div class="col">
@@ -471,35 +489,30 @@
             'dataType': 'json',
             'cache': false,
             'success': function(data) {
-              $('#demand_fee_total').val(data.total_demand);
-              var demand = data.total_demand;
+              $('#total_university_fee').val(data.total_university_fee);
+              var total_university_fee = data.total_university_fee;
               $('#corpus_fee').val(data.corpus_fund);
               var corpus = data.corpus_fund;
-              var proposed = parseInt(demand) + parseInt(corpus);
-              $('#proposed_amount').val(proposed);
-              var final_amount = finalAmount();
+              $('#total_tution_fee').val(data.total_tution_fee);
+              var total_tution_fee = data.total_tution_fee;
+            
+             
+
+              var total_college_fee = collegeAmount();
+              $('#total_college_fee').val(collegeAmount);
+               var final_amount = finalAmount();
               $('#final_amount').val(finalAmount);
             }
           });
         }
       });
-      $("#additional_amount").change(function() {
-        event.preventDefault();
-        var final_amount = finalAmount();
-        $('#final_amount').val(finalAmount);
-      });
-
-
-      $("#additional_amount").change(function() {
-        event.preventDefault();
-        var final_amount = finalAmount();
-        $('#final_amount').val(finalAmount);
-      });
-
+ 
       $("#concession_fee").change(function() {
         event.preventDefault();
         var final_amount = finalAmount();
         $('#final_amount').val(finalAmount);
+        var total_college_fee = collegeAmount();
+              $('#total_college_fee').val(collegeAmount);
       });
       $("#corpus_fee").change(function() {
         event.preventDefault();
@@ -508,12 +521,25 @@
       });
 
       function finalAmount() {
-        var demand = $("#demand_fee_total").val();
-        var corpus = $("#corpus_fee").val();
-        var proposed = parseInt(demand) + parseInt(corpus);
+        var total_university_fee = $("#total_university_fee").val();
+        var total_tution_fee =  $("#total_tution_fee").val();
         var concession_fee = $("#concession_fee").val();
-        var final_amount = parseInt(proposed) - parseInt(concession_fee);
+        var corpus = $("#corpus_fee").val();
+         var total_college_fee = parseInt(total_university_fee) + parseInt(total_tution_fee) - parseInt(concession_fee);
+       
+        
+        var final_amount = parseInt(total_college_fee) + parseInt(corpus);
         return final_amount;
+      }
+
+      function collegeAmount() {
+        var total_university_fee = $("#total_university_fee").val();
+        var total_tution_fee =  $("#total_tution_fee").val();
+        var concession_fee = $("#concession_fee").val();
+       
+         var total_college_fee = parseInt(total_university_fee) + parseInt(total_tution_fee) - parseInt(concession_fee);
+    
+        return total_college_fee;
       }
 
       $('#comments').on('keyup', function() {
@@ -572,16 +598,17 @@
         var course = $("#course").val();
         var course_val = $("#course option:selected").text();
 
-
+       
 
         var category = $("#category").val();
         var aided_unaided = $("#aided_unaided").val();
 
-        var college_fee_total = $("#demand_fee_total").val();
-        var mgt_fee_total = $("#corpus_fee").val();
+        var total_university_fee = $("#total_university_fee").val();
+        var corpus = $("#corpus_fee").val();
 
-        var proposed_amount = $("#proposed_amount").val();
-        var additional_amount = $("#additional_amount").val();
+        var total_tution_fee = $("#total_tution_fee").val();
+        var total_college_fee = $("#total_college_fee").val();
+       
         var concession_type = $("#concession_type").val();
         var concession_fee = $("#concession_fee").val();
         var final_amount = $('#final_amount').val();
@@ -596,11 +623,12 @@
             "aided_unaided": aided_unaided,
             'course': course,
             'course_val': course_val,
+            'corpus': corpus,
             "category": category,
-            "college_fee_total": college_fee_total,
-            "mgt_fee_total": mgt_fee_total,
-            "proposed_amount": proposed_amount,
-            "additional_amount": additional_amount,
+            "total_university_fee": total_university_fee,
+            "total_college_fee":total_college_fee,
+            "total_tution_fee": total_tution_fee,
+         
             "concession_type": concession_type,
             "concession_fee": concession_fee,
             "final_amount": final_amount
