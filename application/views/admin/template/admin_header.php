@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= $page_title; ?> | MCE Campus ERP Portal</title>
+    <title><?= $page_title; ?> | MCE Campus Portal</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -54,16 +54,13 @@
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="<?php echo base_url(); ?>admin/dashboard" class="nav-link">Home</a>
-                </li>
-
             </ul>
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="<?php echo base_url(); ?>admin/dashboard" class="nav-link"><i class="fa fa-user"></i>
+                    <a href="<?php echo base_url(); ?>admin/dashboard" class="nav-link d-block text-secondary"><i
+                            class="fas fa-user-circle"></i>
                         Welcome <?= $username; ?></a>
                 </li>
             </ul>

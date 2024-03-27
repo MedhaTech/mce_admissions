@@ -80,38 +80,35 @@ class Welcome extends CI_Controller {
 					$course_id2 = $this->input->post('course2');
 					$course2 = $data['course_options'][$course_id2];
 	
-				//Setting values for tabel columns
-				$insertDetails = array(
-				'academic_year' => "2024-2025",
-				'student_name' => $this->input->post('name'),
-				'mobile' => $this->input->post('mobile'),
-				'email' => $this->input->post('email'),
-				'par_name' => $this->input->post('par_name'),
-				'par_mobile' => $this->input->post('par_mobile'),
-				'par_email' => $this->input->post('par_email'),
-				'sslc_grade' => $this->input->post('sslc_grade'),
-				'puc1_grade' => $this->input->post('puc1_grade'),
-				'puc2_grade' => $this->input->post('puc2_grade'),
-				'course_id' => $this->input->post('course'),
-				'course' => $course,
-				'course1' => $course1,
-				'course2' => $course2,
-				'state' => $this->input->post('state'),
-				'city' => $this->input->post('city'),
-				'sports' => $this->input->post('sports'),
-				'adhaar' => $this->input->post('adhaar'),
-				'gender' => $this->input->post('gender'),
-				'category' => $this->input->post('category'),
-				'status' => '1',
-				'reg_date' => date('Y-m-d H:i:s')
-				);
-	
-	
-				$result = $this->admin_model->insertDetails('enquiries', $insertDetails);
-				$this->session->set_flashdata($data);
-				
-				redirect('welcome', 'refresh');
-
+					//Setting values for tabel columns
+					$insertDetails = array(
+						'academic_year' => "2024-2025",
+						'student_name' => $this->input->post('name'),
+						'mobile' => $this->input->post('mobile'),
+						'email' => $this->input->post('email'),
+						'par_name' => $this->input->post('par_name'),
+						'par_mobile' => $this->input->post('par_mobile'),
+						'par_email' => $this->input->post('par_email'),
+						'sslc_grade' => $this->input->post('sslc_grade'),
+						'puc1_grade' => $this->input->post('puc1_grade'),
+						'puc2_grade' => $this->input->post('puc2_grade'),
+						'course_id' => $this->input->post('course'),
+						'course' => $course,
+						'course1' => $course1,
+						'course2' => $course2,
+						'state' => $this->input->post('state'),
+						'city' => $this->input->post('city'),
+						'sports' => $this->input->post('sports'),
+						'adhaar' => $this->input->post('adhaar'),
+						'gender' => $this->input->post('gender'),
+						'category' => $this->input->post('category'),
+						'status' => '1',
+						'reg_by' => $this->input->post('name'),
+						'reg_date' => date('Y-m-d H:i:s')
+					);	
+					$result = $this->admin_model->insertDetails('enquiries', $insertDetails);
+					$this->session->set_flashdata($data);
+					redirect('welcome', 'refresh');
 				}
 		
 	}

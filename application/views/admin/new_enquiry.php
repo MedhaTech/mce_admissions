@@ -3,8 +3,8 @@
       <section class="content-header">
           <div class="container-fluid">
 
-              <div class="card card-info shadow">
-                  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <div class="card">
+                  <div class="card-header bg-gray-light">
                       <h6 class="m-0"><?= $page_title; ?></h6>
                   </div>
                   <div class="card-body">

@@ -228,7 +228,7 @@ class Admin extends CI_Controller
 
 			$data['enquiryDetails'] = $this->admin_model->getDetails('enquiries', $id)->row();
 			// var_dump($this->db->last_query());
-			$data['comments'] = $this->admin_model->getDetails('enq_comments', 'enq_id', $id)->result();
+			$data['comments'] = $this->admin_model->getDetailsbyfield($id, 'enq_id', 'enq_comments')->result();
 
 			$this->admin_template->show('admin/enquiry_details', $data);
 		} else {
@@ -618,14 +618,14 @@ class Admin extends CI_Controller
 				}
 				if (array_key_exists($quota1, $feeDetails)) {
 					if (array_key_exists($fee1->sub_quota, $feeDetails[$quota1])) {
-						$category =  array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
+						$category =  array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, "final_fee" => $fee1->final_fee, 'id' => $fee1->id);
 						array_push($feeDetails[$quota1][$fee1->sub_quota], $category);
 					} else {
-						$category =  array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
+						$category =  array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, "final_fee" => $fee1->final_fee, 'id' => $fee1->id);
 						$feeDetails[$quota1][$fee1->sub_quota] = $category;
 					}
 				} else {
-					$category = array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
+					$category = array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, "final_fee" => $fee1->final_fee, 'id' => $fee1->id);
 					$sub_quota =  array($fee1->sub_quota => $category);
 					$feeDetails[$quota1] = $sub_quota;
 				}
