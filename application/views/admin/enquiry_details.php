@@ -471,8 +471,8 @@
             'dataType': 'json',
             'cache': false,
             'success': function(data) {
-              $('#demand_fee_total').val(data.total_demand);
-              var demand = data.total_demand;
+              $('#demand_fee_total').val(data.total_college_fee);
+              var demand = data.total_college_fee;
               $('#corpus_fee').val(data.corpus_fund);
               var corpus = data.corpus_fund;
               var proposed = parseInt(demand) + parseInt(corpus);

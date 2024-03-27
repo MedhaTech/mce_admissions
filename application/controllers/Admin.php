@@ -574,14 +574,14 @@ class Admin extends CI_Controller
 			// 	}
 			// 	if (array_key_exists($quota1, $feeDetails)) {
 			// 		if (array_key_exists($fee1->sub_quota, $feeDetails[$quota1])) {
-			// 			$category =  array("total_demand" => $fee1->total_demand, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
+			// 			$category =  array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
 			// 			array_push($feeDetails[$quota1][$fee1->sub_quota], $category);
 			// 		} else {
-			// 			$category =  array("total_demand" => $fee1->total_demand, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
+			// 			$category =  array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
 			// 			$feeDetails[$quota1][$fee1->sub_quota] = $category;
 			// 		}
 			// 	} else {
-			// 		$category = array("total_demand" => $fee1->total_demand, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
+			// 		$category = array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
 			// 		$sub_quota =  array($fee1->sub_quota => $category);
 			// 		$feeDetails[$quota1] = $sub_quota;
 			// 	}
@@ -618,14 +618,14 @@ class Admin extends CI_Controller
 				}
 				if (array_key_exists($quota1, $feeDetails)) {
 					if (array_key_exists($fee1->sub_quota, $feeDetails[$quota1])) {
-						$category =  array("total_demand" => $fee1->total_demand, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
+						$category =  array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
 						array_push($feeDetails[$quota1][$fee1->sub_quota], $category);
 					} else {
-						$category =  array("total_demand" => $fee1->total_demand, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
+						$category =  array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
 						$feeDetails[$quota1][$fee1->sub_quota] = $category;
 					}
 				} else {
-					$category = array("total_demand" => $fee1->total_demand, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
+					$category = array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
 					$sub_quota =  array($fee1->sub_quota => $category);
 					$feeDetails[$quota1] = $sub_quota;
 				}
@@ -668,7 +668,7 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('tution_fee', 'Tution Fee', 'numeric|required');
 			$this->form_validation->set_rules('college_other_fee', 'COLLEGE OTHER FEE', 'numeric|required');
 			$this->form_validation->set_rules('total_tution_fee', 'TOTAL TUTION FEE', 'numeric|required');
-			$this->form_validation->set_rules('total_demand', 'TOTAL COLLEGE FEE', 'numeric|required');
+			$this->form_validation->set_rules('total_college_fee', 'TOTAL COLLEGE FEE', 'numeric|required');
 			$this->form_validation->set_rules('skill_development_fee', 'Skill Development Fee', 'numeric|required');
 			$this->form_validation->set_rules('corpus_fund', 'Corpus Fund', 'numeric|required');
 
@@ -698,7 +698,7 @@ class Admin extends CI_Controller
 					'tution_fee' => $this->input->post('tution_fee'),
 					'college_other_fee' => $this->input->post('college_other_fee'),
 					'total_tution_fee' => $this->input->post('total_tution_fee'),
-					'total_demand' => $this->input->post('total_demand'),
+					'total_college_fee' => $this->input->post('total_college_fee'),
 					'skill_development_fee' => $this->input->post('skill_development_fee'),
 					'corpus_fund' => $this->input->post('corpus_fund')
 				);
