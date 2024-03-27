@@ -14,16 +14,19 @@
                                       <?=$page_title;?>
                                   </h3>
                               </div>
-                              <div class="card-body">
-                                  <table class="table table-hover">
+                              <div class="card-body1">
+                                  <table class="table table-hover text-center table-bordered">
                                       <thead>
                                           <tr>
-                                              <th width="5%">S.No</th>
-                                              <th width="20%">Stream</th>
-                                              <th width="35%">Department</th>
-                                              <th width="15%">Total Intake</th>
-                                              <th width="15%">MGMT INTAKE</th>
-                                              <th width="15%">COLLEGE INTAKE</th>
+                                              <th width="5%">S.NO</th>
+                                              <!-- <th width="20%">Stream</th> -->
+                                              <th width="35%">DEPARTMENT</th>
+                                              <th width="15%">TOTAL <br /> INTAKE</th>
+                                              <th width="15%">MGMT <br /> INTAKE</th>
+                                              <th width="15%">COLLEGE <br /> INTAKE</th>
+                                              <th width="15%">COMED-K <br /> INTAKE</th>
+                                              <th width="15%">KEA <br /> INTAKE</th>
+                                              <th width="15%">SNQ <br /> INTAKE</th>
                                           </tr>
                                       </thead>
                                       <tbody>
@@ -32,11 +35,14 @@
                                             foreach ($details as $details1) {
                                                 echo "<tr>";
                                                 echo "<td>".$i++.".</td>";
-                                                echo "<td>".$details1->stream_name.' ['.$details1->stream_short_name.']'."</td>";
-                                                echo "<td>".$details1->department_name.' ['.$details1->department_short_name.']'."</td>";
-                                                echo "<td>".$details1->intake."</td>";
-                                                echo "<td>".$details1->mgmt_intake."</td>";
-                                                echo "<td>".$details1->college_intake."</td>";
+                                                // echo "<td>".$details1->stream_name.' ['.$details1->stream_short_name.']'."</td>";
+                                                echo "<td class='text-left'>".$details1->stream_short_name.'-'.$details1->department_name.' ['.$details1->department_short_name.']'."</td>";
+                                                echo "<td class='text-center font-weight-bold'>".$details1->intake."</td>";
+                                                echo "<td class='bg-gray-light'>".$details1->mgmt_intake."</td>";
+                                                echo "<td class=''>".$details1->college_intake."</td>";
+                                                echo "<td>".$details1->comed_k_intake."</td>";
+                                                echo "<td>".$details1->kea_intake."</td>";
+                                                echo "<td>".$details1->snq_intake."</td>";
                                                 echo "</tr>";
                                             } 
                                            ?>

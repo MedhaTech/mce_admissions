@@ -489,6 +489,7 @@
             'dataType': 'json',
             'cache': false,
             'success': function(data) {
+
               $('#total_university_fee').val(data.total_university_fee);
               var total_university_fee = data.total_university_fee;
               $('#corpus_fee').val(data.corpus_fund);
