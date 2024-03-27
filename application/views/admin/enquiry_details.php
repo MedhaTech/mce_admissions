@@ -240,45 +240,42 @@
                                           <?php
                       echo form_dropdown('aided_unaided', $type_options, '', 'class="form-control input-xs" id="aided_unaided"');
                       ?>
-                                          <span class="text-danger"><?php echo form_error('aided_unaided'); ?></span>
-                                      </div>
-                                  </div>
+                      <span class="text-danger"><?php echo form_error('aided_unaided'); ?></span>
+                    </div>
+                  </div>
 
-                              </div>
+                </div>
 
-                              <div class="form-row">
-                                  <div class="col">
-                                      <div class="form-group">
-                                          <label class="form-label">College Fee</label>
-                                          <input type="text" class="form-control" id="demand_fee_total"
-                                              name="demand_fee_total" placeholder="Total College fee" readonly>
-                                      </div>
-                                  </div>
-                                  <div class="col">
-                                      <div class="form-group">
-                                          <label class="form-label">Corpus Fund</label>
-                                          <input type="text" class="form-control" id="corpus_fee" name="corpus_fee"
-                                              placeholder="Corpus Fee" readonly>
-                                      </div>
-                                  </div>
-                                  <div class="col">
-                                      <div class="form-group">
-                                          <label class="form-label">Finalised Fee</label>
-                                          <input type="text" class="form-control" id="proposed_amount"
-                                              name="proposed_amount" placeholder="Finalised Fee" readonly>
-                                      </div>
-                                  </div>
+                <div class="form-row">
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">University Fee</label>
+                      <input type="text" class="form-control" id="total_university_fee" name="total_university_fee" placeholder="Total College fee" readonly>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Corpus Fund</label>
+                      <input type="text" class="form-control" id="corpus_fee" name="corpus_fee" placeholder="Corpus Fee" readonly>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Tution Fee</label>
+                      <input type="text" class="form-control" id="total_tution_fee" name="total_tution_fee" placeholder="Finalised Fee" readonly>
+                    </div>
+                  </div>
+                  
 
 
+                </div>
 
-                              </div>
-
-                              <div class="form-row">
-
-                                  <div class="col">
-                                      <div class="form-group">
-                                          <label class="form-label">Concession Type</label>
-                                          <?php $concession_type_options = array("" => "Select", "Sports Quota" => "Sports Quota", "Management Quota" => "Management Quota");
+                <div class="form-row">
+                
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Concession Type</label>
+                      <?php $concession_type_options = array("" => "Select", "Sports Quota" => "Sports Quota", "Management Quota" => "Management Quota");
                       echo form_dropdown('concession_type', $concession_type_options, '', 'class="form-control input-xs" id="concession_type"'); ?>
 
                                       </div>
@@ -312,7 +309,42 @@
                           </form>
                       </div>
                   </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">College Fee</label>
+                      <input type="text" class="form-control" id="total_college_fee" name="total_college_fee" placeholder="Payable Fee" readonly>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="form-row">
+                
+               
+                <div class="col">
+                  <div class="form-group">
+                    <label class="form-label">Remarks</label>
+                    <input type="text" class="form-control" id="remarks" name="remarks" placeholder="Enter remarks" >
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-group">
+                    <label class="form-label">Final Fee</label>
+                    <input type="text" class="form-control" id="final_amount" name="final_amount" placeholder="Payable Fee" readonly>
+                  </div>
+                </div>
+
               </div>
+                <div class="row">
+                  <div class="col">
+                    <button type="button" class="btn btn-secondary btn-sm tx-13" data-dismiss="modal">Close</button>
+                  </div>
+                  <div class="col text-right">
+                    <input type="submit" name="insert" id="insert" value="Admit Student" class="btn btn-danger btn-sm" />
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
 
 
@@ -360,91 +392,70 @@
                                           <?php
                       echo form_dropdown('aided_unaided', $type_options, '', 'class="form-control input-xs" id="aided_unaided"');
                       ?>
-                                          <span class="text-danger"><?php echo form_error('aided_unaided'); ?></span>
-                                      </div>
-                                  </div>
 
-                              </div>
+                      <span class="text-danger"><?php echo form_error('aided_unaided'); ?></span>
+                    </div>
+                  </div>
 
-                              <div class="form-row">
-                                  <div class="col">
-                                      <div class="form-group">
-                                          <label class="form-label">Tution Fee</label>
-                                          <input type="text" class="form-control" id="demand_fee_total"
-                                              name="demand_fee_total" placeholder="Total College fee" readonly>
-                                      </div>
-                                  </div>
-                                  <div class="col">
-                                      <div class="form-group">
-                                          <label class="form-label">Corpus Fund</label>
-                                          <input type="number" class="form-control" id="corpus_fee" name="corpus_fee"
-                                              placeholder="Corpus Fee" min="0" value="0">
-                                      </div>
-                                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Tution Fee</label>
+                      <input type="text" class="form-control" id="total_university_fee" name="total_university_fee" placeholder="Total College fee" readonly>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Corpus Fund</label>
+                      <input type="number" class="form-control" id="corpus_fee" name="corpus_fee" placeholder="Corpus Fee" min="0" value="0">
+                    </div>
+                  </div>
 
 
-                              </div>
+                </div>
 
-                              <div class="form-row">
-                                  <div class="col">
-                                      <div class="form-group">
-                                          <label class="form-label">MTES Corpus Fund</label>
-                                          <input type="number" class="form-control" id="corpus_fee_mtes"
-                                              name="corpus_fee_mtes" placeholder="MTES Corpus Fee" min="0" value="0">
-                                      </div>
-                                  </div>
+                <div class="form-row">
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">MTES Corpus Fund</label>
+                      <input type="number" class="form-control" id="corpus_fee_mtes" name="corpus_fee_mtes" placeholder="MTES Corpus Fee" min="0" value="0">
+                    </div>
+                  </div>
 
-                                  <div class="col">
-                                      <div class="form-group">
-                                          <label class="form-label">Finalised Fee</label>
-                                          <input type="text" class="form-control" id="final_amount" name="final_amount"
-                                              placeholder="Enter Finalized Fee" readonly>
-                                      </div>
-                                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Finalised Fee</label>
+                      <input type="text" class="form-control" id="final_amount" name="final_amount" placeholder="Enter Finalized Fee" readonly>
+                    </div>
+                  </div>
 
-                              </div>
-                              <div class="form-row">
-                                  <div class="col">
-                                      <div class="form-group">
-                                          <label class="form-label">Cash / DD Details</label>
-                                          <input type="text" class="form-control" id="cash" name="cash"
-                                              placeholder="Cash / DD Details">
-                                      </div>
-                                  </div>
-                                  <div class="col">
-                                      <div class="form-group">
-                                          <label class="form-label">Bank Name</label>
-                                          <input type="text" class="form-control" id="bank" name="bank"
-                                              placeholder="Bank Name">
-                                      </div>
-                                  </div>
-                                  <div class="col">
-                                      <div class="form-group">
-                                          <label class="form-label">Date</label>
-                                          <input type="date" class="form-control" id="date" name="date">
-                                      </div>
-                                  </div>
-                                  <div class="col">
-                                      <div class="form-group">
-                                          <label class="form-label">Amount</label>
-                                          <input type="text" class="form-control" id="bank" name="bank"
-                                              placeholder="Amount">
-                                      </div>
-                                  </div>
-
-                              </div>
-                              <div class="row">
-                                  <div class="col">
-                                      <button type="button" class="btn btn-secondary btn-sm tx-13"
-                                          data-dismiss="modal">Close</button>
-                                  </div>
-                                  <div class="col text-right">
-                                      <input type="submit" name="insert_block" id="insert_block" value="Block Seat"
-                                          class="btn btn-danger btn-sm" />
-                                  </div>
-                              </div>
-                          </form>
-                      </div>
+                </div>
+                <div class="form-row">
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Cash / DD Details</label>
+                      <input type="text" class="form-control" id="cash" name="cash" placeholder="Cash / DD Details">
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Bank Name</label>
+                      <input type="text" class="form-control" id="bank" name="bank" placeholder="Bank Name">
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Date</label>
+                      <input type="date" class="form-control" id="date" name="date">
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Amount</label>
+                      <input type="text" class="form-control" id="bank" name="bank" placeholder="Amount">
+                    </div>
                   </div>
               </div>
           </div>
@@ -471,64 +482,73 @@ $(document).ready(function() {
 
 
         if (subquota != "" && quota != '') {
-            var page = base_url + 'admin/getFee';
-            $.ajax({
-                'type': 'POST',
-                'url': page,
-                'data': {
-                    'course': course,
-                    'quota': quota,
-                    'subquota': subquota
-                },
-                'dataType': 'json',
-                'cache': false,
-                'success': function(data) {
-                    $('#demand_fee_total').val(data.total_college_fee);
-                    var demand = data.total_college_fee;
-                    $('#corpus_fee').val(data.corpus_fund);
-                    var corpus = data.corpus_fund;
-                    var proposed = parseInt(demand) + parseInt(corpus);
-                    $('#proposed_amount').val(proposed);
-                    var final_amount = finalAmount();
-                    $('#final_amount').val(finalAmount);
-                }
-            });
+          var page = base_url + 'admin/getFee';
+          $.ajax({
+            'type': 'POST',
+            'url': page,
+            'data': {
+              'course': course,
+              'quota': quota,
+              'subquota': subquota
+            },
+            'dataType': 'json',
+            'cache': false,
+            'success': function(data) {
+
+              $('#total_university_fee').val(data.total_university_fee);
+              var total_university_fee = data.total_university_fee;
+              $('#corpus_fee').val(data.corpus_fund);
+              var corpus = data.corpus_fund;
+              $('#total_tution_fee').val(data.total_tution_fee);
+              var total_tution_fee = data.total_tution_fee;
+            
+             
+
+              var total_college_fee = collegeAmount();
+              $('#total_college_fee').val(collegeAmount);
+               var final_amount = finalAmount();
+              $('#final_amount').val(finalAmount);
+            }
+          });
         }
-    });
-    $("#additional_amount").change(function() {
+      });
+ 
+      $("#concession_fee").change(function() {
+        event.preventDefault();
+        var final_amount = finalAmount();
+        $('#final_amount').val(finalAmount);
+        var total_college_fee = collegeAmount();
+              $('#total_college_fee').val(collegeAmount);
+      });
+      $("#corpus_fee").change(function() {
         event.preventDefault();
         var final_amount = finalAmount();
         $('#final_amount').val(finalAmount);
     });
 
-
-    $("#additional_amount").change(function() {
-        event.preventDefault();
-        var final_amount = finalAmount();
-        $('#final_amount').val(finalAmount);
-    });
-
-    $("#concession_fee").change(function() {
-        event.preventDefault();
-        var final_amount = finalAmount();
-        $('#final_amount').val(finalAmount);
-    });
-    $("#corpus_fee").change(function() {
-        event.preventDefault();
-        var final_amount = finalAmount();
-        $('#final_amount').val(finalAmount);
-    });
-
-    function finalAmount() {
-        var demand = $("#demand_fee_total").val();
-        var corpus = $("#corpus_fee").val();
-        var proposed = parseInt(demand) + parseInt(corpus);
+      function finalAmount() {
+        var total_university_fee = $("#total_university_fee").val();
+        var total_tution_fee =  $("#total_tution_fee").val();
         var concession_fee = $("#concession_fee").val();
-        var final_amount = parseInt(proposed) - parseInt(concession_fee);
+        var corpus = $("#corpus_fee").val();
+         var total_college_fee = parseInt(total_university_fee) + parseInt(total_tution_fee) - parseInt(concession_fee);
+       
+        
+        var final_amount = parseInt(total_college_fee) + parseInt(corpus);
         return final_amount;
     }
 
-    $('#comments').on('keyup', function() {
+      function collegeAmount() {
+        var total_university_fee = $("#total_university_fee").val();
+        var total_tution_fee =  $("#total_tution_fee").val();
+        var concession_fee = $("#concession_fee").val();
+       
+         var total_college_fee = parseInt(total_university_fee) + parseInt(total_tution_fee) - parseInt(concession_fee);
+    
+        return total_college_fee;
+      }
+
+      $('#comments').on('keyup', function() {
         if (this.value.length >= 5) {
             $('#update_comments').prop("disabled", false);
         } else {
@@ -584,16 +604,17 @@ $(document).ready(function() {
         var course = $("#course").val();
         var course_val = $("#course option:selected").text();
 
-
+       
 
         var category = $("#category").val();
         var aided_unaided = $("#aided_unaided").val();
 
-        var college_fee_total = $("#demand_fee_total").val();
-        var mgt_fee_total = $("#corpus_fee").val();
+        var total_university_fee = $("#total_university_fee").val();
+        var corpus = $("#corpus_fee").val();
 
-        var proposed_amount = $("#proposed_amount").val();
-        var additional_amount = $("#additional_amount").val();
+        var total_tution_fee = $("#total_tution_fee").val();
+        var total_college_fee = $("#total_college_fee").val();
+       
         var concession_type = $("#concession_type").val();
         var concession_fee = $("#concession_fee").val();
         var final_amount = $('#final_amount').val();
@@ -601,34 +622,35 @@ $(document).ready(function() {
 
 
         $.ajax({
-            'type': 'POST',
-            'url': base_url + 'admin/admitStudent',
-            'data': {
-                "id": id,
-                "aided_unaided": aided_unaided,
-                'course': course,
-                'course_val': course_val,
-                "category": category,
-                "college_fee_total": college_fee_total,
-                "mgt_fee_total": mgt_fee_total,
-                "proposed_amount": proposed_amount,
-                "additional_amount": additional_amount,
-                "concession_type": concession_type,
-                "concession_fee": concession_fee,
-                "final_amount": final_amount
-            },
-            'dataType': 'text',
-            'cache': false,
-            'beforeSend': function() {
-                $('#insert').val("Inserting...");
-                $("#insert").attr("disabled", true);
-            },
-            'success': function(data) {
-                $('#insert').val("Inserted");
-                $('#student_modal').modal('hide');
-                var url = base_url + 'admin/enquiryDetails/' + id
-                window.location.replace(url);
-            }
+          'type': 'POST',
+          'url': base_url + 'admin/admitStudent',
+          'data': {
+            "id": id,
+            "aided_unaided": aided_unaided,
+            'course': course,
+            'course_val': course_val,
+            'corpus': corpus,
+            "category": category,
+            "total_university_fee": total_university_fee,
+            "total_college_fee":total_college_fee,
+            "total_tution_fee": total_tution_fee,
+         
+            "concession_type": concession_type,
+            "concession_fee": concession_fee,
+            "final_amount": final_amount
+          },
+          'dataType': 'text',
+          'cache': false,
+          'beforeSend': function() {
+            $('#insert').val("Inserting...");
+            $("#insert").attr("disabled", true);
+          },
+          'success': function(data) {
+            $('#insert').val("Inserted");
+            $('#student_modal').modal('hide');
+            var url = base_url + 'admin/enquiryDetails/' + id
+            window.location.replace(url);
+          }
         });
 
     });
