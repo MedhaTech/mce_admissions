@@ -147,6 +147,15 @@
         </li>
 
         <li class="nav-item ">
+          <a href="<?php echo base_url();?>student/parentdetails" class="nav-link <?=$menu_active = ($menu == "personaldetails")? 'active' :''; ?>">
+          <i class="nav-icon far fa-circle text-info"></i>
+            <p>
+              Parents Details
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item ">
           <a href="<?php echo base_url();?>student/educationdetails" class="nav-link <?=$menu_active = ($menu == "educationdetails")? 'active' :''; ?>">
           <i class="nav-icon far fa-circle text-info"></i>
             <p>

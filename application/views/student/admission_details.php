@@ -103,11 +103,8 @@
               <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                   <label class="label">Category Allocated<span class="text-danger">*</span></label>
-                  <input type="text" name="category_alloted" id="category_alloted" value="<?php echo (set_value('category_alloted')) ? set_value('category_alloted') : $category_alloted; ?>" class="form-control" placeholder="Enter Category Allocated" readonly>
-                  <!-- <?php
-                    echo form_dropdown('category_alloted', $type_options, (set_value('category_alloted')) ? set_value('category_alloted') : $category_alloted,  'class="form-control" enabled="False" id="category_alloted"');
-                  ?> -->
-                  <span class="text-danger"><?php echo form_error('category_alloted'); ?></span>
+                  <input type="text" name="category_allotted" id="category_allotted" value="<?php echo (set_value('category_allotted')) ? set_value('category_allotted') : $category_allotted; ?>" class="form-control" placeholder="Enter Category Allocatted" readonly>
+                  <span class="text-danger"><?php echo form_error('category_allotted'); ?></span>
                 </div>
               </div>
 
