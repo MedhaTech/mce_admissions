@@ -129,6 +129,15 @@
         </li>
 
         <li class="nav-item ">
+          <a href="<?php echo base_url();?>student/entranceexamdetails" class="nav-link <?=$menu_active = ($menu == "entranceexamdetails")? 'active' :''; ?>">
+          <i class="nav-icon far fa-circle text-info"></i>
+            <p>
+            Entrance Exam Details
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item ">
           <a href="<?php echo base_url();?>student/personaldetails" class="nav-link <?=$menu_active = ($menu == "personaldetails")? 'active' :''; ?>">
           <i class="nav-icon far fa-circle text-info"></i>
             <p>
@@ -147,7 +156,7 @@
         </li>
 
         <li class="nav-item ">
-          <a href="<?php echo base_url();?>student/dashboard" class="nav-link <?=$menu_active = ($menu == "dashboard")? 'active' :''; ?>">
+          <a href="<?php echo base_url();?>student/documents" class="nav-link <?=$menu_active = ($menu == "dashboard")? 'active' :''; ?>">
           <i class="nav-icon far fa-circle text-info"></i>
             <p>
               Documents
@@ -166,7 +175,7 @@
 
         <li class="nav-item ">
           <a href="<?php echo base_url();?>student" class="nav-link <?=$menu_active = ($menu == "dashboard")? 'active' :''; ?>">
-          <i class="nav-icon far fa-circle text-info"></i>
+          <i class="nav-icon fas fa-fingerprint"></i>
             <p>
               Change Password
             </p>
@@ -174,7 +183,7 @@
         </li>
 
         <li class="nav-item ">
-          <a href="<?php echo base_url();?>student/logout" class="nav-link <?=$menu_active = ($menu == "dashboard")? 'active' :''; ?>">
+          <a href="<?php echo base_url();?>student/logout" class="nav-link <?=$menu_active = ($menu == "logout")? 'active' :''; ?>">
           <i class="nav-icon fas fa-lock"></i>
             <p>
               Logout
