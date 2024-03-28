@@ -19,7 +19,7 @@
                             <li class="nav-item"><a class="nav-link" href="#programmes">Programmes</a></li>
                             <li class="nav-item"><a class="nav-link" href="#eligibility">Eligibility</a></li>
                             <li class="nav-item"><a class="nav-link" href="#apply">How to Apply</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#testimonial">Testimonial</a></li>
+                            <!-- <li class="nav-item"><a class="nav-link" href="#testimonial">Testimonial</a></li> -->
                             <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                         </ul>
                         <!-- End Mainmanu Nav -->
@@ -68,7 +68,7 @@
                             <div class="col-md-8 col-sm-12">
                                 <div class="card p-4 bg-gray border">
                                     <?php if($this->session->flashdata('status')) :?>
-                                   
+
                                     <!-- SUCCESS -->
                                     <!-- <div class="row">
                                         <div class="col-md-12 text-center">
@@ -78,181 +78,187 @@
                                     </div> -->
                                     <!-- END SUCCESS -->
                                     <!-- <p><?php echo $this->session->flashdata('status'); ?></p> -->
-                                    
-                                    <?php endif; ?>
-                                    
-                                <?php echo validation_errors(); ?>
-                                 <?php echo form_open_multipart($action, 'class="user"'); ?>
-                                        <div class="row">
-                                            <div class="col-md-12">
 
-                                                <h5 class="text-danger">B.E Admissions Open for 2024-25</h5>
-                                                <div class="row">
-                                                    <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="label">Student Full Name (As per SSLC)</label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            id="name" name="name" placeholder="Enter Student Name">
-                                                            <span
-                                                            class="text-danger"><?php echo form_error('name'); ?></span>
-                                                    </div>
-                                                    <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="label">Student Mobile<span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            id="mobile" name="mobile" placeholder="Enter Student Mobile">
-                                                            <span
-                                                            class="text-danger"><?php echo form_error('mobile'); ?></span>
-                                                    </div>
-                                                    <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="label">Student Email<span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            id="email" name="email" placeholder="Enter Student Email">
-                                                    </div>
+                                    <?php endif; ?>
+
+                                    <?php echo validation_errors(); ?>
+                                    <?php echo form_open_multipart($action, 'class="user"'); ?>
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                            <h5 class="text-danger">B.E Admissions Open for 2024-25</h5>
+                                            <div class="row">
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="label">Student Full Name (As per SSLC)</label>
+                                                    <input type="text" class="form-control form-control-sm" id="name"
+                                                        name="name" placeholder="Enter Student Name">
+                                                    <span class="text-danger"><?php echo form_error('name'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="label">Student Mobile<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control form-control-sm" id="mobile"
+                                                        name="mobile" placeholder="Enter Student Mobile">
+                                                    <span class="text-danger"><?php echo form_error('mobile'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="label">Student Email<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control form-control-sm" id="email"
+                                                        name="email" placeholder="Enter Student Email">
+                                                </div>
+                                                <span class="text-danger"><?php echo form_error('email'); ?></span>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="label"> Parent/Guardian Name<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        id="par_name" name="par_name"
+                                                        placeholder="Enter Parent/Guardian Name*">
                                                     <span
-                                                            class="text-danger"><?php echo form_error('email'); ?></span>
+                                                        class="text-danger"><?php echo form_error('par_name'); ?></span>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="label"> Parent/Guardian Name<span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            id="par_name" name="par_name"
-                                                            placeholder="Enter Parent/Guardian Name*">
-                                                            <span
-                                                            class="text-danger"><?php echo form_error('par_name'); ?></span>
-                                                    </div>
-                                                    <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="label"> Parent/Guardian Mobile<span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            id="par_mobile" name="par_mobile"
-                                                            placeholder="Enter Parent/Guardian Mobile">
-                                                            <span
-                                                            class="text-danger"><?php echo form_error('par_mobile'); ?></span>
-                                                    </div>
-                                                    <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="label"> Parent/Guardian Email</label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            id="par_email" name="par_email"
-                                                            placeholder="Enter Parent/Guardian Email">
-                                                    </div>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="label"> Parent/Guardian Mobile<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        id="par_mobile" name="par_mobile"
+                                                        placeholder="Enter Parent/Guardian Mobile">
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('par_mobile'); ?></span>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="label">SSLC Percentage/Grade<span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            id="sslc_grade" name="sslc_grade"
-                                                            placeholder="Enter SSLC Percentage/Grade*">
-                                                            <span
-                                                            class="text-danger"><?php echo form_error('sslc_grade'); ?></span>
-                                                    </div>
-                                                    <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="label">PUC-I(10+1) Percentage/Grade<span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            id="puc1_grade" name="puc1_grade"
-                                                            placeholder="Enter PUC-I(10+1) Percentage/Grade*">
-                                                            <span
-                                                            class="text-danger"><?php echo form_error('puc1_grade'); ?></span>
-                                                    </div>
-                                                    <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="label">PUC-II(10+2) Percentage/Grade</label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            id="puc2_grade" name="puc2_grade"
-                                                            placeholder="Enter PUC-II(10+2) Percentage/Grade*">
-                                                    </div>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="label"> Parent/Guardian Email</label>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        id="par_email" name="par_email"
+                                                        placeholder="Enter Parent/Guardian Email">
                                                 </div>
-                                                <div class="row">
-                                                    <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="course">Branch Preference-I<span class="text-danger">*</span></label>
-                                                        <?php 
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="label">SSLC Percentage/Grade<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        id="sslc_grade" name="sslc_grade"
+                                                        placeholder="Enter SSLC Percentage/Grade*">
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('sslc_grade'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="label">PUC-I(10+1) Percentage/Grade<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        id="puc1_grade" name="puc1_grade"
+                                                        placeholder="Enter PUC-I(10+1) Percentage/Grade*">
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('puc1_grade'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="label">PUC-II(10+2) Percentage/Grade</label>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        id="puc2_grade" name="puc2_grade"
+                                                        placeholder="Enter PUC-II(10+2) Percentage/Grade*">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="course">Branch Preference-I<span
+                                                            class="text-danger">*</span></label>
+                                                    <?php 
                                                             echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control form-control-sm" id="course"'); 
                                                         ?>
-                                                        <span
-                                                            class="text-danger"><?php echo form_error('course'); ?></span>
-                                                    </div>
-                                                    <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="course">Branch Preference-II<span class="text-danger">*</span></label>
-                                                        <?php 
+                                                    <span class="text-danger"><?php echo form_error('course'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="course">Branch Preference-II<span
+                                                            class="text-danger">*</span></label>
+                                                    <?php 
                                                             echo form_dropdown('course1', $course_options, (set_value('course1')) ? set_value('course1') : $course1, 'class="form-control form-control-sm" id="course1"'); 
                                                         ?>
-                                                        <span
-                                                            class="text-danger"><?php echo form_error('course1'); ?></span>
-                                                    </div>
-                                                    <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="course">Branch Preference-III<span class="text-danger">*</span></label>
-                                                        <?php 
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('course1'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="course">Branch Preference-III<span
+                                                            class="text-danger">*</span></label>
+                                                    <?php 
                                                             echo form_dropdown('course2', $course_options, (set_value('course2')) ? set_value('course2') : $course2, 'class="form-control form-control-sm" id="course2"'); 
                                                         ?>
-                                                        <span
-                                                            class="text-danger"><?php echo form_error('course2'); ?></span>
-                                                    </div>
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('course2'); ?></span>
                                                 </div>
+                                            </div>
 
-                                                <div class="row">
-                                                    <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="state">State<span class="text-danger">*</span></label>
-                                                        <?php 
+                                            <div class="row">
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="state">State<span class="text-danger">*</span></label>
+                                                    <?php 
                                                             echo form_dropdown('state', $states, (set_value('state')) ? set_value('state') : $state, 'class="form-control form-control-sm" id="state"'); 
                                                         ?>
-                                                        <span
-                                                            class="text-danger"><?php echo form_error('state'); ?></span>
-                                                    </div>
-                                                    <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="label">City<span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            id="city" name="city" placeholder="Enter City">
-                                                            <span
-                                                            class="text-danger"><?php echo form_error('city'); ?></span>
-                                                    </div>
-                                                    <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="label">Sports/Cultural Activities<span class="text-danger">*</span></label>
-                                                        <?php $sports_options = array(" "=>"Select Sports","State"=>"State","National"=>"National","International"=>"International");
+                                                    <span class="text-danger"><?php echo form_error('state'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="label">City<span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control form-control-sm" id="city"
+                                                        name="city" placeholder="Enter City">
+                                                    <span class="text-danger"><?php echo form_error('city'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="label">Sports/Cultural Activities<span
+                                                            class="text-danger">*</span></label>
+                                                    <?php $sports_options = array(" "=>"Select Sports","State"=>"State","National"=>"National","International"=>"International");
                                                             echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : 'sports', 'class="form-control form-control-sm" id="sports"'); 
                                                         ?>
-                                                        <span
-                                                            class="text-danger"><?php echo form_error('sports'); ?></span>
-                                                    </div>
-                                                    <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="label">Aadhar Number<span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            id="adhaar" name="adhaar" placeholder="Enter Aadhar No">
-                                                            <span
-                                                            class="text-danger"><?php echo form_error('adhaar'); ?></span>
-                                                    </div>
-                                                    <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="label">Gender<span class="text-danger">*</span></label>
-                                                        <?php $gender_options = array(" "=>"Select Gender","Male"=>"Male","Female"=>"Female","Not Prefer to Say"=>"Not Prefer to Say");
+                                                    <span class="text-danger"><?php echo form_error('sports'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="label">Aadhar Number<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control form-control-sm" id="adhaar"
+                                                        name="adhaar" placeholder="Enter Aadhar No">
+                                                    <span class="text-danger"><?php echo form_error('adhaar'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="label">Gender<span
+                                                            class="text-danger">*</span></label>
+                                                    <?php $gender_options = array(" "=>"Select Gender","Male"=>"Male","Female"=>"Female","Not Prefer to Say"=>"Not Prefer to Say");
                                                             echo form_dropdown('gender', $gender_options, (set_value('gender')) ? set_value('gender') : 'gender', 'class="form-control form-control-sm" id="gender"'); 
                                                         ?>
-                                                        <span
-                                                            class="text-danger"><?php echo form_error('gender'); ?></span>
-                                                    </div>
-                                                    <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="category">Category<span class="text-danger">*</span></label>
-                                                        <?php
+                                                    <span class="text-danger"><?php echo form_error('gender'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="category">Category<span
+                                                            class="text-danger">*</span></label>
+                                                    <?php
                                                              echo form_dropdown('category', $type_options, '', 'class="form-control input-xs" id="category"');
                                                         ?>
-                                                        <span class="text-danger"><?php echo form_error('category'); ?></span>
-                                                    </div>
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('category'); ?></span>
                                                 </div>
-
-                                                <div class="row">
-                                                    <div class="form-group col-8">
-                                                        <input type="checkbox" class="form-check-input" id="applyCheck" onclick="enable()">&nbsp;&nbsp;
-                                                        <label class="form-check-label text-gray font--12"
-                                                            for="applyCheck">
-                                                              I agree to receive information regarding my
-                                                            enquiry*</label>
-                                                    </div>
-                                                    <div class="form-group col-4">
-                                                        <button class="rn-button-style--2 btn_solid btn-size-sm"
-                                                            type="submit" value="submit" name="submit" id="submit" disabled="true">Apply
-                                                            Now</button>
-                                                            
-                                                    </div>
-                                                </div>
-
-
                                             </div>
+
+                                            <div class="row">
+                                                <div class="form-group col-8">
+                                                    <input type="checkbox" class="form-check-input" id="applyCheck"
+                                                        onclick="enable()">&nbsp;&nbsp;
+                                                    <label class="form-check-label text-gray font--12" for="applyCheck">
+                                                        I agree to receive information regarding my
+                                                        enquiry*</label>
+                                                </div>
+                                                <div class="form-group col-4">
+                                                    <button class="rn-button-style--2 btn_solid btn-size-sm"
+                                                        type="submit" value="submit" name="submit" id="submit"
+                                                        disabled="true">Apply
+                                                        Now</button>
+
+                                                </div>
+                                            </div>
+
+
                                         </div>
-                                        <?php echo form_close(); ?>
+                                    </div>
+                                    <?php echo form_close(); ?>
 
 
                                 </div>
@@ -266,36 +272,34 @@
 
 
             <!-- Start About Area  -->
-            <div class="about-area about-position-top pb--120 bg_color--1">
+            <div class="about-area about-with-experience-area pb--120 pt--120">
                 <div class="about-wrapper">
                     <div class="container">
                         <div class="row row--35 align-items-center">
-                            <div class="col-lg-5 col-md-12">
-                                <div class="thumbnail">
-                                    <img class="w-100" src="<?php echo base_url();?>themes/images/about/about-3.jpg"
-                                        alt="About Images" />
-                                </div>
-                            </div>
-                            <div class="col-lg-7 col-md-12">
+
+                            <div class="col-lg-6 col-md-12">
                                 <div class="about-inner inner">
                                     <div class="section-title">
-                                        <h2 class="title">About </h2>
-                                        <p class="description text-justify">Malnad College of Engineering, An Autonomous
+                                        <h2 class="title">About MCE</h2>
+                                        <p class="description text-justify">Malnad College of Engineering (MCE), An
+                                            Autonomous
                                             Institution,Afiliated by VTU, established in the year 1960, during the
                                             second 5 year plan, as a joint venture of Government of India, Government of
-                                            Karnataka and the Malnad Technical Education Society, Hassan.</p>
-                                        <p class="description text-justify">The Malnad College of Engineering is now a
-                                            reputed
-                                            Engineering college in the country. The college has earned “ISTE Award” as
-                                            one of the Best Engineering Colleges in the Country, in the year 2007. The
-                                            Institute located in the midway, (13°N and 76.5°E, altitude 943 mtrs.)
-                                            between Bengaluru (180 kms) and Mangaluru (170 kms) on NH-75. Hassan a
-                                            district head quarters, having a steady temperate climate throughout the
-                                            year, enjoys an annual rainfall of about 900 mm. World famous temples of
-                                            Belur, Halebidu, Shravanabelagola, and The Master Control Facility for INSAT
-                                            Satellites are located in Hassan District. </p>
+                                            Karnataka and the Malnad Technical Education Society, Hassan. The Malnad
+                                            College of Engineering is now a
+                                            reputed Engineering college in the country. The college has earned “ISTE
+                                            Award” as
+                                            one of the Best Engineering Colleges in the Country, in the year 2007. </p>
+                                        <?php echo anchor('https://www.mcehassan.ac.in/home/Institute','Know More','class=" rbt-button  rn-button-style--2 btn_border btn-size-md btn-theme" target="_blank"'); ?>
                                     </div>
 
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-12">
+                                <div class="thumbnail">
+                                    <iframe width="560" height="315"
+                                        src="https://www.youtube.com/embed/WoVaA_NXMCc?controls=0&rel=0" frameborder="0"
+                                        allowfullscreen></iframe>
                                 </div>
                             </div>
                         </div>
@@ -312,7 +316,7 @@
                             <div class="col-lg-12">
                                 <div class="section-title text-center mb--20 mb_sm--0 mb_md--0">
                                     <h2 class="title">Offering Programmes</h2>
-                                    <p>Our proposed B.Tech programs offer a comprehensive understanding of diverse
+                                    <p>Our proposed B.E programs offer a comprehensive understanding of diverse
                                         engineering domains, facilitating the development of personal networks through
                                         interdisciplinary collaborations.</p>
                                 </div>
@@ -339,15 +343,81 @@
                         <!-- Start Single Portfolio  -->
                         <div class="portfolio">
                             <div class="thumbnail-inner">
+                                <div class="thumbnail image-1"></div>
+                                <div class="bg-blr-image image-1"></div>
+                            </div>
+                            <div class="content">
+                                <div class="inner">
+                                    <p>B.E</p>
+                                    <h4><a href="https://www.mcehassan.ac.in/home/Overview/Civil-Engineering"
+                                            target="_blank">Civil Engineering</a></h4>
+                                    <div class="portfolio-button">
+                                        <a class="rn-btn"
+                                            href="https://www.mcehassan.ac.in/home/Overview/Civil-Engineering"
+                                            target="_blank">Know More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Portfolio  -->
+
+                        <!-- Start Single Portfolio  -->
+                        <div class="portfolio">
+                            <div class="thumbnail-inner">
                                 <div class="thumbnail image-2"></div>
                                 <div class="bg-blr-image image-2"></div>
                             </div>
                             <div class="content">
                                 <div class="inner">
-                                    <p>B.Tech</p>
-                                    <h4><a href="#">Computer Science</a></h4>
+                                    <p>B.E</p>
+                                    <h4><a href="https://www.mcehassan.ac.in/home/Overview/Mechanical-Engineering"
+                                            target="_blank">Mechanical Engineering</a></h4>
                                     <div class="portfolio-button">
-                                        <a class="rn-btn" href="#">Know More</a>
+                                        <a class="rn-btn"
+                                            href="https://www.mcehassan.ac.in/home/Overview/Mechanical-Engineering"
+                                            target="_blank">Know More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Portfolio  -->
+
+                        <!-- Start Single Portfolio  -->
+                        <div class="portfolio">
+                            <div class="thumbnail-inner">
+                                <div class="thumbnail image-3"></div>
+                                <div class="bg-blr-image image-3"></div>
+                            </div>
+                            <div class="content">
+                                <div class="inner">
+                                    <p>B.E</p>
+                                    <h4><a href="https://www.mcehassan.ac.in/home/Overview/Electrical-and-Electronics-Engineering"
+                                            target="_blank">Electrical and Electronics Engineering</a></h4>
+                                    <div class="portfolio-button">
+                                        <a class="rn-btn"
+                                            href="https://www.mcehassan.ac.in/home/Overview/Electrical-and-Electronics-Engineering"
+                                            target="_blank">Know More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Portfolio  -->
+
+                        <!-- Start Single Portfolio  -->
+                        <div class="portfolio">
+                            <div class="thumbnail-inner">
+                                <div class="thumbnail image-4"></div>
+                                <div class="bg-blr-image image-4"></div>
+                            </div>
+                            <div class="content">
+                                <div class="inner">
+                                    <p>B.E</p>
+                                    <h4><a href="https://www.mcehassan.ac.in/home/Overview/Electronics-and-Communication-Engineering"
+                                            target="_blank">Electronics and Communication Engineering</a></h4>
+                                    <div class="portfolio-button">
+                                        <a class="rn-btn"
+                                            href="https://www.mcehassan.ac.in/home/Overview/Electronics-and-Communication-Engineering"
+                                            target="_blank">Know More</a>
                                     </div>
                                 </div>
                             </div>
@@ -362,10 +432,13 @@
                             </div>
                             <div class="content">
                                 <div class="inner">
-                                    <p>B.Tech</p>
-                                    <h4><a href="#">Electronics & Instrumentation</a></h4>
+                                    <p>B.E</p>
+                                    <h4><a href="https://www.mcehassan.ac.in/home/Overview/Computer-Science-and-Engineering"
+                                            target="_blank">Computer Science and Engineering</a></h4>
                                     <div class="portfolio-button">
-                                        <a class="rn-btn" href="#">Know More</a>
+                                        <a class="rn-btn"
+                                            href="https://www.mcehassan.ac.in/home/Overview/Computer-Science-and-Engineering"
+                                            target="_blank">Know More</a>
                                     </div>
                                 </div>
                             </div>
@@ -375,15 +448,18 @@
                         <!-- Start Single Portfolio  -->
                         <div class="portfolio">
                             <div class="thumbnail-inner">
-                                <div class="thumbnail image-5"></div>
-                                <div class="bg-blr-image image-5"></div>
+                                <div class="thumbnail image-6"></div>
+                                <div class="bg-blr-image image-6"></div>
                             </div>
                             <div class="content">
                                 <div class="inner">
-                                    <p>B.Tech</p>
-                                    <h4><a href="#">Information Science</a></h4>
+                                    <p>B.E</p>
+                                    <h4><a href="https://www.mcehassan.ac.in/home/Overview/Electronics-and-Instrumentation-Engineering"
+                                            target="_blank">Electronics and Instrumentation Engineering</a></h4>
                                     <div class="portfolio-button">
-                                        <a class="rn-btn" href="#">Know More</a>
+                                        <a class="rn-btn"
+                                            href="https://www.mcehassan.ac.in/home/Overview/Electronics-and-Instrumentation-Engineering"
+                                            target="_blank">Know More</a>
                                     </div>
                                 </div>
                             </div>
@@ -393,15 +469,18 @@
                         <!-- Start Single Portfolio  -->
                         <div class="portfolio">
                             <div class="thumbnail-inner">
-                                <div class="thumbnail image-5"></div>
-                                <div class="bg-blr-image image-5"></div>
+                                <div class="thumbnail image-7"></div>
+                                <div class="bg-blr-image image-7"></div>
                             </div>
                             <div class="content">
                                 <div class="inner">
-                                    <p>B.Tech</p>
-                                    <h4><a href="#">Automobile</a></h4>
+                                    <p>B.E</p>
+                                    <h4><a href="https://www.mcehassan.ac.in/home/Overview/Information-Science-and-Engineering"
+                                            target="_blank">Information Science and Engineering</a></h4>
                                     <div class="portfolio-button">
-                                        <a class="rn-btn" href="#">Know More</a>
+                                        <a class="rn-btn"
+                                            href="https://www.mcehassan.ac.in/home/Overview/Information-Science-and-Engineering"
+                                            target="_blank">Know More</a>
                                     </div>
                                 </div>
                             </div>
@@ -411,15 +490,18 @@
                         <!-- Start Single Portfolio  -->
                         <div class="portfolio">
                             <div class="thumbnail-inner">
-                                <div class="thumbnail image-5"></div>
-                                <div class="bg-blr-image image-5"></div>
+                                <div class="thumbnail image-8"></div>
+                                <div class="bg-blr-image image-8"></div>
                             </div>
                             <div class="content">
                                 <div class="inner">
-                                    <p>B.Tech</p>
-                                    <h4><a href="#">Computer Science and Business Systems</a></h4>
+                                    <p>B.E</p>
+                                    <h4><a href="https://www.mcehassan.ac.in/home/Overview/Artificial-Intelligence-and-Machine-Learning"
+                                            target="_blank">Artificial Intelligence and Machine Learning</a></h4>
                                     <div class="portfolio-button">
-                                        <a class="rn-btn" href="#">Know More</a>
+                                        <a class="rn-btn"
+                                            href="https://www.mcehassan.ac.in/home/Overview/Artificial-Intelligence-and-Machine-Learning"
+                                            target="_blank">Know More</a>
                                     </div>
                                 </div>
                             </div>
@@ -429,33 +511,18 @@
                         <!-- Start Single Portfolio  -->
                         <div class="portfolio">
                             <div class="thumbnail-inner">
-                                <div class="thumbnail image-5"></div>
-                                <div class="bg-blr-image image-5"></div>
+                                <div class="thumbnail image-9"></div>
+                                <div class="bg-blr-image image-9"></div>
                             </div>
                             <div class="content">
                                 <div class="inner">
-                                    <p>B.Tech</p>
-                                    <h4><a href="#">Civil</a></h4>
+                                    <p>B.E</p>
+                                    <h4><a href="https://www.mcehassan.ac.in/home/Overview/Computer-Science-and-Business-Systems"
+                                            target="_blank">Computer Science and Business Systems</a></h4>
                                     <div class="portfolio-button">
-                                        <a class="rn-btn" href="#">Know More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Single Portfolio  -->
-
-                        <!-- Start Single Portfolio  -->
-                        <div class="portfolio">
-                            <div class="thumbnail-inner">
-                                <div class="thumbnail image-5"></div>
-                                <div class="bg-blr-image image-5"></div>
-                            </div>
-                            <div class="content">
-                                <div class="inner">
-                                    <p>B.Tech</p>
-                                    <h4><a href="#">Electronics & Communications</a></h4>
-                                    <div class="portfolio-button">
-                                        <a class="rn-btn" href="#">Know More</a>
+                                        <a class="rn-btn"
+                                            href="https://www.mcehassan.ac.in/home/Overview/Computer-Science-and-Business-Systems"
+                                            target="_blank">Know More</a>
                                     </div>
                                 </div>
                             </div>
@@ -657,3 +724,62 @@
                 </div>
             </div>
             <!-- End Accordion Area  -->
+
+            <!-- Start Contact Address Area  -->
+            <div class="rn-contact-address-area rn-section-gap bg_color--5" id="contact">
+                <div class="container">
+                    <div class="row mt_dec--40">
+                        <div class="section-title section-title--2 text-center">
+                            <!-- <span class="sub-title">Contact us today</span> -->
+                            <h3 class="title rbt-section-title"><span>Contact us for more information</span></h3>
+                            <!-- <p>There are many variations of passages of Lorem Ipsum <br> available but the majority.</p> -->
+                        </div>
+                        <!-- Start Single Address  -->
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12 mt--40">
+                            <div class="rn-address">
+                                <div class="icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="inner">
+                                    <h4 class="title">Phone Number</h4>
+                                    <p><a href="tel:+08172245317">08172-245317</a></p>
+                                    <!-- <p><a href="tel:+856325652984">+856 325 652 984</a></p> -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Address  -->
+
+                        <!-- Start Single Address  -->
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12 mt--40">
+                            <div class="rn-address">
+                                <div class="icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="inner">
+                                    <h4 class="title">Email Address</h4>
+                                    <p><a href="mailto:admissions@mcehassan.ac.in">admissions@mcehassan.ac.in</a></p>
+                                    <!-- <p><a href="mailto:office@mcehassan.ac.in">office@mcehassan.ac.in</a></p> -->
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Address  -->
+
+                        <!-- Start Single Address  -->
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12 mt--40">
+                            <div class="rn-address">
+                                <div class="icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="inner">
+                                    <h4 class="title">Location</h4>
+                                    <p>No 21, Salagame Rd, Rangoli Halla, <br /> Hassan, Karnataka 573202</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Address  -->
+
+                    </div>
+                </div>
+            </div>
+            <!-- End Contact Address Area  -->
