@@ -20,7 +20,7 @@ class Student extends CI_Controller {
 		$this->form_validation->set_rules('mobile', 'Mobile Number', 'trim|required|regex_match[/^[0-9]{10}$/]');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|callback_check_database');
 		if ($this->form_validation->run() == FALSE) {
-			$data['pageTitle'] = "Student Login";
+			$data['page_title'] = "Student Login";
 			$data['action'] = 'student';
 
 			$this->login_template->show('student/Login', $data);
@@ -59,7 +59,7 @@ class Student extends CI_Controller {
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
 			$data['student_name'] = $session_data['student_name'];
-			$data['pageTitle'] = "Dashboard";
+			$data['page_title'] = "Dashboard";
 			$data['activeMenu'] = "dashboard";
 			$this->student_template->show('student/Dashboard', $data);
 		} else {
@@ -71,8 +71,8 @@ class Student extends CI_Controller {
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
-			$data['username'] = $session_data['username'];
-			$data['pageTitle'] = "Admissiondetails";
+			$data['student_name'] = $session_data['student_name'];
+			$data['page_title'] = "Admissiondetails";
 			$data['activeMenu'] = "admissiondetails";
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
@@ -178,9 +178,9 @@ class Student extends CI_Controller {
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
-			$data['username'] = $session_data['username'];
+			$data['student_name'] = $session_data['student_name'];
 			$data['id'] = $session_data['id'];
-			$data['pageTitle'] = "Entrancedetails";
+			$data['page_title'] = "Entrancedetails";
 			$data['activeMenu'] = "entrancedetails";
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
@@ -253,10 +253,10 @@ class Student extends CI_Controller {
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
-			$data['username'] = $session_data['username'];
-			$data['pageTitle'] = "Personaldetails";
+			$data['student_name'] = $session_data['student_name'];
+			$data['page_title'] = "Personaldetails";
 			$data['activeMenu'] = "personaldetails";
-			$this->student_template->show('student/personal_details');
+			$this->student_template->show('student/personal_details', $data);
 		} else {
 			redirect('admin', 'refresh');
 		}
@@ -266,10 +266,11 @@ class Student extends CI_Controller {
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
-			$data['username'] = $session_data['username'];
-			$data['pageTitle'] = "Educationdetails";
-			$data['activeMenu'] = "educationdetails";
-			$this->student_template->show('student/education_details');
+			$data['student_name'] = $session_data['student_name'];
+			$data['page_title'] = 'Education Details';
+			$data['menu'] = 'educationdetails';
+
+			$this->student_template->show('student/education_details',$data);
 		} else {
 			redirect('admin', 'refresh');
 		}
@@ -279,10 +280,10 @@ class Student extends CI_Controller {
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
-			$data['username'] = $session_data['username'];
-			$data['pageTitle'] = "Finish";
+			$data['student_name'] = $session_data['student_name'];
+			$data['page_title'] = "Finish";
 			$data['activeMenu'] = "finish";
-			$this->student_template->show('student/finish');
+			$this->student_template->show('student/finish', $data);
 		} else {
 			redirect('admin', 'refresh');
 		}
@@ -292,10 +293,10 @@ class Student extends CI_Controller {
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
-			$data['username'] = $session_data['username'];
+			$data['student_name'] = $session_data['student_name'];
 			$data['page_title'] = "Admissionfee";
 			$data['activeMenu'] = "admissionfee";
-			$this->student_template->show('student/admission_fee');
+			$this->student_template->show('student/admission_fee', $data);
 		} else {
 			redirect('admin', 'refresh');
 		}
@@ -305,8 +306,8 @@ class Student extends CI_Controller {
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
-			$data['username'] = $session_data['username'];
-			$data['pageTitle'] = "Document";
+			$data['student_name'] = $session_data['student_name'];
+			$data['page_title'] = "Document";
 			$data['activeMenu'] = "document";
 
 			$data['admissions'] = $this->admin_model->getDetails('admissions','id', $data['id'])->row();

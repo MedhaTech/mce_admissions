@@ -37,6 +37,7 @@ class Admin extends CI_Controller
 
 		//query the database
 		$result = $this->admin_model->login($username, md5($password));
+		
 		if ($result) {
 			$sess_array = array();
 			foreach ($result as $row) {
