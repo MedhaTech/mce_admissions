@@ -20,7 +20,7 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-
+        
 
         <?php if ($this->session->flashdata('message')) { ?>
           <div align="center" class="alert <?= $this->session->flashdata('status'); ?>" id="msg">
@@ -30,27 +30,32 @@
 
         <div class="card mb-4 border-top-<?= $enquiryStatusColor[$enquiryDetails->status]; ?>">
           <div class="card-body">
-            <div class="d-sm-flex align-items-center justify-content-between mb-4">
-              <div class="col-md-6 text-left">
-                <span class="badge badge-<?= $enquiryStatusColor[$enquiryDetails->status]; ?>"><?= $enquiryStatus[$enquiryDetails->status]; ?></span>
-                <h1 class="h4 mb-0 text-gray-800"><?= $enquiryDetails->student_name . ' Details'; ?></h1>
-              </div>
-              <div class="col-md-6 text-right">
-                <?php if ($enquiryDetails->status != 6) { ?>
-                  <?php if ($user_type != 5) { ?>
-
-                    <button class="btn btn-info btn-sm btn-icon-split" id="admit_student" name="admit_student">
-                      <span class="icon text-white-50">
-                        <i class="fas fa-user"></i>
-                      </span>
-                      <span class="text"> Admit Student</span>
-                    </button>
-                  <?php } ?>
-                  <?php echo anchor('admin/editEnquiry/' . $enquiryDetails->id, '<span class="icon"><i class="fas fa-edit"></i></span> <span class="text">Edit</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
-                <?php } ?>
-                <?php echo anchor('admin/enquiries', '<span class="icon"><i class="fas fa-arrow-left"></i></span> <span class="text">Back to List</span>', 'class="btn btn-secondary btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
-              </div>
-            </div>
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+          <div class="col-md-6 text-left">
+            <span class="badge badge-<?= $enquiryStatusColor[$enquiryDetails->status]; ?>"><?= $enquiryStatus[$enquiryDetails->status]; ?></span>
+            <h1 class="h4 mb-0 text-gray-800"><?= $enquiryDetails->student_name . ' Details'; ?></h1>
+          </div>
+          <div class="col-md-6 text-right">
+            <?php if ($enquiryDetails->status != 6) { ?>
+              <?php if ($user_type != 5) { ?>
+                <button class="btn btn-primary btn-sm btn-icon-split" id="block_student" name="block_student">
+                  <span class="icon text-white-50">
+                    <i class="fas fa-lock"></i>
+                  </span>
+                  <span class="text"> Block Seat</span>
+                </button>
+                <button class="btn btn-info btn-sm btn-icon-split" id="admit_student" name="admit_student">
+                  <span class="icon text-white-50">
+                    <i class="fas fa-user"></i>
+                  </span>
+                  <span class="text"> Admit Student</span>
+                </button>
+              <?php } ?>
+              <?php echo anchor('admin/editEnquiry/' . $enquiryDetails->id, '<span class="icon"><i class="fas fa-edit"></i></span> <span class="text">Edit</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
+            <?php } ?>
+            <?php echo anchor('admin/enquiries', '<span class="icon"><i class="fas fa-arrow-left"></i></span> <span class="text">Back to List</span>', 'class="btn btn-secondary btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
+          </div>
+        </div>
             <table class="table">
               <tr>
                 <th width="20%">Applicant Name</th>
@@ -234,30 +239,17 @@
                       <span class="text-danger"><?php echo form_error('subquota'); ?></span>
                     </div>
                   </div>
-
-
-                </div>
-                <div class="form-row">
                   <div class="col">
                     <div class="form-group">
-                      <label class="form-label">Category Allotted</label>
+                      <label class="form-label">Category</label>
                       <!-- <input type="text" class="form-control" id="aided_unaided" name="aided_unaided" placeholder="" readonly> -->
                       <?php
-                      echo form_dropdown('category_allotted', $type_options, '', 'class="form-control input-xs" id="category_allotted"');
+                      echo form_dropdown('aided_unaided', $type_options, '', 'class="form-control input-xs" id="aided_unaided"');
                       ?>
-                      <span class="text-danger"><?php echo form_error('category_allotted'); ?></span>
+                      <span class="text-danger"><?php echo form_error('aided_unaided'); ?></span>
                     </div>
                   </div>
-                  <div class="col">
-                    <div class="form-group">
-                      <label class="form-label">Category Claimed</label>
-                      <!-- <input type="text" class="form-control" id="aided_unaided" name="aided_unaided" placeholder="" readonly> -->
-                      <?php
-                      echo form_dropdown('category_claimed', $type_options, '', 'class="form-control input-xs" id="category_claimed"');
-                      ?>
-                      <span class="text-danger"><?php echo form_error('category_claimed'); ?></span>
-                    </div>
-                  </div>
+
                 </div>
 
                 <div class="form-row">
@@ -279,13 +271,13 @@
                       <input type="text" class="form-control" id="total_tution_fee" name="total_tution_fee" placeholder="Finalised Fee" readonly>
                     </div>
                   </div>
-
+                  
 
 
                 </div>
 
                 <div class="form-row">
-
+                
                   <div class="col">
                     <div class="form-group">
                       <label class="form-label">Concession Type</label>
@@ -310,22 +302,22 @@
                 </div>
 
                 <div class="form-row">
-
-
-                  <div class="col">
-                    <div class="form-group">
-                      <label class="form-label">Remarks</label>
-                      <input type="text" class="form-control" id="remarks" name="remarks" placeholder="Enter remarks">
-                    </div>
+                
+               
+                <div class="col">
+                  <div class="form-group">
+                    <label class="form-label">Remarks</label>
+                    <input type="text" class="form-control" id="remarks" name="remarks" placeholder="Enter remarks" >
                   </div>
-                  <div class="col">
-                    <div class="form-group">
-                      <label class="form-label">Final Fee</label>
-                      <input type="text" class="form-control" id="final_amount" name="final_amount" placeholder="Payable Fee" readonly>
-                    </div>
-                  </div>
-
                 </div>
+                <div class="col">
+                  <div class="form-group">
+                    <label class="form-label">Final Fee</label>
+                    <input type="text" class="form-control" id="final_amount" name="final_amount" placeholder="Payable Fee" readonly>
+                  </div>
+                </div>
+
+              </div>
                 <div class="row">
                   <div class="col">
                     <button type="button" class="btn btn-secondary btn-sm tx-13" data-dismiss="modal">Close</button>
@@ -341,6 +333,127 @@
       </div>
 
 
+      <div class="modal fade" id="block_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content tx-14">
+            <div class="modal-header">
+              <h6 class="modal-title text-bold" id="exampleModalLabel"> <?= $enquiryDetails->student_name; ?> Details</h6>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form method="post" id="insert_form">
+                <div class="form-row">
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Department</label>
+                      <?php echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control" id="course"');  ?>
+                      <span class="text-danger"><?php echo form_error('course'); ?></span>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Quota </label>
+                      <?php $state_options = array("" => "Select");
+                      echo form_dropdown('quota', $quota_options, (set_value('quota')) ? set_value('quota') : '', 'class="form-control" id="quota" '); ?>
+                      <span class="text-danger"><?php echo form_error('quota'); ?></span>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Sub Quota </label>
+                      <?php
+                      echo form_dropdown('subquota', $subquota_options, (set_value('subquota')) ? set_value('subquota') : '', 'class="form-control" id="subquota" disabled '); ?>
+                      <span class="text-danger"><?php echo form_error('subquota'); ?></span>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Category</label>
+                      <!-- <input type="text" class="form-control" id="aided_unaided" name="aided_unaided" placeholder="" readonly> -->
+                      <?php
+                      echo form_dropdown('aided_unaided', $type_options, '', 'class="form-control input-xs" id="aided_unaided"');
+                      ?>
+                      <span class="text-danger"><?php echo form_error('aided_unaided'); ?></span>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="form-row">
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Tution Fee</label>
+                      <input type="text" class="form-control" id="total_university_fee" name="total_university_fee" placeholder="Total College fee" readonly>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Corpus Fund</label>
+                      <input type="number" class="form-control" id="corpus_fee" name="corpus_fee" placeholder="Corpus Fee" min="0" value="0">
+                    </div>
+                  </div>
+
+
+                </div>
+
+                <div class="form-row">
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">MTES Corpus Fund</label>
+                      <input type="number" class="form-control" id="corpus_fee_mtes" name="corpus_fee_mtes" placeholder="MTES Corpus Fee" min="0" value="0">
+                    </div>
+                  </div>
+
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Finalised Fee</label>
+                      <input type="text" class="form-control" id="final_amount" name="final_amount" placeholder="Enter Finalized Fee" readonly>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="form-row">
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Cash / DD Details</label>
+                      <input type="text" class="form-control" id="cash" name="cash" placeholder="Cash / DD Details">
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Bank Name</label>
+                      <input type="text" class="form-control" id="bank" name="bank" placeholder="Bank Name">
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Date</label>
+                      <input type="date" class="form-control" id="date" name="date">
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-label">Amount</label>
+                      <input type="text" class="form-control" id="bank" name="bank" placeholder="Amount">
+                    </div>
+                  </div>
+
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <button type="button" class="btn btn-secondary btn-sm tx-13" data-dismiss="modal">Close</button>
+                  </div>
+                  <div class="col text-right">
+                    <input type="submit" name="insert_block" id="insert_block" value="Block Seat" class="btn btn-danger btn-sm" />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </div>
   <script>
@@ -352,38 +465,11 @@
       // $('#insert_block').prop("disabled", true);
 
 
-      $("#quota").change(function() {
-        event.preventDefault();
-
-        var quota = $("#quota").val();
-
-        if (quota == ' ') {
-          alert("Please Select Quota");
-        } else {
-          $.ajax({
-            'type': 'POST',
-            'url': base_url + 'admin/subquotaDropdown',
-            'data': {
-              'quota': quota,
-              'flag': 'S'
-            },
-            'dataType': 'text',
-            'cache': false,
-            'success': function(data) {
-              $('select[name="subquota"]').empty();
-              $('select[name="subquota"]').append(data);
-              $('select[name="subquota"]').removeAttr("disabled");
-
-            }
-          });
-
-        }
-      });
 
 
 
 
-      $("#subquota").change(function() {
+      $("#aided_unaided").change(function() {
         event.preventDefault();
         var course = $("#course").val();
         var subquota = $("#subquota").val();
@@ -410,24 +496,24 @@
               var corpus = data.corpus_fund;
               $('#total_tution_fee').val(data.total_tution_fee);
               var total_tution_fee = data.total_tution_fee;
-
-
+            
+             
 
               var total_college_fee = collegeAmount();
               $('#total_college_fee').val(collegeAmount);
-              var final_amount = finalAmount();
+               var final_amount = finalAmount();
               $('#final_amount').val(finalAmount);
             }
           });
         }
       });
-
+ 
       $("#concession_fee").change(function() {
         event.preventDefault();
         var final_amount = finalAmount();
         $('#final_amount').val(finalAmount);
         var total_college_fee = collegeAmount();
-        $('#total_college_fee').val(collegeAmount);
+              $('#total_college_fee').val(collegeAmount);
       });
       $("#corpus_fee").change(function() {
         event.preventDefault();
@@ -437,23 +523,23 @@
 
       function finalAmount() {
         var total_university_fee = $("#total_university_fee").val();
-        var total_tution_fee = $("#total_tution_fee").val();
+        var total_tution_fee =  $("#total_tution_fee").val();
         var concession_fee = $("#concession_fee").val();
         var corpus = $("#corpus_fee").val();
-        var total_college_fee = parseInt(total_university_fee) + parseInt(total_tution_fee) - parseInt(concession_fee);
-
-
+         var total_college_fee = parseInt(total_university_fee) + parseInt(total_tution_fee) - parseInt(concession_fee);
+       
+        
         var final_amount = parseInt(total_college_fee) + parseInt(corpus);
         return final_amount;
       }
 
       function collegeAmount() {
         var total_university_fee = $("#total_university_fee").val();
-        var total_tution_fee = $("#total_tution_fee").val();
+        var total_tution_fee =  $("#total_tution_fee").val();
         var concession_fee = $("#concession_fee").val();
-
-        var total_college_fee = parseInt(total_university_fee) + parseInt(total_tution_fee) - parseInt(concession_fee);
-
+       
+         var total_college_fee = parseInt(total_university_fee) + parseInt(total_tution_fee) - parseInt(concession_fee);
+    
         return total_college_fee;
       }
 
@@ -497,7 +583,7 @@
 
 
 
-      $("#subquota").change(function() {
+      $("#aided_unaided").change(function() {
 
         if (this.value.length >= 1) {
           $('#insert').prop("disabled", false);
@@ -513,18 +599,17 @@
         var course = $("#course").val();
         var course_val = $("#course option:selected").text();
 
+       
 
-
-    
-        var category_allotted = $("#category_allotted").val();
-        var category_claimed = $("#category_claimed").val();
+        var category = $("#category").val();
+        var aided_unaided = $("#aided_unaided").val();
 
         var total_university_fee = $("#total_university_fee").val();
         var corpus = $("#corpus_fee").val();
 
         var total_tution_fee = $("#total_tution_fee").val();
         var total_college_fee = $("#total_college_fee").val();
-
+       
         var concession_type = $("#concession_type").val();
         var concession_fee = $("#concession_fee").val();
         var final_amount = $('#final_amount').val();
@@ -540,12 +625,11 @@
             'course': course,
             'course_val': course_val,
             'corpus': corpus,
-            "category_allotted": category_allotted,
-            "category_claimed": category_claimed,
+            "category": category,
             "total_university_fee": total_university_fee,
-            "total_college_fee": total_college_fee,
+            "total_college_fee":total_college_fee,
             "total_tution_fee": total_tution_fee,
-
+         
             "concession_type": concession_type,
             "concession_fee": concession_fee,
             "final_amount": final_amount
@@ -567,7 +651,30 @@
       });
 
 
-
+    	$("#quota").change(function(){
+			event.preventDefault();
+	            	
+			var quota = $("#quota").val();
+			
+			if(quota == ' '){
+			   alert("Please Select Quota");
+			}else{
+			  $.ajax({'type':'POST',
+				'url':base_url+'admin/subquotaDropdown',
+				'data':{'quota':quota, 'flag':'S'},
+				'dataType':'text',
+				'cache':false,
+				'success':function(data){
+					$('select[name="subquota"]').empty();
+					$('select[name="subquota"]').append(data);
+					$('select[name="subquota"]').removeAttr("disabled");
+		
+				}
+			  });
+			  
+			}
+		});
+		
 
 
     });

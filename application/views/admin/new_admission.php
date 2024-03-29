@@ -1,0 +1,479 @@
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+      <section class="content-header">
+          <div class="container-fluid">
+
+              <div class="card">
+                  <div class="card-header bg-gray-light">
+                      <h6 class="m-0"><?= $page_title; ?></h6>
+                  </div>
+                  <div class="card-body">
+                      <?php echo form_open_multipart($action, 'class="user"'); ?>
+
+                      <div class="form-row">
+
+                          <div class="col-md-4 col-sm-12">
+                              <div class="form-group">
+                                  <label for="student_name">Student Full Name (As per SSLC)</label>
+                                  <input type="text" name="student_name" id="student_name" class="form-control" value="<?php echo (set_value('student_name')) ? set_value('student_name') : $student_name; ?>">
+                                  <span class="text-danger"><?php echo form_error('student_name'); ?></span>
+                              </div>
+                          </div>
+                          <div class="col-md-4 col-sm-12">
+                              <div class="form-group">
+                                  <label for="text">Student Mobile</label>
+                                  <input type="number" name="mobile" id="mobile" class="form-control" value="<?php echo (set_value('mobile')) ? set_value('mobile') : $mobile; ?>">
+                                  <span class="text-danger"><?php echo form_error('mobile'); ?></span>
+                              </div>
+                          </div>
+                          <div class="col-md-4 col-sm-12">
+                              <div class="form-group">
+                                  <label for="email">Student Email</label>
+                                  <input type="text" name="email" id="email" class="form-control" value="<?php echo (set_value('email')) ? set_value('email') : $email; ?>">
+                                  <span class="text-danger"><?php echo form_error('email'); ?></span>
+                              </div>
+                          </div>
+
+                      </div>
+
+
+
+
+                      <div class="form-row">
+
+                          <div class="col">
+                              <div class="form-group">
+                                  <label for="dsc-2">Adhaar Number </label>
+                                  <input type="number" name="aadhar" id="aadhar" class="form-control" value="<?php echo (set_value('aadhar')) ? set_value('aadhar') : $aadhar; ?>">
+                                  <span class="text-danger"><?php echo form_error('aadhar'); ?></span>
+                              </div>
+                          </div>
+                          <div class="col">
+                              <div class="form-group">
+                                  <label class="form-label">Category Allotted</label>
+                                  <!-- <input type="text" class="form-control" id="aided_unaided" name="aided_unaided" placeholder="" readonly> -->
+                                  <?php
+                                    echo form_dropdown('category_allotted', $type_options, (set_value('category_allotted')) ? set_value('category_allotted') : $category_allotted, 'class="form-control input-xs" id="category_allotted"');
+                                    ?>
+                                  <span class="text-danger"><?php echo form_error('category_allotted'); ?></span>
+                              </div>
+                          </div>
+                          <div class="col">
+                              <div class="form-group">
+                                  <label class="form-label">Category Claimed</label>
+                                  <!-- <input type="text" class="form-control" id="aided_unaided" name="aided_unaided" placeholder="" readonly> -->
+                                  <?php
+                                    echo form_dropdown('category_claimed', $type_options, (set_value('category_claimed')) ? set_value('category_claimed') : $category_claimed, 'class="form-control input-xs" id="category_claimed"');
+                                    ?>
+                                  <span class="text-danger"><?php echo form_error('category_claimed'); ?></span>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="form-row">
+                          <div class="col">
+                              <div class="form-group">
+                                  <label class="form-label">Department</label>
+                                  <?php echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control" id="course"');  ?>
+                                  <span class="text-danger"><?php echo form_error('course'); ?></span>
+                              </div>
+                          </div>
+                          <div class="col">
+                              <div class="form-group">
+                                  <label class="form-label">Quota </label>
+                                  <?php $state_options = array("" => "Select");
+                                    echo form_dropdown('quota', $quota_options, (set_value('quota')) ? set_value('quota') : '', 'class="form-control" id="quota" '); ?>
+                                  <span class="text-danger"><?php echo form_error('quota'); ?></span>
+                              </div>
+                          </div>
+                          <div class="col">
+                              <div class="form-group">
+                                  <label class="form-label">Sub Quota </label>
+                                  <?php
+                                    echo form_dropdown('subquota', $subquota_options, (set_value('subquota')) ? set_value('subquota') : '', 'class="form-control" id="subquota" '); ?>
+                                  <span class="text-danger"><?php echo form_error('subquota'); ?></span>
+                              </div>
+                          </div>
+
+
+                      </div>
+                      <div class="form-row">
+
+
+                          <div class="col">
+                              <div class="form-group">
+                                  <label class="label">College Code<span class="text-danger">*</span></label>
+                                  <input type="text" name="college_code" id="college_code" class="form-control" value="<?php echo (set_value('college_code')) ? set_value('college_code') : $college_code; ?>" placeholder="Enter College Code">
+                                  <span class="text-danger"><?php echo form_error('college_code'); ?></span>
+                              </div>
+                          </div>
+                          <div class="col">
+                              <div class="form-group">
+                                  <label class="label">Sports/Cultural Activities<span class="text-danger">*</span></label>
+                                  <?php $sports_options = array(" " => "Select Sports", "District" => "District", "State" => "State", "National" => "National", "International" => "International", "Not Applicable" => "Not Applicable");
+                                    echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : $sports, 'class="form-control" id="sports"');
+                                    ?>
+                                  <span class="text-danger"><?php echo form_error('sports'); ?></span>
+                              </div>
+                          </div>
+                      </div><br>
+
+
+
+
+
+                      <div class="form-row">
+                          <div class="form-group col-md-4 col-sm-12">
+                              <label class="label">Entrance Type<span class="text-danger">*</span></label>
+                              <?php $entrance_options = array(" " => "Select Entrance type", "CET" => "CET", "COMED-K" => "COMED-K", "GOI " => "GOI ", "J&K" => "J&K");
+                                echo form_dropdown('entrance_type', $entrance_options, (set_value('entrance_type')) ? set_value('entrance_type') : $entrance_type, 'class="form-control" id="entrance_type"');
+                                ?>
+                              <span class="text-danger"><?php echo form_error('entrance_type'); ?></span>
+                          </div>
+                          <div class="col-md-4 col-sm-12">
+                              <div class="form-group">
+                                  <label class="label">Entrance Registration Number<span class="text-danger">*</span></label>
+                                  <input type="number" name="entrance_reg_no" id="entrance_reg_no" class="form-control" value="<?php echo (set_value('entrance_reg_no')) ? set_value('entrance_reg_no') : $entrance_reg_no; ?>" placeholder="Enter Entrance Registration Number">
+                                  <span class="text-danger"><?php echo form_error('entrance_reg_no'); ?></span>
+                              </div>
+                          </div>
+                          <div class="col-md-4 col-sm-12">
+                              <div class="form-group">
+                                  <label class="label">Entrance Exam Rank<span class="text-danger">*</span></label>
+                                  <input type="number" name="entrance_rank" id="entrance_rank" class="form-control" value="<?php echo (set_value('entrance_rank')) ? set_value('entrance_rank') : $entrance_rank; ?>" placeholder="Enter Entrance Exam Rank">
+                                  <span class="text-danger"><?php echo form_error('entrance_rank'); ?></span>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="form-row">
+                          <div class="col-md-4 col-sm-12">
+                              <div class="form-group">
+                                  <label class="label">Admission Order No<span class="text-danger">*</span></label>
+                                  <input type="number" name="admission_order_no" id="admission_order_no" class="form-control" value="<?php echo (set_value('admission_order_no')) ? set_value('admission_order_no') : $admission_order_no; ?>" placeholder="Enter Admission Order No">
+                                  <span class="text-danger"><?php echo form_error('admission_order_no'); ?></span>
+                              </div>
+                          </div>
+                          <div class="col-md-4 col-sm-12">
+                              <div class="form-group">
+                                  <label class="label">Admission Order Date<span class="text-danger">*</span></label>
+
+                                  <input type="date" name="admission_order_date" id="admission_order_date" class="form-control" value="<?php echo (set_value('admission_order_date')) ? set_value('admission_order_date') : $admission_order_date; ?>" placeholder="Enter Admission Order Date">
+                                  <span class="text-danger"><?php echo form_error('admission_order_date'); ?></span>
+                              </div>
+                          </div>
+                          <div class="col-md-4 col-sm-12">
+                              <div class="form-group">
+                                  <label class="label">Fees Paid<span class="text-danger">*</span></label>
+                                  <input type="number" name="fees_paid" id="fees_paid" class="form-control" value="<?php echo (set_value('fees_paid')) ? set_value('fees_paid') : $fees_paid; ?>" placeholder="Enter Fees Paid">
+                                  <span class="text-danger"><?php echo form_error('fees_paid'); ?></span>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="form-row">
+                          <div class="col-md-6 col-sm-12">
+                              <div class="form-group">
+                                  <label class="label">Fees Receipt No<span class="text-danger">*</span></label>
+                                  <input type="number" name="fees_receipt_no" id="fees_receipt_no" class="form-control" value="<?php echo (set_value('fees_receipt_no')) ? set_value('fees_receipt_no') : $fees_receipt_no; ?>" placeholder="Enter Fees Receipt No">
+                                  <span class="text-danger"><?php echo form_error('fees_receipt_no'); ?></span>
+                              </div>
+                          </div>
+                          <div class="col-md-6 col-sm-12">
+                              <div class="form-group">
+                                  <label class="label">Fees Receipt Date<span class="text-danger">*</span></label>
+                                  <input type="date" name="fees_receipt_date" id="fees_receipt_date" class="form-control" value="<?php echo (set_value('fees_receipt_date')) ? set_value('fees_receipt_date') : $fees_receipt_date; ?>" placeholder="Enter Fees Receipt Date">
+                                  <span class="text-danger"><?php echo form_error('fees_receipt_date'); ?></span>
+                              </div>
+                          </div>
+                      </div><br>
+                      <div class="form-row">
+                          <div class="col">
+                              <div class="form-group">
+                                  <label class="form-label">University Fee</label>
+                                  <input type="text" class="form-control" id="total_university_fee" name="total_university_fee" placeholder="Total College fee" value="<?php echo (set_value('total_university_fee')) ? set_value('total_university_fee') : $total_university_fee; ?>" readonly>
+                              </div>
+                          </div>
+                          <div class="col">
+                              <div class="form-group">
+                                  <label class="form-label">Corpus Fund</label>
+                                  <input type="text" class="form-control" id="corpus_fee" name="corpus_fee" placeholder="Corpus Fee" value="<?php echo (set_value('corpus_fee')) ? set_value('corpus_fee') : $corpus_fee; ?>" readonly>
+                              </div>
+                          </div>
+                          <div class="col">
+                              <div class="form-group">
+                                  <label class="form-label">Tution Fee</label>
+                                  <input type="text" class="form-control" id="total_tution_fee" name="total_tution_fee" placeholder="Finalised Fee" value="<?php echo (set_value('total_tution_fee')) ? set_value('total_tution_fee') : $total_tution_fee; ?>" readonly>
+                              </div>
+                          </div>
+
+
+
+                      </div>
+
+                      <div class="form-row">
+
+                          <div class="col">
+                              <div class="form-group">
+                                  <label class="form-label">Concession Type</label>
+                                  <?php $concession_type_options = array("" => "Select", "Sports Quota" => "Sports Quota", "Management Quota" => "Management Quota");
+                                    echo form_dropdown('concession_type', $concession_type_options, (set_value('concession_type')) ? set_value('concession_type') : $concession_type, 'class="form-control input-xs" id="concession_type"'); ?>
+
+                              </div>
+                          </div>
+                          <div class="col">
+                              <div class="form-group">
+                                  <label class="form-label">Concession Amount (if any)</label>
+                                  <input type="text" class="form-control" id="concession_fee" name="concession_fee" placeholder="Enter Concession Fee" value="<?php echo (set_value('concession_fee')) ? set_value('concession_fee') : $concession_fee; ?>">
+                              </div>
+                          </div>
+                          <div class="col">
+                              <div class="form-group">
+                                  <label class="form-label">College Fee</label>
+                                  <input type="text" class="form-control" id="total_college_fee" name="total_college_fee" placeholder="Payable Fee" value="<?php echo (set_value('total_college_fee')) ? set_value('total_college_fee') : $total_college_fee; ?>" readonly>
+                              </div>
+                          </div>
+
+                      </div>
+
+                      <div class="form-row">
+
+
+                          <div class="col">
+                              <div class="form-group">
+                                  <label class="form-label">Remarks</label>
+                                  <input type="text" class="form-control" id="remarks" name="remarks" placeholder="Enter remarks">
+                              </div>
+                          </div>
+                          <div class="col">
+                              <div class="form-group">
+                                  <label class="form-label">Final Fee</label>
+                                  <input type="text" class="form-control" id="final_amount" name="final_amount" placeholder="Payable Fee" value="<?php echo (set_value('final_amount')) ? set_value('final_amount') : $final_amount; ?>" readonly>
+                              </div>
+                          </div>
+
+                      </div>
+                      <!-- <div class="form-group row">
+                          <div class="col-sm-2"> &nbsp;</div>
+                          <div class="col-sm-10 text-right">
+                              <button type="submit" class="btn btn-danger btn-sm" name="Update" id="Update"><i
+                                      class="fas fa-edit"></i> Submit </button>
+                              <?php echo anchor('admin/enquiries/', '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Cancel', 'class="btn btn-info btn-sm" '); ?>
+                          </div>
+                      </div> -->
+                  </div>
+                  <div class="card-footer">
+                      <button type="submit" class="btn btn-danger btn-sm" name="Update" id="Update"><i class="fas fa-edit"></i> Submit </button>
+                      <?php echo anchor('admin/enquiries/', '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Cancel', 'class="btn btn-dark btn-sm float-right" '); ?>
+                      <!-- <button type="submit" class="btn btn-info">Sign in</button> -->
+                      <!-- <button type="submit" class="btn btn-default float-right">Cancel</button> -->
+                  </div>
+                  </form>
+              </div>
+
+          </div>
+      </section>
+
+  </div>
+  <script>
+      $(document).ready(function() {
+
+          var base_url = '<?php echo base_url(); ?>';
+
+          $('#mobile').keypress(function(e) {
+              if ($(this).val().length < 10) {
+                  var a = [];
+                  var k = e.which;
+
+                  for (i = 48; i < 58; i++)
+                      a.push(i);
+
+                  if (!(a.indexOf(k) >= 0))
+                      e.preventDefault();
+              } else {
+                  event.preventDefault();
+                  return false;
+              }
+          });
+
+          $('#email').keyup(function() {
+              $(this).val($(this).val().toLowerCase());
+          });
+
+
+      });
+  </script>
+  <script>
+      $(document).ready(function() {
+          var base_url = '<?php echo base_url(); ?>';
+
+          $('#update_comments').prop("disabled", true);
+          $('#insert').prop("disabled", true);
+          // $('#insert_block').prop("disabled", true);
+
+
+          $("#quota").change(function() {
+              event.preventDefault();
+
+              var quota = $("#quota").val();
+
+              if (quota == ' ') {
+                  alert("Please Select Quota");
+              } else {
+                  $.ajax({
+                      'type': 'POST',
+                      'url': base_url + 'admin/subquotaDropdown',
+                      'data': {
+                          'quota': quota,
+                          'flag': 'S'
+                      },
+                      'dataType': 'text',
+                      'cache': false,
+                      'success': function(data) {
+                          $('select[name="subquota"]').empty();
+                          $('select[name="subquota"]').append(data);
+                          $('select[name="subquota"]').removeAttr("disabled");
+
+                      }
+                  });
+
+              }
+          });
+
+
+
+
+          $("#subquota").change(function() {
+              event.preventDefault();
+              var course = $("#course").val();
+              var subquota = $("#subquota").val();
+              var quota = $("#quota").val();
+
+
+              if (subquota != "" && quota != '') {
+                  var page = base_url + 'admin/getFee';
+                  $.ajax({
+                      'type': 'POST',
+                      'url': page,
+                      'data': {
+                          'course': course,
+                          'quota': quota,
+                          'subquota': subquota
+                      },
+                      'dataType': 'json',
+                      'cache': false,
+                      'success': function(data) {
+
+                          $('#total_university_fee').val(data.total_university_fee);
+                          var total_university_fee = data.total_university_fee;
+                          $('#corpus_fee').val(data.corpus_fund);
+                          var corpus = data.corpus_fund;
+                          $('#total_tution_fee').val(data.total_tution_fee);
+                          var total_tution_fee = data.total_tution_fee;
+
+
+
+                          var total_college_fee = collegeAmount();
+                          $('#total_college_fee').val(collegeAmount);
+                          var final_amount = finalAmount();
+                          $('#final_amount').val(finalAmount);
+                      }
+                  });
+              }
+          });
+
+          $("#concession_fee").change(function() {
+              event.preventDefault();
+              var final_amount = finalAmount();
+              $('#final_amount').val(finalAmount);
+              var total_college_fee = collegeAmount();
+              $('#total_college_fee').val(collegeAmount);
+          });
+          $("#corpus_fee").change(function() {
+              event.preventDefault();
+              var final_amount = finalAmount();
+              $('#final_amount').val(finalAmount);
+          });
+
+          function finalAmount() {
+              var total_university_fee = $("#total_university_fee").val();
+              var total_tution_fee = $("#total_tution_fee").val();
+              var concession_fee = $("#concession_fee").val();
+              var corpus = $("#corpus_fee").val();
+
+              if(concession_fee=='')
+              {
+                var concession_fee =0;
+              }
+
+              var total_college_fee = parseInt(total_university_fee) + parseInt(total_tution_fee) - parseInt(concession_fee);
+
+
+              var final_amount = parseInt(total_college_fee) + parseInt(corpus);
+              return final_amount;
+          }
+
+          function collegeAmount() {
+              var total_university_fee = $("#total_university_fee").val();
+              var total_tution_fee = $("#total_tution_fee").val();
+              var concession_fee = $("#concession_fee").val();
+              if(concession_fee=='')
+              {
+                var concession_fee =0;
+              }
+
+
+              var total_college_fee = parseInt(total_university_fee) + parseInt(total_tution_fee) - parseInt(concession_fee);
+
+              return total_college_fee;
+          }
+
+
+
+          $("#admit_student").click(function() {
+              event.preventDefault();
+              $('#student_modal').modal('show');
+          });
+
+          $("#block_student").click(function() {
+              event.preventDefault();
+              $('#block_modal').modal('show');
+          });
+
+          $('#final_amount').keypress(function(e) {
+              var a = [];
+              var k = e.which;
+
+              for (i = 48; i < 58; i++)
+                  a.push(i);
+
+              if (!(a.indexOf(k) >= 0)) {
+                  e.preventDefault();
+                  $(".error").css("display", "inline");
+              } else {
+                  $(".error").css("display", "none");
+              }
+
+              setTimeout(function() {
+                  $('.error').fadeOut('slow');
+              }, 2000);
+
+          });
+
+
+
+          $("#subquota").change(function() {
+
+              if (this.value.length >= 1) {
+                  $('#insert').prop("disabled", false);
+              } else {
+                  $('#insert').prop("disabled", true);
+              }
+          });
+
+
+
+
+
+
+      });
+  </script>

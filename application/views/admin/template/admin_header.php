@@ -210,6 +210,16 @@
 
                             </ul>
                         </li>
+                        <li class="nav-item ">
+                            <a href="<?php echo base_url(); ?>admin/newAdmission"
+                                class="nav-link <?= $menu_active = ($menu == "newAdmission") ? 'active' : ''; ?>">
+                                <i class="nav-icon fas fa-plus"></i>
+                                <p>
+                                    New Admission
+
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-header">SETTINGS</li>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/departments"
