@@ -65,7 +65,7 @@ class Admin extends CI_Controller
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
-			$data['course_options'] = $this->admin_model->getDetails('departments', '')->result();
+			$data['course_options'] = $this->admin_model->getDetailsbyfield('1','status','departments')->result();
 			$this->admin_template->show('admin/Dashboard', $data);
 		} else {
 			redirect('admin', 'refresh');
@@ -329,7 +329,7 @@ class Admin extends CI_Controller
 			$data['username'] = $sess['username'];
 			$data['role'] = $sess['role'];
 
-			$details = $this->admin_model->getDetails('departments', '')->result();
+			$details = $this->admin_model->getDetailsbyfield('1','status','departments')->result();
 
 			$result = array();
 			foreach ($details as $details1) {
@@ -454,7 +454,8 @@ class Admin extends CI_Controller
 			$data['menu'] = 'admissions';
 
 			$id = $this->input->post('id');
-			$aided_unaided = $this->input->post('aided_unaided');
+			$category_claimed = $this->input->post('category_claimed');
+			$category_allotted = $this->input->post('category_allotted');
 
 			$course = $this->input->post('course');
 
@@ -475,7 +476,7 @@ class Admin extends CI_Controller
 			$currentAcademicYear = $this->globals->currentAcademicYear();
 
 			$updateDetails = array('status' => '6');
-			 $res = $this->admin_model->updateDetails($id, $updateDetails, 'enquiries');
+			$res = $this->admin_model->updateDetails($id, $updateDetails, 'enquiries');
 
 			$app_number = $this->admin_model->getAppNo($currentAcademicYear)->row()->cnt;
 			$app_number = $app_number + 1;
@@ -493,7 +494,7 @@ class Admin extends CI_Controller
 
 			$enquiryDetails = $this->admin_model->getDetails('enquiries', $id)->row();
 
-			$OTP = strtoupper(substr(md5(time()), 0, 6));
+
 
 			$insertDetails = array(
 				'flow' => '0',
@@ -501,18 +502,18 @@ class Admin extends CI_Controller
 				'enq_id' => $id,
 				'app_no' => $app_no,
 				'dept_id' => $course,
-				
+
 
 				'student_name' => strtoupper($enquiryDetails->student_name),
 				'mobile' => $enquiryDetails->mobile,
 				'email' => strtolower($enquiryDetails->email),
 				'father_name' => strtoupper($enquiryDetails->father_name),
-				
-				
-				'password' => md5($OTP),
-				'category_alloted' => $aided_unaided,
-				'category_claimed' => $aided_unaided,
-				
+
+
+				'password' => md5($enquiryDetails->mobile),
+				'category_alloted' => $category_allotted,
+				'category_claimed' => $category_claimed,
+
 				'status' => '1',
 				'admit_date' => date('Y-m-d h:i:s'),
 				'admit_by' => $data['username']
@@ -524,24 +525,29 @@ class Admin extends CI_Controller
 				'student_id' => $result,
 				'academic_year' => $enquiryDetails->academic_year,
 				'student_name' => strtoupper($enquiryDetails->student_name),
-				'dept_id' =>$course,
+				'dept_id' => $course,
 				'year' => date("y"),
-				'total_university_fee' =>$total_university_fee,
-				'total_tution_fee'=>$total_tution_fee,
-				'total_college_fee' =>$total_college_fee,
+				'total_university_fee' => $total_university_fee,
+				'total_tution_fee' => $total_tution_fee,
+				'total_college_fee' => $total_college_fee,
 				'corpus_fund' => $corpus,
-				'final_fee' =>$final_amount,
-				'consession_type' =>$concession_type,
-				'consession_amount'=>$concession_fee,
+				'final_fee' => $final_amount,
+				'consession_type' => $concession_type,
+				'consession_amount' => $concession_fee,
 				'status' => '1',
 				'last_updated_on' => date('Y-m-d h:i:s'),
 				'last_updated_by' => $data['username']
-				
+
 			);
-			
+
 			$result = $this->admin_model->insertDetails('fee_master', $insertDetails1);
-			
-			
+			if ($result) {
+				$email['name'] = strtoupper($enquiryDetails->student_name);
+				$email['mobile'] = $enquiryDetails->mobile;
+				$email['password'] = $enquiryDetails->mobile;
+				$message = $this->load->view('email/registration', $email);
+				// $this->send_email($enquiryDetails->email,'MCE Online Admission Portal Registration Successful - Complete Your Application Now!',$message);
+			}
 		} else {
 			redirect('admin', 'refresh');
 		}
@@ -1170,5 +1176,242 @@ class Admin extends CI_Controller
 		$this->session->unset_userdata('logged_in');
 		session_destroy();
 		redirect('admin', 'refresh');
+	}
+
+	public function send_email($to, $subject, $message)
+	{
+		$this->load->library('email');
+
+		$this->email->from('noreply@mcehassan.ac.in', 'Your Name');
+		$this->email->to($to);
+
+
+		$this->email->subject($subject);
+		$this->email->message($message);
+
+		if ($this->email->send()) {
+			return 1;
+		} else {
+			return $this->email->print_debugger();
+		}
+	}
+
+	public function admissionDetails($id)
+	{
+
+		if ($this->session->userdata('logged_in')) {
+			$sess = $this->session->userdata('logged_in');
+			$data['id'] = $sess['id'];
+			$data['username'] = $sess['username'];
+
+			$data['page_title'] = 'Admission Details';
+			$data['menu'] = 'admissions';
+
+			$data['admissionStatus'] = $this->globals->admissionStatus();
+			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
+			$this->admin_template->show('admin/admission_details', $data);
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+	public function testmail()
+	{
+		echo $this->send_email('girish@medhatech.in', 'test', 'testing');
+	}
+	function newAdmission()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$sess = $this->session->userdata('logged_in');
+			$data['id'] = $sess['id'];
+			$data['username'] = $sess['username'];
+			$data['role'] = $sess['role'];
+
+			$data['page_title'] = 'New Admission';
+			$data['menu'] = 'newAdmission';
+			$data['userTypes'] = $this->globals->userTypes();
+			$data['academicYear'] = $this->globals->academicYear();
+			$data['course_options'] = array(" " => "Select") + $this->courses();
+			$data['quota_options'] = array(" " => "Select") + $this->globals->quota();
+			$data['subquota_options'] = array(" " => "Select") + $this->globals->sub_quota();
+			$data['type_options'] = array(" " => "Select") + $this->globals->category();
+
+			$data['enquiryStatus'] = $this->globals->enquiryStatus();
+			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
+			
+
+			// $this->form_validation->set_rules('academic_year', 'Academic Year', 'required');
+			$this->form_validation->set_rules('student_name', 'Applicant Name', 'required');
+
+			$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]|is_unique[admissions.mobile]');
+			$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+			$this->form_validation->set_rules('aadhar', 'Adhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[admissions.aadhar]');
+			$this->form_validation->set_rules('course', 'Department', 'required');
+			$this->form_validation->set_rules('quota', 'Quota', 'required');
+			$this->form_validation->set_rules('subquota', 'sub quota', 'required');
+			$this->form_validation->set_rules('category_allotted', 'Category Allocated', 'required');
+			$this->form_validation->set_rules('category_claimed', 'Category Claimed', 'required');
+			$this->form_validation->set_rules('college_code', 'College Code', 'required');
+			$this->form_validation->set_rules('sports', 'Sports', 'required');
+			$this->form_validation->set_rules('entrance_type', 'Entrance Type', 'required');
+			$this->form_validation->set_rules('entrance_reg_no', 'Entrance Registration Number', 'required');
+			$this->form_validation->set_rules('entrance_rank', 'Entrance Exam Rank', 'required');
+			$this->form_validation->set_rules('admission_order_no', 'Admission Order Number', 'required');
+			$this->form_validation->set_rules('admission_order_date', 'Admission Order Date', 'required');
+			$this->form_validation->set_rules('fees_paid', 'Fees Paid', 'required');
+			$this->form_validation->set_rules('fees_receipt_no', 'Fees Receipt Number', 'required');
+			$this->form_validation->set_rules('fees_receipt_date', 'Fees Receipt Date', 'required');
+
+
+			if ($this->form_validation->run() === FALSE) {
+				$data['action'] = 'admin/newAdmission';
+				$data['academic_year'] = "2024-2025";
+				$data['student_name'] = $this->input->post('student_name');
+
+				$data['mobile'] = $this->input->post('mobile');
+				$data['email'] = $this->input->post('email');
+				$data['course'] = $this->input->post('course');
+				$data['aadhar'] = $this->input->post('aadhar');
+				$data['quota'] = $this->input->post('quota');
+				$data['sub_quota'] = $this->input->post('subquota');
+				$data['category_alloted'] = $this->input->post('category_alloted');
+				$data['category_claimed'] = $this->input->post('category_claimed');
+				$data['college_code'] = $this->input->post('college_code');
+				$data['sports'] = $this->input->post('sports');
+				$data['corpus'] = $this->input->post('corpus');
+
+				$data['total_tution_fee'] = $this->input->post('total_tution_fee');
+				$data['total_university_fee'] = $this->input->post('total_university_fee');
+
+				$data['total_college_fee'] = $this->input->post('total_college_fee');
+				$data['concession_type'] = $this->input->post('concession_type');
+				$data['concession_fee'] = $this->input->post('concession_fee');
+				$data['final_amount'] = $this->input->post('final_amount');
+				$data['entrance_type'] = $this->input->post('entrance_type');
+				$data['entrance_reg_no'] = $this->input->post('entrance_reg_no');
+				$data['entrance_rank'] = $this->input->post('entrance_rank');
+				$data['admission_order_no'] = $this->input->post('admission_order_no');
+				$data['admission_order_date'] = $this->input->post('admission_order_date');
+				$data['fees_paid'] = $this->input->post('fees_paid');
+				$data['fees_receipt_no'] = $this->input->post('fees_receipt_no');
+				$data['fees_receipt_date'] = $this->input->post('fees_receipt_date');
+
+				$this->admin_template->show('admin/new_admission', $data);
+			} else {
+				$course = $this->input->post('course');
+				$corpus = $this->input->post('corpus');
+				$category_claimed = $this->input->post('category_claimed');
+				$category_allotted = $this->input->post('category_allotted');
+				$total_tution_fee = $this->input->post('total_tution_fee');
+				$total_university_fee = $this->input->post('total_university_fee');
+
+				$total_college_fee = $this->input->post('total_college_fee');
+				$concession_type = $this->input->post('concession_type');
+				$concession_fee = $this->input->post('concession_fee');
+				$final_amount = $this->input->post('final_amount');
+				$currentAcademicYear = $this->globals->currentAcademicYear();
+
+			
+
+				$app_number = $this->admin_model->getAppNo($currentAcademicYear)->row()->cnt;
+				$app_number = $app_number + 1;
+				$strlen = strlen(($app_number));
+				if ($strlen == 1) {
+					$app_number = "000" . $app_number;
+				}
+				if ($strlen == 2) {
+					$app_number = "00" . $app_number;
+				}
+				if ($strlen == 3) {
+					$app_number = "0" . $app_number;
+				}
+				$app_no = date('y') . $app_number;
+
+			
+
+
+
+				$insertDetails = array(
+					'flow' => '0',
+					'academic_year' => $currentAcademicYear,
+					'enq_id' => '0',
+					'app_no' => $app_no,
+					'dept_id' => $course,
+
+
+					'student_name' => strtoupper($this->input->post('student_name')),
+					'mobile' => $this->input->post('mobile'),
+					'email' => strtolower($this->input->post('email')),
+					'aadhar' => $this->input->post('aadhar'),
+					'dept_id' => $this->input->post('course'),
+					'quota' => $this->input->post('quota'),
+					'sub_quota' => $this->input->post('subquota'),
+					'category_allotted' => $this->input->post('category_allotted'),
+					'category_claimed' => $this->input->post('category_claimed'),
+					'college_code' => $this->input->post('college_code'),
+					'sports' => $this->input->post('sports'),
+					'password'=>md5($this->input->post('mobile')),
+					'entrance_type' => $this->input->post('entrance_type'),
+					'entrance_reg_no' => $this->input->post('entrance_reg_no'),
+					'entrance_rank' => $this->input->post('entrance_rank'),
+					'admission_order_no' => $this->input->post('admission_order_no'),
+					'admission_order_date' => $this->input->post('admission_order_date'),
+					'fees_paid' => $this->input->post('fees_paid'),
+					'fees_receipt_no' => $this->input->post('fees_receipt_no'),
+					'fees_receipt_date' => $this->input->post('fees_receipt_date'),
+
+					'status' => '1',
+					'admit_date' => date('Y-m-d h:i:s'),
+					'admit_by' => $data['username']
+				);
+
+				$result = $this->admin_model->insertDetails('admissions', $insertDetails);
+
+				$insertDetails1 = array(
+					'student_id' => $result,
+					'academic_year' => $currentAcademicYear,
+					'student_name' => strtoupper($this->input->post('student_name')),
+					'dept_id' => $course,
+					'year' => date("y"),
+					'total_university_fee' => $total_university_fee,
+					'total_tution_fee' => $total_tution_fee,
+					'total_college_fee' => $total_college_fee,
+					'corpus_fund' => $corpus,
+					'final_fee' => $final_amount,
+					'consession_type' => $concession_type,
+					'consession_amount' => $concession_fee,
+					'status' => '1',
+					'last_updated_on' => date('Y-m-d h:i:s'),
+					'last_updated_by' => $data['username']
+
+				);
+				
+				$result = $this->admin_model->insertDetails('fee_master', $insertDetails1);
+				
+				if ($result) {
+					$email['name'] = strtoupper($this->input->post('student_name'));
+					$email['mobile'] = $this->input->post('mobile');
+					$email['password'] = $this->input->post('mobile');
+					$message = $this->load->view('email/registration', $email);
+					// $this->send_email($this->input->post('email'),'MCE Online Admission Portal Registration Successful - Complete Your Application Now!',$message);
+				}
+
+
+	
+
+				if ($result) {
+					$this->session->set_flashdata('message', 'Enquiry Details added successfully...!');
+					$this->session->set_flashdata('status', 'alert-success');
+				} else {
+					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				}
+
+				redirect('admin/admissions', 'refresh');
+			}
+		} else {
+			redirect('admin', 'refresh');
+		}
 	}
 }
