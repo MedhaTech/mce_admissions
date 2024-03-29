@@ -536,7 +536,7 @@
           'url': base_url + 'admin/admitStudent',
           'data': {
             "id": id,
-            "aided_unaided": aided_unaided,
+           
             'course': course,
             'course_val': course_val,
             'corpus': corpus,
