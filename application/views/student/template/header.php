@@ -141,16 +141,6 @@
                         </li>
 
                         <li class="nav-item ">
-                            <a href="<?php echo base_url();?>student/finish"
-                                class="nav-link <?=$menu_active = ($menu == "finish")? 'active' :''; ?>">
-                                <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Finish
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item ">
                             <a href="<?php echo base_url();?>student"
                                 class="nav-link <?= $menu_active = ($menu == "change_password") ? 'active' : ''; ?>">
                                 <i class="nav-icon far fa-circle"></i>
