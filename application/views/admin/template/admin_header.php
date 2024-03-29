@@ -71,7 +71,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="<?php echo base_url(); ?>admin/dashboard" class="brand-link">
-                <span class="brand-text font-weight-light">Campus</span>
+                <span class="brand-text font-weight-light">MCE Campus</span>
             </a>
 
             <!-- Sidebar -->
