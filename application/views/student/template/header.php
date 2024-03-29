@@ -80,9 +80,7 @@
                             <a href="<?php echo base_url();?>student/dashboard"
                                 class="nav-link <?=$menu_active = ($menu == "dashboard")? 'active' :''; ?>">
                                 <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Dashboard
-                                </p>
+                                <p>Dashboard</p>
                             </a>
                         </li>
 
@@ -90,19 +88,15 @@
                             <a href="<?php echo base_url();?>student/admissiondetails"
                                 class="nav-link <?=$menu_active = ($menu == "admissiondetails")? 'active' :''; ?>">
                                 <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Admission Details
-                                </p>
+                                <p>Admission Details</p>
                             </a>
                         </li>
 
                         <li class="nav-item ">
                             <a href="<?php echo base_url();?>student/entranceexamdetails"
-                                class="nav-link <?=$menu_active = ($menu == "entranceexamdetails")? 'active' :''; ?>">
+                                class="nav-link <?=$menu_active = ($menu == "entrancedetails")? 'active' :''; ?>">
                                 <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Entrance Exam Details
-                                </p>
+                                <p>Entrance Exam Details</p>
                             </a>
                         </li>
 
@@ -110,9 +104,15 @@
                             <a href="<?php echo base_url();?>student/personaldetails"
                                 class="nav-link <?=$menu_active = ($menu == "personaldetails")? 'active' :''; ?>">
                                 <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Personal Details
-                                </p>
+                                <p>Personal Details</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item ">
+                            <a href="<?php echo base_url();?>student/parentdetails"
+                                class="nav-link <?=$menu_active = ($menu == "parentdetails")? 'active' :''; ?>">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>Parent's Details</p>
                             </a>
                         </li>
 
@@ -120,29 +120,23 @@
                             <a href="<?php echo base_url();?>student/educationdetails"
                                 class="nav-link <?= $menu_active = ($menu == "educationdetails") ? 'active' : ''; ?>">
                                 <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Education Details
-                                </p>
+                                <p>Education Details</p>
                             </a>
                         </li>
 
                         <li class="nav-item ">
                             <a href="<?php echo base_url();?>student/documents"
-                                class="nav-link <?=$menu_active = ($menu == "dashboard")? 'active' :''; ?>">
+                                class="nav-link <?=$menu_active = ($menu == "documents")? 'active' :''; ?>">
                                 <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Documents
-                                </p>
+                                <p>Documents</p>
                             </a>
                         </li>
 
                         <li class="nav-item ">
                             <a href="<?php echo base_url();?>student/admissionfee"
-                                class="nav-link <?=$menu_active = ($menu == "dashboard")? 'active' :''; ?>">
+                                class="nav-link <?=$menu_active = ($menu == "applicationfee")? 'active' :''; ?>">
                                 <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Admission Fee
-                                </p>
+                                <p>Application Fee</p>
                             </a>
                         </li>
 
