@@ -58,6 +58,7 @@ class Student extends CI_Controller {
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
 			$data['student_name'] = $session_data['student_name'];
 			$data['page_title'] = "Dashboard";
 			$data['menu'] = "dashboard";
@@ -210,7 +211,7 @@ class Student extends CI_Controller {
 			$session_data = $this->session->userdata('logged_in');
 			$data['student_name'] = $session_data['student_name'];
 			$data['id'] = $session_data['id'];
-			$data['page_title'] = "Entrancedetails";
+			$data['page_title'] = "Entrance Exam Details";
 			$data['menu'] = "entrancedetails";
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
@@ -283,7 +284,7 @@ class Student extends CI_Controller {
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
-      $data['student_name'] = $session_data['student_name'];
+      		$data['student_name'] = $session_data['student_name'];
 			$data['page_title'] = "Personaldetails";
 			$data['menu'] = "personaldetails";
       
@@ -418,8 +419,8 @@ class Student extends CI_Controller {
 			$session_data = $this->session->userdata('logged_in');
 			$data['username'] = $session_data['username'];
 			$data['id'] = $session_data['id'];
-			$data['pageTitle'] = "Personaldetails";
-			$data['menu'] = "personaldetails";
+			$data['pageTitle'] = "Parent's Details";
+			$data['menu'] = "parentdetails";
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 
@@ -553,7 +554,7 @@ class Student extends CI_Controller {
 			$session_data = $this->session->userdata('logged_in');
 			$data['student_name'] = $session_data['student_name'];
 			$data['page_title'] = "Document";
-			$data['menu'] = "document";
+			$data['menu'] = "documents";
 
 			$data['admissions'] = $this->admin_model->getDetails('admissions','id', $data['id'])->row();
 			$this->form_validation->set_rules('documents', 'Document Type', 'required');

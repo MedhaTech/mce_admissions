@@ -12168,6 +12168,10 @@ a.rn-button-style--2:hover {
   margin: 10px;
 }
 
+.btn-square {
+  border-radius: 0px !important;
+}
+
 /*-----------------------
     Video Button  
 -------------------------*/
