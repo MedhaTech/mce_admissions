@@ -39,7 +39,7 @@
                           <div class="col-md-4 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Entrance Exam Rank<span class="text-danger">*</span></label>
-                                  <input type="text" name="entrance_rank" id="entrance_rank" class="form-control"
+                                  <input type="number" name="entrance_rank" id="entrance_rank" class="form-control"
                                       value="<?php echo (set_value('entrance_rank')) ? set_value('entrance_rank') : $entrance_rank; ?>"
                                       placeholder="Enter Entrance Exam Rank">
                                   <span class="text-danger"><?php echo form_error('entrance_rank'); ?></span>
@@ -62,7 +62,7 @@
                               <div class="form-group">
                                   <label class="label">Admission Order Date<span class="text-danger">*</span></label>
 
-                                  <input type=".$newDate." name="admission_order_date" id="admission_order_date"
+                                  <input type="date" name="admission_order_date" id="admission_order_date"
                                       class="form-control"
                                       value="<?php echo (set_value('admission_order_date')) ? set_value('admission_order_date') : $admission_order_date; ?>"
                                       placeholder="Enter Admission Order Date">
@@ -72,7 +72,7 @@
                           <div class="col-md-4 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Fees Paid<span class="text-danger">*</span></label>
-                                  <input type="text" name="fees_paid" id="fees_paid" class="form-control"
+                                  <input type="number" name="fees_paid" id="fees_paid" class="form-control"
                                       value="<?php echo (set_value('fees_paid')) ? set_value('fees_paid') : $fees_paid; ?>"
                                       placeholder="Enter Fees Paid">
                                   <span class="text-danger"><?php echo form_error('fees_paid'); ?></span>

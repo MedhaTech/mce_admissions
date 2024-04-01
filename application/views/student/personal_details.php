@@ -22,7 +22,7 @@
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="form-label">Date of Birth</label>
-                                  <input type=".$newDate." class="form-control" placeholder="Enter DOB"
+                                  <input type="date" class="form-control" placeholder="Enter DOB"
                                       id="date_of_birth"
                                       value="<?php echo (set_value('date_of_birth')) ? set_value('date_of_birth') : $date_of_birth; ?>"
                                       name="date_of_birth">
@@ -212,7 +212,7 @@
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
                                   <label class="form-label">Current Pincode</label>
-                                  <input type="text" class="form-control" placeholder="Enter Current Pincode"
+                                  <input type="number" class="form-control" placeholder="Enter Current Pincode"
                                       id="current_pincode"
                                       value="<?php echo (set_value('current_pincode')) ? set_value('current_pincode') : $current_pincode; ?>"
                                       name="current_pincode">
@@ -222,10 +222,10 @@
                           <div class="col-md-6">
                               <div class="form-group row m-0">
                                   <label class="form-label col-md-6 text-primary">PERMANENT ADDRESS</label>
-                                  <!-- <div class="col-md-6 custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck1">
-                        <label class="form-label custom-control-label" for="customCheck1">Same As Current Address</label>
-                    </div> -->
+                                  <div class="col-md-6 custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="customCheck1" onclick=”FillBilling(this.form)”>
+                                <label class="form-label custom-control-label" for="customCheck1">Same As Current Address</label>
+                            </div>
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
                                   <label class="form-label">Permanent Address</label>
@@ -269,7 +269,7 @@
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
                                   <label class="form-label">Permanent Pincode</label>
-                                  <input type="text" class="form-control" placeholder="Enter Permanent Pincode"
+                                  <input type="number" class="form-control" placeholder="Enter Permanent Pincode"
                                       id="present_pincode"
                                       value="<?php echo (set_value('present_pincode')) ? set_value('present_pincode') : $present_pincode; ?>"
                                       name="present_pincode">
@@ -294,4 +294,4 @@
               </div>
           </div>
       </section>
-  </div>
+</div>
