@@ -116,7 +116,7 @@ class Welcome extends CI_Controller {
 	function courses()
 	{
 		
-			$details = $this->admin_model->getDetails('departments', '')->result();
+			$details = $this->admin_model->getDetailsbyfield('1','status','departments')->result();
  
 			$result = array();
 			foreach ($details as $details1) {
