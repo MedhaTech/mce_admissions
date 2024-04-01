@@ -31,7 +31,7 @@
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
                                   <label class="form-label">Mobile</label>
-                                  <input type="text" class="form-control" placeholder="Enter Mobile" id="father_mobile"
+                                  <input type="number" class="form-control" placeholder="Enter Mobile" id="father_mobile"
                                       value="<?php echo (set_value('father_mobile')) ? set_value('father_mobile') : $father_mobile; ?>"
                                       name="father_mobile">
                                   <span class="text-danger"><?php echo form_error('father_mobile'); ?></span>
@@ -53,7 +53,7 @@
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
                                   <label class="form-label">Annual Income</label>
-                                  <input type="text" class="form-control" placeholder="Enter Annual Income"
+                                  <input type="number" class="form-control" placeholder="Enter Annual Income"
                                       id="father_annual_income"
                                       value="<?php echo (set_value('father_annual_income')) ? set_value('father_annual_income') : $father_annual_income; ?>"
                                       name="father_annual_income">
@@ -71,7 +71,7 @@
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
                                   <label class="form-label">Mobile</label>
-                                  <input type="text" class="form-control" placeholder="Enter Mobile" id="mother_mobile"
+                                  <input type="number" class="form-control" placeholder="Enter Mobile" id="mother_mobile"
                                       value="<?php echo (set_value('mother_mobile')) ? set_value('mother_mobile') : $mother_mobile; ?>"
                                       name="mother_mobile">
                                   <span class="text-danger"><?php echo form_error('mother_mobile'); ?></span>
@@ -93,7 +93,7 @@
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
                                   <label class="form-label">Annual Income</label>
-                                  <input type="text" class="form-control" placeholder="Enter Annual Income"
+                                  <input type="number" class="form-control" placeholder="Enter Annual Income"
                                       id="mother_annual_income"
                                       value="<?php echo (set_value('mother_annual_income')) ? set_value('mother_annual_income') : $mother_annual_income; ?>"
                                       name="mother_annual_income">
@@ -111,7 +111,7 @@
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
                                   <label class="form-label">Mobile</label>
-                                  <input type="text" class="form-control" placeholder="Enter Mobile"
+                                  <input type="number" class="form-control" placeholder="Enter Mobile"
                                       id="guardian_mobile"
                                       value="<?php echo (set_value('guardian_mobile')) ? set_value('guardian_mobile') : $guardian_mobile; ?>"
                                       name="guardian_mobile">
@@ -134,7 +134,7 @@
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
                                   <label class="form-label">Annual Income</label>
-                                  <input type="text" class="form-control" placeholder="Enter Annual Income"
+                                  <input type="number" class="form-control" placeholder="Enter Annual Income"
                                       id="guardian_annual_income"
                                       value="<?php echo (set_value('guardian_annual_income')) ? set_value('guardian_annual_income') : $guardian_annual_income; ?>"
                                       name="guardian_annual_income">

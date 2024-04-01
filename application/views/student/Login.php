@@ -10,7 +10,7 @@
       <?php echo form_open($action, 'class="js-validation-signin" method="POST"'); ?>
                                     <?php echo '<span class="text-danger">'.validation_errors().'</span>'; ?>
         <div class="input-group mb-3">
-          <input type="text" class="form-control"  placeholder="Mobile Number" name="mobile" >
+          <input type="text" class="form-control"  placeholder="Email" name="email" >
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>

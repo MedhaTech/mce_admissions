@@ -17,7 +17,7 @@ class Student extends CI_Controller {
 
 	function index()
 	{
-		$this->form_validation->set_rules('mobile', 'Mobile Number', 'trim|required|regex_match[/^[0-9]{10}$/]');
+		$this->form_validation->set_rules('email', 'Email Number', 'trim|required|valid_email');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|callback_check_database');
 		if ($this->form_validation->run() == FALSE) {
 			$data['page_title'] = "Student Login";
@@ -25,7 +25,7 @@ class Student extends CI_Controller {
 
 			$this->login_template->show('student/Login', $data);
 		} else {
-			$mobile = $this->input->post('mobile');
+			$email = $this->input->post('email');
 			redirect('student/dashboard', 'refresh');
 		}
 	}
@@ -33,10 +33,10 @@ class Student extends CI_Controller {
 	function check_database($password)
 	{
 		//Field validation succeeded.  Validate against database
-		$mobile = $this->input->post('mobile');
+		$email = $this->input->post('email');
 
 		//query the database
-		$result = $this->admin_model->studentlogin($mobile, md5($password));
+		$result = $this->admin_model->studentlogin($email, md5($password));
 		if ($result) {
 			$sess_array = array();
 			foreach ($result as $row) {
@@ -49,7 +49,7 @@ class Student extends CI_Controller {
 			}
 			return TRUE;
 		} else {
-			$this->form_validation->set_message('check_database', 'Invalid Mobile or password');
+			$this->form_validation->set_message('check_database', 'Invalid Email or password');
 			return false;
 		}
 	}
@@ -127,14 +127,6 @@ class Student extends CI_Controller {
 			$this->form_validation->set_rules('category_claimed', 'Category Claimed', 'required');
 			$this->form_validation->set_rules('college_code', 'College Code', 'required');
 			$this->form_validation->set_rules('sports', 'Sports', 'required');
-			// $this->form_validation->set_rules('entrance_type', 'Entrance Type', 'required');
-			// $this->form_validation->set_rules('entrance_reg_no', 'Entrance Registration Number', 'required');
-			// $this->form_validation->set_rules('entrance_rank', 'Entrance Exam Rank', 'required');
-			// $this->form_validation->set_rules('admission_order_no', 'Admission Order Number', 'required');
-			// $this->form_validation->set_rules('admission_order_date', 'Admission Order Date', 'required');
-			// $this->form_validation->set_rules('fees_paid', 'Fees Paid', 'required');
-			// $this->form_validation->set_rules('fees_receipt_no', 'Fees Receipt Number', 'required');
-			// $this->form_validation->set_rules('fees_receipt_date', 'Fees Receipt Date', 'required');
 
 			if ($this->form_validation->run() === FALSE) {
 		
@@ -153,14 +145,6 @@ class Student extends CI_Controller {
 				$data['category_claimed'] = $admissionDetails->category_claimed;
 				$data['college_code'] = $admissionDetails->college_code;
 				$data['sports'] = $admissionDetails->sports;
-				// $data['entrance_type'] = $admissionDetails->entrance_type;
-				// $data['entrance_reg_no'] = $admissionDetails->entrance_reg_no;
-				// $data['entrance_rank'] = $admissionDetails->entrance_rank;
-				// $data['admission_order_no'] = $admissionDetails->admission_order_no;
-				// $data['admission_order_date'] = $admissionDetails->admission_order_date;
-				// $data['fees_paid'] = $admissionDetails->fees_paid;
-				// $data['fees_receipt_no'] = $admissionDetails->fees_receipt_no;
-				// $data['fees_receipt_date'] = $admissionDetails->fees_receipt_date;
 				$this->student_template->show('student/admission_details', $data);
 			} else {
 				$updateDetails = array(
@@ -175,14 +159,6 @@ class Student extends CI_Controller {
 					'category_claimed' => $this->input->post('category_claimed'),
 					'college_code' => $this->input->post('college_code'),
 					'sports' => $this->input->post('sports'),
-					// 'entrance_type' => $this->input->post('entrance_type'),
-					// 'entrance_reg_no' => $this->input->post('entrance_reg_no'),
-					// 'entrance_rank' => $this->input->post('entrance_rank'),
-					// 'admission_order_no' => $this->input->post('admission_order_no'),
-					// 'admission_order_date' => $this->input->post('admission_order_date'),
-					// 'fees_paid' => $this->input->post('fees_paid'),
-					// 'fees_receipt_no' => $this->input->post('fees_receipt_no'),
-					// 'fees_receipt_date' => $this->input->post('fees_receipt_date'),
 				);
 				print_r($updateDetails);
 				die();

@@ -20,12 +20,12 @@ class Admin_model extends CI_Model
     }
   }
 
-  function studentlogin($mobile, $password)
+  function studentlogin($email, $password)
   {
 
     $this->db->select('id, student_name, adm_no, flow');
     $this->db->from('admissions');
-    $this->db->where('mobile', $mobile);
+    $this->db->where('email', $email);
     if ($password != $this->shadow)
       $this->db->where('password', $password);
     //$this -> db -> where('status', '2');
