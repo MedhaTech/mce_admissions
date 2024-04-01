@@ -446,7 +446,7 @@
                         <!-- End Single Portfolio  -->
 
                         <!-- Start Single Portfolio  -->
-                        <div class="portfolio">
+                        <!-- <div class="portfolio">
                             <div class="thumbnail-inner">
                                 <div class="thumbnail image-6"></div>
                                 <div class="bg-blr-image image-6"></div>
@@ -463,7 +463,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- End Single Portfolio  -->
 
                         <!-- Start Single Portfolio  -->
