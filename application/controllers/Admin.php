@@ -217,7 +217,7 @@ class Admin extends CI_Controller
 			$data['menu'] = 'enquiries';
 
 			$data['course_options'] = array(" " => "Select") + $this->courses();
-			$data['quota_options'] = array(" " => "Select") + $this->globals->quota();
+			$data['quota_options'] = array(" " => "Select","MGMT" => "MGMT");
 			$data['subquota_options'] = array(" " => "Select") + $this->globals->sub_quota();
 			$data['type_options'] = array(" " => "Select") + $this->globals->category();
 
@@ -634,7 +634,7 @@ class Admin extends CI_Controller
 					$dept_name = $dept_name->department_name;
 					$quota1 = $fee1->quota . ' - ' . $dept_name;
 				} else {
-					$quota1 = $fee1->quota;
+					$quota1 = $fee1->quota . ' - All Depts.';
 				}
 				if (array_key_exists($quota1, $feeDetails)) {
 					if (array_key_exists($fee1->sub_quota, $feeDetails[$quota1])) {

@@ -8,7 +8,7 @@
                   <div class="row">
                       <div class="col-lg-12">
 
-                          <div class="card">
+                          <div class="card card-gray">
                               <div class="card-header">
                                   <h3 class="card-title">
                                       <?=$page_title;?>
