@@ -188,7 +188,7 @@
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
                                   <label class="form-label">Current District</label>
-                                  <input type="text" class="form-control" placeholder="Enter Current State"
+                                  <input type="text" class="form-control" placeholder="Enter Current District"
                                       id="current_district"
                                       value="<?php echo (set_value('current_district')) ? set_value('current_district') : $current_district; ?>"
                                       name="current_district">
@@ -223,7 +223,7 @@
                               <div class="form-group row m-0">
                                   <label class="form-label col-md-6 text-primary">PERMANENT ADDRESS</label>
                                   <div class="col-md-6 custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="customCheck1" onclick=”FillBilling(this.form)”>
+                                <input type="checkbox" class="custom-control-input" id="customCheck1">
                                 <label class="form-label custom-control-label" for="customCheck1">Same As Current Address</label>
                             </div>
                               </div>

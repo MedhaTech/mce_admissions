@@ -67,7 +67,7 @@
                             </div>
                             <div class="col-md-8 col-sm-12">
                                 <div class="card p-4 bg-gray border">
-                                    <?php if($this->session->flashdata('status')) :?>
+                                    <!-- <?php if($this->session->flashdata('status')) :?> -->
 
                                     <!-- SUCCESS -->
                                     <!-- <div class="row">
@@ -79,9 +79,14 @@
                                     <!-- END SUCCESS -->
                                     <!-- <p><?php echo $this->session->flashdata('status'); ?></p> -->
 
-                                    <?php endif; ?>
+                                    <!-- <?php endif; ?> -->
+                                    <?php if ($this->session->flashdata('message')) { ?>
+                                    <div align="center" class="alert <?= $this->session->flashdata('status'); ?>" id="msg">
+                                        <?php echo $this->session->flashdata('message') ?>
+                                    </div>
+                                    <?php } ?>
 
-                                    <?php echo validation_errors(); ?>
+                                    <!-- <?php echo validation_errors(); ?> -->
                                     <?php echo form_open_multipart($action, 'class="user"'); ?>
                                     <div class="row">
                                         <div class="col-md-12">
@@ -90,31 +95,30 @@
                                             <div class="row">
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label">Student Full Name (As per SSLC)</label>
-                                                    <input type="text" class="form-control form-control-sm" id="name"
+                                                    <input type="text" class="form-control form-control-sm" id="name" value="<?php echo (set_value('name')) ? set_value('name') : $name; ?>"
                                                         name="name" placeholder="Enter Student Name">
                                                     <span class="text-danger"><?php echo form_error('name'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label">Student Mobile<span
                                                             class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control form-control-sm" id="mobile"
+                                                    <input type="text" class="form-control form-control-sm" id="mobile" value="<?php echo (set_value('mobile')) ? set_value('mobile') : $mobile; ?>"
                                                         name="mobile" placeholder="Enter Student Mobile">
                                                     <span class="text-danger"><?php echo form_error('mobile'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="label">Student Email<span
-                                                            class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control form-control-sm" id="email"
-                                                        name="email" placeholder="Enter Student Email">
+                                                    <label class="label">Email</label>
+                                                    <input type="text" class="form-control form-control-sm" id="email" value="<?php echo (set_value('email')) ? set_value('email') : $email; ?>"
+                                                        name="email" placeholder="Enter Email Id">
+                                                    <span class="text-danger"><?php echo form_error('email'); ?></span>
                                                 </div>
-                                                <span class="text-danger"><?php echo form_error('email'); ?></span>
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label"> Parent/Guardian Name<span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        id="par_name" name="par_name"
+                                                        id="par_name" value="<?php echo (set_value('par_name')) ? set_value('par_name') : $par_name; ?>" name="par_name"
                                                         placeholder="Enter Parent/Guardian Name*">
                                                     <span
                                                         class="text-danger"><?php echo form_error('par_name'); ?></span>
@@ -123,7 +127,7 @@
                                                     <label class="label"> Parent/Guardian Mobile<span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        id="par_mobile" name="par_mobile"
+                                                        id="par_mobile" value="<?php echo (set_value('par_mobile')) ? set_value('par_mobile') : $par_mobile; ?>" name="par_mobile"
                                                         placeholder="Enter Parent/Guardian Mobile">
                                                     <span
                                                         class="text-danger"><?php echo form_error('par_mobile'); ?></span>
@@ -131,8 +135,10 @@
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label"> Parent/Guardian Email</label>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        id="par_email" name="par_email"
+                                                        id="par_email" value="<?php echo (set_value('par_email')) ? set_value('par_email') : $par_email; ?>" name="par_email"
                                                         placeholder="Enter Parent/Guardian Email">
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('par_email'); ?></span>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -140,7 +146,7 @@
                                                     <label class="label">SSLC Percentage/Grade<span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        id="sslc_grade" name="sslc_grade"
+                                                        id="sslc_grade" value="<?php echo (set_value('sslc_grade')) ? set_value('sslc_grade') : $sslc_grade; ?>" name="sslc_grade"
                                                         placeholder="Enter SSLC Percentage/Grade*">
                                                     <span
                                                         class="text-danger"><?php echo form_error('sslc_grade'); ?></span>
@@ -149,7 +155,7 @@
                                                     <label class="label">PUC-I(10+1) Percentage/Grade<span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        id="puc1_grade" name="puc1_grade"
+                                                        id="puc1_grade" value="<?php echo (set_value('puc1_grade')) ? set_value('puc1_grade') : $puc1_grade; ?>" name="puc1_grade"
                                                         placeholder="Enter PUC-I(10+1) Percentage/Grade*">
                                                     <span
                                                         class="text-danger"><?php echo form_error('puc1_grade'); ?></span>
@@ -157,8 +163,10 @@
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label">PUC-II(10+2) Percentage/Grade</label>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        id="puc2_grade" name="puc2_grade"
+                                                        id="puc2_grade" value="<?php echo (set_value('puc2_grade')) ? set_value('puc2_grade') : $puc2_grade; ?>" name="puc2_grade"
                                                         placeholder="Enter PUC-II(10+2) Percentage/Grade*">
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('puc2_grade'); ?></span>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -200,7 +208,7 @@
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label">City<span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control form-control-sm" id="city"
+                                                    <input type="text" class="form-control form-control-sm" id="city" value="<?php echo (set_value('city')) ? set_value('city') : $city; ?>"
                                                         name="city" placeholder="Enter City">
                                                     <span class="text-danger"><?php echo form_error('city'); ?></span>
                                                 </div>
@@ -215,7 +223,7 @@
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label">Aadhar Number<span
                                                             class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control form-control-sm" id="adhaar"
+                                                    <input type="text" class="form-control form-control-sm" id="adhaar" value="<?php echo (set_value('adhaar')) ? set_value('adhaar') : $adhaar; ?>"
                                                         name="adhaar" placeholder="Enter Aadhar No">
                                                     <span class="text-danger"><?php echo form_error('adhaar'); ?></span>
                                                 </div>
@@ -231,7 +239,7 @@
                                                     <label class="category">Category<span
                                                             class="text-danger">*</span></label>
                                                     <?php
-                                                             echo form_dropdown('category', $type_options, '', 'class="form-control input-xs" id="category"');
+                                                             echo form_dropdown('category', $type_options, (set_value('category')) ? set_value('category') : $category, 'class="form-control form-control-sm" id="category"'); 
                                                         ?>
                                                     <span
                                                         class="text-danger"><?php echo form_error('category'); ?></span>

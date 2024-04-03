@@ -44,3 +44,25 @@ $.widget.bridge('uibutton', $.ui.button)
 </body>
 
 </html>
+
+<script>
+$("#customCheck1").change(function(){
+			event.preventDefault();
+			var check = $('#customCheck1:checked').val();
+			if(check) {
+                $('#present_address').val($('#current_address').val());
+                $('#present_city').val($('#current_city').val());
+                $('#present_district').val($('#current_district').val());
+                $('#present_state').val($('#current_state').val());
+                $('#present_country').val($('#current_country').val());
+                $('#present_pincode').val($('#current_pincode').val());
+            }else{
+                $('#present_address').val('');
+                $('#present_city').val('');
+                $('#present_district').val('');
+                $('#present_state').val('');
+                $('#present_country').val('');
+                $('#present_pincode').val('');
+            }    
+		});
+</script>

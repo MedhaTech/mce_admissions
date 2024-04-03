@@ -28,12 +28,12 @@ class Welcome extends CI_Controller {
 	
 				$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 	
-				$this->form_validation->set_rules('name', 'Name', 'required|min_length[5]|max_length[15]');
+				$this->form_validation->set_rules('name', 'Name', 'required');
 				$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]|is_unique[enquiries.mobile]');
-				$this->form_validation->set_rules('email', 'Email', 'trim|valid_email');
-				$this->form_validation->set_rules('par_name', 'Parent Name', 'required|min_length[5]|max_length[15]');
+				$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+				$this->form_validation->set_rules('par_name', 'Parent Name', 'required');
 				$this->form_validation->set_rules('par_mobile', 'Parent Mobile', 'required|regex_match[/^[0-9]{10}$/]|is_unique[enquiries.mobile]');
-				$this->form_validation->set_rules('par_email', 'Parent Email', 'trim|valid_email');
+				$this->form_validation->set_rules('par_email', 'Parent Email', 'required|valid_email');
 				$this->form_validation->set_rules('sslc_grade', 'Sslc Percentage', 'required');
 				$this->form_validation->set_rules('puc1_grade', '1Puc Percentage', 'required');
 				$this->form_validation->set_rules('puc2_grade', '2Puc Percentage', 'required');
@@ -107,7 +107,13 @@ class Welcome extends CI_Controller {
 						'reg_date' => date('Y-m-d H:i:s')
 					);	
 					$result = $this->admin_model->insertDetails('enquiries', $insertDetails);
-					$this->session->set_flashdata($data);
+					if ($result) {
+						$this->session->set_flashdata('message', '<h6>Thanks for submission</h6>');
+						$this->session->set_flashdata('status', 'alert-success');
+					} else {
+						$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+						$this->session->set_flashdata('status', 'alert-warning');
+					}
 					redirect('welcome', 'refresh');
 				}
 		

@@ -141,8 +141,8 @@
                         </li>
 
                         <li class="nav-item ">
-                            <a href="<?php echo base_url();?>student"
-                                class="nav-link <?= $menu_active = ($menu == "change_password") ? 'active' : ''; ?>">
+                            <a href="<?php echo base_url();?>student/changepassword"
+                                class="nav-link <?= $menu_active = ($menu == "changepassword") ? 'active' : ''; ?>">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>
                                     Change Password

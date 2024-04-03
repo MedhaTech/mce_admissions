@@ -152,7 +152,7 @@ class Admin_model extends CI_Model
   {
     $this->db->where('password', md5($oldPassword));
     $this->db->where('id', $id);
-    $this->db->where('status', '1');
+    // $this->db->where('status', '1');
     $this->db->update($tableName, $updateDetails);
     return $this->db->affected_rows();
   }
