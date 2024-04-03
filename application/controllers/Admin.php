@@ -8,6 +8,7 @@ class Admin extends CI_Controller
 	{
 		parent::__construct();
 		$this->CI = &get_instance();
+		$this->load->library('aws_sdk');
 		$this->load->model('admin_model', '', TRUE);
 		$this->load->library(array('table', 'form_validation'));
 		$this->load->helper(array('form', 'form_helper'));
@@ -378,7 +379,8 @@ class Admin extends CI_Controller
 
 			if ($status != $old_status) {
 				$updateDetails = array('status' => $status);
-				$result = $this->admin_model->updateDetails('enquiries', $enq_id, $updateDetails);
+				$result = $this->admin_model->updateDetails($enq_id, $updateDetails, 'enquiries');
+				// $result = $this->admin_model->updateDetails('enquiries', $enq_id, $updateDetails);
 			}
 
 			$insertDetails = array(
@@ -501,6 +503,7 @@ class Admin extends CI_Controller
 				'academic_year' => $enquiryDetails->academic_year,
 				'enq_id' => $id,
 				'app_no' => $app_no,
+				'adm_no' => $app_no,
 				'dept_id' => $course,
 
 
@@ -508,18 +511,22 @@ class Admin extends CI_Controller
 				'mobile' => $enquiryDetails->mobile,
 				'email' => strtolower($enquiryDetails->email),
 				'father_name' => strtoupper($enquiryDetails->father_name),
-
-
+				'aadhar' => $enquiryDetails->adhaar,
+				'quota' => $this->input->post('quota'),
+				'sub_quota' => $this->input->post('subquota'),
+				'exam_rank' => $this->input->post('exam_rank'),
+				'gender' => $enquiryDetails->gender,
 				'password' => md5($enquiryDetails->mobile),
-				'category_alloted' => $category_allotted,
+				'category_allotted' => $category_allotted,
 				'category_claimed' => $category_claimed,
-
+				'remarks' => $this->input->post('remarks'),
 				'status' => '1',
 				'admit_date' => date('Y-m-d h:i:s'),
 				'admit_by' => $data['username']
 			);
 
 			$result = $this->admin_model->insertDetails('admissions', $insertDetails);
+		
 
 			$insertDetails1 = array(
 				'student_id' => $result,
@@ -541,6 +548,8 @@ class Admin extends CI_Controller
 			);
 
 			$result = $this->admin_model->insertDetails('fee_master', $insertDetails1);
+
+			
 			if ($result) {
 				$email['name'] = strtoupper($enquiryDetails->student_name);
 				$email['mobile'] = $enquiryDetails->mobile;
@@ -765,9 +774,10 @@ class Admin extends CI_Controller
 			$data['role'] = $sess['role'];
 
 			$quota = $this->input->post('quota');
+			$dept = $this->input->post('dept');
 
 
-			$details = $this->admin_model->getsubquota($quota)->result();
+			$details = $this->admin_model->getsubquota($quota,$dept)->result();
 
 			$result = array();
 
@@ -1182,7 +1192,7 @@ class Admin extends CI_Controller
 	{
 		$this->load->library('email');
 
-		$this->email->from('noreply@mcehassan.ac.in', 'Your Name');
+		$this->email->from('girish@medhatech.in', 'Your Name');
 		$this->email->to($to);
 
 
@@ -1218,7 +1228,7 @@ class Admin extends CI_Controller
 	}
 	public function testmail()
 	{
-		echo $this->send_email('girish@medhatech.in', 'test', 'testing');
+		echo  $this->aws_sdk->triggerEmail('girish@medhatech.in', 'test', 'testing');
 	}
 	function newAdmission()
 	{
@@ -1410,6 +1420,34 @@ class Admin extends CI_Controller
 
 				redirect('admin/admissions', 'refresh');
 			}
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+	function blockStudent()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$sess = $this->session->userdata('logged_in');
+			$data['id'] = $sess['id'];
+			$data['username'] = $sess['username'];
+			$data['role'] = $sess['role'];
+
+			$data['page_title'] = 'Admit Studnet';
+			$data['menu'] = 'admissions';
+
+			$id = $this->input->post('id');
+		
+
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+
+			$updateDetails = array('status' => '7');
+			
+			$res = $this->admin_model->updateDetails($id, $updateDetails, 'enquiries');
+
+			
+
 		} else {
 			redirect('admin', 'refresh');
 		}

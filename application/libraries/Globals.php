@@ -16,7 +16,7 @@ class Globals
 
     public function enquiryStatusColor()
     {
-        return array("1" => "primary", "2" => "success", "3" => "warning", "4" => "danger", "5" => "danger", "6" => "info");
+        return array("1" => "primary", "2" => "success", "3" => "warning", "4" => "danger", "5" => "danger", "6" => "info", "7" => "danger");
     }
 
     public function admissionStatus()
