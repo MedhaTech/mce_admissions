@@ -181,6 +181,11 @@ class Admin_model extends CI_Model
     return $this->db->get_where('streams', array('stream_id' => $stream_id))->row_array();
   }
 
+  public function get_dept_by_id($dept_id)
+  {
+    return $this->db->get_where('departments', array('department_id' => $dept_id))->row_array();
+  }
+
   public function getAppNo($academic_year)
   {
     $this->db->select('COUNT(id) as cnt');
@@ -204,10 +209,11 @@ class Admin_model extends CI_Model
   }
 
 
-  function getsubquota($id)
+  function getsubquota($id,$dept)
   {
     $this->db->distinct();
     $this->db->select('sub_quota');
+    $this->db->where('department_id', $dept);
     $this->db->where('quota', $id);
     return $this->db->get("fee_structure");
   }

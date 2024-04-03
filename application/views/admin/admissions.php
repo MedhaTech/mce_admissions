@@ -21,7 +21,7 @@
                             if (count($admissions)) {
                                 $table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
                                 $this->table->set_template($table_setup);
-                                $print_fields = array('S.NO', 'Applicant Name', 'Mobile', 'Course', 'Category', 'SSLC Grade', 'PUC-I Grade', 'PUC-II', 'Status');
+                                $print_fields = array('S.NO', 'Applicant Name', 'Mobile', 'Course', 'Quota', 'Sub Quota', 'Category Allotted', 'Category Claimed', 'Status');
                                 $this->table->set_heading($print_fields);
 
                                 $i = 1;
@@ -33,12 +33,12 @@
                                         anchor('admin/admissionDetails/' . $admissions1->id, $admissions1->student_name),
                                         $admissions1->mobile,
 
-                                        $admissions1->course,
-                                        $admissions1->category,
-                                        $admissions1->register_grade,
-                                        $admissions1->register_grade,
+                                        $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"],
+                                        $admissions1->quota,
+                                        $admissions1->sub_quota,
+                                        $admissions1->category_allotted,
 
-                                        $admissions1->register_grade,
+                                        $admissions1->category_claimed,
                                         '<strong class="text-' . $admissionStatusColor[$admissions1->status] . '">' . $admissionStatus[$admissions1->status] . '</strong>'
                                     );
                                     $this->table->add_row($result_array);

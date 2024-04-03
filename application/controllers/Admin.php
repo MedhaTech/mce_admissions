@@ -551,11 +551,13 @@ class Admin extends CI_Controller
 
 			
 			if ($result) {
-				$email['name'] = strtoupper($enquiryDetails->student_name);
-				$email['mobile'] = $enquiryDetails->mobile;
-				$email['password'] = $enquiryDetails->mobile;
-				$message = $this->load->view('email/registration', $email);
-				// $this->send_email($enquiryDetails->email,'MCE Online Admission Portal Registration Successful - Complete Your Application Now!',$message);
+					$email['name'] = strtoupper($enquiryDetails->student_name);
+					$email['mobile'] = strtolower($enquiryDetails->email);
+					$email['password'] = $enquiryDetails->mobile;
+					$message = $this->load->view('email/registration', $email);
+					$ci =& get_instance();
+					$message = $ci->load->view('email/registration', $email, true);
+					$this->aws_sdk->triggerEmail('admission@mcehassan.ac.in', 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!',$message);
 			}
 		} else {
 			redirect('admin', 'refresh');
@@ -808,7 +810,7 @@ class Admin extends CI_Controller
 
 			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
-			$data['admissions'] = $this->admin_model->fetchDetails2('id, app_no, adm_no, student_name, mobile, status', 'status', $status, 'academic_year', $data['currentAcademicYear'], 'admissions')->result();
+			$data['admissions'] = $this->admin_model->fetchDetails2('id, app_no, adm_no,quota,dept_id,sub_quota,category_allotted,category_claimed, student_name, mobile, status', 'status', $status, 'academic_year', $data['currentAcademicYear'], 'admissions')->result();
 
 			$this->admin_template->show('admin/admissions', $data);
 		} else {
@@ -1220,6 +1222,10 @@ class Admin extends CI_Controller
 			$data['admissionStatus'] = $this->globals->admissionStatus();
 			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+				$data['entranceDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+				$data['personalDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+				$data['parentDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
 			$this->admin_template->show('admin/admission_details', $data);
 		} else {
@@ -1228,7 +1234,14 @@ class Admin extends CI_Controller
 	}
 	public function testmail()
 	{
-		echo  $this->aws_sdk->triggerEmail('girish@medhatech.in', 'test', 'testing');
+					$email['name'] = strtoupper('Girish R');
+					$email['mobile'] = '9895369360';
+					$email['password'] = '9895369360';
+					
+					$ci =& get_instance();
+					$message = $ci->load->view('email/registration', $email, true);
+					 $this->aws_sdk->triggerEmail('girish@medhatech.in', 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!',$message);
+		// echo  $this->aws_sdk->triggerEmail('girish@medhatech.in', 'test', 'testing');
 	}
 	function newAdmission()
 	{
@@ -1348,7 +1361,7 @@ class Admin extends CI_Controller
 					'enq_id' => '0',
 					'app_no' => $app_no,
 					'dept_id' => $course,
-
+					'adm_no' => $app_no,
 
 					'student_name' => strtoupper($this->input->post('student_name')),
 					'mobile' => $this->input->post('mobile'),
@@ -1401,10 +1414,13 @@ class Admin extends CI_Controller
 				
 				if ($result) {
 					$email['name'] = strtoupper($this->input->post('student_name'));
-					$email['mobile'] = $this->input->post('mobile');
+					$email['mobile'] = strtolower($this->input->post('email'));
 					$email['password'] = $this->input->post('mobile');
 					$message = $this->load->view('email/registration', $email);
-					// $this->send_email($this->input->post('email'),'MCE Online Admission Portal Registration Successful - Complete Your Application Now!',$message);
+					$ci =& get_instance();
+					$message = $ci->load->view('email/registration', $email, true);
+					$this->aws_sdk->triggerEmail('admission@mcehassan.ac.in', 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!',$message);
+		
 				}
 
 
