@@ -1227,6 +1227,7 @@ class Admin extends CI_Controller
 				$data['personalDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 				$data['parentDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 			$this->admin_template->show('admin/admission_details', $data);
 		} else {
 			redirect('admin/timeout');
@@ -1467,5 +1468,55 @@ class Admin extends CI_Controller
 		} else {
 			redirect('admin', 'refresh');
 		}
+	}
+
+	function changepassword()
+	{
+	    if ($this->session->userdata('logged_in')) {
+			$sess = $this->session->userdata('logged_in');
+			$data['id'] = $sess['id'];
+			$data['username'] = $sess['username'];
+
+			$data['page_title'] = 'Change Password';
+			$data['menu'] = 'changepassword';
+			// $data['userDetails'] = $this->admin_model->getDetails('users', $data['id'])->row();
+			
+	       // $this->form_validation->set_rules('oldPassword', 'Old Password', 'required');
+	        $this->form_validation->set_rules('oldpassword', 'Old Password', 'required');
+			$this->form_validation->set_rules('newpassword', 'New Password', 'required');
+			$this->form_validation->set_rules('confirmpassword', 'Confirm Password', 'required|matches[newpassword]');
+	        
+	        if($this->form_validation->run() === FALSE){
+	        
+				$data['action'] = 'admin/changePassword/'. $data['id'];
+	            $this->admin_template->show('admin/changePassword',$data);
+	        }else{
+	           // $oldPassword = $this->input->post('oldPassword');
+	            $oldpassword = $this->input->post('oldpassword');
+				$newpassword = $this->input->post('newpassword');
+				$confirmpassword = $this->input->post('confirmpassword');
+	            
+				if($oldpassword == $newpassword){
+    	            $this->session->set_flashdata('message', 'Old and New Password should not be same...!');
+    	            $this->session->set_flashdata('status', 'alert-warning');
+    	        }else{
+					$updateDetails = array('password' => md5($newpassword));
+					$result = $this->admin_model->AdminChangePassword($data['id'], $oldpassword , $updateDetails,'users');
+					// print_r($result); 
+					// echo $this->db->last_query(); die;
+    	            if($result){
+    	              $this->session->set_flashdata('message', 'Password udpated successfully...!');
+    	              $this->session->set_flashdata('status', 'alert-success');
+    	            }else{
+    	              $this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+    	              $this->session->set_flashdata('status', 'alert-warning');
+    	            }  
+    	         }
+	            redirect('/admin/changePassword', 'refresh');  
+	       }
+
+	    }else{
+	      redirect('admin', 'refresh');
+	    }
 	}
 }

@@ -17,7 +17,6 @@
                       </div>
                   </div>
                   <div class="card-body">
-                      <?php echo validation_errors(); ?>
                       <?php echo form_open_multipart($action, 'class="user"'); ?>
                       <div class="row">
                           <div class="col-md-4">
