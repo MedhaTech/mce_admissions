@@ -2,7 +2,7 @@
 
 application/cache/*
 !application/cache/index.html
-
+application/libraries/Aws_sdk.php
 application/logs/*
 !application/logs/index.html
 
