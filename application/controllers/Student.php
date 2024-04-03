@@ -596,6 +596,53 @@ class Student extends CI_Controller {
 	
 	}
 
+	function changePassword()
+	{
+	    if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['student_name'] = $session_data['student_name'];
+			$data['id'] = $session_data['id'];
+			$data['page_title'] = "Change password";
+			$data['menu'] = "changepassword";
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
+			
+	       // $this->form_validation->set_rules('oldPassword', 'Old Password', 'required');
+	        $this->form_validation->set_rules('oldpassword', 'Old Password', 'required');
+			$this->form_validation->set_rules('newpassword', 'New Password', 'required');
+			$this->form_validation->set_rules('confirmpassword', 'Confirm Password', 'required|matches[newpassword]');
+	        
+	        if($this->form_validation->run() === FALSE){
+	        
+				$data['action'] = 'student/changePassword/'. $data['id'];
+	            $this->student_template->show('student/changepassword',$data);
+	        }else{
+	           // $oldPassword = $this->input->post('oldPassword');
+	            $oldpassword = $this->input->post('oldpassword');
+				$newpassword = $this->input->post('newpassword');
+				$confirmpassword = $this->input->post('confirmpassword');
+	            
+				if($oldpassword == $newpassword){
+    	            $this->session->set_flashdata('message', 'Old and New Password should not be same...!');
+    	            $this->session->set_flashdata('status', 'alert-warning');
+    	        }else{
+					$updateDetails = array('password' => md5($newpassword));
+					$result = $this->admin_model->changePassword($data['id'], $oldpassword , $updateDetails,'admissions');
+    	            if($result){
+    	              $this->session->set_flashdata('message', 'Password udpated successfully...!');
+    	              $this->session->set_flashdata('status', 'alert-success');
+    	            }else{
+    	              $this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+    	              $this->session->set_flashdata('status', 'alert-warning');
+    	            }  
+    	         }
+	            redirect('/student/changePassword', 'refresh');  
+	       }
+
+	    }else{
+	      redirect('student', 'refresh');
+	    }
+	}
+
 	function logout()
 	{
 		$this->session->unset_userdata('logged_in');
