@@ -18,10 +18,10 @@ class Aws_sdk
 
         $credentials = [
             'version' => 'latest',
-            'region' => 'ap-south-1',
+            'region' => AWS_REGION,
             'credentials' => [
-                'key' => '',
-                'secret' => ''
+                'key' => AWS_ACCESS_KEY_ID,
+                'secret' => AWS_SECRET_ACCESS_KEY
             ]
         ];
 
