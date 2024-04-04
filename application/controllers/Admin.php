@@ -73,6 +73,23 @@ class Admin extends CI_Controller
 		}
 	}
 
+	function dashboard1()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['username'] = $session_data['username'];
+			$data['page_title'] = "Dashboard";
+			$data['menu'] = "dashboard";
+			$data['enquiryStatus'] = $this->globals->enquiryStatus();
+			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['course_options'] = $this->admin_model->getDetailsbyfield('1','status','departments')->result();
+			$this->admin_template->show('admin/Dashboard1', $data);
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
 	public function enquiries()
 	{
 		if ($this->session->userdata('logged_in')) {

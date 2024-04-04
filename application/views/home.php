@@ -81,7 +81,7 @@
 
                                     <!-- <?php endif; ?> -->
                                     <?php if ($this->session->flashdata('message')) { ?>
-                                    <div align="center" class="alert <?= $this->session->flashdata('status'); ?>" id="msg">
+                                    <div class="alert <?= $this->session->flashdata('status'); ?>" id="msg">
                                         <?php echo $this->session->flashdata('message') ?>
                                     </div>
                                     <?php } ?>
@@ -95,20 +95,23 @@
                                             <div class="row">
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label">Student Full Name (As per SSLC)</label>
-                                                    <input type="text" class="form-control form-control-sm" id="name" value="<?php echo (set_value('name')) ? set_value('name') : $name; ?>"
+                                                    <input type="text" class="form-control form-control-sm" id="name"
+                                                        value="<?php echo (set_value('name')) ? set_value('name') : $name; ?>"
                                                         name="name" placeholder="Enter Student Name">
                                                     <span class="text-danger"><?php echo form_error('name'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label">Student Mobile<span
                                                             class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control form-control-sm" id="mobile" value="<?php echo (set_value('mobile')) ? set_value('mobile') : $mobile; ?>"
+                                                    <input type="text" class="form-control form-control-sm" id="mobile"
+                                                        value="<?php echo (set_value('mobile')) ? set_value('mobile') : $mobile; ?>"
                                                         name="mobile" placeholder="Enter Student Mobile">
                                                     <span class="text-danger"><?php echo form_error('mobile'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label">Email</label>
-                                                    <input type="text" class="form-control form-control-sm" id="email" value="<?php echo (set_value('email')) ? set_value('email') : $email; ?>"
+                                                    <input type="text" class="form-control form-control-sm" id="email"
+                                                        value="<?php echo (set_value('email')) ? set_value('email') : $email; ?>"
                                                         name="email" placeholder="Enter Email Id">
                                                     <span class="text-danger"><?php echo form_error('email'); ?></span>
                                                 </div>
@@ -118,8 +121,9 @@
                                                     <label class="label"> Parent/Guardian Name<span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        id="par_name" value="<?php echo (set_value('par_name')) ? set_value('par_name') : $par_name; ?>" name="par_name"
-                                                        placeholder="Enter Parent/Guardian Name*">
+                                                        id="par_name"
+                                                        value="<?php echo (set_value('par_name')) ? set_value('par_name') : $par_name; ?>"
+                                                        name="par_name" placeholder="Enter Parent/Guardian Name*">
                                                     <span
                                                         class="text-danger"><?php echo form_error('par_name'); ?></span>
                                                 </div>
@@ -127,16 +131,18 @@
                                                     <label class="label"> Parent/Guardian Mobile<span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        id="par_mobile" value="<?php echo (set_value('par_mobile')) ? set_value('par_mobile') : $par_mobile; ?>" name="par_mobile"
-                                                        placeholder="Enter Parent/Guardian Mobile">
+                                                        id="par_mobile"
+                                                        value="<?php echo (set_value('par_mobile')) ? set_value('par_mobile') : $par_mobile; ?>"
+                                                        name="par_mobile" placeholder="Enter Parent/Guardian Mobile">
                                                     <span
                                                         class="text-danger"><?php echo form_error('par_mobile'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label"> Parent/Guardian Email</label>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        id="par_email" value="<?php echo (set_value('par_email')) ? set_value('par_email') : $par_email; ?>" name="par_email"
-                                                        placeholder="Enter Parent/Guardian Email">
+                                                        id="par_email"
+                                                        value="<?php echo (set_value('par_email')) ? set_value('par_email') : $par_email; ?>"
+                                                        name="par_email" placeholder="Enter Parent/Guardian Email">
                                                     <span
                                                         class="text-danger"><?php echo form_error('par_email'); ?></span>
                                                 </div>
@@ -146,8 +152,9 @@
                                                     <label class="label">SSLC Percentage/Grade<span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        id="sslc_grade" value="<?php echo (set_value('sslc_grade')) ? set_value('sslc_grade') : $sslc_grade; ?>" name="sslc_grade"
-                                                        placeholder="Enter SSLC Percentage/Grade*">
+                                                        id="sslc_grade"
+                                                        value="<?php echo (set_value('sslc_grade')) ? set_value('sslc_grade') : $sslc_grade; ?>"
+                                                        name="sslc_grade" placeholder="Enter SSLC Percentage/Grade*">
                                                     <span
                                                         class="text-danger"><?php echo form_error('sslc_grade'); ?></span>
                                                 </div>
@@ -155,7 +162,9 @@
                                                     <label class="label">PUC-I(10+1) Percentage/Grade<span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        id="puc1_grade" value="<?php echo (set_value('puc1_grade')) ? set_value('puc1_grade') : $puc1_grade; ?>" name="puc1_grade"
+                                                        id="puc1_grade"
+                                                        value="<?php echo (set_value('puc1_grade')) ? set_value('puc1_grade') : $puc1_grade; ?>"
+                                                        name="puc1_grade"
                                                         placeholder="Enter PUC-I(10+1) Percentage/Grade*">
                                                     <span
                                                         class="text-danger"><?php echo form_error('puc1_grade'); ?></span>
@@ -163,7 +172,9 @@
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label">PUC-II(10+2) Percentage/Grade</label>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        id="puc2_grade" value="<?php echo (set_value('puc2_grade')) ? set_value('puc2_grade') : $puc2_grade; ?>" name="puc2_grade"
+                                                        id="puc2_grade"
+                                                        value="<?php echo (set_value('puc2_grade')) ? set_value('puc2_grade') : $puc2_grade; ?>"
+                                                        name="puc2_grade"
                                                         placeholder="Enter PUC-II(10+2) Percentage/Grade*">
                                                     <span
                                                         class="text-danger"><?php echo form_error('puc2_grade'); ?></span>
@@ -208,7 +219,8 @@
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label">City<span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control form-control-sm" id="city" value="<?php echo (set_value('city')) ? set_value('city') : $city; ?>"
+                                                    <input type="text" class="form-control form-control-sm" id="city"
+                                                        value="<?php echo (set_value('city')) ? set_value('city') : $city; ?>"
                                                         name="city" placeholder="Enter City">
                                                     <span class="text-danger"><?php echo form_error('city'); ?></span>
                                                 </div>
@@ -223,7 +235,8 @@
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label">Aadhar Number<span
                                                             class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control form-control-sm" id="adhaar" value="<?php echo (set_value('adhaar')) ? set_value('adhaar') : $adhaar; ?>"
+                                                    <input type="text" class="form-control form-control-sm" id="adhaar"
+                                                        value="<?php echo (set_value('adhaar')) ? set_value('adhaar') : $adhaar; ?>"
                                                         name="adhaar" placeholder="Enter Aadhar No">
                                                     <span class="text-danger"><?php echo form_error('adhaar'); ?></span>
                                                 </div>
@@ -550,188 +563,82 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="section-title service-style--3 text-center mb--20 mb_sm--0 md_md--0">
-                                <h2 class="title">Eligibility Criteria</h2>
-                                <p>There are many variations of passages of Lorem Ipsum available, but the majority have
-                                    suffered alteration.</p>
+                                <h2 class="title">Eligibility & Selection Criteria</h2>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="rn-accordion">
-                                <div id="accordion">
-                                    <!-- Start Single Card  -->
-                                    <div class="rn-card">
-                                        <div class="rn-card-header" id="headingOne">
-                                            <a href="#" class="btn" data-bs-toggle="collapse"
-                                                data-bs-target="#collapseOne" aria-expanded="true"
-                                                aria-controls="collapseOne">Eligibility Criteria
-                                            </a>
-                                        </div>
-                                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
-                                            data-bs-parent="#accordion">
-                                            <div class="rn-card-body">
-                                                <ul class="list-style--1">
-                                                    <li><i data-feather="check"></i>Matriculation with 60% marks, Sr.
-                                                        Secondary (10+2) with minimum 70% (Aggregate) & minimum 60%
-                                                        marks in PCM, Computer Science/PCB for Biotechnology.</li>
-                                                    <li><i data-feather="check"></i>Minimum 50% marks in Maths
-                                                    </li>
-                                                    <li><i data-feather="check"></i>For Management Admissions: Students
-                                                        have to take any one of the Entrance Examination</li>
-                                                    <li><i data-feather="check"></i>Entrance Examination: KEA / COMED-K
-                                                    </li>
-                                                </ul>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Single Card  -->
-
-                                    <!-- Start Single Card  -->
-                                    <div class="rn-card">
-                                        <div class="rn-card-header" id="headingTwo">
-                                            <a href="#" class="btn collapsed" data-bs-toggle="collapse"
-                                                data-bs-target="#collapseTwo" aria-expanded="false"
-                                                aria-controls="collapseTwo">Scholarship
-                                            </a>
-                                        </div>
-                                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-                                            data-bs-parent="#accordion">
-                                            <div class="rn-card-body">
-                                                <p>Right to Education is one of the fundamental rights of every Indian
-                                                    citizen. MCE believes that money should not be a road
-                                                    block for a student with innovative ideas in his mind and passion in
-                                                    his heart. We extend scholarships and financial assistance to
-                                                    meritorious students based on their academic achievements.</p>
-                                                <p>A number of scholarships are offered to students depending on the
-                                                    academic credentials and their achievements in sporting and cultural
-                                                    arena. The University grants full to partial waiver on tuition fees
-                                                    payable by the student.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Single Card  -->
-
-                                    <!-- Start Single Card  -->
-                                    <div class="rn-card">
-                                        <div class="rn-card-header" id="headingThree">
-                                            <a href="#" class="btn collapsed" data-bs-toggle="collapse"
-                                                data-bs-target="#collapseTwo" aria-expanded="false"
-                                                aria-controls="collapseTwo">Financial Assistance
-                                            </a>
-                                        </div>
-                                        <div id="collapseTwo" class="collapse" aria-labelledby="headingThree"
-                                            data-bs-parent="#accordion">
-                                            <div class="rn-card-body">
-                                                Education Loan Assistance
-                                                <p>MCE aims to support deserving/meritorious students in availing
-                                                    financial assistance for pursuing their higher education. In order
-                                                    to encourage students to take up higher education despite their
-                                                    financial shortcomings, nowadays, most banks are providing
-                                                    attractive loan facility to students.</p>
-
-                                                <p>Students can avail loan from any bank. However, for the benefit of
-                                                    its
-                                                    students, MCE has tie-ups with the following banks: </p>
-                                                <p>We help our students in speedy disposal of their loan applications
-                                                    across the country. During June-August, a kiosk is set up inside the
-                                                    Campus for the benefit of students seeking financial assistance
-                                                    from the bank.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Single Card  -->
-
-                                    <!-- Start Single Card  -->
-                                    <div class="rn-card">
-                                        <div class="rn-card-header" id="headingFour">
-                                            <a href="#" class="btn collapsed" data-bs-toggle="collapse"
-                                                data-bs-target="#collapseThree" aria-expanded="false"
-                                                aria-controls="collapseThree">Are all Btech Programmes at Sharda
-                                                University accredited?
-                                            </a>
-                                        </div>
-                                        <div id="collapseThree" class="collapse" aria-labelledby="headingFour"
-                                            data-bs-parent="#accordion">
-                                            <div class="rn-card-body">
-                                                A number of scholarships are offered to students depending on the
-                                                academic credentials and their achievements in sporting and cultural
-                                                arena. The University grants full to partial waiver on tuition fees
-                                                payable by the student.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Single Card  -->
-
-                                    <!-- Start Single Card  -->
-                                    <div class="rn-card">
-                                        <div class="rn-card-header" id="headingFive">
-                                            <a href="#" class="btn collapsed" data-bs-toggle="collapse"
-                                                data-bs-target="#collapseFour" aria-expanded="false"
-                                                aria-controls="collapseFour">What is the admission procedure for the
-                                                course?
-                                            </a>
-                                        </div>
-                                        <div id="collapseFour" class="collapse" aria-labelledby="headingFive"
-                                            data-bs-parent="#accordion">
-                                            <div class="rn-card-body">Admission procedure for UG/PG/Diploma programmes
-                                                is as follows (I). Students can submit thier Application by paying
-                                                Admission Fee either in Cash or through DD/Challan/Online.
-                                                (II). Personal One-on-One Interview will be conducted at MCE Campus.
-                                                (III). Successful applicants
-                                                after verification of documents will be called for GD/PI at MCE.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Single Card  -->
-
-                                    <!-- Start Single Card  -->
-                                    <div class="rn-card">
-                                        <div class="rn-card-header" id="headingSix">
-                                            <a href="#" class="btn collapsed" data-bs-toggle="collapse"
-                                                data-bs-target="#collapseFour" aria-expanded="false"
-                                                aria-controls="collapseFour">Is there a dedicated Placement Cell at the
-                                                MCE Campus?
-                                            </a>
-                                        </div>
-                                        <div id="collapseFour" class="collapse" aria-labelledby="headingSix"
-                                            data-bs-parent="#accordion">
-                                            <div class="rn-card-body">The centralized Placement-Cell handles all
-                                                placements activities. A large number of Engineering students desiring
-                                                placement have been interviewed by visiting companies.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Single Card  -->
-
-                                    <!-- Start Single Card  -->
-                                    <div class="rn-card">
-                                        <div class="rn-card-header" id="headingSeven">
-                                            <a href="#" class="btn collapsed" data-bs-toggle="collapse"
-                                                data-bs-target="#collapseFour" aria-expanded="false"
-                                                aria-controls="collapseFour">Does the University have any Policy for
-                                                “Ragging”?
-                                            </a>
-                                        </div>
-                                        <div id="collapseFour" class="collapse" aria-labelledby="headingSeven"
-                                            data-bs-parent="#accordion">
-                                            <div class="rn-card-body">MCE has zero tolerance towards any
-                                                kind of ragging on campus. Ragging in any form is strictly prohibited.
-                                                There is strong vigilance to ensure enforcement of the anti-ragging
-                                                policy.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Single Card  -->
-
-                                </div>
+                            <ul class="h5 text-center">
+                                <li>10+2 or equivalent (Central, State and Recognised International Boards)</li>
+                                <li>MCE Selection Process + Personal Interview </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="container mt--60">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="section-title service-style--3 text-center mb--20 mb_sm--0 md_md--0">
+                                <h2 class="title">Admission Process Flow</h2>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div
+                            class="service-item mt--30 col-lg-3 col-md-3 col-sm-6 col-12 elementor-repeater-item-ce062f3">
+                            <div class="single-service service__style--2 bg-color-gray "> <a href="#">
+                                    <div class="service">
+                                        <div class="icon"> <i class="fa fa-edit"></i> </div>
+                                        <div class="content">
+                                            <h3 class="title">STEP 1</h3>
+                                            <p>Complete Online Application</p>
+                                        </div>
+                                    </div>
+                                </a></div>
+                        </div>
+                        <div
+                            class="service-item mt--30 col-lg-3 col-md-3 col-sm-6 col-12 elementor-repeater-item-ce062f3">
+                            <div class="single-service service__style--2 bg-color-gray "> <a href="#">
+                                    <div class="service">
+                                        <div class="icon"> <i class="fa fa-edit"></i> </div>
+                                        <div class="content">
+                                            <h3 class="title">STEP 2</h3>
+                                            <p>Selection /Interveiw Process</p>
+                                        </div>
+                                    </div>
+                                </a></div>
+                        </div>
+                        <div
+                            class="service-item mt--30 col-lg-3 col-md-3 col-sm-6 col-12 elementor-repeater-item-ce062f3">
+                            <div class="single-service service__style--2 bg-color-gray "> <a href="#">
+                                    <div class="service">
+                                        <div class="icon"> <i class="fa fa-edit"></i> </div>
+                                        <div class="content">
+                                            <h3 class="title">STEP 3</h3>
+                                            <p>Programme Registration</p>
+                                        </div>
+                                    </div>
+                                </a></div>
+                        </div>
+                        <div
+                            class="service-item mt--30 col-lg-3 col-md-3 col-sm-6 col-12 elementor-repeater-item-ce062f3">
+                            <div class="single-service service__style--2 bg-color-gray "> <a href="#">
+                                    <div class="service">
+                                        <div class="icon"> <i class="fa fa-edit"></i> </div>
+                                        <div class="content">
+                                            <h3 class="title">STEP 4</h3>
+                                            <p>Finish Admission Process</p>
+                                        </div>
+                                    </div>
+                                </a></div>
+                        </div>
+
                     </div>
                 </div>
             </div>
             <!-- End Accordion Area  -->
+
 
             <!-- Start Contact Address Area  -->
             <div class="rn-contact-address-area rn-section-gap bg_color--5" id="contact">

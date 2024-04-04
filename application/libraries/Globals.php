@@ -80,11 +80,11 @@ class Globals
     {
         return array(
             "KEA-CET(GOVT)" => "KEA-CET(GOVT)",
+            "COMED-K" => "COMED-K",
+            "MGMT" => "MGMT",
             "SNQ" => "SNQ",
             "J&K (Non Karnataka)" => "J&K (Non Karnataka)",
-            "GOI  (Non Karnataka)" => "GOI  (Non Karnataka)",
-            "MGMT" => "MGMT",
-            "COMED-K" => "COMED-K"
+            "GOI (Non Karnataka)" => "GOI (Non Karnataka)"
         );
     }
 
