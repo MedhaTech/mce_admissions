@@ -297,5 +297,12 @@ class Admin_model extends CI_Model
     $this->db->where('status', "1");
     return $this->db->get('admissions');
   }
+
+  function getAdmissionStats($department_id){
+    $this->db->select('quota, COUNT(*) as cnt');
+    $this->db->where('dept_id', $department_id);
+    $this->db->group_by('quota');
+    return $this->db->get('admissions');
+  }
 }
  
