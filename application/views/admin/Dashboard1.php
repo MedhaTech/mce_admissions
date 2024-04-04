@@ -28,37 +28,54 @@
                                     <th width="5%">S.NO</th>
                                     <!-- <th width="20%">Stream</th> -->
                                     <th width="35%">DEPARTMENT</th>
-                                    <th class='text-center' width="15%">MGMT <br/> INTAKE</th>
+                                    <th class='text-center' width="15%">MGMT <br /> INTAKE</th>
                                     <th class='text-center' width="15%">MGMT <br /> ADMITTED </th>
                                     <th class='text-center' width="15%">MGMT <br /> BLOCKED </th>
-                                    
+
                                 </tr>
                             </thead>
                             <tbody>
 
                                 <?php $i=1;  
-									  foreach ($course_options as $details1) {
-										$row = $this->admin_model->get_stream_by_id($details1->stream_id); 
+									  foreach ($departments as $details1) {
+                                        
 										$department_id = $details1->department_id;
+                                        $department_name = $details1->department_name.' ['.$details1->department_short_name.'] - ['.$details1->stream_short_name.']';
+
 										$admStats = $this->admin_model->getAdmissionStats($department_id)->result(); 
+
+                                        $blockedStats = $this->admin_model->getBlockedStats($department_id)->row()->cnt; 
 
 										$admitted = array();
 										foreach($admStats as $admStats1){
 											$admitted[$admStats1->quota] = $admStats1->cnt;
 										}
+                                        
+                                        $INTAKE = $details1->mgmt_intake;
+										// $MGMT = ($admitted['MGMT']) ? $admitted['MGMT'] : 0;
+                                        $MGMT = 12;
+										$BLOCKED = ($blockedStats) ? $blockedStats : 0;
 
-										$MGMT = ($admitted['MGMT']) ? $admitted['MGMT'] : 0;
-										$BLOCKED = ($admitted['MGMT']) ? $admitted['MGMT'] : 0;
-										
+                                        $PER = number_format((($MGMT / $INTAKE) * 100),0);
+
+                                        if($PER >= '75'){
+                                            $clr = "bg-success";
+                                        }
+
+                                        if($PER >= '50' && $PER <= '75'){
+                                            $clr = "bg-warning";
+                                        }
+
+                                        if($PER >= '0' && $PER <= '50'){
+                                            $clr = "bg-danger";
+                                        }
+
 										  echo "<tr>";
 										  echo "<td>".$i++.".";
-										  // echo "<td>".$details1->stream_name.' ['.$details1->stream_short_name.']'."</td>";
-										  echo "<td class='text-left'>".$row['stream_short_name'].'-'.$details1->department_name.' ['.$details1->department_short_name.']'."</td>";
-										//   echo "<td class='text-center'>".$TOTAL_ADMITTED."/".$details1->intake."</td>";
-										  echo "<td class='text-center'>".$details1->mgmt_intake."</td>";
-										//   echo "<td class='text-center'>".$COMEDK."/".$details1->comed_k_intake."</td>";
-										  echo "<td class='text-center'>".$MGMT."</td>";
-										  echo "<td class='text-center'>".$BLOCKED."</td>";
+										  echo "<td class='text-left'>".$department_name."</td>";
+										  echo "<td class='text-center ".$clr."'>".$INTAKE."</td>";
+										  echo "<td class='text-center ".$clr."'>".$MGMT."</td>";
+										  echo "<td class='text-center ".$clr."'>".$BLOCKED."</td>";
 										  echo "</tr>";
 									  } 
 									 ?>

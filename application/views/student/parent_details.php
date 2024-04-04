@@ -148,8 +148,20 @@
                               <?php echo anchor('student/parentdetails', '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Cancel', 'class="btn btn-info btn-sm" '); ?>
                           </div>
                       </div>
-                      <?php echo form_close(); ?>
                   </div>
+                  <div class="card-footer">
+                      <div class="row">
+                          <div class="col-md-6">
+                              <?php echo anchor('student/personaldetails', 'BACK', 'class="btn btn-danger btn-square" '); ?>
+                          </div>
+                          <div class="col-md-6 text-right">
+                              <button type="submit" class="btn btn-info btn-square" name="Update" id="Update"> SAVE &
+                                  PROCEED </button>
+                              <?php echo anchor('student/parentdetails', 'NEXT', 'class="btn btn-danger btn-square float-right" '); ?>
+                          </div>
+                      </div>
+                  </div>
+                  <?php echo form_close(); ?>
               </div>
           </div>
 

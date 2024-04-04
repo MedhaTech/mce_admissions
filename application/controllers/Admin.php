@@ -66,7 +66,7 @@ class Admin extends CI_Controller
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
-			$data['course_options'] = $this->admin_model->getDetailsbyfield('1','status','departments')->result();
+			$data['departments'] = $this->admin_model->getActiveDepartments()->result();
 			$this->admin_template->show('admin/Dashboard', $data);
 		} else {
 			redirect('admin', 'refresh');
@@ -79,11 +79,8 @@ class Admin extends CI_Controller
 			$session_data = $this->session->userdata('logged_in');
 			$data['username'] = $session_data['username'];
 			$data['page_title'] = "Dashboard";
-			$data['menu'] = "dashboard";
-			$data['enquiryStatus'] = $this->globals->enquiryStatus();
-			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
-			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
-			$data['course_options'] = $this->admin_model->getDetailsbyfield('1','status','departments')->result();
+			$data['menu'] = "dashboard";			
+			$data['departments'] = $this->admin_model->getActiveDepartments()->result();
 			$this->admin_template->show('admin/Dashboard1', $data);
 		} else {
 			redirect('admin', 'refresh');

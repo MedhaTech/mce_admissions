@@ -21,9 +21,8 @@
                               <h1 class="h4 mb-0 text-gray-800"><?= $enquiryDetails->student_name . ' Details'; ?></h1>
                           </div>
                           <div class="col-md-6 text-right">
-                              <?php if ($enquiryDetails->status != 6) { ?>
-                              <?php if ($user_type != 5) { ?>
-                                <button class="btn btn-danger btn-sm btn-icon-split" id="block_student"
+                              <?php  if ($enquiryDetails->status != 6 || $enquiryDetails->status != 7) { ?>
+                              <button class="btn btn-warning btn-sm btn-icon-split" id="block_student"
                                   name="block_student">
                                   <span class="icon text-white-50">
                                       <i class="fas fa-user"></i>
@@ -37,7 +36,6 @@
                                   </span>
                                   <span class="text"> Admit Student</span>
                               </button>
-                              <?php } ?>
                               <?php echo anchor('admin/editEnquiry/' . $enquiryDetails->id, '<span class="icon"><i class="fas fa-edit"></i></span> <span class="text">Edit</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
                               <?php } ?>
                               <?php echo anchor('admin/enquiries', '<span class="icon"><i class="fas fa-arrow-left"></i></span> <span class="text">Back to List</span>', 'class="btn btn-secondary btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
@@ -167,7 +165,7 @@
                                   <label for="staticEmail"
                                       class="col-sm-4 col-form-label text-bold text-right">Status</label>
                                   <div class="col-sm-8">
-                                      <?php unset($enquiryStatus[6]);
+                                      <?php unset($enquiryStatus[6]); unset($enquiryStatus[7]);
                                         echo form_dropdown('status', $enquiryStatus, $enquiryDetails->status, 'class="form-control" id="status"'); ?>
                                       <span class="text-danger"><?php echo form_error('status'); ?></span>
                                   </div>
@@ -249,8 +247,8 @@
                                   <div class="col">
                                       <div class="form-group">
                                           <label class="form-label">Entrance Exam Rank</label>
-                                          <input type="number" class="form-control" id="exam_rank"
-                                              name="exam_rank" placeholder="Enter Entrance Exam Rank" >
+                                          <input type="number" class="form-control" id="exam_rank" name="exam_rank"
+                                              placeholder="Enter Entrance Exam Rank">
                                       </div>
                                   </div>
                               </div>
@@ -319,7 +317,7 @@
                                               placeholder="Enter remarks">
                                       </div>
                                   </div>
-                                  
+
                               </div>
                               <div class="row">
                                   <div class="col">
@@ -342,7 +340,7 @@
                   <div class="modal-content tx-14">
                       <div class="modal-header">
                           <h6 class="modal-title text-bold" id="exampleModalLabel">
-                              <?= $enquiryDetails->student_name; ?> Details</h6>
+                              <?= $enquiryDetails->student_name; ?> - Block Seat</h6>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                           </button>
@@ -371,36 +369,18 @@
                                           <span class="text-danger"><?php echo form_error('subquota'); ?></span>
                                       </div>
                                   </div>
-
-
                               </div>
                               <div class="form-row">
                                   <div class="col">
                                       <div class="form-group">
-                                          <label class="form-label">Category Allotted</label>
-                                          <!-- <input type="text" class="form-control" id="aided_unaided" name="aided_unaided" placeholder="" readonly> -->
-                                          <?php
-                      echo form_dropdown('category_allotted', $type_options, '', 'class="form-control input-xs" id="category_allotted"');
-                      ?>
+                                          <label class="form-label">Remarks</label>
+                                          <input type="text" class="form-control" id="remarks" name="remarks"
+                                              placeholder="Enter Remarks (if any)">
                                           <span
                                               class="text-danger"><?php echo form_error('category_allotted'); ?></span>
                                       </div>
                                   </div>
-                                  <div class="col">
-                                      <div class="form-group">
-                                          <label class="form-label">Category Claimed</label>
-                                          <!-- <input type="text" class="form-control" id="aided_unaided" name="aided_unaided" placeholder="" readonly> -->
-                                          <?php
-                      echo form_dropdown('category_claimed', $type_options, '', 'class="form-control input-xs" id="category_claimed"');
-                      ?>
-                                          <span class="text-danger"><?php echo form_error('category_claimed'); ?></span>
-                                      </div>
-                                  </div>
-                                  
                               </div>
-
-
-                        
                               <div class="row">
                                   <div class="col">
                                       <button type="button" class="btn btn-secondary btn-sm tx-13"
@@ -502,11 +482,11 @@ $(document).ready(function() {
     });
 
 
-    $("#course").change(function(){
-			event.preventDefault();
-            $('#quota').val('');
-            $('#subquota').val('');
-		});
+    $("#course").change(function() {
+        event.preventDefault();
+        $('#quota').val('');
+        $('#subquota').val('');
+    });
 
     $("#concession_fee").change(function() {
         event.preventDefault();
@@ -598,14 +578,14 @@ $(document).ready(function() {
         event.preventDefault();
         var id = '<?php echo $enquiryDetails->id; ?>';
 
-          var course = $("#course").val();
-          var course_val = $("#course option:selected").text();
+        var course = $("#course").val();
+        var course_val = $("#course option:selected").text();
 
 
 
-          var subquota = $("#subquota").val();
-          var quota = $("#quota").val();
-          var exam_rank = $("#exam_rank").val();
+        var subquota = $("#subquota").val();
+        var quota = $("#quota").val();
+        var exam_rank = $("#exam_rank").val();
         var category_allotted = $("#category_allotted").val();
         var category_claimed = $("#category_claimed").val();
 
@@ -673,7 +653,7 @@ $(document).ready(function() {
             'data': {
                 "id": id,
 
-              
+
             },
             'dataType': 'text',
             'cache': false,

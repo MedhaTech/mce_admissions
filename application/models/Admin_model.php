@@ -304,5 +304,19 @@ class Admin_model extends CI_Model
     $this->db->group_by('quota');
     return $this->db->get('admissions');
   }
+
+  function getBlockedStats($department_id){
+    $this->db->select('COUNT(*) as cnt');
+    $this->db->where('course_id', $department_id);
+    $this->db->where('status', '7');
+    return $this->db->get('enquiries');
+  }
+
+  function getActiveDepartments(){
+    $this->db->select('departments.department_id, departments.stream_id, streams.stream_name, streams.stream_short_name, departments.department_name, departments.department_short_name, departments.intake, departments.mgmt_intake, departments.college_intake, departments.comed_k_intake, departments.kea_intake, departments.snq_intake');
+    $this->db->join('streams','streams.stream_id = departments.stream_id');
+    $this->db->where('departments.status', '1');
+    return $this->db->get('departments');
+  }
 }
  

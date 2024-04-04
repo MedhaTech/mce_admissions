@@ -25,9 +25,9 @@
                         <!-- End Mainmanu Nav -->
                     </nav>
                     <div class="header-btn">
-                        <a class="rn-btn" href="#">
-                            <span>Login</span>
-                        </a>
+                        <?php
+                            echo anchor('student','<span>Login</span>','class="rn-btn"');
+                        ?>
                     </div>
                     <!-- Start Humberger Menu  -->
                     <div class="humberger-menu d-block d-lg-none pl--20">

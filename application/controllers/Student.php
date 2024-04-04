@@ -395,7 +395,7 @@ class Student extends CI_Controller {
 			$session_data = $this->session->userdata('logged_in');
 			$data['username'] = $session_data['username'];
 			$data['id'] = $session_data['id'];
-			$data['pageTitle'] = "Parent's Details";
+			$data['page_title'] = "Parent's Details";
 			$data['menu'] = "parentdetails";
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
