@@ -220,6 +220,16 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-header">ACCOUNTS</li>
+                        <li class="nav-item ">
+                            <a href="<?php echo base_url(); ?>admin/collect_payment"
+                                class="nav-link <?= $menu_active = ($menu == "collectpayment") ? 'active' : ''; ?>">
+                                <i class="nav-icon fas fa-bars"></i>
+                                <p>
+                                    Collect Payment
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-header">SETTINGS</li>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/departments"
