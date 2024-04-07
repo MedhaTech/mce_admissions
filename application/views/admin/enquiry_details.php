@@ -21,7 +21,7 @@
                               <h1 class="h4 mb-0 text-gray-800"><?= $enquiryDetails->student_name . ' Details'; ?></h1>
                           </div>
                           <div class="col-md-6 text-right">
-                              <?php  if ($enquiryDetails->status != 6 || $enquiryDetails->status != 7) { ?>
+                              <?php  if ($enquiryDetails->status != 6 && $enquiryDetails->status != 7) { ?>
                               <button class="btn btn-warning btn-sm btn-icon-split" id="block_student"
                                   name="block_student">
                                   <span class="icon text-white-50">
@@ -37,6 +37,15 @@
                                   <span class="text"> Admit Student</span>
                               </button>
                               <?php echo anchor('admin/editEnquiry/' . $enquiryDetails->id, '<span class="icon"><i class="fas fa-edit"></i></span> <span class="text">Edit</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
+                              <?php } ?>
+                              <?php  if ($enquiryDetails->status == 7) { ?>
+                              <button class="btn btn-info btn-sm btn-icon-split" id="admit_student"
+                                  name="admit_student">
+                                  <span class="icon text-white-50">
+                                      <i class="fas fa-user"></i>
+                                  </span>
+                                  <span class="text"> Admit Student</span>
+                              </button>
                               <?php } ?>
                               <?php echo anchor('admin/enquiries', '<span class="icon"><i class="fas fa-arrow-left"></i></span> <span class="text">Back to List</span>', 'class="btn btn-secondary btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
                           </div>
@@ -351,22 +360,22 @@
                                   <div class="col">
                                       <div class="form-group">
                                           <label class="form-label">Department</label>
-                                          <?php echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control" id="course"');  ?>
-                                          <span class="text-danger"><?php echo form_error('course'); ?></span>
+                                          <?php echo form_dropdown('course1', $course_options, (set_value('course1')) ? set_value('course1') : $course, 'class="form-control" id="course1"');  ?>
+                                          <span class="text-danger"><?php echo form_error('course1'); ?></span>
                                       </div>
                                   </div>
                                   <div class="col">
                                       <div class="form-group">
                                           <label class="form-label">Quota </label>
-                                          <?php echo form_dropdown('quota', $quota_options, (set_value('quota')) ? set_value('quota') : '', 'class="form-control" id="quota" '); ?>
-                                          <span class="text-danger"><?php echo form_error('quota'); ?></span>
+                                          <?php echo form_dropdown('quota1', $quota_options, (set_value('quota1')) ? set_value('quota1') : '', 'class="form-control" id="quota1" '); ?>
+                                          <span class="text-danger"><?php echo form_error('quota1'); ?></span>
                                       </div>
                                   </div>
                                   <div class="col">
                                       <div class="form-group">
                                           <label class="form-label">Sub Quota </label>
-                                          <?php echo form_dropdown('subquota', $subquota_options, (set_value('subquota')) ? set_value('subquota') : '', 'class="form-control" id="subquota" '); ?>
-                                          <span class="text-danger"><?php echo form_error('subquota'); ?></span>
+                                          <?php echo form_dropdown('subquota1', $subquota_options, (set_value('subquota1')) ? set_value('subquota1') : '', 'class="form-control" id="subquota1" '); ?>
+                                          <span class="text-danger"><?php echo form_error('subquota1'); ?></span>
                                       </div>
                                   </div>
                               </div>
@@ -374,7 +383,7 @@
                                   <div class="col">
                                       <div class="form-group">
                                           <label class="form-label">Remarks</label>
-                                          <input type="text" class="form-control" id="remarks" name="remarks"
+                                          <input type="text" class="form-control" id="remarks1" name="remarks1"
                                               placeholder="Enter Remarks (if any)">
                                           <span
                                               class="text-danger"><?php echo form_error('category_allotted'); ?></span>
@@ -449,7 +458,7 @@ $(document).ready(function() {
         var quota = $("#quota").val();
 
 
-        if (subquota != "" && quota != '') {
+        if (subquota != " " && quota != ' ' &&  course != " ") {
             var page = base_url + 'admin/getFee';
             $.ajax({
                 'type': 'POST',
@@ -478,6 +487,10 @@ $(document).ready(function() {
                     $('#final_amount').val(finalAmount);
                 }
             });
+        }
+        else
+        {
+            alert("Please Select Department & Quota ");
         }
     });
 
@@ -644,14 +657,25 @@ $(document).ready(function() {
         event.preventDefault();
         var id = '<?php echo $enquiryDetails->id; ?>';
 
+        var course = $("#course1").val();
+        var course_val = $("#course1 option:selected").text();
 
 
 
+        var subquota = $("#subquota1").val();
+        var quota = $("#quota1").val();
+
+        var remarks = $("#remarks1").val();
         $.ajax({
             'type': 'POST',
             'url': base_url + 'admin/blockStudent',
             'data': {
                 "id": id,
+                'dept_id': course,
+                'quota': quota,
+                'subquota': subquota,
+                'course_val': course_val,
+                'remarks': remarks
 
 
             },

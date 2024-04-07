@@ -38,7 +38,7 @@ class Admin extends CI_Controller
 
 		//query the database
 		$result = $this->admin_model->login($username, md5($password));
-		
+
 		if ($result) {
 			$sess_array = array();
 			foreach ($result as $row) {
@@ -79,7 +79,7 @@ class Admin extends CI_Controller
 			$session_data = $this->session->userdata('logged_in');
 			$data['username'] = $session_data['username'];
 			$data['page_title'] = "Dashboard";
-			$data['menu'] = "dashboard";			
+			$data['menu'] = "dashboard";
 			$data['departments'] = $this->admin_model->getActiveDepartments()->result();
 			$this->admin_template->show('admin/Dashboard1', $data);
 		} else {
@@ -232,7 +232,7 @@ class Admin extends CI_Controller
 			$data['menu'] = 'enquiries';
 
 			$data['course_options'] = array(" " => "Select") + $this->courses();
-			$data['quota_options'] = array(" " => "Select","MGMT" => "MGMT");
+			$data['quota_options'] = array(" " => "Select", "MGMT" => "MGMT");
 			$data['subquota_options'] = array(" " => "Select") + $this->globals->sub_quota();
 			$data['type_options'] = array(" " => "Select") + $this->globals->category();
 
@@ -344,7 +344,7 @@ class Admin extends CI_Controller
 			$data['username'] = $sess['username'];
 			$data['role'] = $sess['role'];
 
-			$details = $this->admin_model->getDetailsbyfield('1','status','departments')->result();
+			$details = $this->admin_model->getDetailsbyfield('1', 'status', 'departments')->result();
 
 			$result = array();
 			foreach ($details as $details1) {
@@ -483,9 +483,11 @@ class Admin extends CI_Controller
 			$total_tution_fee = $this->input->post('total_tution_fee');
 			$total_university_fee = $this->input->post('total_university_fee');
 
-			$total_college_fee = $this->input->post('total_college_fee');
+
 			$concession_type = $this->input->post('concession_type');
 			$concession_fee = $this->input->post('concession_fee');
+			$total_college_fee = $total_university_fee + $total_tution_fee - $concession_fee;
+
 			$final_amount = $this->input->post('final_amount');
 
 
@@ -511,7 +513,8 @@ class Admin extends CI_Controller
 			$enquiryDetails = $this->admin_model->getDetails('enquiries', $id)->row();
 
 
-
+			$usn = $this->admin_model->getUsnNo($currentAcademicYear, $course)->row()->new_usn;
+			// var_dump($this->db->last_query());
 			$insertDetails = array(
 				'flow' => '0',
 				'academic_year' => $enquiryDetails->academic_year,
@@ -519,7 +522,7 @@ class Admin extends CI_Controller
 				'app_no' => $app_no,
 				'adm_no' => $app_no,
 				'dept_id' => $course,
-
+				'usn' => $usn,
 
 				'student_name' => strtoupper($enquiryDetails->student_name),
 				'mobile' => $enquiryDetails->mobile,
@@ -540,7 +543,7 @@ class Admin extends CI_Controller
 			);
 
 			$result = $this->admin_model->insertDetails('admissions', $insertDetails);
-		
+			// var_dump($this->db->last_query());
 
 			$insertDetails1 = array(
 				'student_id' => $result,
@@ -561,17 +564,23 @@ class Admin extends CI_Controller
 
 			);
 
-			$result = $this->admin_model->insertDetails('fee_master', $insertDetails1);
-
-			
 			if ($result) {
-					$email['name'] = strtoupper($enquiryDetails->student_name);
-					$email['mobile'] = strtolower($enquiryDetails->email);
-					$email['password'] = $enquiryDetails->mobile;
-					$message = $this->load->view('email/registration', $email);
-					$ci =& get_instance();
-					$message = $ci->load->view('email/registration', $email, true);
-					$this->aws_sdk->triggerEmail('admission@mcehassan.ac.in', 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!',$message);
+				$result1 = $this->admin_model->insertDetails('fee_master', $insertDetails1);
+			}
+
+
+
+			if ($result1) {
+				$email['name'] = strtoupper($enquiryDetails->student_name);
+				$email['mobile'] = strtolower($enquiryDetails->email);
+				$email['password'] = $enquiryDetails->mobile;
+				$message = $this->load->view('email/registration', $email);
+				$ci = &get_instance();
+				$message = $ci->load->view('email/registration', $email, true);
+				// $this->aws_sdk->triggerEmail($enquiryDetails->email, 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!',$message);
+				$this->aws_sdk->triggerEmail('admission@mcehassan.ac.in', 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!', $message);
+			} else {
+				echo "0";
 			}
 		} else {
 			redirect('admin', 'refresh');
@@ -793,7 +802,7 @@ class Admin extends CI_Controller
 			$dept = $this->input->post('dept');
 
 
-			$details = $this->admin_model->getsubquota($quota,$dept)->result();
+			$details = $this->admin_model->getsubquota($quota, $dept)->result();
 
 			$result = array();
 
@@ -1237,9 +1246,9 @@ class Admin extends CI_Controller
 			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
-				$data['entranceDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
-				$data['personalDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
-				$data['parentDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+			$data['entranceDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+			$data['personalDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+			$data['parentDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 			$this->admin_template->show('admin/admission_details', $data);
@@ -1249,13 +1258,13 @@ class Admin extends CI_Controller
 	}
 	public function testmail()
 	{
-					$email['name'] = strtoupper('Girish R');
-					$email['mobile'] = '9895369360';
-					$email['password'] = '9895369360';
-					
-					$ci =& get_instance();
-					$message = $ci->load->view('email/registration', $email, true);
-					 $this->aws_sdk->triggerEmail('girish@medhatech.in', 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!',$message);
+		$email['name'] = strtoupper('Girish R');
+		$email['mobile'] = '9895369360';
+		$email['password'] = '9895369360';
+
+		$ci = &get_instance();
+		$message = $ci->load->view('email/registration', $email, true);
+		$this->aws_sdk->triggerEmail('girish@medhatech.in', 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!', $message);
 		// echo  $this->aws_sdk->triggerEmail('girish@medhatech.in', 'test', 'testing');
 	}
 	function newAdmission()
@@ -1277,13 +1286,13 @@ class Admin extends CI_Controller
 
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
-			
+
 
 			// $this->form_validation->set_rules('academic_year', 'Academic Year', 'required');
 			$this->form_validation->set_rules('student_name', 'Applicant Name', 'required');
 
-			$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]|is_unique[admissions.mobile]');
-			$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+			$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]');
+			$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[admissions.email]');
 			$this->form_validation->set_rules('aadhar', 'Adhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[admissions.aadhar]');
 			$this->form_validation->set_rules('course', 'Department', 'required');
 			$this->form_validation->set_rules('quota', 'Quota', 'required');
@@ -1344,13 +1353,14 @@ class Admin extends CI_Controller
 				$total_tution_fee = $this->input->post('total_tution_fee');
 				$total_university_fee = $this->input->post('total_university_fee');
 
-				$total_college_fee = $this->input->post('total_college_fee');
+				// $total_college_fee = $this->input->post('total_college_fee');
+				$total_college_fee = $total_university_fee + $total_tution_fee - $concession_fee;
 				$concession_type = $this->input->post('concession_type');
 				$concession_fee = $this->input->post('concession_fee');
 				$final_amount = $this->input->post('final_amount');
 				$currentAcademicYear = $this->globals->currentAcademicYear();
 
-			
+
 
 				$app_number = $this->admin_model->getAppNo($currentAcademicYear)->row()->cnt;
 				$app_number = $app_number + 1;
@@ -1366,7 +1376,7 @@ class Admin extends CI_Controller
 				}
 				$app_no = date('y') . $app_number;
 
-			
+				$usn = $this->admin_model->getUsnNo($currentAcademicYear, $course)->row()->new_usn;
 
 
 
@@ -1377,7 +1387,7 @@ class Admin extends CI_Controller
 					'app_no' => $app_no,
 					'dept_id' => $course,
 					'adm_no' => $app_no,
-
+					'usn' => $usn,
 					'student_name' => strtoupper($this->input->post('student_name')),
 					'mobile' => $this->input->post('mobile'),
 					'email' => strtolower($this->input->post('email')),
@@ -1389,7 +1399,7 @@ class Admin extends CI_Controller
 					'category_claimed' => $this->input->post('category_claimed'),
 					'college_code' => $this->input->post('college_code'),
 					'sports' => $this->input->post('sports'),
-					'password'=>md5($this->input->post('mobile')),
+					'password' => md5($this->input->post('mobile')),
 					'entrance_type' => $this->input->post('entrance_type'),
 					'entrance_reg_no' => $this->input->post('entrance_reg_no'),
 					'entrance_rank' => $this->input->post('entrance_rank'),
@@ -1405,7 +1415,7 @@ class Admin extends CI_Controller
 				);
 
 				$result = $this->admin_model->insertDetails('admissions', $insertDetails);
-
+				
 				$insertDetails1 = array(
 					'student_id' => $result,
 					'academic_year' => $currentAcademicYear,
@@ -1424,22 +1434,23 @@ class Admin extends CI_Controller
 					'last_updated_by' => $data['username']
 
 				);
-				
-				$result = $this->admin_model->insertDetails('fee_master', $insertDetails1);
-				
 				if ($result) {
+					$result1 = $this->admin_model->insertDetails('fee_master', $insertDetails1);
+				}
+				if ($result1) {
 					$email['name'] = strtoupper($this->input->post('student_name'));
 					$email['mobile'] = strtolower($this->input->post('email'));
 					$email['password'] = $this->input->post('mobile');
+					$sender = strtolower($this->input->post('email'));
 					$message = $this->load->view('email/registration', $email);
-					$ci =& get_instance();
+					$ci = &get_instance();
 					$message = $ci->load->view('email/registration', $email, true);
-					$this->aws_sdk->triggerEmail('admission@mcehassan.ac.in', 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!',$message);
-		
+					// $this->aws_sdk->triggerEmail($sender, 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!',$message);
+					$this->aws_sdk->triggerEmail('admission@mcehassan.ac.in', 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!', $message);
 				}
 
 
-	
+
 
 				if ($result) {
 					$this->session->set_flashdata('message', 'Enquiry Details added successfully...!');
@@ -1468,17 +1479,23 @@ class Admin extends CI_Controller
 			$data['menu'] = 'admissions';
 
 			$id = $this->input->post('id');
-		
 
+			$comments = "As per the Orders of Chairman, a seat in " . $this->input->post('course_val') . " is being blocked.";
 
 			$currentAcademicYear = $this->globals->currentAcademicYear();
 
-			$updateDetails = array('status' => '7');
-			
+			$updateDetails = array('quota' => $this->input->post('quota'), 'sub_quota' => $this->input->post('subquota'), 'remarks' => $this->input->post('remarks'), 'dept_id' => $this->input->post('dept_id'), 'status' => '7');
+
 			$res = $this->admin_model->updateDetails($id, $updateDetails, 'enquiries');
 
-			
+			$insertDetails = array(
+				'enq_id' => $id,
+				'comments' => $comments,
+				'given_by' => $data['username'],
+				'given_on' => date('Y-m-d h:i:s')
+			);
 
+			$result = $this->admin_model->insertDetails('enq_comments', $insertDetails);
 		} else {
 			redirect('admin', 'refresh');
 		}
@@ -1486,7 +1503,7 @@ class Admin extends CI_Controller
 
 	function changepassword()
 	{
-	    if ($this->session->userdata('logged_in')) {
+		if ($this->session->userdata('logged_in')) {
 			$sess = $this->session->userdata('logged_in');
 			$data['id'] = $sess['id'];
 			$data['username'] = $sess['username'];
@@ -1494,43 +1511,42 @@ class Admin extends CI_Controller
 			$data['page_title'] = 'Change Password';
 			$data['menu'] = 'changepassword';
 			// $data['userDetails'] = $this->admin_model->getDetails('users', $data['id'])->row();
-			
-	       // $this->form_validation->set_rules('oldPassword', 'Old Password', 'required');
-	        $this->form_validation->set_rules('oldpassword', 'Old Password', 'required');
+
+			// $this->form_validation->set_rules('oldPassword', 'Old Password', 'required');
+			$this->form_validation->set_rules('oldpassword', 'Old Password', 'required');
 			$this->form_validation->set_rules('newpassword', 'New Password', 'required');
 			$this->form_validation->set_rules('confirmpassword', 'Confirm Password', 'required|matches[newpassword]');
-	        
-	        if($this->form_validation->run() === FALSE){
-	        
-				$data['action'] = 'admin/changePassword/'. $data['id'];
-	            $this->admin_template->show('admin/changePassword',$data);
-	        }else{
-	           // $oldPassword = $this->input->post('oldPassword');
-	            $oldpassword = $this->input->post('oldpassword');
+
+			if ($this->form_validation->run() === FALSE) {
+
+				$data['action'] = 'admin/changePassword/' . $data['id'];
+				$this->admin_template->show('admin/changePassword', $data);
+			} else {
+				// $oldPassword = $this->input->post('oldPassword');
+				$oldpassword = $this->input->post('oldpassword');
 				$newpassword = $this->input->post('newpassword');
 				$confirmpassword = $this->input->post('confirmpassword');
-	            
-				if($oldpassword == $newpassword){
-    	            $this->session->set_flashdata('message', 'Old and New Password should not be same...!');
-    	            $this->session->set_flashdata('status', 'alert-warning');
-    	        }else{
+
+				if ($oldpassword == $newpassword) {
+					$this->session->set_flashdata('message', 'Old and New Password should not be same...!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				} else {
 					$updateDetails = array('password' => md5($newpassword));
-					$result = $this->admin_model->AdminChangePassword($data['id'], $oldpassword , $updateDetails,'users');
+					$result = $this->admin_model->AdminChangePassword($data['id'], $oldpassword, $updateDetails, 'users');
 					// print_r($result); 
 					// echo $this->db->last_query(); die;
-    	            if($result){
-    	              $this->session->set_flashdata('message', 'Password udpated successfully...!');
-    	              $this->session->set_flashdata('status', 'alert-success');
-    	            }else{
-    	              $this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
-    	              $this->session->set_flashdata('status', 'alert-warning');
-    	            }  
-    	         }
-	            redirect('/admin/changePassword', 'refresh');  
-	       }
-
-	    }else{
-	      redirect('admin', 'refresh');
-	    }
+					if ($result) {
+						$this->session->set_flashdata('message', 'Password udpated successfully...!');
+						$this->session->set_flashdata('status', 'alert-success');
+					} else {
+						$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+						$this->session->set_flashdata('status', 'alert-warning');
+					}
+				}
+				redirect('/admin/changePassword', 'refresh');
+			}
+		} else {
+			redirect('admin', 'refresh');
+		}
 	}
 }
