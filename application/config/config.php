@@ -30,7 +30,7 @@ if($_SERVER['HTTP_HOST']=="127.0.0.1" || $_SERVER['HTTP_HOST']=="localhost")
 }
 else
 {
-    $base_url = "http";
+    $base_url = "https";
 }
 
 $base_url .= "://".$_SERVER['HTTP_HOST'];
