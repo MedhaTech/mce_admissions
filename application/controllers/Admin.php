@@ -1,3 +1,7 @@
+4MC23IS001
+
+
+
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
@@ -1527,6 +1531,81 @@ class Admin extends CI_Controller
     	            }  
     	         }
 	            redirect('/admin/changePassword', 'refresh');  
+	       }
+
+	    }else{
+	      redirect('admin', 'refresh');
+	    }
+	}
+
+	function collect_payment()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$sess = $this->session->userdata('logged_in');
+			$data['id'] = $sess['id'];
+			$data['username'] = $sess['username'];
+			$data['action'] = 'admin/collect_fee';
+
+			$data['page_title'] = 'Collect Payment';
+			$data['menu'] = 'collectpayment';
+
+
+			$this->form_validation->set_rules('usn', 'USN', 'required');
+	        
+	        if($this->form_validation->run() === FALSE){
+	        
+				$data['action'] = 'admin/collect_fee/'. $data['id'];
+				$data['usn'] = $this->input->post('usn');
+	            $this->admin_template->show('admin/collect_payment',$data);
+	        }else{
+	            $usn = $this->input->post('usn');
+	        
+					$result = $this->admin_model->getDetailsbyfield($data['id'], 'usn' ,'admissions');
+    	            if($result){
+    	              $this->session->set_flashdata('message', 'usn is found');
+    	              $this->session->set_flashdata('status', 'alert-success');
+    	            }else{
+    	              $this->session->set_flashdata('message', 'usn is not found');
+    	              $this->session->set_flashdata('status', 'alert-warning');
+    	            }  
+	            redirect('/admin/collect_payment', 'refresh');  
+	       }
+
+	    }else{
+	      redirect('admin', 'refresh');
+	    }
+	}
+
+	function collect_fee()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$sess = $this->session->userdata('logged_in');
+			$data['id'] = $sess['id'];
+			$data['username'] = $sess['username'];
+
+			$data['page_title'] = 'Collect Fee';
+			$data['menu'] = 'collectfee';
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+			// $data['departmentDetails'] = $this->admin_model->getDetails('departments', $id)->row();
+		
+		    $this->form_validation->set_rules('usn', 'USN', 'required');
+	        
+	        if($this->form_validation->run() === FALSE){
+	        
+				$data['action'] = 'admin/collect_fee/'. $data['id'];
+	            $this->admin_template->show('admin/collect_fee',$data);
+	        }else{
+	            $usn = $this->input->post('usn');
+	        
+					$result = $this->admin_model->getDetailsbyfield($data['id'], 'usn' ,'admissions');
+    	            if($result){
+    	              $this->session->set_flashdata('message', 'usn is found');
+    	              $this->session->set_flashdata('status', 'alert-success');
+    	            }else{
+    	              $this->session->set_flashdata('message', 'usn is not found');
+    	              $this->session->set_flashdata('status', 'alert-warning');
+    	            }  
+	            redirect('/admin/collect_fee', 'refresh');  
 	       }
 
 	    }else{
