@@ -318,5 +318,16 @@ class Admin_model extends CI_Model
     $this->db->where('departments.status', '1');
     return $this->db->get('departments');
   }
+  public function getUsnNo($academic_year,$department_id)
+  {
+    $academic_year_last_two = substr($academic_year, 2, 2);
+
+    $this->db->select('CONCAT("4MC", '.$academic_year_last_two.', d.department_short_name, LPAD(COALESCE((SELECT COUNT(*) FROM admissions WHERE dept_id = '.$department_id.' AND academic_year = "'.$academic_year.'"), 0) + 1, 3, "0")) AS new_usn', false);
+    $this->db->from('departments d');
+    $this->db->where('d.department_id', $department_id);
+    
+    return $this->db->get();
+    
+  }
 }
  
