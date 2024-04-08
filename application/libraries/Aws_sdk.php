@@ -2,6 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 require_once APPPATH . 'third_party/aws-sdk-php/aws-autoloader.php'; // Path to autoload.php
 
+
 use Aws\Ses\SesClient;
 use Aws\Exception\AwsException;
 
