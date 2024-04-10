@@ -160,7 +160,7 @@
                 </div>
                 
                 <div class="card-body">
-
+                <?php echo form_open_multipart($action, 'class="user"'); ?>
                     <div class="row">
                         <div class="col-md-12 col-sm-12">
                             <div class="form-group">
@@ -237,7 +237,7 @@
                         </div>
                     </div>
 
-
+                    <?php echo form_close(); ?>
                 </div>
             </div>
            
