@@ -833,7 +833,7 @@ class Admin extends CI_Controller
 
 			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
-			$data['admissions'] = $this->admin_model->fetchDetails2('id, app_no, adm_no,quota,dept_id,sub_quota,category_allotted,category_claimed, student_name, mobile, status', 'status', $status, 'academic_year', $data['currentAcademicYear'], 'admissions')->result();
+			$data['admissions'] = $this->admin_model->fetchDetails2('id, app_no, adm_no,quota,dept_id,sub_quota, student_name, mobile,usn,status', 'status', $status, 'academic_year', $data['currentAcademicYear'], 'admissions')->result();
 
 			$this->admin_template->show('admin/admissions', $data);
 		} else {
@@ -1250,7 +1250,7 @@ class Admin extends CI_Controller
 			$data['personalDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$data['parentDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
-			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$this->admin_template->show('admin/admission_details', $data);
 		} else {
 			redirect('admin/timeout');
@@ -1556,7 +1556,7 @@ class Admin extends CI_Controller
 			$sess = $this->session->userdata('logged_in');
 			$data['id'] = $sess['id'];
 			$data['username'] = $sess['username'];
-			$data['action'] = 'admin/collect_fee';
+			// $data['action'] = 'admin/collect_fee';
 
 			$data['page_title'] = 'Collect Payment';
 			$data['menu'] = 'collectpayment';
@@ -1566,21 +1566,31 @@ class Admin extends CI_Controller
 	        
 	        if($this->form_validation->run() === FALSE){
 	        
-				$data['action'] = 'admin/collect_fee/'. $data['id'];
+				// $data['action'] = 'admin/collect_fee/'. $data['id'];
 				$data['usn'] = $this->input->post('usn');
 	            $this->admin_template->show('admin/collect_payment',$data);
 	        }else{
 	            $usn = $this->input->post('usn');
 	        
-					$result = $this->admin_model->getDetailsbyfield($data['id'], 'usn' ,'admissions');
-    	            if($result){
-    	              $this->session->set_flashdata('message', 'usn is found');
-    	              $this->session->set_flashdata('status', 'alert-success');
-    	            }else{
-    	              $this->session->set_flashdata('message', 'usn is not found');
-    	              $this->session->set_flashdata('status', 'alert-warning');
-    	            }  
-	            redirect('/admin/collect_payment', 'refresh');  
+				$data['details'] = $this->admin_model->getDetailsbyfield($usn, 'usn' ,'admissions')->row();
+				// print_r($data['details']->id); die;
+				$data['studentDetails'] = $this->admin_model->getDetailsbyfield($data['details']->id, 'student_id' ,'fee_master');
+				$this->admin_template->show('admin/collect_fee',$data);
+				// $data['details'] = $this->admin_model->getDetailsbyfield($usn, 'usn' ,'admissions');
+				// $data['studentDetails'] = $this->admin_model->getDetailsbyfield($details, 'student_id' ,'fee_master');
+				// 	$result = $this->admin_model->getDetailsbyfield($data['id'], 'usn' ,'admissions');
+    	        //     if($result){
+    	        //       $this->session->set_flashdata('message', 'usn is found');
+    	        //       $this->session->set_flashdata('status', 'alert-success');
+    	        //     }else{
+    	        //       $this->session->set_flashdata('message', 'usn is not found');
+    	        //       $this->session->set_flashdata('status', 'alert-warning');
+    	        //     }  
+				// $student_id = $this->admin_model->getDetailsbyfield($details, 'student_id' ,'fee_master')->row();
+	            // if($student_id){
+	            //     $student_id = $details->id;
+				// }
+	            // redirect('/admin/collect_payment', 'refresh');  
 	       }
 
 	    }else{
@@ -1598,7 +1608,7 @@ class Admin extends CI_Controller
 			$data['page_title'] = 'Collect Fee';
 			$data['menu'] = 'collectfee';
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
-			// $data['departmentDetails'] = $this->admin_model->getDetails('departments', $id)->row();
+			$data['departmentDetails'] = $this->admin_model->getDetails('departments', $id)->row();
 		
 		    $this->form_validation->set_rules('usn', 'USN', 'required');
 	        
@@ -1609,7 +1619,8 @@ class Admin extends CI_Controller
 	        }else{
 	            $usn = $this->input->post('usn');
 	        
-					$result = $this->admin_model->getDetailsbyfield($data['id'], 'usn' ,'admissions');
+				$data['details'] = $this->admin_model->getDetailsbyfield($usn, 'usn' ,'admissions');
+				      $data['studentDetails'] = $this->admin_model->getDetailsbyfield($details, 'student_id' ,'fee_master');
     	            if($result){
     	              $this->session->set_flashdata('message', 'usn is found');
     	              $this->session->set_flashdata('status', 'alert-success');
