@@ -513,152 +513,36 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <?php
 
-                 
-            <?php     if (count($educations_details)) {
-                   foreach ($educations_details as $edu) { ?>
-                    <div class="form-row">
+                    if (count($educations_details)) {
+                        $table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+                        $this->table->set_template($table_setup);
+                        $print_fields = array('S.NO', 'Level', 'Board ', 'Institution Name', 'Institution City', 'Medium of Instruction', 'Register Number', 'Year of Passing', 'Aggregate (%)');
+                        $this->table->set_heading($print_fields);
 
-                        <div class="col-md-3 col-sm-6">
-                            <div class="form-group">
-                                <label class="label">Level</label>
-                                <br>
-                                <?= $edu->education_level;?>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <div class="form-group">
-                                <label class="label">Institution Type</label>
-                                <br>
-                                <?= $edu->inst_type;?>
-                              
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <div class="form-group">
-                                <label class="label">Board / University</label>
-                                <br>
-                                <?= $edu->inst_board;?>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <div class="form-group">
-                                <label class="label">Institution Name</label>
-                                <br>
-                                <?= $edu->inst_name;?>
-                            </div>
-                        </div>
+                        $i = 1;
+                        foreach ($educations_details as $edu) {
+                            $result_array = array(
+                                $i++,
+                                //   $admissions1->app_no,
 
 
-                    </div>
+                                $edu->education_level,
 
-                    <div class="form-row">
-                        <div class="col-md-3 col-sm-6">
-                            <div class="form-group">
-                                <label class="label">Institution Address</label>
-                                <br>
-                                <?= $edu->inst_address;?>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <div class="form-group">
-                                <label class="label">Institution City</label>
-                                <br>
-                                <?= $edu->inst_city;?>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <div class="form-group">
-                                <label class="label">Institution State</label>
-                                <br>
-                                <?= $edu->inst_state;?>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <div class="form-group">
-                                <label class="label">Institution Country</label>
-                                <br>
-                                <?= $edu->inst_country;?>
-                            </div>
-                        </div>
-
-
-
-                    </div>
-                    <div class="form-row">
-                        <div class="col-md-3 col-sm-6">
-                            <div class="form-group">
-                                <label class="label">Medium of Instruction</label>
-                                <br>
-                                <?= $edu->medium_of_instruction;?>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <div class="form-group">
-                                <label class="label">Register Number</label>
-                                <br>
-                                <?= $edu->register_number;?>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <div class="form-group">
-                                <label class="label">Year of Passing</label>
-                                <br>
-                                <?= $edu->year_of_passing;?>
-                            </div>
-                        </div>
-                      
-                        <div class="col-md-3 col-sm-6">
-                            <div class="form-group">
-                                <label class="label">Aggregate</label>
-                                <br>
-                                <?= $edu->aggregate;?>%
-
-                            </div>
-                        </div>
-
-                   
-                    </div>
-                    <table class="table" border="1">
-                        <thead>
-                            <tr>
-                                <th>Subject Name</th>
-                                <th>Min Marks</th>
-                                <th>Max Marks</th>
-                                <th>Obtained Marks</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            for ($i = 1; $i <= 6; $i++) {
-                                $subject_name = $edu->{"subject_" . $i . "_name"};
-                                $min_marks = $edu->{"subject_" . $i . "_min_marks"};
-                                $max_marks = $edu->{"subject_" . $i . "_max_marks"};
-                                $obtained_marks = $edu->{"subject_" . $i . "_obtained_marks"};
-                                ?>
-                            <tr>
-                                <td>
-                                  <?= $subject_name;?>
-                                </td>
-                                <td>
-                                <?= $min_marks;?>
-                                </td>
-                                <td>
-                                <?= $max_marks;?> 
-                                </td>
-                                <td>
-                                <?= $obtained_marks;?>
-                                </td>
-                            </tr>
-                            <?php } ?>
-                        
-                        </tbody>
-                        
-                    </table>
-                    <hr>
-
-                   <?php }   } ?>
-
+                                $edu->inst_board,
+                                $edu->inst_name,
+                                $edu->inst_city,
+                                $edu->medium_of_instruction,
+                                $edu->register_number,
+                                $edu->year_of_passing,
+                                $edu->aggregate
+                            );
+                            $this->table->add_row($result_array);
+                        }
+                        $table = $this->table->generate();
+                        print_r($table);
+                    }  ?>
                 </div>
             </div>
 

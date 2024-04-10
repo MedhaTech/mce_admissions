@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Student extends CI_Controller {
+class Student extends CI_Controller
+{
 
 	function __construct()
 	{
@@ -59,49 +60,51 @@ class Student extends CI_Controller {
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
 			$data['id'] = $session_data['id'];
+			$student_id = $session_data['id'];
 			$data['student_name'] = $session_data['student_name'];
 			$data['page_title'] = "Dashboard";
 			$data['menu'] = "dashboard";
 
-			$flow = $this->admin_model->getDetailsFilter('flow', $data['id'],'admissions')->row()->flow;
-			
-			if($flow){
+			$flow = $this->admin_model->getDetailsFilter('flow', $data['id'], 'admissions')->row()->flow;
+
+			if ($flow) {
 				$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$data['entranceDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$data['personalDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$data['parentDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
-				$this->student_template->show('student/finish',$data);
-			}else{
+				$data['educations_details'] = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'student_education_details')->result();
+				$this->student_template->show('student/finish', $data);
+			} else {
 				$this->student_template->show('student/Dashboard', $data);
 			}
-			
 		} else {
 			redirect('student', 'refresh');
 		}
 	}
 
-	function startProcess(){
+	function startProcess()
+	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
 			$data['id'] = $session_data['id'];
 			$data['student_name'] = $session_data['student_name'];
 			$data['page_title'] = "Dashboard";
 			$data['menu'] = "dashboard";
-			
+
 			$updateDetails = array('flow' => '1');
-			$result = $this->admin_model->updateDetails( $data['id'], $updateDetails,'admissions');
+			$result = $this->admin_model->updateDetails($data['id'], $updateDetails, 'admissions');
 
 			redirect('student/dashboard', 'refresh');
 		} else {
 			redirect('student', 'refresh');
 		}
 	}
-	
+
 	function admissiondetails()
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
-      		$data['id'] = $session_data['id'];
+			$data['id'] = $session_data['id'];
 			$data['student_name'] = $session_data['student_name'];
 			$data['page_title'] = "Admissiondetails";
 			$data['menu'] = "admissiondetails";
@@ -110,9 +113,9 @@ class Student extends CI_Controller {
 
 			$data['academicYear'] = $this->globals->academicYear();
 			$data['type_options'] = array(" " => "Select") + $this->globals->category();
-			
+
 			$this->load->library('form_validation');
-	
+
 			$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 			// $data['admissions'] = $this->admin_model->get_details_by_id($id, 'id', 'admissions');
 
@@ -129,8 +132,8 @@ class Student extends CI_Controller {
 			$this->form_validation->set_rules('sports', 'Sports', 'required');
 
 			if ($this->form_validation->run() === FALSE) {
-		
-				$data['action'] = 'student/admissiondetails'. $data['id'];
+
+				$data['action'] = 'student/admissiondetails' . $data['id'];
 
 				$admissionDetails = $this->admin_model->getDetails('admissions', $data['id'])->row();
 
@@ -162,7 +165,7 @@ class Student extends CI_Controller {
 				);
 				print_r($updateDetails);
 				die();
-				$result = $this->admin_model->updateDetails( $data['id'], $updateDetails,'admissions');
+				$result = $this->admin_model->updateDetails($data['id'], $updateDetails, 'admissions');
 
 				// var_dump($this->db->last_query());
 				// die();
@@ -194,9 +197,9 @@ class Student extends CI_Controller {
 
 			$data['academicYear'] = $this->globals->academicYear();
 			$data['type_options'] = array(" " => "Select") + $this->globals->category();
-			
+
 			$this->load->library('form_validation');
-	
+
 			$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 			// $data['admissions'] = $this->admin_model->get_details_by_id($id, 'id', 'admissions');
 
@@ -210,8 +213,8 @@ class Student extends CI_Controller {
 			$this->form_validation->set_rules('fees_receipt_date', 'Fees Receipt Date', 'required');
 
 			if ($this->form_validation->run() === FALSE) {
-		
-				$data['action'] = 'student/entranceexamdetails/'. $data['id'];
+
+				$data['action'] = 'student/entranceexamdetails/' . $data['id'];
 
 				$entranceDetails = $this->admin_model->getDetails('admissions', $data['id'])->row();
 
@@ -237,7 +240,7 @@ class Student extends CI_Controller {
 				);
 				// print_r($updateDetails);
 				// die();
-				$result = $this->admin_model->updateDetails($data['id'], $updateDetails,'admissions');
+				$result = $this->admin_model->updateDetails($data['id'], $updateDetails, 'admissions');
 
 				// var_dump($this->db->last_query());
 				// die();
@@ -260,19 +263,19 @@ class Student extends CI_Controller {
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
-      		$data['student_name'] = $session_data['student_name'];
+			$data['student_name'] = $session_data['student_name'];
 			$data['page_title'] = "Personaldetails";
 			$data['menu'] = "personaldetails";
-      
+
 			$data['username'] = $session_data['username'];
 			$data['id'] = $session_data['id'];
 			$data['menu'] = "personaldetails";
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 
-			
+
 			$this->load->library('form_validation');
-	
+
 			$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 			// $data['admissions'] = $this->admin_model->get_details_by_id($id, 'id', 'admissions');
 
@@ -305,8 +308,8 @@ class Student extends CI_Controller {
 			$this->form_validation->set_rules('present_pincode', 'Present Pincode', 'required');
 
 			if ($this->form_validation->run() === FALSE) {
-		
-				$data['action'] = 'student/personaldetails/'. $data['id'];
+
+				$data['action'] = 'student/personaldetails/' . $data['id'];
 
 				$personalDetails = $this->admin_model->getDetails('admissions', $data['id'])->row();
 
@@ -370,7 +373,7 @@ class Student extends CI_Controller {
 				);
 				// print_r($updateDetails);
 				// die();
-				$result = $this->admin_model->updateDetails($data['id'], $updateDetails,'admissions');
+				$result = $this->admin_model->updateDetails($data['id'], $updateDetails, 'admissions');
 
 				// var_dump($this->db->last_query());
 				// die();
@@ -400,9 +403,9 @@ class Student extends CI_Controller {
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 
-			
+
 			$this->load->library('form_validation');
-	
+
 			$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 			// $data['admissions'] = $this->admin_model->get_details_by_id($id, 'id', 'admissions');
 
@@ -421,10 +424,10 @@ class Student extends CI_Controller {
 			$this->form_validation->set_rules('guardian_email', 'Guardian Email', 'required|trim|valid_email');
 			$this->form_validation->set_rules('guardian_occupation', 'Guardian Occupation', 'required');
 			$this->form_validation->set_rules('guardian_annual_income', 'Guardian Annual Income', 'required');
-			
+
 			if ($this->form_validation->run() === FALSE) {
-		
-				$data['action'] = 'student/parentdetails/'. $data['id'];
+
+				$data['action'] = 'student/parentdetails/' . $data['id'];
 
 				$parentDetails = $this->admin_model->getDetails('admissions', $data['id'])->row();
 
@@ -464,7 +467,7 @@ class Student extends CI_Controller {
 				);
 				// print_r($updateDetails);
 				// die();
-				$result = $this->admin_model->updateDetails($data['id'], $updateDetails,'admissions');
+				$result = $this->admin_model->updateDetails($data['id'], $updateDetails, 'admissions');
 
 				// var_dump($this->db->last_query());
 				// die();
@@ -488,10 +491,104 @@ class Student extends CI_Controller {
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
 			$data['student_name'] = $session_data['student_name'];
+			$data['id'] = $session_data['id'];
+			$student_id = $session_data['id'];
 			$data['page_title'] = 'Education Details';
 			$data['menu'] = 'educationdetails';
 
-			$this->student_template->show('student/education_details',$data);
+			$this->form_validation->set_rules('education_level', 'Education Level', 'required');
+			$this->form_validation->set_rules('inst_type', 'Institution Type', 'required');
+			$this->form_validation->set_rules('inst_board', 'Board / University', 'required');
+			$this->form_validation->set_rules('inst_name', 'Institution Name', 'required');
+			$this->form_validation->set_rules('inst_address', 'Institution Address', 'required');
+			$this->form_validation->set_rules('inst_city', 'Institution City', 'required');
+			$this->form_validation->set_rules('inst_state', 'Institution State', 'required');
+			$this->form_validation->set_rules('inst_country', 'Institution Country', 'required');
+			$this->form_validation->set_rules('medium_of_instruction', 'Medium of Instruction', 'required');
+			$this->form_validation->set_rules('register_number', 'Register Number', 'required');
+			$this->form_validation->set_rules('year_of_passing', 'Year of Passing', 'required');
+
+			if ($this->form_validation->run() === FALSE) {
+				$data = array(
+					'education_level' => $this->input->post('education_level'),
+					'inst_type' => $this->input->post('inst_type'),
+					'inst_board' => $this->input->post('inst_board'),
+					'inst_name' => $this->input->post('inst_name'),
+					'inst_address' => $this->input->post('inst_address'),
+					'inst_city' => $this->input->post('inst_city'),
+					'inst_state' => $this->input->post('inst_state'),
+					'inst_country' => $this->input->post('inst_country'),
+					'medium_of_instruction' => $this->input->post('medium_of_instruction'),
+					'register_number' => $this->input->post('register_number'),
+					'year_of_passing' => $this->input->post('year_of_passing')
+				);
+
+				// Insert subject fields
+				for ($i = 1; $i <= 6; $i++) {
+					$subject_name = $this->input->post('subject_' . $i . '_name');
+					$min_marks = $this->input->post('subject_' . $i . '_min_marks');
+					$max_marks = $this->input->post('subject_' . $i . '_max_marks');
+					$obtained_marks = $this->input->post('subject_' . $i . '_obtained_marks');
+
+					// Only add subject if name is not empty
+					if (!empty($subject_name)) {
+						$data['subject_' . $i . '_name'] = $subject_name;
+						$data['subject_' . $i . '_min_marks'] = $min_marks;
+						$data['subject_' . $i . '_max_marks'] = $max_marks;
+						$data['subject_' . $i . '_obtained_marks'] = $obtained_marks;
+					}
+				}
+				$data['educations_details'] = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'student_education_details')->result();
+				$data['action'] = 'student/updateeducationdetails/';
+
+				$this->student_template->show('student/education_details', $data);
+			} else {
+
+				$insertDetails = array(
+					'student_id' => $student_id,
+					'education_level' => $this->input->post('education_level'),
+					'inst_type' => $this->input->post('inst_type'),
+					'inst_board' => $this->input->post('inst_board'),
+					'inst_name' => $this->input->post('inst_name'),
+					'inst_address' => $this->input->post('inst_address'),
+					'inst_city' => $this->input->post('inst_city'),
+					'inst_state' => $this->input->post('inst_state'),
+					'inst_country' => $this->input->post('inst_country'),
+					'medium_of_instruction' => $this->input->post('medium_of_instruction'),
+					'register_number' => $this->input->post('register_number'),
+					'year_of_passing' => $this->input->post('year_of_passing'),
+					'aggregate' => $this->input->post('aggregate'),
+					'updated_on' => date('Y-m-d h:i:s'),
+					'updated_by' => $data['student_name']
+				);
+
+				// Insert subject fields
+				for ($i = 1; $i <= 6; $i++) {
+					$subject_name = $this->input->post('subject_' . $i . '_name');
+					$min_marks = $this->input->post('subject_' . $i . '_min_marks');
+					$max_marks = $this->input->post('subject_' . $i . '_max_marks');
+					$obtained_marks = $this->input->post('subject_' . $i . '_obtained_marks');
+
+					// Only add subject if name is not empty
+					if (!empty($subject_name)) {
+						$insertDetails['subject_' . $i . '_name'] = $subject_name;
+						$insertDetails['subject_' . $i . '_min_marks'] = $min_marks;
+						$insertDetails['subject_' . $i . '_max_marks'] = $max_marks;
+						$insertDetails['subject_' . $i . '_obtained_marks'] = $obtained_marks;
+					}
+				}
+				$result = $this->admin_model->insertDetails('student_education_details', $insertDetails);
+
+				if ($result) {
+					$this->session->set_flashdata('message', 'Education Details added successfully...!');
+					$this->session->set_flashdata('status', 'alert-success');
+				} else {
+					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				}
+
+				redirect('student/educationdetails', 'refresh');
+			}
 		} else {
 			redirect('student', 'refresh');
 		}
@@ -504,8 +601,7 @@ class Student extends CI_Controller {
 			$data['student_name'] = $session_data['student_name'];
 			$data['page_title'] = "Finish";
 			$data['menu'] = "finish";
-      		$data['id'] = $session_data['id'];
-			
+			$data['id'] = $session_data['id'];
 		} else {
 			redirect('student', 'refresh');
 		}
@@ -529,118 +625,226 @@ class Student extends CI_Controller {
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
 			$data['student_name'] = $session_data['student_name'];
-			$data['page_title'] = "Document";
+			$data['page_title'] = "New Document";
 			$data['menu'] = "documents";
-
-			$data['admissions'] = $this->admin_model->getDetails('admissions','id', $data['id'])->row();
+			$data['id'] = $session_data['id'];
+			$student_id = $session_data['id'];
+			$data['admissions'] = $this->admin_model->getDetails('admissions', 'id', $data['id'])->row();
 			$this->form_validation->set_rules('documents', 'Document Type', 'required');
-	        
-	        if($this->form_validation->run() === FALSE){
-	            
-	            $data['action'] = 'student/documents';
-	            $this->student_template->show('student/documents',$data);
-	        }else{
-	            
-	            $documents = $this->input->post('documents');    
-	            
-	           	$config['upload_path'] = './assets/documents/'.$data['id'];
 			
-				$config['allowed_types'] = 'jpeg|jpg|png';
-				$config['overwrite'] = true;
-				$config['max_size']  = '0';
-						
-				$this->load->library('upload', $config);
-				$this->upload->initialize($config);
-				$this->upload->set_allowed_types('jpeg|jpg|png');
-				$data['upload_data'] = '';
-						
-				if (!$this->upload->do_upload('photo')) {
-					$msg = $this->upload->display_errors();
-					$this->session->set_flashdata('message', $msg);
-        		    $this->session->set_flashdata('status', 'alert-warning');
-				}else {
-					 
-					$data['msg'] = "Upload success!";
-					$upload_data = $this->upload->data();
-					$data['upload_data'] = $upload_data;
-					
-					$image_config['image_library'] = 'gd2';
-					$image_config['source_image'] = $upload_data["full_path"];
-					$image_config['new_image'] = $upload_data["file_path"].$documents.'.jpg';
-				// 	$image_config['new_image'] = $upload_data["file_path"]."$documents.jpg";
-					$image_config['quality'] = "100%";
-					$image_config['maintain_ratio'] = FALSE;
-					$image_config['max_size'] = 10000;
-					$image_config['width'] = 5000;
-					$image_config['height'] = 5000;
-					$image_config['x_axis'] = '0';
-					$image_config['y_axis'] = '0';
-					
-					$this->load->library('image_lib');
-					
-					$this->image_lib->clear();
-					$this->image_lib->initialize($image_config); 
-					$this->image_lib->resize();
-					unlink($upload_data["full_path"]); 
-					
-					$this->session->set_flashdata('message', 'Documents updated successfully..!!');
-                    $this->session->set_flashdata('status', 'alert-success');    
-				} 
-                
-	           redirect('student/documents', 'refresh');  
-	       }
+			if ($this->form_validation->run() === FALSE) {
 
-	    }else{
-	      redirect('student', 'refresh');
-	    }
+				$upload_path = "./assets/students/$student_id/";
+
+				// Check if the directory exists
+				if (is_dir($upload_path)) {
+					// Get list of files in the directory
+					$files = scandir($upload_path);
+		
+					// Remove . and .. from the list
+					$data['files'] = array_diff($files, array('.', '..'));
+				}
+				$data['action'] = 'student/documents';
+				$this->student_template->show('student/documents', $data);
+			} else {
+
+				$documents = $this->input->post('documents');
+
+				$config['upload_path'] = './assets/students/' . $data['id'].'/';
+				$config['allowed_types']    = 'gif|jpg|png|pdf|doc|docx'; // Adjust file types as needed
+				$config['max_size']         = 10240; // Maximum file size in kilobytes (10MB)
+				$config['encrypt_name']     = FALSE; // Encrypt the file name for security
+				// Make sure the directory exists, if not, create it
+				if (!is_dir($config['upload_path'])) {
+					mkdir($config['upload_path'], 0777, true);
+				}
+				$upload_path=$config['upload_path'];
+
+
+				$this->load->library('upload', $config);
+
+				$file_info = pathinfo($_FILES['photo']['name']);
+				// Rename uploaded file with document type
+				$new_file_name = $documents . '.' . $file_info['extension'];
+				$_FILES['photo']['name'] = $new_file_name;
+				$existing_file_path = $upload_path . $new_file_name;
+				if (file_exists($existing_file_path)) {
+					unlink($existing_file_path);
+				}
 	
+				if (!$this->upload->do_upload('photo')) {
+					// If upload fails, show error message
+					$error = array('error' => $this->upload->display_errors());
+					// Handle error as needed
+					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				} else {
+					// If upload succeeds, redirect or do further processing
+					$data = array('upload_data' => $this->upload->data());
+					// Handle success as needed
+					$this->session->set_flashdata('message', 'Document udpated successfully...!');
+						$this->session->set_flashdata('status', 'alert-success');
+				}
+
+			 redirect('student/documents', 'refresh');
+			}
+		} else {
+			redirect('student', 'refresh');
+		}
 	}
 
 	function changePassword()
 	{
-	    if ($this->session->userdata('logged_in')) {
+		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
 			$data['student_name'] = $session_data['student_name'];
 			$data['id'] = $session_data['id'];
 			$data['page_title'] = "Change password";
 			$data['menu'] = "changepassword";
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
-			
-	       // $this->form_validation->set_rules('oldPassword', 'Old Password', 'required');
-	        $this->form_validation->set_rules('oldpassword', 'Old Password', 'required');
+
+			// $this->form_validation->set_rules('oldPassword', 'Old Password', 'required');
+			$this->form_validation->set_rules('oldpassword', 'Old Password', 'required');
 			$this->form_validation->set_rules('newpassword', 'New Password', 'required');
 			$this->form_validation->set_rules('confirmpassword', 'Confirm Password', 'required|matches[newpassword]');
-	        
-	        if($this->form_validation->run() === FALSE){
-	        
-				$data['action'] = 'student/changePassword/'. $data['id'];
-	            $this->student_template->show('student/changepassword',$data);
-	        }else{
-	           // $oldPassword = $this->input->post('oldPassword');
-	            $oldpassword = $this->input->post('oldpassword');
+
+			if ($this->form_validation->run() === FALSE) {
+
+				$data['action'] = 'student/changePassword/' . $data['id'];
+				$this->student_template->show('student/changepassword', $data);
+			} else {
+				// $oldPassword = $this->input->post('oldPassword');
+				$oldpassword = $this->input->post('oldpassword');
 				$newpassword = $this->input->post('newpassword');
 				$confirmpassword = $this->input->post('confirmpassword');
-	            
-				if($oldpassword == $newpassword){
-    	            $this->session->set_flashdata('message', 'Old and New Password should not be same...!');
-    	            $this->session->set_flashdata('status', 'alert-warning');
-    	        }else{
-					$updateDetails = array('password' => md5($newpassword));
-					$result = $this->admin_model->changePassword($data['id'], $oldpassword , $updateDetails,'admissions');
-    	            if($result){
-    	              $this->session->set_flashdata('message', 'Password udpated successfully...!');
-    	              $this->session->set_flashdata('status', 'alert-success');
-    	            }else{
-    	              $this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
-    	              $this->session->set_flashdata('status', 'alert-warning');
-    	            }  
-    	         }
-	            redirect('/student/changePassword', 'refresh');  
-	       }
 
-	    }else{
-	      redirect('student', 'refresh');
-	    }
+				if ($oldpassword == $newpassword) {
+					$this->session->set_flashdata('message', 'Old and New Password should not be same...!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				} else {
+					$updateDetails = array('password' => md5($newpassword));
+					$result = $this->admin_model->changePassword($data['id'], $oldpassword, $updateDetails, 'admissions');
+					if ($result) {
+						$this->session->set_flashdata('message', 'Password udpated successfully...!');
+						$this->session->set_flashdata('status', 'alert-success');
+					} else {
+						$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+						$this->session->set_flashdata('status', 'alert-warning');
+					}
+				}
+				redirect('/student/changePassword', 'refresh');
+			}
+		} else {
+			redirect('student', 'refresh');
+		}
+	}
+
+	function updateeducationdetails($edu_id)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['student_name'] = $session_data['student_name'];
+			$data['id'] = $session_data['id'];
+			$data['page_title'] = 'Education Details';
+			$data['menu'] = 'educationdetails';
+
+			$this->form_validation->set_rules('education_level', 'Education Level', 'required');
+			$this->form_validation->set_rules('inst_type', 'Institution Type', 'required');
+			$this->form_validation->set_rules('inst_board', 'Board / University', 'required');
+			$this->form_validation->set_rules('inst_name', 'Institution Name', 'required');
+			$this->form_validation->set_rules('inst_address', 'Institution Address', 'required');
+			$this->form_validation->set_rules('inst_city', 'Institution City', 'required');
+			$this->form_validation->set_rules('inst_state', 'Institution State', 'required');
+			$this->form_validation->set_rules('inst_country', 'Institution Country', 'required');
+			$this->form_validation->set_rules('medium_of_instruction', 'Medium of Instruction', 'required');
+			$this->form_validation->set_rules('register_number', 'Register Number', 'required');
+			$this->form_validation->set_rules('year_of_passing', 'Year of Passing', 'required');
+
+			if ($this->form_validation->run() === FALSE) {
+				$eduDetails = $this->admin_model->getDetails('student_education_details', $edu_id)->row();
+				$data = array(
+					'education_level' => $eduDetails->education_level,
+					'inst_type' => $eduDetails->inst_type,
+					'inst_board' => $eduDetails->inst_board,
+					'inst_name' => $eduDetails->inst_name,
+					'inst_address' => $eduDetails->inst_address,
+					'inst_city' => $eduDetails->inst_city,
+					'inst_state' => $eduDetails->inst_state,
+					'inst_country' => $eduDetails->inst_country,
+					'medium_of_instruction' => $eduDetails->medium_of_instruction,
+					'register_number' => $eduDetails->register_number,
+					'year_of_passing' => $eduDetails->year_of_passing,
+					'aggregate' => $eduDetails->aggregate
+				);
+
+				// Insert subject fields
+				for ($i = 1; $i <= 6; $i++) {
+					$subject_name = $eduDetails->{"subject_" . $i . "_name"};
+					$min_marks = $eduDetails->{"subject_" . $i . "_min_marks"};
+					$max_marks = $eduDetails->{"subject_" . $i . "_max_marks"};
+					$obtained_marks = $eduDetails->{"subject_" . $i . "_obtained_marks"};
+
+					// Only add subject if name is not empty
+					// if (!empty($subject_name)) {
+					$data['subject_' . $i . '_name'] = $subject_name;
+					$data['subject_' . $i . '_min_marks'] = $min_marks;
+					$data['subject_' . $i . '_max_marks'] = $max_marks;
+					$data['subject_' . $i . '_obtained_marks'] = $obtained_marks;
+					// }
+				}
+				$data['action'] = 'student/updateeducationdetails/' . $edu_id;
+				$this->student_template->show('student/update_education_details', $data);
+			} else {
+
+				$updateDetails = array(
+					'student_id' => $data['id'],
+					'education_level' => $this->input->post('education_level'),
+					'inst_type' => $this->input->post('inst_type'),
+					'inst_board' => $this->input->post('inst_board'),
+					'inst_name' => $this->input->post('inst_name'),
+					'inst_address' => $this->input->post('inst_address'),
+					'inst_city' => $this->input->post('inst_city'),
+					'inst_state' => $this->input->post('inst_state'),
+					'inst_country' => $this->input->post('inst_country'),
+					'medium_of_instruction' => $this->input->post('medium_of_instruction'),
+					'register_number' => $this->input->post('register_number'),
+					'year_of_passing' => $this->input->post('year_of_passing'),
+					'aggregate' => $this->input->post('aggregate'),
+					'updated_on' => date('Y-m-d h:i:s'),
+					'updated_by' => $data['student_name']
+				);
+
+				// Insert subject fields
+				for ($i = 1; $i <= 6; $i++) {
+					$subject_name = $this->input->post('subject_' . $i . '_name');
+					$min_marks = $this->input->post('subject_' . $i . '_min_marks');
+					$max_marks = $this->input->post('subject_' . $i . '_max_marks');
+					$obtained_marks = $this->input->post('subject_' . $i . '_obtained_marks');
+
+					// Only add subject if name is not empty
+					if (!empty($subject_name)) {
+						$updateDetails['subject_' . $i . '_name'] = $subject_name;
+						$updateDetails['subject_' . $i . '_min_marks'] = $min_marks;
+						$updateDetails['subject_' . $i . '_max_marks'] = $max_marks;
+						$updateDetails['subject_' . $i . '_obtained_marks'] = $obtained_marks;
+					}
+				}
+				$result = $this->admin_model->updateDetails($edu_id, $updateDetails, 'student_education_details');
+
+
+				if ($result) {
+					$this->session->set_flashdata('message', 'Education Details Updated successfully...!');
+					$this->session->set_flashdata('status', 'alert-success');
+				} else {
+					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				}
+
+				redirect('student/educationdetails', 'refresh');
+			}
+		} else {
+			redirect('student', 'refresh');
+		}
 	}
 
 	function logout()
