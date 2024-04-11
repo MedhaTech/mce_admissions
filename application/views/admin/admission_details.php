@@ -10,7 +10,9 @@
                     </h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
-                           
+                        <li class="nav-item">
+                                <?php echo anchor('admin/admissions', '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Back ', 'class="btn btn-dark btn-sm"'); ?>
+                            </li>
                         </ul>
                     </div>
                 </div>

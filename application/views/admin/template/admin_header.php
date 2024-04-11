@@ -54,8 +54,20 @@
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
-            </ul>
+            </ul><br>
 
+            <?php echo form_open_multipart('admin/collect_payment', 'class="user"'); ?>
+            <!-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"> -->
+            <div class="input-group">
+              <input type="text" class="form-control bg-light border-0 small" placeholder="Enter usn number" aria-label="Search" id="usn" name="usn"  aria-describedby="basic-addon2" value="<?php echo (set_value('usn')) ? set_value('usn') : $usn; ?>">
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">
+                  <i class="fas fa-search fa-sm"></i>
+                </button>
+              </div>
+            </div>
+           <?php echo form_close(); ?>
+           
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item d-none d-sm-inline-block">

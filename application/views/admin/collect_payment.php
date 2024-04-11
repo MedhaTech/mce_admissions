@@ -17,7 +17,7 @@
       </div><!-- /.container-fluid -->
     </section>
 
-    <div class="row m-5">
+    <!-- <div class="row m-5">
       <div class="col-md-6 col-sm-12">  
        <div class="card shadow mb-4">
         <div class="card-header">
@@ -25,11 +25,11 @@
         </div>
         <div class="card-body">
         <?php echo form_open_multipart($action, 'class="user"'); ?>
-        <!-- <?php if ($this->session->flashdata('message')) { ?>
+        <?php if ($this->session->flashdata('message')) { ?>
                                     <div align="center" class="alert <?= $this->session->flashdata('status'); ?>" id="msg">
                                         <?php echo $this->session->flashdata('message') ?>
                                     </div>
-                                    <?php } ?> -->
+                                    <?php } ?>
             <div class="row">
               <div class="form-group col-md-10 col-sm-12">    
                 <input type="text" class="form-control" placeholder="Enter USN Number" id="usn" name="usn"  value="<?php echo (set_value('usn')) ? set_value('usn') : $usn; ?>">
@@ -43,7 +43,7 @@
        </div>
       </div>
     </div>      
-   </div>
+   </div> -->
     
 
   </div>
