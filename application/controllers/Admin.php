@@ -567,7 +567,11 @@ class Admin extends CI_Controller
 			if ($result) {
 				$result1 = $this->admin_model->insertDetails('fee_master', $insertDetails1);
 			}
-
+			$sid = $result;
+			$url = "./assets/students/$sid";
+			if (!file_exists($url)) {
+			    mkdir($url, 0777);
+			}
 
 
 			if ($result1) {
@@ -577,7 +581,7 @@ class Admin extends CI_Controller
 				$message = $this->load->view('email/registration', $email);
 				$ci = &get_instance();
 				$message = $ci->load->view('email/registration', $email, true);
-				// $this->aws_sdk->triggerEmail($enquiryDetails->email, 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!',$message);
+				$this->aws_sdk->triggerEmail($enquiryDetails->email, 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!',$message);
 				$this->aws_sdk->triggerEmail('admission@mcehassan.ac.in', 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!', $message);
 			} else {
 				echo "0";
@@ -1445,12 +1449,16 @@ class Admin extends CI_Controller
 					$message = $this->load->view('email/registration', $email);
 					$ci = &get_instance();
 					$message = $ci->load->view('email/registration', $email, true);
-					// $this->aws_sdk->triggerEmail($sender, 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!',$message);
+					$this->aws_sdk->triggerEmail($sender, 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!',$message);
 					$this->aws_sdk->triggerEmail('admission@mcehassan.ac.in', 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!', $message);
 				}
 
 
-
+				$sid = $result;
+				$url = "./assets/students/$sid";
+				if (!file_exists($url)) {
+					mkdir($url, 0777);
+				}
 
 				if ($result) {
 					$this->session->set_flashdata('message', 'Enquiry Details added successfully...!');
@@ -1607,8 +1615,10 @@ class Admin extends CI_Controller
 
 			$data['page_title'] = 'Collect Fee';
 			$data['menu'] = 'collectfee';
-			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
-			$data['departmentDetails'] = $this->admin_model->getDetails('departments', $id)->row();
+ 
+			// $data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+			// $data['departmentDetails'] = $this->admin_model->getDetails('departments', $id)->row();
+ 
 		
 		    $this->form_validation->set_rules('usn', 'USN', 'required');
 	        
@@ -1619,8 +1629,11 @@ class Admin extends CI_Controller
 	        }else{
 	            $usn = $this->input->post('usn');
 	        
-				$data['details'] = $this->admin_model->getDetailsbyfield($usn, 'usn' ,'admissions');
-				      $data['studentDetails'] = $this->admin_model->getDetailsbyfield($details, 'student_id' ,'fee_master');
+ 
+					$result = $this->admin_model->getDetailsbyfield( $usn, 'usn' ,'admissions');
+					$adm_id=
+					$this->admin_model->getDetailsbyfield( $adm_id, 'student_id' ,'fee_master');
+ 
     	            if($result){
     	              $this->session->set_flashdata('message', 'usn is found');
     	              $this->session->set_flashdata('status', 'alert-success');
