@@ -227,7 +227,7 @@
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label">Sports/Cultural Activities<span
                                                             class="text-danger">*</span></label>
-                                                    <?php $sports_options = array(" "=>"Select Sports","State"=>"State","National"=>"National","International"=>"International");
+                                                    <?php $sports_options = array(" "=>"Select Sports","State Level"=>"State Level","National Level"=>"National Level","International Level"=>"International Level","Not Applicable"=>"Not Applicable");
                                                             echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : 'sports', 'class="form-control form-control-sm" id="sports"'); 
                                                         ?>
                                                     <span class="text-danger"><?php echo form_error('sports'); ?></span>
