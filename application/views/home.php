@@ -311,15 +311,15 @@
                                             reputed Engineering college in the country. The college has earned “ISTE
                                             Award” as
                                             one of the Best Engineering Colleges in the Country, in the year 2007. </p>
-                                        <?php echo anchor('https://www.mcehassan.ac.in/home/Institute','Know More','class=" rbt-button  rn-button-style--2 btn_border btn-size-md btn-theme" target="_blank"'); ?>
+                                        <?php echo anchor('https://www.mcehassan.ac.in/home/Institute','Know More','class=" rbt-button  rn-button-style--2 mb-2 btn_border btn-size-md btn-theme" target="_blank"'); ?>
                                     </div>
 
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-12">
                                 <div class="thumbnail">
-                                    <iframe width="560" height="315"
-                                        src="https://www.youtube.com/embed/WoVaA_NXMCc?controls=0&rel=0" frameborder="0"
+                                    <iframe width="100%" height="315"
+                                        src="https://www.youtube.com/embed/rV1EZaFJlCk?controls=0&rel=0" frameborder="0"
                                         allowfullscreen></iframe>
                                 </div>
                             </div>
