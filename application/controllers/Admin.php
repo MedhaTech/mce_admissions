@@ -239,8 +239,8 @@ class Admin extends CI_Controller
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 
-			$data['feeCourses'] = array("" => "Select") + $this->getFeeCourses();
-			$data['languages'] = array("" => "Select") + $this->globals->languages();
+			// $data['feeCourses'] = array("" => "Select") + $this->getFeeCourses();
+			// $data['languages'] = array("" => "Select") + $this->globals->languages();
 
 			$data['enquiryDetails'] = $this->admin_model->getDetails('enquiries', $id)->row();
 			// var_dump($this->db->last_query());
@@ -500,20 +500,21 @@ class Admin extends CI_Controller
 			$app_number = $app_number + 1;
 			$strlen = strlen(($app_number));
 			if ($strlen == 1) {
-				$app_number = "000" . $app_number;
-			}
-			if ($strlen == 2) {
 				$app_number = "00" . $app_number;
 			}
-			if ($strlen == 3) {
+			if ($strlen == 2) {
 				$app_number = "0" . $app_number;
 			}
-			$app_no = date('y') . $app_number;
+			// if ($strlen == 3) {
+			// 	$app_number = "0" . $app_number;
+			// }
+			$app_no = date('Y') . $app_number;
 
 			$enquiryDetails = $this->admin_model->getDetails('enquiries', $id)->row();
 
 
-			$usn = $this->admin_model->getUsnNo($currentAcademicYear, $course)->row()->new_usn;
+			$usn = "";
+			// $usn = $this->admin_model->getUsnNo($currentAcademicYear, $course)->row()->new_usn;
 			// var_dump($this->db->last_query());
 			$insertDetails = array(
 				'flow' => '0',
@@ -550,7 +551,7 @@ class Admin extends CI_Controller
 				'academic_year' => $enquiryDetails->academic_year,
 				'student_name' => strtoupper($enquiryDetails->student_name),
 				'dept_id' => $course,
-				'year' => date("y"),
+				'year' => "I",
 				'total_university_fee' => $total_university_fee,
 				'total_tution_fee' => $total_tution_fee,
 				'total_college_fee' => $total_college_fee,
@@ -822,6 +823,28 @@ class Admin extends CI_Controller
 			redirect('admin/timeout');
 		}
 	}
+
+	public function enquiryAdmission($encryptAadhar)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$sess = $this->session->userdata('logged_in');
+			$data['id'] = $sess['id'];
+			$data['username'] = $sess['username'];
+			$data['role'] = $sess['role'];
+
+			// echo $encryptAadhar;
+			$aadhar = $this->encrypt->decode(base64_decode($encryptAadhar));
+
+			$details = $this->admin_model->fetchDetails1('id', 'aadhar', $aadhar, 'admissions')->row();
+
+			$encryptId = base64_encode($this->encrypt->encode($details->id));
+
+			redirect('admin/admissionDetails/'.$encryptId);
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
 
 	public function admissions($status = null)
 	{
@@ -1236,7 +1259,7 @@ class Admin extends CI_Controller
 		}
 	}
 
-	public function admissionDetails($id)
+	public function admissionDetails($encryptId)
 	{
 
 		if ($this->session->userdata('logged_in')) {
@@ -1246,6 +1269,8 @@ class Admin extends CI_Controller
 
 			$data['page_title'] = 'Admission Details';
 			$data['menu'] = 'admissions';
+ 
+			$id = $this->encrypt->decode(base64_decode($encryptId));
 
 			$data['admissionStatus'] = $this->globals->admissionStatus();
 			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
@@ -1519,7 +1544,7 @@ class Admin extends CI_Controller
 			$data['role'] = $sess['role'];
 			$data['page_title'] = 'Users';
 			$data['menu'] = 'users';
-			
+
 			$data['userTypes'] = $this->globals->userTypes();
 
 			$data['users'] = $this->admin_model->getDetails('users', '')->result();

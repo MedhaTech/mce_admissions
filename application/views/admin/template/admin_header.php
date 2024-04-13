@@ -164,7 +164,7 @@
                             </a>
                         </li>
                         <li class="nav-header">ADMISSIONS</li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-table"></i>
                                 <p>
@@ -223,6 +223,15 @@
                                 </li>
 
                             </ul>
+                        </li> -->
+                        <li class="nav-item ">
+                            <a href="<?php echo base_url(); ?>admin/admissions"
+                                class="nav-link <?= $menu_active = ($menu == "admissions") ? 'active' : ''; ?>">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    All Admissions
+                                </p>
+                            </a>
                         </li>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/newAdmission"

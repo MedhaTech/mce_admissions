@@ -75,19 +75,7 @@
                             </div>
                             <div class="col-md-8 col-sm-12">
                                 <div class="card p-4 bg-gray border">
-                                    <!-- <?php if($this->session->flashdata('status')) :?> -->
 
-                                    <!-- SUCCESS -->
-                                    <!-- <div class="row">
-                                        <div class="col-md-12 text-center">
-                                            <i class="far fa-check-circle fa-5x text-success"></i>
-                                            <h6 class="text-success">Thanks for submission</h6>
-                                        </div>
-                                    </div> -->
-                                    <!-- END SUCCESS -->
-                                    <!-- <p><?php echo $this->session->flashdata('status'); ?></p> -->
-
-                                    <!-- <?php endif; ?> -->
                                     <?php if ($this->session->flashdata('message')) { ?>
                                     <div class="alert <?= $this->session->flashdata('status'); ?>" id="msg">
                                         <?php echo $this->session->flashdata('message') ?>

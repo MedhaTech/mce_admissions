@@ -2,8 +2,8 @@
   <div class="content-wrapper">
       <section class="content-header">
           <div class="container-fluid">
-              <div class="card">
-                  <div class="card-header bg-gray-light">
+              <div class="card card-dark">
+                  <div class="card-header">
                       <div class="card-title">
                           <h6 class="m-0"><?= $page_title; ?></h6>
                       </div>

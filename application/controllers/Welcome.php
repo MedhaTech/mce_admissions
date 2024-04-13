@@ -108,7 +108,7 @@ class Welcome extends CI_Controller {
 					);	
 					$result = $this->admin_model->insertDetails('enquiries', $insertDetails);
 					if ($result) {
-						$this->session->set_flashdata('message', '<h6>Thanks for submission</h6>');
+						$this->session->set_flashdata('message', "<h6>Thanks you! We've received your enquiry details. <br/> For any further inquiries, please contact admission@mcehassan.ac.in</h6>");
 						$this->session->set_flashdata('status', 'alert-success');
 					} else {
 						$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');

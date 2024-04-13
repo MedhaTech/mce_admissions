@@ -3,8 +3,8 @@
       <section class="content-header">
           <div class="container-fluid">
 
-              <div class="card">
-                  <div class="card-header bg-gray-light">
+              <div class="card card-dark">
+                  <div class="card-header">
                       <h6 class="m-0"><?= $page_title; ?></h6>
                   </div>
                   <div class="card-body">

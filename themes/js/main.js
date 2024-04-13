@@ -22,6 +22,8 @@ Index All JS
 (function ($) {
     'use strict';
 
+    $("#msg").fadeOut(5000);
+    
     /*-------------------- 
         01. Wow Active 
     --------------------*/
