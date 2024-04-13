@@ -3,7 +3,14 @@
 
         <!-- Start Header -->
         <!-- Start Header -->
+        <div class="bg_color--5 m-2">
+            <marquee behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();">
+                <p class="small text-danger">To secure a seat for B.E. Admissions 2024-25 under the Management Quota,
+                    completing the below inquiry form is a mandatory.</p>
+            </marquee>
+        </div>
         <header class="header-area formobile-menu header-not-transparent black-logo-version small-logo color-black">
+
             <div class="header-wrapper" id="header-wrapper">
                 <div class="header-left">
                     <div class="logo">
@@ -17,6 +24,7 @@
                         <!-- Start Mainmanu Nav -->
                         <ul class="mainmenu nav nav-pills onepagenav">
                             <li class="nav-item"><a class="nav-link" href="#programmes">Programmes</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#fees">Fees</a></li>
                             <li class="nav-item"><a class="nav-link" href="#eligibility">Eligibility</a></li>
                             <li class="nav-item"><a class="nav-link" href="#apply">How to Apply</a></li>
                             <!-- <li class="nav-item"><a class="nav-link" href="#testimonial">Testimonial</a></li> -->
@@ -45,8 +53,8 @@
                     <!-- End Close Menu  -->
                 </div>
             </div>
-        </header>
 
+        </header>
         <main class="page-wrapper">
 
 
@@ -62,7 +70,7 @@
                                 <div class="inner">
                                     <h2 class="text-white">Take the first step towards success: <span
                                             class="text-warning">admissions are currently open in MCE.</span></h2>
-                                    <span class="text-white">Choose From 20+ Specializations</span>
+                                    <!-- <span class="text-white">Choose From 20+ Specializations</span> -->
                                 </div>
                             </div>
                             <div class="col-md-8 col-sm-12">
@@ -91,7 +99,9 @@
                                     <div class="row">
                                         <div class="col-md-12">
 
-                                            <h5 class="text-danger">B.E Admissions Open for 2024-25</h5>
+                                            <h5 class="text-danger">B.E Admissions Open for 2024-25 <span
+                                                    class="h6 text-primary">(for management quota seats fill
+                                                    details carefully)</span></h5>
                                             <div class="row">
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label">Student Full Name (As per SSLC)</label>
@@ -293,7 +303,7 @@
 
 
             <!-- Start About Area  -->
-            <div class="about-area about-with-experience-area pb--120 pt--120">
+            <div class="about-area about-with-experience-area pb--120 pt--120" id="about">
                 <div class="about-wrapper">
                     <div class="container">
                         <div class="row row--35 align-items-center">
@@ -518,7 +528,8 @@
                                 <div class="inner">
                                     <p>B.E</p>
                                     <h4><a href="https://www.mcehassan.ac.in/home/Overview/Artificial-Intelligence-and-Machine-Learning"
-                                            target="_blank">Artificial Intelligence and Machine Learning</a></h4>
+                                            target="_blank">Computer Science and Engineering (Artificial Intelligence
+                                            and Machine Learning)</a></h4>
                                     <div class="portfolio-button">
                                         <a class="rn-btn"
                                             href="https://www.mcehassan.ac.in/home/Overview/Artificial-Intelligence-and-Machine-Learning"
@@ -539,7 +550,8 @@
                                 <div class="inner">
                                     <p>B.E</p>
                                     <h4><a href="https://www.mcehassan.ac.in/home/Overview/Computer-Science-and-Business-Systems"
-                                            target="_blank">Computer Science and Business Systems</a></h4>
+                                            target="_blank">Computer Science and Business Systems (TCS Sponsored
+                                            Program)</a></h4>
                                     <div class="portfolio-button">
                                         <a class="rn-btn"
                                             href="https://www.mcehassan.ac.in/home/Overview/Computer-Science-and-Business-Systems"
@@ -557,8 +569,31 @@
             </div>
             <!-- End Portfolio Area  -->
 
+
             <!-- Start Accordion Area  -->
-            <div class="rn-accordion-area rn-section-gap" id="eligibility">
+            <div class="rn-accordion-area rn-section-gap" id="fees">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="section-title service-style--3 text-center mb--20 mb_sm--0 md_md--0">
+                                <h2 class="title">Fee Structure</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <p>The management has decided the fee structure for 1st year B.E. for the year 2024-25 : <a
+                                    href="assets/FeeStructure2024.pdf" target="_blank" class="text-danger">Click
+                                    Here to know more</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Accordion Area  -->
+
+
+            <!-- Start Accordion Area  -->
+            <div class="rn-accordion-area rn-section-gap bg_color--5" id="eligibility">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-12">
@@ -568,15 +603,19 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12">
-                            <ul class="h5 text-center">
-                                <li>10+2 or equivalent (Central, State and Recognised International Boards)</li>
-                                <li>MCE Selection Process + Personal Interview </li>
-                            </ul>
+                        <div class="col-lg-12 text-center">
+                            <p>10+2 or equivalent (Central, State and Recognised International Boards)</p>
+                            <p>MCE Selection Process + Personal Interview </p>
                         </div>
                     </div>
                 </div>
-                <div class="container mt--60">
+            </div>
+            <!-- End Accordion Area  -->
+
+
+            <!-- Start Accordion Area  -->
+            <div class="rn-accordion-area rn-section-gap" id="apply">
+                <div class="container">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="section-title service-style--3 text-center mb--20 mb_sm--0 md_md--0">
@@ -639,7 +678,6 @@
             </div>
             <!-- End Accordion Area  -->
 
-
             <!-- Start Contact Address Area  -->
             <div class="rn-contact-address-area rn-section-gap bg_color--5" id="contact">
                 <div class="container">
@@ -652,9 +690,9 @@
                         <!-- Start Single Address  -->
                         <div class="col-lg-4 col-md-6 col-sm-6 col-12 mt--40">
                             <div class="rn-address">
-                                <div class="icon">
+                                <!-- <div class="icon">
                                     <i class="fas fa-phone"></i>
-                                </div>
+                                </div> -->
                                 <div class="inner">
                                     <h4 class="title">Phone Number</h4>
                                     <p><a href="tel:+08172245317">08172-245317</a></p>
@@ -667,9 +705,9 @@
                         <!-- Start Single Address  -->
                         <div class="col-lg-4 col-md-6 col-sm-6 col-12 mt--40">
                             <div class="rn-address">
-                                <div class="icon">
+                                <!-- <div class="icon">
                                     <i class="fas fa-envelope"></i>
-                                </div>
+                                </div> -->
                                 <div class="inner">
                                     <h4 class="title">Email Address</h4>
                                     <p><a href="mailto:admissions@mcehassan.ac.in">admissions@mcehassan.ac.in</a></p>
@@ -683,9 +721,9 @@
                         <!-- Start Single Address  -->
                         <div class="col-lg-4 col-md-6 col-sm-6 col-12 mt--40">
                             <div class="rn-address">
-                                <div class="icon">
+                                <!-- <div class="icon">
                                     <i class="fas fa-map-marker-alt"></i>
-                                </div>
+                                </div> -->
                                 <div class="inner">
                                     <h4 class="title">Location</h4>
                                     <p>No 21, Salagame Rd, Rangoli Halla, <br /> Hassan, Karnataka 573202</p>

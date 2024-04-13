@@ -758,7 +758,8 @@ class Admin extends CI_Controller
 					'total_tution_fee' => $this->input->post('total_tution_fee'),
 					'total_college_fee' => $this->input->post('total_college_fee'),
 					'skill_development_fee' => $this->input->post('skill_development_fee'),
-					'corpus_fund' => $this->input->post('corpus_fund')
+					'corpus_fund' => $this->input->post('corpus_fund'),
+					'final_fee' => $this->input->post('final_fee'),
 				);
 
 				$result = $this->admin_model->updateDetails($id, $updateDetails, 'fee_structure');
