@@ -1510,6 +1510,26 @@ class Admin extends CI_Controller
 		}
 	}
 
+	public function users()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$sess = $this->session->userdata('logged_in');
+			$data['id'] = $sess['id'];
+			$data['username'] = $sess['username'];
+			$data['role'] = $sess['role'];
+			$data['page_title'] = 'Users';
+			$data['menu'] = 'users';
+			
+			$data['userTypes'] = $this->globals->userTypes();
+
+			$data['users'] = $this->admin_model->getDetails('users', '')->result();
+
+			$this->admin_template->show('admin/users', $data);
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
 	function changepassword()
 	{
 		if ($this->session->userdata('logged_in')) {
