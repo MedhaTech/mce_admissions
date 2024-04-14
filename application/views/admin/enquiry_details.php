@@ -48,8 +48,9 @@
                               <?php } ?>
                               <?php  if ($enquiryDetails->status == 6) { ?>
                               <?php 
-                                $encryptAadhar = base64_encode($this->encrypt->encode($enquiryDetails->adhaar));
-                                echo anchor('admin/admissionDetails/'.$encryptAadhar, '<span class="text">Admitted Details</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
+                                $encryptAadhar = base64_encode($enquiryDetails->adhaar);
+                                // $encryptAadhar = base64_encode($this->encrypt->encode($enquiryDetails->adhaar));
+                                echo anchor('admin/enquiryAdmission/'.$encryptAadhar, '<span class="text">Admitted Details</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
                               <?php } ?>
 
                               <?php echo anchor('admin/enquiries', '<span class="icon"><i class="fas fa-arrow-left"></i></span> <span class="text">Back to List</span>', 'class="btn btn-secondary btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>

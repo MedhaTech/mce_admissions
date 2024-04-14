@@ -833,11 +833,13 @@ class Admin extends CI_Controller
 			$data['role'] = $sess['role'];
 
 			// echo $encryptAadhar;
-			$aadhar = $this->encrypt->decode(base64_decode($encryptAadhar));
+			$aadhar = base64_decode($encryptAadhar);
+			// $aadhar = $this->encrypt->decode(base64_decode($encryptAadhar));
 
 			$details = $this->admin_model->fetchDetails1('id', 'aadhar', $aadhar, 'admissions')->row();
 
-			$encryptId = base64_encode($this->encrypt->encode($details->id));
+			$encryptId = base64_encode($details->id);
+			// $encryptId = base64_encode($this->encrypt->encode($details->id));
 
 			redirect('admin/admissionDetails/'.$encryptId);
 		} else {
@@ -1270,7 +1272,8 @@ class Admin extends CI_Controller
 			$data['page_title'] = 'Admission Details';
 			$data['menu'] = 'admissions';
  
-			$id = $this->encrypt->decode(base64_decode($encryptId));
+			// $id = $this->encrypt->decode(base64_decode($encryptId));
+			$id = base64_decode($encryptId);
 
 			$data['admissionStatus'] = $this->globals->admissionStatus();
 			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();

@@ -27,7 +27,8 @@
                                 $i = 1;
                                 foreach ($admissions as $admissions1) {
 
-                                    $encryptId = base64_encode($this->encrypt->encode($admissions1->id));
+                                    // $encryptId = base64_encode($this->encrypt->encode($admissions1->id));
+                                    $encryptId = base64_encode($admissions1->id);
 
                                     $result_array = array(
                                         $i++,
