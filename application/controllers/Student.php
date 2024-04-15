@@ -539,7 +539,7 @@ class Student extends CI_Controller
 					}
 				}
 				$data['educations_details'] = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'student_education_details')->result();
-				$data['action'] = 'student/updateeducationdetails/';
+				$data['action'] = 'student/educationdetails/';
 
 				$this->student_template->show('student/education_details', $data);
 			} else {
@@ -643,6 +643,10 @@ class Student extends CI_Controller
 		
 					// Remove . and .. from the list
 					$data['files'] = array_diff($files, array('.', '..'));
+				}
+				else
+				{
+					$data['files'] = array();
 				}
 				$data['action'] = 'student/documents';
 				$this->student_template->show('student/documents', $data);
