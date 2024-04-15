@@ -2,8 +2,8 @@
   <div class="content-wrapper">
       <section class="content-header">
           <div class="container-fluid">
-              <div class="card">
-                  <div class="card-header bg-gray-light">
+              <div class="card card-dark">
+                  <div class="card-header">
                       <div class="card-title">
                           <h6 class="m-0"><?= $page_title; ?></h6>
                       </div>
@@ -26,12 +26,23 @@
 								$this->table->set_template($table_setup);
 								$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Status', 'Reg. Date');
 								$this->table->set_heading($print_fields);
-
+                                
 								$i = 1;
 								foreach ($enquiries as $enquiries1) {
+                                    
+                                    // $cnt_number = $enquiries1->id;
+                                    // $strlen = strlen(($cnt_number));
+                                    // if($strlen == 1){  $cnt_number = "202400".$cnt_number; }
+                                    // if($strlen == 2){  $cnt_number = "20240".$cnt_number; }
+                                    // // if($strlen == 3){  $cnt_number = "00".$cnt_number; }
+                                    // if($strlen == 4){  $cnt_number = "0".$cnt_number; }
+                                    
+                                    $app_no = $tag.$cnt_number;
+                
 									$result_array = array(
 										$i++,
-										//   $enquiries1->academic_year,
+                                        // anchor('admin/enquiryDetails/' . $enquiries1->id, $app_no),
+                                        //   $enquiries1->academic_year,
 										anchor('admin/enquiryDetails/' . $enquiries1->id, $enquiries1->student_name),
 										$enquiries1->mobile,
 										$enquiries1->course,

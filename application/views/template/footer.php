@@ -56,6 +56,74 @@ function enable() {
         submit.style.background = 'grey';
     }
 }
+
+$(function() {
+    $("#mobile").keypress(function(e) {
+        let myArray = [];
+        for (i = 48; i < 58; i++) myArray.push(i);
+        if (!(myArray.indexOf(e.which) >= 0)) e.preventDefault();
+    });
+    $("#par_mobile").keypress(function(e) {
+        let myArray = [];
+        for (i = 48; i < 58; i++) myArray.push(i);
+        if (!(myArray.indexOf(e.which) >= 0)) e.preventDefault();
+    });
+    $("#adhaar").keypress(function(e) {
+        let myArray = [];
+        for (i = 48; i < 58; i++) myArray.push(i);
+        if (!(myArray.indexOf(e.which) >= 0)) e.preventDefault();
+    });
+    $("#sslc_grade").keydown(function(e) {
+        var k = e.keyCode || e.which;
+        var ok = k >= 65 && k <= 90 || // A-Z
+            k >= 96 && k <= 105 || // a-z
+            k >= 35 && k <= 40 || // arrows
+            k == 9 || //tab
+            k == 46 || //del
+            k == 8 || // backspaces
+            k == 190 || //dot
+            (!e.shiftKey && k >= 48 && k <= 57); // only 0-9 (ignore SHIFT options)
+
+        if (!ok || (e.ctrlKey && e.altKey)) {
+            e.preventDefault();
+        }
+    });
+
+    $("#puc1_grade").keydown(function(e) {
+        var k = e.keyCode || e.which;
+        var ok = k >= 65 && k <= 90 || // A-Z
+            k >= 96 && k <= 105 || // a-z
+            k >= 35 && k <= 40 || // arrows
+            k == 9 || //tab
+            k == 46 || //del
+            k == 8 || // backspaces
+            k == 190 || //dot
+            (!e.shiftKey && k >= 48 && k <= 57); // only 0-9 (ignore SHIFT options)
+
+        if (!ok || (e.ctrlKey && e.altKey)) {
+            e.preventDefault();
+        }
+    });
+
+    $("#puc2_grade").keydown(function(e) {
+        var k = e.keyCode || e.which;
+        var ok = k >= 65 && k <= 90 || // A-Z
+            k >= 96 && k <= 105 || // a-z
+            k >= 35 && k <= 40 || // arrows
+            k == 9 || //tab
+            k == 46 || //del
+            k == 8 || // backspaces
+            k == 190 || //dot
+            (!e.shiftKey && k >= 48 && k <= 57); // only 0-9 (ignore SHIFT options)
+
+        if (!ok || (e.ctrlKey && e.altKey)) {
+            e.preventDefault();
+        }
+    });
+
+
+
+});
  </script>
 
  </html>

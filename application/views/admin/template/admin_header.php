@@ -59,15 +59,17 @@
             <?php echo form_open_multipart('admin/collect_payment', 'class="user"'); ?>
             <!-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"> -->
             <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Enter usn number" aria-label="Search" id="usn" name="usn"  aria-describedby="basic-addon2" value="<?php echo (set_value('usn')) ? set_value('usn') : $usn; ?>">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="submit">
-                  <i class="fas fa-search fa-sm"></i>
-                </button>
-              </div>
+                <input type="text" class="form-control bg-light border-0 small" placeholder="Enter usn number"
+                    aria-label="Search" id="usn" name="usn" aria-describedby="basic-addon2"
+                    value="<?php echo (set_value('usn')) ? set_value('usn') : $usn; ?>">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search fa-sm"></i>
+                    </button>
+                </div>
             </div>
-           <?php echo form_close(); ?>
-           
+            <?php echo form_close(); ?>
+
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item d-none d-sm-inline-block">
@@ -142,7 +144,7 @@
                             </ul>
                         </li> -->
                         <li class="nav-item ">
-                            <a href="<?php echo base_url(); ?>admin/Enquiries"
+                            <a href="<?php echo base_url(); ?>admin/enquiries"
                                 class="nav-link <?= $menu_active = ($menu == "enquiries") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
@@ -162,7 +164,7 @@
                             </a>
                         </li>
                         <li class="nav-header">ADMISSIONS</li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-table"></i>
                                 <p>
@@ -221,6 +223,15 @@
                                 </li>
 
                             </ul>
+                        </li> -->
+                        <li class="nav-item ">
+                            <a href="<?php echo base_url(); ?>admin/admissions"
+                                class="nav-link <?= $menu_active = ($menu == "admissions") ? 'active' : ''; ?>">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    All Admissions
+                                </p>
+                            </a>
                         </li>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/newAdmission"
@@ -260,6 +271,13 @@
                                     Fee Structure
 
                                 </p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a href="<?php echo base_url(); ?>admin/users"
+                                class="nav-link <?= $menu_active = ($menu == "users") ? 'active' : ''; ?>">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>Users</p>
                             </a>
                         </li>
                         <li class="nav-item ">

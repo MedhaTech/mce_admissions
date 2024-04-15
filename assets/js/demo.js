@@ -10,7 +10,7 @@
 (function ($) {
   'use strict'
 
-
+  $("#msg").fadeOut(5000);
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1)

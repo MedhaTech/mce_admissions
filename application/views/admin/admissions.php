@@ -21,16 +21,19 @@
                             if (count($admissions)) {
                                 $table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
                                 $this->table->set_template($table_setup);
-                                $print_fields = array('S.NO','Usn','Applicant Name', 'Mobile', 'Course', 'Quota', 'Sub Quota','Status');
+                                $print_fields = array('S.NO','App No','Applicant Name', 'Mobile', 'Course', 'Quota', 'Sub Quota','Status');
                                 $this->table->set_heading($print_fields);
 
                                 $i = 1;
                                 foreach ($admissions as $admissions1) {
+
+                                    // $encryptId = base64_encode($this->encrypt->encode($admissions1->id));
+                                    $encryptId = base64_encode($admissions1->id);
+
                                     $result_array = array(
                                         $i++,
                                         //   $admissions1->app_no,
-
-                                        anchor('admin/admissionDetails/' . $admissions1->id, $admissions1->usn),
+                                        anchor('admin/admissionDetails/'.$encryptId, $admissions1->app_no),
                                         $admissions1->student_name,
                                         $admissions1->mobile,
 

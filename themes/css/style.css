@@ -560,6 +560,10 @@ h6,
   font-size: 16px;
 }
 
+.font-13 {
+  font-size: 13px !important;
+}
+
 @media only screen and (min-width: 768px) and (max-width: 991px) {
 
   h1,

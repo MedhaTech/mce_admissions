@@ -3,7 +3,14 @@
 
         <!-- Start Header -->
         <!-- Start Header -->
+        <div class="bg_color--5 m-2">
+            <marquee behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();">
+                <p class="small text-danger">To secure a seat for B.E. Admissions 2024-25 under the Management Quota,
+                    completing the below inquiry form is a mandatory.</p>
+            </marquee>
+        </div>
         <header class="header-area formobile-menu header-not-transparent black-logo-version small-logo color-black">
+
             <div class="header-wrapper" id="header-wrapper">
                 <div class="header-left">
                     <div class="logo">
@@ -17,6 +24,7 @@
                         <!-- Start Mainmanu Nav -->
                         <ul class="mainmenu nav nav-pills onepagenav">
                             <li class="nav-item"><a class="nav-link" href="#programmes">Programmes</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#fees">Fees</a></li>
                             <li class="nav-item"><a class="nav-link" href="#eligibility">Eligibility</a></li>
                             <li class="nav-item"><a class="nav-link" href="#apply">How to Apply</a></li>
                             <!-- <li class="nav-item"><a class="nav-link" href="#testimonial">Testimonial</a></li> -->
@@ -45,8 +53,8 @@
                     <!-- End Close Menu  -->
                 </div>
             </div>
-        </header>
 
+        </header>
         <main class="page-wrapper">
 
 
@@ -62,24 +70,12 @@
                                 <div class="inner">
                                     <h2 class="text-white">Take the first step towards success: <span
                                             class="text-warning">admissions are currently open in MCE.</span></h2>
-                                    <span class="text-white">Choose From 20+ Specializations</span>
+                                    <!-- <span class="text-white">Choose From 20+ Specializations</span> -->
                                 </div>
                             </div>
                             <div class="col-md-8 col-sm-12">
                                 <div class="card p-4 bg-gray border">
-                                    <!-- <?php if($this->session->flashdata('status')) :?> -->
 
-                                    <!-- SUCCESS -->
-                                    <!-- <div class="row">
-                                        <div class="col-md-12 text-center">
-                                            <i class="far fa-check-circle fa-5x text-success"></i>
-                                            <h6 class="text-success">Thanks for submission</h6>
-                                        </div>
-                                    </div> -->
-                                    <!-- END SUCCESS -->
-                                    <!-- <p><?php echo $this->session->flashdata('status'); ?></p> -->
-
-                                    <!-- <?php endif; ?> -->
                                     <?php if ($this->session->flashdata('message')) { ?>
                                     <div class="alert <?= $this->session->flashdata('status'); ?>" id="msg">
                                         <?php echo $this->session->flashdata('message') ?>
@@ -91,25 +87,30 @@
                                     <div class="row">
                                         <div class="col-md-12">
 
-                                            <h5 class="text-danger">B.E Admissions Open for 2024-25</h5>
+                                            <h5 class="text-danger">B.E Admissions Open for 2024-25 <span
+                                                    class="h6 text-primary">(for management quota seats fill
+                                                    details carefully)</span></h5>
                                             <div class="row">
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="label">Student Full Name (As per SSLC)</label>
+                                                    <label class="label font-13">Student Full Name (As per SSLC)<span
+                                                            class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm" id="name"
                                                         value="<?php echo (set_value('name')) ? set_value('name') : $name; ?>"
                                                         name="name" placeholder="Enter Student Name">
                                                     <span class="text-danger"><?php echo form_error('name'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="label">Student Mobile<span
+                                                    <label class="label font-13">Student Mobile<span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm" id="mobile"
+                                                        maxlength="10" minlength="10"
                                                         value="<?php echo (set_value('mobile')) ? set_value('mobile') : $mobile; ?>"
                                                         name="mobile" placeholder="Enter Student Mobile">
                                                     <span class="text-danger"><?php echo form_error('mobile'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="label">Email</label>
+                                                    <label class="label font-13">Email<span
+                                                            class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm" id="email"
                                                         value="<?php echo (set_value('email')) ? set_value('email') : $email; ?>"
                                                         name="email" placeholder="Enter Email Id">
@@ -118,7 +119,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="label"> Parent/Guardian Name<span
+                                                    <label class="label font-13"> Parent/Guardian Name<span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm"
                                                         id="par_name"
@@ -128,17 +129,17 @@
                                                         class="text-danger"><?php echo form_error('par_name'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="label"> Parent/Guardian Mobile<span
+                                                    <label class="label font-13"> Parent/Guardian Mobile<span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm"
-                                                        id="par_mobile"
+                                                        id="par_mobile" maxlength="10" minlength="10"
                                                         value="<?php echo (set_value('par_mobile')) ? set_value('par_mobile') : $par_mobile; ?>"
                                                         name="par_mobile" placeholder="Enter Parent/Guardian Mobile">
                                                     <span
                                                         class="text-danger"><?php echo form_error('par_mobile'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="label"> Parent/Guardian Email</label>
+                                                    <label class="label font-13"> Parent/Guardian Email</label>
                                                     <input type="text" class="form-control form-control-sm"
                                                         id="par_email"
                                                         value="<?php echo (set_value('par_email')) ? set_value('par_email') : $par_email; ?>"
@@ -149,7 +150,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="label">SSLC Percentage/Grade<span
+                                                    <label class="label font-13">SSLC Percentage/Grade<span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm"
                                                         id="sslc_grade"
@@ -159,7 +160,7 @@
                                                         class="text-danger"><?php echo form_error('sslc_grade'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="label">PUC-I(10+1) Percentage/Grade<span
+                                                    <label class="label font-13">PUC-I(10+1) Percentage/Grade<span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm"
                                                         id="puc1_grade"
@@ -170,7 +171,7 @@
                                                         class="text-danger"><?php echo form_error('puc1_grade'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="label">PUC-II(10+2) Percentage/Grade</label>
+                                                    <label class="label font-13">PUC-II(10+2) Percentage/Grade</label>
                                                     <input type="text" class="form-control form-control-sm"
                                                         id="puc2_grade"
                                                         value="<?php echo (set_value('puc2_grade')) ? set_value('puc2_grade') : $puc2_grade; ?>"
@@ -182,7 +183,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="course">Branch Preference-I<span
+                                                    <label class="label font-13">Branch Preference-I<span
                                                             class="text-danger">*</span></label>
                                                     <?php 
                                                             echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control form-control-sm" id="course"'); 
@@ -190,7 +191,7 @@
                                                     <span class="text-danger"><?php echo form_error('course'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="course">Branch Preference-II<span
+                                                    <label class="label font-13">Branch Preference-II<span
                                                             class="text-danger">*</span></label>
                                                     <?php 
                                                             echo form_dropdown('course1', $course_options, (set_value('course1')) ? set_value('course1') : $course1, 'class="form-control form-control-sm" id="course1"'); 
@@ -199,7 +200,7 @@
                                                         class="text-danger"><?php echo form_error('course1'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="course">Branch Preference-III<span
+                                                    <label class="label font-13">Branch Preference-III<span
                                                             class="text-danger">*</span></label>
                                                     <?php 
                                                             echo form_dropdown('course2', $course_options, (set_value('course2')) ? set_value('course2') : $course2, 'class="form-control form-control-sm" id="course2"'); 
@@ -211,37 +212,40 @@
 
                                             <div class="row">
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="state">State<span class="text-danger">*</span></label>
+                                                    <label class="label font-13">State<span
+                                                            class="text-danger">*</span></label>
                                                     <?php 
                                                             echo form_dropdown('state', $states, (set_value('state')) ? set_value('state') : $state, 'class="form-control form-control-sm" id="state"'); 
                                                         ?>
                                                     <span class="text-danger"><?php echo form_error('state'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="label">City<span class="text-danger">*</span></label>
+                                                    <label class="label font-13">City<span
+                                                            class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm" id="city"
                                                         value="<?php echo (set_value('city')) ? set_value('city') : $city; ?>"
                                                         name="city" placeholder="Enter City">
                                                     <span class="text-danger"><?php echo form_error('city'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="label">Sports/Cultural Activities<span
+                                                    <label class="label font-13">Sports/Cultural Activities<span
                                                             class="text-danger">*</span></label>
-                                                    <?php $sports_options = array(" "=>"Select Sports","State"=>"State","National"=>"National","International"=>"International");
+                                                    <?php $sports_options = array(" "=>"Select Sports","State Level"=>"State Level","National Level"=>"National Level","International Level"=>"International Level","Not Applicable"=>"Not Applicable");
                                                             echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : 'sports', 'class="form-control form-control-sm" id="sports"'); 
                                                         ?>
                                                     <span class="text-danger"><?php echo form_error('sports'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="label">Aadhar Number<span
+                                                    <label class="label font-13">Aadhar Number<span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm" id="adhaar"
+                                                        maxlength="12" minlength="12"
                                                         value="<?php echo (set_value('adhaar')) ? set_value('adhaar') : $adhaar; ?>"
                                                         name="adhaar" placeholder="Enter Aadhar No">
                                                     <span class="text-danger"><?php echo form_error('adhaar'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="label">Gender<span
+                                                    <label class="label font-13">Gender<span
                                                             class="text-danger">*</span></label>
                                                     <?php $gender_options = array(" "=>"Select Gender","Male"=>"Male","Female"=>"Female","Not Prefer to Say"=>"Not Prefer to Say");
                                                             echo form_dropdown('gender', $gender_options, (set_value('gender')) ? set_value('gender') : 'gender', 'class="form-control form-control-sm" id="gender"'); 
@@ -249,7 +253,7 @@
                                                     <span class="text-danger"><?php echo form_error('gender'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="category">Category<span
+                                                    <label class="label font-13">Category<span
                                                             class="text-danger">*</span></label>
                                                     <?php
                                                              echo form_dropdown('category', $type_options, (set_value('category')) ? set_value('category') : $category, 'class="form-control form-control-sm" id="category"'); 
@@ -293,7 +297,7 @@
 
 
             <!-- Start About Area  -->
-            <div class="about-area about-with-experience-area pb--120 pt--120">
+            <div class="about-area about-with-experience-area pb--120 pt--120" id="about">
                 <div class="about-wrapper">
                     <div class="container">
                         <div class="row row--35 align-items-center">
@@ -311,15 +315,15 @@
                                             reputed Engineering college in the country. The college has earned “ISTE
                                             Award” as
                                             one of the Best Engineering Colleges in the Country, in the year 2007. </p>
-                                        <?php echo anchor('https://www.mcehassan.ac.in/home/Institute','Know More','class=" rbt-button  rn-button-style--2 btn_border btn-size-md btn-theme" target="_blank"'); ?>
+                                        <?php echo anchor('https://www.mcehassan.ac.in/home/Institute','Know More','class=" rbt-button  rn-button-style--2 mb-2 btn_border btn-size-md btn-theme" target="_blank"'); ?>
                                     </div>
 
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-12">
                                 <div class="thumbnail">
-                                    <iframe width="560" height="315"
-                                        src="https://www.youtube.com/embed/WoVaA_NXMCc?controls=0&rel=0" frameborder="0"
+                                    <iframe width="100%" height="315"
+                                        src="https://www.youtube.com/embed/rV1EZaFJlCk?controls=0&rel=0" frameborder="0"
                                         allowfullscreen></iframe>
                                 </div>
                             </div>
@@ -518,7 +522,8 @@
                                 <div class="inner">
                                     <p>B.E</p>
                                     <h4><a href="https://www.mcehassan.ac.in/home/Overview/Artificial-Intelligence-and-Machine-Learning"
-                                            target="_blank">Artificial Intelligence and Machine Learning</a></h4>
+                                            target="_blank">Computer Science and Engineering (Artificial Intelligence
+                                            and Machine Learning)</a></h4>
                                     <div class="portfolio-button">
                                         <a class="rn-btn"
                                             href="https://www.mcehassan.ac.in/home/Overview/Artificial-Intelligence-and-Machine-Learning"
@@ -539,7 +544,8 @@
                                 <div class="inner">
                                     <p>B.E</p>
                                     <h4><a href="https://www.mcehassan.ac.in/home/Overview/Computer-Science-and-Business-Systems"
-                                            target="_blank">Computer Science and Business Systems</a></h4>
+                                            target="_blank">Computer Science and Business Systems (TCS Sponsored
+                                            Program)</a></h4>
                                     <div class="portfolio-button">
                                         <a class="rn-btn"
                                             href="https://www.mcehassan.ac.in/home/Overview/Computer-Science-and-Business-Systems"
@@ -557,8 +563,31 @@
             </div>
             <!-- End Portfolio Area  -->
 
+
             <!-- Start Accordion Area  -->
-            <div class="rn-accordion-area rn-section-gap" id="eligibility">
+            <div class="rn-accordion-area rn-section-gap" id="fees">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="section-title service-style--3 text-center mb--20 mb_sm--0 md_md--0">
+                                <h2 class="title">Fee Structure</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <p>The management has decided the fee structure for 1st year B.E. for the year 2024-25 : <a
+                                    href="assets/FeeStructure2024.pdf" target="_blank" class="text-danger">Click
+                                    Here to know more</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Accordion Area  -->
+
+
+            <!-- Start Accordion Area  -->
+            <div class="rn-accordion-area rn-section-gap bg_color--5" id="eligibility">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-12">
@@ -568,15 +597,19 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12">
-                            <ul class="h5 text-center">
-                                <li>10+2 or equivalent (Central, State and Recognised International Boards)</li>
-                                <li>MCE Selection Process + Personal Interview </li>
-                            </ul>
+                        <div class="col-lg-12 text-center">
+                            <p>10+2 or equivalent (Central, State and Recognised International Boards)</p>
+                            <p>MCE Selection Process + Personal Interview </p>
                         </div>
                     </div>
                 </div>
-                <div class="container mt--60">
+            </div>
+            <!-- End Accordion Area  -->
+
+
+            <!-- Start Accordion Area  -->
+            <div class="rn-accordion-area rn-section-gap" id="apply">
+                <div class="container">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="section-title service-style--3 text-center mb--20 mb_sm--0 md_md--0">
@@ -639,7 +672,6 @@
             </div>
             <!-- End Accordion Area  -->
 
-
             <!-- Start Contact Address Area  -->
             <div class="rn-contact-address-area rn-section-gap bg_color--5" id="contact">
                 <div class="container">
@@ -652,9 +684,9 @@
                         <!-- Start Single Address  -->
                         <div class="col-lg-4 col-md-6 col-sm-6 col-12 mt--40">
                             <div class="rn-address">
-                                <div class="icon">
+                                <!-- <div class="icon">
                                     <i class="fas fa-phone"></i>
-                                </div>
+                                </div> -->
                                 <div class="inner">
                                     <h4 class="title">Phone Number</h4>
                                     <p><a href="tel:+08172245317">08172-245317</a></p>
@@ -667,9 +699,9 @@
                         <!-- Start Single Address  -->
                         <div class="col-lg-4 col-md-6 col-sm-6 col-12 mt--40">
                             <div class="rn-address">
-                                <div class="icon">
+                                <!-- <div class="icon">
                                     <i class="fas fa-envelope"></i>
-                                </div>
+                                </div> -->
                                 <div class="inner">
                                     <h4 class="title">Email Address</h4>
                                     <p><a href="mailto:admissions@mcehassan.ac.in">admissions@mcehassan.ac.in</a></p>
@@ -683,9 +715,9 @@
                         <!-- Start Single Address  -->
                         <div class="col-lg-4 col-md-6 col-sm-6 col-12 mt--40">
                             <div class="rn-address">
-                                <div class="icon">
+                                <!-- <div class="icon">
                                     <i class="fas fa-map-marker-alt"></i>
-                                </div>
+                                </div> -->
                                 <div class="inner">
                                     <h4 class="title">Location</h4>
                                     <p>No 21, Salagame Rd, Rangoli Halla, <br /> Hassan, Karnataka 573202</p>

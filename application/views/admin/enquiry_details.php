@@ -5,7 +5,6 @@
       <section class="content-header">
           <div class="container-fluid">
 
-
               <?php if ($this->session->flashdata('message')) { ?>
               <div class="alert <?= $this->session->flashdata('status'); ?>" id="msg">
                   <?php echo $this->session->flashdata('message') ?>
@@ -47,10 +46,34 @@
                                   <span class="text"> Admit Student</span>
                               </button>
                               <?php } ?>
+                              <?php  if ($enquiryDetails->status == 6) { ?>
+                              <?php 
+                                $encryptAadhar = base64_encode($enquiryDetails->adhaar);
+                                // $encryptAadhar = base64_encode($this->encrypt->encode($enquiryDetails->adhaar));
+                                echo anchor('admin/enquiryAdmission/'.$encryptAadhar, '<span class="text">Admitted Details</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
+                              <?php } ?>
+
                               <?php echo anchor('admin/enquiries', '<span class="icon"><i class="fas fa-arrow-left"></i></span> <span class="text">Back to List</span>', 'class="btn btn-secondary btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
                           </div>
                       </div>
                       <table class="table">
+                        <?php
+                            if($enquiryDetails->status == 7){
+                                // print_r($enquiryDetails);
+                                echo "<tr class='bg-gray-light'>";
+                                echo "<th>Blocked Seat Details </th>";
+                                echo "<td>";
+                                echo "<p class='mb-1'> Course : ".$course_options[$enquiryDetails->dept_id]."</p>";
+                                echo "<p class='mb-1'> Quota : ".$enquiryDetails->quota."</p>";
+                                echo "<p class='mb-1'> Sub Quota : ".$enquiryDetails->sub_quota."</p>";
+                                if($enquiryDetails->remarks){
+                                    echo "<p class='mb-1'> Remarks : ".$enquiryDetails->remarks."</p>";
+                                }
+                                echo "</td>";
+                                echo "</tr>";
+                            }
+                        ?>
+
                           <tr>
                               <th width="20%">Applicant Name</th>
                               <td width="80%"><?= $enquiryDetails->student_name; ?></td>
@@ -111,15 +134,15 @@
                           </tr>
                           <tr>
                               <th>SSLC Percentage/Grade</th>
-                              <td><?= $enquiryDetails->sslc_grade; ?></td>
+                              <td><?= $enquiryDetails->sslc_grade.'%'; ?></td>
                           </tr>
                           <tr>
                               <th>PUC-I(10+1) Percentage/Grade</th>
-                              <td><?= $enquiryDetails->puc1_grade; ?></td>
+                              <td><?= $enquiryDetails->puc1_grade.'%'; ?></td>
                           </tr>
                           <tr>
                               <th>PUC-II(10+2) Percentage/Grade</th>
-                              <td><?= $enquiryDetails->puc2_grade; ?></td>
+                              <td><?= $enquiryDetails->puc2_grade.'%'; ?></td>
                           </tr>
                       </table>
                   </div>
@@ -217,14 +240,14 @@
                                   <div class="col">
                                       <div class="form-group">
                                           <label class="form-label">Quota </label>
-                                          <?php echo form_dropdown('quota', $quota_options, (set_value('quota')) ? set_value('quota') : '', 'class="form-control" id="quota" '); ?>
+                                          <?php echo form_dropdown('quota', $quota_options, (set_value('quota')) ? set_value('quota') : '', 'class="form-control" id="quota" disabled'); ?>
                                           <span class="text-danger"><?php echo form_error('quota'); ?></span>
                                       </div>
                                   </div>
                                   <div class="col">
                                       <div class="form-group">
                                           <label class="form-label">Sub Quota </label>
-                                          <?php echo form_dropdown('subquota', $subquota_options, (set_value('subquota')) ? set_value('subquota') : '', 'class="form-control" id="subquota" '); ?>
+                                          <?php echo form_dropdown('subquota', $subquota_options, (set_value('subquota')) ? set_value('subquota') : '', 'class="form-control" id="subquota" disabled'); ?>
                                           <span class="text-danger"><?php echo form_error('subquota'); ?></span>
                                       </div>
                                   </div>
@@ -236,9 +259,7 @@
                                       <div class="form-group">
                                           <label class="form-label">Category Allotted</label>
                                           <!-- <input type="text" class="form-control" id="aided_unaided" name="aided_unaided" placeholder="" readonly> -->
-                                          <?php
-                      echo form_dropdown('category_allotted', $type_options, '', 'class="form-control input-xs" id="category_allotted"');
-                      ?>
+                                          <?php echo form_dropdown('category_allotted', $type_options, '', 'class="form-control input-xs" id="category_allotted"'); ?>
                                           <span
                                               class="text-danger"><?php echo form_error('category_allotted'); ?></span>
                                       </div>
@@ -247,9 +268,7 @@
                                       <div class="form-group">
                                           <label class="form-label">Category Claimed</label>
                                           <!-- <input type="text" class="form-control" id="aided_unaided" name="aided_unaided" placeholder="" readonly> -->
-                                          <?php
-                      echo form_dropdown('category_claimed', $type_options, '', 'class="form-control input-xs" id="category_claimed"');
-                      ?>
+                                          <?php echo form_dropdown('category_claimed', $type_options, '', 'class="form-control input-xs" id="category_claimed"'); ?>
                                           <span class="text-danger"><?php echo form_error('category_claimed'); ?></span>
                                       </div>
                                   </div>
@@ -284,9 +303,6 @@
                                               name="total_tution_fee" placeholder="Total Fee" readonly>
                                       </div>
                                   </div>
-
-
-
                               </div>
 
                               <div class="form-row">
@@ -335,7 +351,7 @@
                                   </div>
                                   <div class="col text-right">
                                       <input type="submit" name="insert" id="insert" value="Admit Student"
-                                          class="btn btn-danger btn-sm" />
+                                          class="btn btn-danger btn-sm" disabled />
                                   </div>
                               </div>
                           </form>
@@ -367,14 +383,14 @@
                                   <div class="col">
                                       <div class="form-group">
                                           <label class="form-label">Quota </label>
-                                          <?php echo form_dropdown('quota1', $quota_options, (set_value('quota1')) ? set_value('quota1') : '', 'class="form-control" id="quota1" '); ?>
+                                          <?php echo form_dropdown('quota1', $quota_options, (set_value('quota1')) ? set_value('quota1') : '', 'class="form-control" id="quota1" disabled'); ?>
                                           <span class="text-danger"><?php echo form_error('quota1'); ?></span>
                                       </div>
                                   </div>
                                   <div class="col">
                                       <div class="form-group">
                                           <label class="form-label">Sub Quota </label>
-                                          <?php echo form_dropdown('subquota1', $subquota_options, (set_value('subquota1')) ? set_value('subquota1') : '', 'class="form-control" id="subquota1" '); ?>
+                                          <?php echo form_dropdown('subquota1', $subquota_options, (set_value('subquota1')) ? set_value('subquota1') : '', 'class="form-control" id="subquota1" disabled'); ?>
                                           <span class="text-danger"><?php echo form_error('subquota1'); ?></span>
                                       </div>
                                   </div>
@@ -385,8 +401,7 @@
                                           <label class="form-label">Remarks</label>
                                           <input type="text" class="form-control" id="remarks1" name="remarks1"
                                               placeholder="Enter Remarks (if any)">
-                                          <span
-                                              class="text-danger"><?php echo form_error('category_allotted'); ?></span>
+                                          <span class="text-danger"><?php echo form_error('remarks1'); ?></span>
                                       </div>
                                   </div>
                               </div>
@@ -397,7 +412,7 @@
                                   </div>
                                   <div class="col text-right">
                                       <input type="submit" name="block" id="block" value="Block Seat"
-                                          class="btn btn-danger btn-sm" />
+                                          class="btn btn-danger btn-sm" disabled />
                                   </div>
                               </div>
                           </form>
@@ -418,38 +433,35 @@ $(document).ready(function() {
     // $('#insert_block').prop("disabled", true);
 
 
-    $("#quota").change(function() {
-        event.preventDefault();
+    // $("#quota").change(function() {
+    //     event.preventDefault();
 
-        var quota = $("#quota").val();
-        var course = $("#course").val();
+    //     var quota = $("#quota").val();
+    //     var course = $("#course").val();
 
-        if (quota == ' ') {
-            alert("Please Select Quota");
-        } else {
-            $.ajax({
-                'type': 'POST',
-                'url': base_url + 'admin/subquotaDropdown',
-                'data': {
-                    'quota': quota,
-                    'dept': course,
-                    'flag': 'S'
-                },
-                'dataType': 'text',
-                'cache': false,
-                'success': function(data) {
-                    $('select[name="subquota"]').empty();
-                    $('select[name="subquota"]').append(data);
-                    $('select[name="subquota"]').removeAttr("disabled");
+    //     if (quota == ' ') {
+    //         alert("Please Select Quota");
+    //     } else {
+    //         $.ajax({
+    //             'type': 'POST',
+    //             'url': base_url + 'admin/subquotaDropdown',
+    //             'data': {
+    //                 'quota': quota,
+    //                 'dept': course,
+    //                 'flag': 'S'
+    //             },
+    //             'dataType': 'text',
+    //             'cache': false,
+    //             'success': function(data) {
+    //                 $('select[name="subquota"]').empty();
+    //                 $('select[name="subquota"]').append(data);
+    //                 $('select[name="subquota"]').removeAttr("disabled");
 
-                }
-            });
+    //             }
+    //         });
 
-        }
-    });
-
-
-
+    //     }
+    // });
 
     $("#subquota").change(function() {
         event.preventDefault();
@@ -457,8 +469,7 @@ $(document).ready(function() {
         var subquota = $("#subquota").val();
         var quota = $("#quota").val();
 
-
-        if (subquota != " " && quota != ' ' &&  course != " ") {
+        if (subquota != " " && quota != ' ' && course != " ") {
             var page = base_url + 'admin/getFee';
             $.ajax({
                 'type': 'POST',
@@ -479,27 +490,189 @@ $(document).ready(function() {
                     $('#total_tution_fee').val(data.total_tution_fee);
                     var total_tution_fee = data.total_tution_fee;
 
-
-
                     var total_college_fee = collegeAmount();
                     $('#total_college_fee').val(collegeAmount);
                     var final_amount = finalAmount();
                     $('#final_amount').val(finalAmount);
+
+                    $("#insert").removeAttr("disabled");
                 }
             });
-        }
-        else
-        {
+        } else {
             alert("Please Select Department & Quota ");
+            $('select[name="subquota"]').prop("disabled", true);
+            $("#insert").attr('disabled', 'disabled');
         }
     });
 
+
+    // $("#course").change(function() {
+    //     event.preventDefault();
+    //     $('#quota').val('');
+    //     $('#subquota').val('');
+    // });
 
     $("#course").change(function() {
         event.preventDefault();
-        $('#quota').val('');
-        $('#subquota').val('');
+
+        var course = $("#course").val();
+
+        if (course == ' ') {
+            alert("Please Select Course");
+            $('select[name="quota"]').prop("disabled", true);
+            $('select[name="subquota"]').prop("disabled", true);
+            $("#insert").attr('disabled', 'disabled');
+        } else {
+            var quota = $("#quota").val();
+            // alert(quota);
+            if (quota == ' ' || course == ' ') {
+                // alert("Enable Quota");
+                $('select[name="quota"]').removeAttr("disabled");
+                $('select[name="subquota"]').prop("disabled", true);
+                $("#insert").attr('disabled', 'disabled');
+            } else {
+                $.ajax({
+                    'type': 'POST',
+                    'url': base_url + 'admin/subquotaDropdown',
+                    'data': {
+                        'quota': quota,
+                        'dept': course,
+                        'flag': 'S'
+                    },
+                    'dataType': 'text',
+                    'cache': false,
+                    'success': function(data) {
+                        $('select[name="subquota"]').empty();
+                        $('select[name="subquota"]').append(data);
+                        $('select[name="subquota"]').removeAttr("disabled");
+                        $("#insert").attr('disabled', 'disabled');
+
+                    }
+                });
+            }
+        }
     });
+
+    $("#quota").change(function() {
+        event.preventDefault();
+
+        var quota = $("#quota").val();
+        var course = $("#course").val();
+
+        if (quota == ' ' || course == ' ') {
+            alert("Please Select Quota or Course");
+            $('select[name="subquota"]').prop("disabled", true);
+            $("#insert").attr('disabled', 'disabled');
+        } else {
+            $.ajax({
+                'type': 'POST',
+                'url': base_url + 'admin/subquotaDropdown',
+                'data': {
+                    'quota': quota,
+                    'dept': course,
+                    'flag': 'S'
+                },
+                'dataType': 'text',
+                'cache': false,
+                'success': function(data) {
+                    $('select[name="subquota"]').empty();
+                    $('select[name="subquota"]').append(data);
+                    $('select[name="subquota"]').removeAttr("disabled");
+                    $("#insert").attr('disabled', 'disabled');
+
+                }
+            });
+
+        }
+    });
+
+    $("#course1").change(function() {
+        event.preventDefault();
+
+        var course = $("#course1").val();
+
+        if (course == ' ') {
+            alert("Please Select Course");
+            $('select[name="quota1"]').prop("disabled", true);
+            $('select[name="subquota1"]').prop("disabled", true);
+            $("#block").attr('disabled', 'disabled');
+        } else {
+            var quota = $("#quota1").val();
+            // alert(quota);
+            if (quota == ' ' || course == ' ') {
+                // alert("Enable Quota");
+                $('select[name="quota1"]').removeAttr("disabled");
+                $('select[name="subquota1"]').prop("disabled", true);
+                $("#block").attr('disabled', 'disabled');
+            } else {
+                $.ajax({
+                    'type': 'POST',
+                    'url': base_url + 'admin/subquotaDropdown',
+                    'data': {
+                        'quota': quota,
+                        'dept': course,
+                        'flag': 'S'
+                    },
+                    'dataType': 'text',
+                    'cache': false,
+                    'success': function(data) {
+                        $('select[name="subquota1"]').empty();
+                        $('select[name="subquota1"]').append(data);
+                        $('select[name="subquota1"]').removeAttr("disabled");
+                        $("#block").attr('disabled', 'disabled');
+
+                    }
+                });
+            }
+        }
+    });
+
+    $("#quota1").change(function() {
+        event.preventDefault();
+
+        var quota = $("#quota1").val();
+        var course = $("#course1").val();
+
+        if (quota == ' ' || course == ' ') {
+            alert("Please Select Quota or Course");
+            $('select[name="subquota1"]').prop("disabled", true);
+            $("#block").attr('disabled', 'disabled');
+        } else {
+            $.ajax({
+                'type': 'POST',
+                'url': base_url + 'admin/subquotaDropdown',
+                'data': {
+                    'quota': quota,
+                    'dept': course,
+                    'flag': 'S'
+                },
+                'dataType': 'text',
+                'cache': false,
+                'success': function(data) {
+                    $('select[name="subquota1"]').empty();
+                    $('select[name="subquota1"]').append(data);
+                    $('select[name="subquota1"]').removeAttr("disabled");
+                    $("#block").attr('disabled', 'disabled');
+
+                }
+            });
+
+        }
+    });
+
+    $("#subquota1").change(function() {
+        event.preventDefault();
+
+        var subquota = $("#subquota1").val();
+
+        if (subquota == ' ') {
+            $('select[name="subquota1"]').prop("disabled", true);
+            $("#block").attr('disabled', 'disabled');
+        } else {
+            $("#block").removeAttr("disabled");
+        }
+    });
+
 
     $("#concession_fee").change(function() {
         event.preventDefault();
