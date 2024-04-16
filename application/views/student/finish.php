@@ -679,7 +679,38 @@
                     </div>
                 </div>
                 <div class="card-body">
+                <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+          <?php
 
+          if (count($files)) {
+            $table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+            $this->table->set_template($table_setup);
+            $print_fields = array('S.NO', 'Document Type', 'Document ');
+            $this->table->set_heading($print_fields);
+
+            $i = 1;
+            foreach ($files as $file) {
+
+              $document_type = substr($file, 0, strpos($file, '.'));
+              $result_array = array(
+                $i++,
+                //   $admissions1->app_no,
+
+
+                $document_type,
+
+                
+                anchor('assets/students/' . $id.'/'.$file, '<span class="icon"><i class="fas fa-file-o"></i></span> <span class="text">Download</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm" target="_blank"')
+
+              );
+              $this->table->add_row($result_array);
+            }
+            $table = $this->table->generate();
+            print_r($table);
+          } else {
+            echo "<div class='text-center'><img src='" . base_url() . "assets/img/no_data.jpg' class='nodata'></div>";
+          } ?>
+        </div>
                 </div>
             </div>
             <div class="card m-2 shadow">
