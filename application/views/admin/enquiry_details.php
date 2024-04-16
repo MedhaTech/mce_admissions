@@ -849,8 +849,6 @@ $(document).ready(function() {
                 'subquota': subquota,
                 'course_val': course_val,
                 'remarks': remarks
-
-
             },
             'dataType': 'text',
             'cache': false,

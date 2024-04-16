@@ -70,8 +70,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | The $query_builder variables lets you determine whether or not to load
 | the query builder class.
 */
+
+if($_SERVER['HTTP_HOST']=="127.0.0.1" || $_SERVER['HTTP_HOST']=="localhost")
+{
+    $base_url = "http";
+}
+else
+{
+    $active_group = 'default';
+}
+
 $active_group = 'default';
+
 $query_builder = TRUE;
+
+print_r($_SERVER);
 
 $db['default'] = array(
 	'dsn'	=> '',
@@ -81,7 +94,7 @@ $db['default'] = array(
 	// 'hostname' => 'localhost',
 	// 'username' => 'root',
 	// 'password' => '',
-	'database' => 'mce_campus',
+	'database' => 'mce_dev',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
