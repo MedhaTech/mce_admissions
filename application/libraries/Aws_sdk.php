@@ -19,10 +19,10 @@ class Aws_sdk
 
         $credentials = [
             'version' => 'latest',
-            'region' => 'ap-south-1',
+            'region' => '',
             'credentials' => [
-                'key' => 'AKIAWCLXM2IEPM33ZD5T',
-                'secret' => '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'
+                'key' => '',
+                'secret' => ''
             ]
         ];
 
