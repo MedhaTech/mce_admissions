@@ -71,30 +71,50 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | the query builder class.
 */
 
-if($_SERVER['HTTP_HOST']=="127.0.0.1" || $_SERVER['HTTP_HOST']=="localhost")
-{
-    $base_url = "http";
-}
-else
-{
-    $active_group = 'default';
-}
-
 $active_group = 'default';
 
-$query_builder = TRUE;
+if($_SERVER['HTTP_HOST']=="127.0.0.1" || $_SERVER['HTTP_HOST']=="localhost"){
+	$active_group = 'default';
+}
 
-print_r($_SERVER);
+if($_SERVER['HTTP_HOST']=="dev.mcehassan.ac.in"){
+	$active_group = 'default';
+}
+
+if($_SERVER['HTTP_HOST']=="admissions.mcehassan.ac.in"){
+	$active_group = 'admissions';
+}
+
+$query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => '15.206.117.153',
 	'username' => 'admin',
 	'password' => 'Mcehassan@mysql2023',
-	// 'hostname' => 'localhost',
-	// 'username' => 'root',
-	// 'password' => '',
 	'database' => 'mce_dev',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+$db['admissions'] = array(
+	'dsn'	=> '',
+	'hostname' => '15.206.117.153',
+	'username' => 'admin',
+	'password' => 'Admin@1mce',
+	'database' => 'mce_campus',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
