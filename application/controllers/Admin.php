@@ -524,7 +524,6 @@ class Admin extends CI_Controller
 				'adm_no' => $app_no,
 				'dept_id' => $course,
 				'usn' => $usn,
-
 				'student_name' => strtoupper($enquiryDetails->student_name),
 				'mobile' => $enquiryDetails->mobile,
 				'email' => strtolower($enquiryDetails->email),
