@@ -4468,6 +4468,14 @@ font-family: 'Poppins', sans-serif;
   background: #101010;
 }
 
+.bg_color--8 {
+  background: #c02140;
+}
+
+.bg_color--9 {
+  background: #0e4b99;
+}
+
 /*===========================
     Background Image 
 =============================*/
@@ -11034,7 +11042,7 @@ img.react-parallax-bgimage {
 }
 
 .header-area .header-right .header-btn {
-  margin-left: 50px;
+  margin-left: 30px;
 }
 
 @media only screen and (max-width: 575px) {

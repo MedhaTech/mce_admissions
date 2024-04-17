@@ -3,9 +3,9 @@
 
         <!-- Start Header -->
         <!-- Start Header -->
-        <div class="bg_color--5 m-2">
+        <div class="bg_color--9">
             <marquee behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();">
-                <p class="small text-danger">To secure a seat for B.E. Admissions 2024-25 under the Management Quota,
+                <p class="small text-white">To secure a seat for B.E. Admissions 2024-25 under the Management Quota,
                     completing the below inquiry form is a mandatory.</p>
             </marquee>
         </div>
