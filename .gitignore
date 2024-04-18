@@ -1,5 +1,5 @@
 .DS_Store
-
+.github/workflows/main.yml
 application/cache/*
 !application/cache/index.html
 application/libraries/Aws_sdk.php
