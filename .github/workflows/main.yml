@@ -1,9 +1,9 @@
 
-name: Deployment to dev
+name: Deployment
 
 on:
   push:
-    branches: development
+    branches: main
 jobs:
   
   
@@ -12,15 +12,15 @@ jobs:
 
     steps:
       - name: Deploy to Development
-        if: github.ref == 'refs/heads/development'
+        if: github.ref == 'refs/heads/main'
         env:
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
           HOSTNAME: ${{ secrets.HOSTNAME }}
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 400 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${{secrets.HOSTNAME}} '
-            cd /var/www/html/admissions-dev &&
-            git pull origin development'
+            cd /var/www/html/test &&
+            git pull origin main '
             
 
       
