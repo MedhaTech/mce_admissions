@@ -491,7 +491,153 @@
                 </div>
                 <div class="card-body">
 
+                 
+            <?php     if (count($educations_details)) {
+                   foreach ($educations_details as $edu) { ?>
+                    <div class="form-row">
+
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="label">Level</label>
+                                <br>
+                                <?= $edu->education_level;?>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="label">Institution Type</label>
+                                <br>
+                                <?= $edu->inst_type;?>
+                              
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="label">Board / University</label>
+                                <br>
+                                <?= $edu->inst_board;?>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="label">Institution Name</label>
+                                <br>
+                                <?= $edu->inst_name;?>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="label">Institution Address</label>
+                                <br>
+                                <?= $edu->inst_address;?>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="label">Institution City</label>
+                                <br>
+                                <?= $edu->inst_city;?>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="label">Institution State</label>
+                                <br>
+                                <?= $edu->inst_state;?>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="label">Institution Country</label>
+                                <br>
+                                <?= $edu->inst_country;?>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="label">Medium of Instruction</label>
+                                <br>
+                                <?= $edu->medium_of_instruction;?>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="label">Register Number</label>
+                                <br>
+                                <?= $edu->register_number;?>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="label">Year of Passing</label>
+                                <br>
+                                <?= $edu->year_of_passing;?>
+                            </div>
+                        </div>
+                      
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="label">Aggregate</label>
+                                <br>
+                                <?= $edu->aggregate;?>%
+
+                            </div>
+                        </div>
+
+                   
+                    </div>
+                    <table class="table" border="1">
+                        <thead>
+                            <tr>
+                                <th>Subject Name</th>
+                                <th>Min Marks</th>
+                                <th>Max Marks</th>
+                                <th>Obtained Marks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            for ($i = 1; $i <= 6; $i++) {
+                                $subject_name = $edu->{"subject_" . $i . "_name"};
+                                $min_marks = $edu->{"subject_" . $i . "_min_marks"};
+                                $max_marks = $edu->{"subject_" . $i . "_max_marks"};
+                                $obtained_marks = $edu->{"subject_" . $i . "_obtained_marks"};
+                                ?>
+                            <tr>
+                                <td>
+                                  <?= $subject_name;?>
+                                </td>
+                                <td>
+                                <?= $min_marks;?>
+                                </td>
+                                <td>
+                                <?= $max_marks;?> 
+                                </td>
+                                <td>
+                                <?= $obtained_marks;?>
+                                </td>
+                            </tr>
+                            <?php } ?>
+                        
+                        </tbody>
+                        
+                    </table>
+                    <hr>
+
+                   <?php }   } ?>
+
                 </div>
+            </div>
             </div>
 
             <div class="card m-2 shadow card-info">
@@ -507,7 +653,39 @@
                 </div>
                 <div class="card-body">
 
-                </div>
+<div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+  <?php
+
+  if (count($files)) {
+    $table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+    $this->table->set_template($table_setup);
+    $print_fields = array('S.NO', 'Document Type', 'Document ');
+    $this->table->set_heading($print_fields);
+
+    $i = 1;
+    foreach ($files as $file) {
+
+      $document_type = substr($file, 0, strpos($file, '.'));
+      $result_array = array(
+        $i++,
+        //   $admissions1->app_no,
+
+
+        $document_type,
+
+        
+        anchor('assets/students/' . $id.'/'.$file, '<span class="icon"><i class="fas fa-file-o"></i></span> <span class="text">Download</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm" target="_blank"')
+
+      );
+      $this->table->add_row($result_array);
+    }
+    $table = $this->table->generate();
+    print_r($table);
+  } else {
+    echo "<div class='text-center'><img src='" . base_url() . "assets/img/no_data.jpg' class='nodata'></div>";
+  } ?>
+</div>
+</div>
             </div>
            
 

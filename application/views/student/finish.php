@@ -710,7 +710,7 @@
           } else {
             echo "<div class='text-center'><img src='" . base_url() . "assets/img/no_data.jpg' class='nodata'></div>";
           } ?>
-        </div>
+                 </div>
                 </div>
             </div>
             <div class="card m-2 shadow">

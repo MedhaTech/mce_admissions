@@ -671,7 +671,7 @@ class Student extends CI_Controller
 
 				$config['upload_path'] = './assets/students/' . $data['id'].'/';
 				$config['allowed_types']    = 'jpg|png|pdf'; // Adjust file types as needed
-				$config['max_size']         = 1024; // Maximum file size in kilobytes (10MB)
+				$config['max_size']         = 10240; // Maximum file size in kilobytes (10MB)
 				$config['encrypt_name']     = FALSE; // Encrypt the file name for security
 				// Make sure the directory exists, if not, create it
 				if (!is_dir($config['upload_path'])) {
