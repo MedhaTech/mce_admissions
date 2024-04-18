@@ -53,7 +53,7 @@
                                                 echo "<td class='text-center font-weight-bold'>".$unaided1->unaided_intake."</td>";
                                                 echo "<td class='bg-gray-light'>".$unaided1->unaided_mgmt_intake."</td>";
                                                 echo "<td>".$unaided1->unaided_comed_k_intake."</td>";
-                                                echo "<td>".$unaided1->uaaided_kea_intake."</td>";
+                                                echo "<td>".$unaided1->unaided_kea_intake."</td>";
                                                 echo "<td>".$unaided1->unaided_snq_intake."</td>";
                                                 echo "</tr>";
                                             } 
