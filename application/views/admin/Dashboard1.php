@@ -52,30 +52,30 @@
 										}
                                         
                                         $INTAKE = $details1->mgmt_intake;
-										// $MGMT = ($admitted['MGMT']) ? $admitted['MGMT'] : 0;
-                                        $MGMT = 12;
+										$MGMT = ($admitted['MGMT']) ? $admitted['MGMT'] : 0;
+                                        // $MGMT = 12;
 										$BLOCKED = ($blockedStats) ? $blockedStats : 0;
 
                                         $PER = number_format((($MGMT / $INTAKE) * 100),0);
 
                                         if($PER >= '75'){
-                                            $clr = "bg-success";
+                                            $clr = "badge badge-success";
                                         }
 
                                         if($PER >= '50' && $PER <= '75'){
-                                            $clr = "bg-warning";
+                                            $clr = "badge badge-warning";
                                         }
 
                                         if($PER >= '0' && $PER <= '50'){
-                                            $clr = "bg-danger";
+                                            $clr = "badge badge-danger";
                                         }
 
 										  echo "<tr>";
 										  echo "<td>".$i++.".";
 										  echo "<td class='text-left'>".$department_name."</td>";
-										  echo "<td class='text-center ".$clr."'>".$INTAKE."</td>";
-										  echo "<td class='text-center ".$clr."'>".$MGMT."</td>";
-										  echo "<td class='text-center ".$clr."'>".$BLOCKED."</td>";
+										  echo "<td class='text-center'> <span class='".$clr."'>".$INTAKE."</span></td>";
+										  echo "<td class='text-center'> <span class='".$clr."'>".$MGMT."</span></td>";
+										  echo "<td class='text-center'> <span class='".$clr."'>".$BLOCKED."</span></td>";
 										  echo "</tr>";
 									  } 
 									 ?>

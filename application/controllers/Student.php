@@ -73,6 +73,21 @@ class Student extends CI_Controller
 				$data['personalDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$data['parentDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$data['educations_details'] = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'student_education_details')->result();
+		
+				$upload_path = "./assets/students/$student_id/";
+
+				// Check if the directory exists
+				if (is_dir($upload_path)) {
+					// Get list of files in the directory
+					$files = scandir($upload_path);
+		
+					// Remove . and .. from the list
+					$data['files'] = array_diff($files, array('.', '..'));
+				}
+				else
+				{
+					$data['files'] = array();
+				}
 				$this->student_template->show('student/finish', $data);
 			} else {
 				$this->student_template->show('student/Dashboard', $data);
@@ -539,7 +554,7 @@ class Student extends CI_Controller
 					}
 				}
 				$data['educations_details'] = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'student_education_details')->result();
-				$data['action'] = 'student/updateeducationdetails/';
+				$data['action'] = 'student/educationdetails/';
 
 				$this->student_template->show('student/education_details', $data);
 			} else {
@@ -644,6 +659,10 @@ class Student extends CI_Controller
 					// Remove . and .. from the list
 					$data['files'] = array_diff($files, array('.', '..'));
 				}
+				else
+				{
+					$data['files'] = array();
+				}
 				$data['action'] = 'student/documents';
 				$this->student_template->show('student/documents', $data);
 			} else {
@@ -651,8 +670,8 @@ class Student extends CI_Controller
 				$documents = $this->input->post('documents');
 
 				$config['upload_path'] = './assets/students/' . $data['id'].'/';
-				$config['allowed_types']    = 'gif|jpg|png|pdf|doc|docx'; // Adjust file types as needed
-				$config['max_size']         = 10240; // Maximum file size in kilobytes (10MB)
+				$config['allowed_types']    = 'jpg|png|pdf'; // Adjust file types as needed
+				$config['max_size']         = 1024; // Maximum file size in kilobytes (10MB)
 				$config['encrypt_name']     = FALSE; // Encrypt the file name for security
 				// Make sure the directory exists, if not, create it
 				if (!is_dir($config['upload_path'])) {

@@ -70,17 +70,73 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | The $query_builder variables lets you determine whether or not to load
 | the query builder class.
 */
+
 $active_group = 'default';
+
+if($_SERVER['HTTP_HOST']=="127.0.0.1" || $_SERVER['HTTP_HOST']=="localhost"){
+	$active_group = 'default';
+}
+
+if($_SERVER['HTTP_HOST']=="dev.mcehassan.ac.in"){
+	$active_group = 'development';
+}
+
+if($_SERVER['HTTP_HOST']=="admissions.mcehassan.ac.in"){
+	$active_group = 'admissions';
+}
+
 $query_builder = TRUE;
+
 
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => '15.206.117.153',
 	'username' => 'admin',
 	'password' => 'Mcehassan@mysql2023',
-	// 'hostname' => 'localhost',
-	// 'username' => 'root',
-	// 'password' => '',
+	'database' => 'mce_dev',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'development'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+$db['development'] = array(
+	'dsn'	=> '',
+	'hostname' => '15.206.117.153',
+	'username' => 'mce-dev',
+	'password' => 'Mce@hassandev1',
+	'database' => 'mce_dev',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'development'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+$db['admissions'] = array(
+	'dsn'	=> '',
+	'hostname' => '15.206.117.153',
+	'username' => 'admin',
+	'password' => 'Admin@1mce',
 	'database' => 'mce_campus',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

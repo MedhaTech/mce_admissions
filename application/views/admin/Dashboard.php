@@ -51,7 +51,7 @@
 											$admitted[$admStats1->quota] = $admStats1->cnt;
 										}
 
-                                        $INTAKE = $details1->mgmt_intake;
+                                        $INTAKE = $details1->aided_mgmt_intake;
 
 										$MGMT = ($admitted['MGMT']) ? $admitted['MGMT'] : 0;
 										$KEA = ($admitted['KEA-CET(GOVT)']) ? $admitted['KEA-CET(GOVT)'] : 0;
@@ -62,32 +62,32 @@
 
 										$TOTAL_ADMITTED = $MGMT + $KEA + $SNQ + $JK + $GOI + $COMEDK;
 										
-                                        $PER = number_format((($TOTAL_ADMITTED / $INTAKE) * 100),0);
+                                        // $PER = number_format((($TOTAL_ADMITTED / $INTAKE) * 100),0);
 
-                                        // if($PER >= '75'){
-                                        //     $clr = "bg-success";
-                                        // }
+                                        // // if($PER >= '75'){
+                                        // //     $clr = "bg-success";
+                                        // // }
 
-                                        // if($PER >= '50' && $PER <= '75'){
-                                        //     $clr = "bg-warning";
-                                        // }
+                                        // // if($PER >= '50' && $PER <= '75'){
+                                        // //     $clr = "bg-warning";
+                                        // // }
 
-                                        // if($PER >= '0' && $PER <= '50'){
-                                        //     $clr = "bg-danger";
-                                        // }
+                                        // // if($PER >= '0' && $PER <= '50'){
+                                        // //     $clr = "bg-danger";
+                                        // // }
 
-										  echo "<tr>";
-										  echo "<td>".$i++.".";
-										  // echo "<td>".$details1->stream_name.' ['.$details1->stream_short_name.']'."</td>";
-										  echo "<td class='text-left'>".$department_name."</td>";
-										  echo "<td class='text-center ".$clr."'>".$TOTAL_ADMITTED."/".$INTAKE."</td>";
-										  echo "<td class='text-center ".$clr."'>".$MGMT."/".$details1->mgmt_intake."</td>";
-										  echo "<td class='text-center ".$clr."'>".$COMEDK."/".$details1->comed_k_intake."</td>";
-										  echo "<td class='text-center ".$clr."'>".$KEA."/".$details1->kea_intake."</td>";
-										  echo "<td class='text-center ".$clr."'>".$SNQ."/".$details1->snq_intake."</td>";
-										  echo "<td class='text-center ".$clr."'>".$GOI."</td>";
-										  echo "<td class='text-center ".$clr."'>".$JK."</td>";
-										  echo "</tr>";
+										//   echo "<tr>";
+										//   echo "<td>".$i++.".";
+										//   // echo "<td>".$details1->stream_name.' ['.$details1->stream_short_name.']'."</td>";
+										//   echo "<td class='text-left'>".$department_name."</td>";
+										//   echo "<td class='text-center ".$clr."'>".$TOTAL_ADMITTED."/".$INTAKE."</td>";
+										//   echo "<td class='text-center ".$clr."'>".$MGMT."/".$details1->aided_mgmt_intake."</td>";
+										//   echo "<td class='text-center ".$clr."'>".$COMEDK."/".$details1->aided_comed_k_intake."</td>";
+										//   echo "<td class='text-center ".$clr."'>".$KEA."/".$details1->aided_kea_intake."</td>";
+										//   echo "<td class='text-center ".$clr."'>".$SNQ."/".$details1->aided_snq_intake."</td>";
+										//   echo "<td class='text-center ".$clr."'>".$GOI."</td>";
+										//   echo "<td class='text-center ".$clr."'>".$JK."</td>";
+										//   echo "</tr>";
 									  } 
 									 ?>
                         </table>

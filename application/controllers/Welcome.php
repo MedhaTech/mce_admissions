@@ -7,6 +7,7 @@ class Welcome extends CI_Controller {
 	{
 		parent::__construct();
 		$this->CI = &get_instance();
+		$this->load->library('aws_sdk');
 		$this->load->model('admin_model', '', TRUE);
 		$this->load->library(array('table', 'form_validation'));
 		$this->load->helper(array('form', 'form_helper'));
@@ -108,6 +109,29 @@ class Welcome extends CI_Controller {
 					);	
 					$result = $this->admin_model->insertDetails('enquiries', $insertDetails);
 					if ($result) {
+
+						$student_name = $this->input->post('name');
+						$mobile = $this->input->post('mobile');
+						$student_email = $this->input->post('email');
+						
+						$email['name'] = strtoupper($student_name);
+						$email['mobile'] = strtoupper($mobile);
+						$email['student_email'] = strtolower($student_email);
+
+						if($parent_email){
+							$email['par_email'] = strtolower($parent_email);
+							$parent_email = $this->input->post('par_email');
+						}
+
+						$ci = &get_instance();
+						$message = $ci->load->view('email/enquiry_success', $email, true);
+
+						$this->aws_sdk->triggerEmail($student_email, 'Course Registration Application Submitted', $message);
+						if($parent_email){
+							$this->aws_sdk->triggerEmail($parent_email, 'Course Registration Application Submitted', $message);
+						}
+						$this->aws_sdk->triggerEmail('admission@mcehassan.ac.in', 'Course Registration Application Submitted', $message);
+
 						$this->session->set_flashdata('message', "<h6>Thanks you! We've received your enquiry details. <br/> For any further inquiries, please contact admission@mcehassan.ac.in</h6>");
 						$this->session->set_flashdata('status', 'alert-success');
 					} else {

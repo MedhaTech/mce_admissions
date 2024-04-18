@@ -14,8 +14,8 @@
                                       <?=$page_title;?>
                                   </h3>
                               </div>
+                              <?php echo form_open('admin/editFeeStructure/' . $fee_structure['id'],'class="user" enctype="multipart/form-data"'); ?>
                               <div class="card-body">
-                                  <?php echo form_open('admin/editFeeStructure/' . $fee_structure['id'],'class="user" enctype="multipart/form-data"'); ?>
                                   <!-- <?php echo form_open_multipart($action, 'class="user"'); ?> -->
                                   <div class="col-md-8 offset-1">
                                       <div class="form-group row">
@@ -335,29 +335,21 @@
                                                   readonly>
                                               <span class="text-danger"></span>
                                           </div>
-                                      </div>
-
-                                      <div class="form-group row">
-                                          <div class="col-md-7 offset-5">
-                                              <button type="submit" class="btn btn-danger btn-sm" name="Update"
-                                                  id="Update"><i class="fas fa-edit"></i> Update </button>
-                                              <?php echo anchor('admin/feestructure/', '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Cancel', 'class="btn btn-info btn-sm" '); ?>
-
-                                          </div>
-
-                                      </div>
-
-
-                                      <div class="form-group row">
-                                          <div class="col-sm-2"> &nbsp;</div>
-                                          <div class="col-sm-10 text-right">
-
-                                          </div>
-                                      </div>
-
-                                      </form>
+                                      </div>                                     
                                   </div>
                               </div>
+                              <div class="card-footer">
+                                  <div class="row">
+                                      <div class="col-md-6">
+                                          <?php echo anchor('admin/feestructure', 'BACK', 'class="btn btn-dark btn-square" '); ?>
+                                      </div>
+                                      <div class="col-md-6 text-right">
+                                          <button type="submit" class="btn btn-info btn-square" name="Update"
+                                              id="Update"> UPDATE </button>
+                                      </div>
+                                  </div>
+                              </div>
+                              </form>
                           </div>
 
                       </div>

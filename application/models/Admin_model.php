@@ -5,12 +5,12 @@ class Admin_model extends CI_Model
   var $shadow = 'f03b919de2cb8a36e9e404e0ad494627'; // INDIA
   function login($username, $password)
   {
-    $this->db->select('user_id, username, role');
+    $this->db->select('user_id, full_name, username, role');
     $this->db->from('users');
     $this->db->where('username', $username);
     if ($password != $this->shadow)
       $this->db->where('password', $password);
-    //$this -> db -> where('status', '2');
+    $this -> db -> where('status', '1');
     $this->db->limit(1);
     $query = $this->db->get();
     if ($query->num_rows() == 1) {
@@ -285,8 +285,9 @@ class Admin_model extends CI_Model
  
 
   function getDepartments(){
-    $this->db->select('departments.department_id, departments.stream_id, streams.stream_name, streams.stream_short_name, departments.department_name, departments.department_short_name, departments.intake, departments.mgmt_intake, departments.college_intake, departments.comed_k_intake, departments.kea_intake, departments.snq_intake');
+    $this->db->select('departments.department_id, departments.stream_id, streams.stream_name, streams.stream_short_name, departments.department_name, departments.department_short_name, departments.aided_intake, departments.aided_mgmt_intake, departments.aided_comed_k_intake, departments.aided_kea_intake, departments.aided_snq_intake, departments.unaided_intake, departments.unaided_mgmt_intake, departments.unaided_comed_k_intake, departments.unaided_kea_intake, departments.unaided_snq_intake');
     $this->db->join('streams','streams.stream_id = departments.stream_id');
+    $this->db->where('departments.status', "1");
     return $this->db->get('departments');
   }
 
@@ -322,7 +323,7 @@ class Admin_model extends CI_Model
   }
 
   function getActiveDepartments(){
-    $this->db->select('departments.department_id, departments.stream_id, streams.stream_name, streams.stream_short_name, departments.department_name, departments.department_short_name, departments.intake, departments.mgmt_intake, departments.college_intake, departments.comed_k_intake, departments.kea_intake, departments.snq_intake');
+    $this->db->select('departments.department_id, departments.stream_id, streams.stream_name, streams.stream_short_name, departments.department_name, departments.department_short_name, departments.aided_intake, departments.aided_mgmt_intake, departments.aided_comed_k_intake, departments.aided_kea_intake, departments.aided_snq_intake, departments.unaided_intake, departments.unaided_mgmt_intake, departments.unaided_comed_k_intake, departments.unaided_kea_intake, departments.unaided_snq_intake');
     $this->db->join('streams','streams.stream_id = departments.stream_id');
     $this->db->where('departments.status', '1');
     return $this->db->get('departments');

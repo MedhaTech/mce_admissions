@@ -142,12 +142,12 @@
                           </div>
                       </div>
                       <hr>
-                      <div class="row m-2">
+                      <!-- <div class="row m-2">
                           <div class="col-12 text-right">
                               <button class="btn btn-danger btn-sm" type="submit">Update Details</button>
                               <?php echo anchor('student/parentdetails', '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Cancel', 'class="btn btn-info btn-sm" '); ?>
                           </div>
-                      </div>
+                      </div> -->
                   </div>
                   <div class="card-footer">
                       <div class="row">
