@@ -1,6 +1,6 @@
 <div class="login-box">
     <div class="login-logo">
-        <a href=""><b>Login into </b> Panel</a>
+        <a href=""><b>Login into </b> Account</a>
     </div>
     <!-- /.login-logo -->
     <div class="card">
