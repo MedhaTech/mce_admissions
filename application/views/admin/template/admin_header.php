@@ -75,7 +75,7 @@
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="<?php echo base_url(); ?>admin/dashboard" class="nav-link d-block text-secondary"><i
                             class="fas fa-user-circle"></i>
-                        Welcome <?= $username; ?></a>
+                        Welcome <?= $full_name; ?></a>
                 </li>
             </ul>
         </nav>
@@ -96,215 +96,133 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-             with font-awesome or any other icon font library -->
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/dashboard"
                                 class="nav-link <?= $menu_active = ($menu == "dashboard") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Dashboard
-                                </p>
+                                <p> Dashboard </p>
                             </a>
                         </li>
+                        <?php } ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
                         <li class="nav-header">ENQUIRIES</li>
-                        <!-- <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    All Enquiries
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="pages/charts/chartjs.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>ChartJS</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/charts/flot.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Flot</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/charts/inline.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Inline</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/charts/uplot.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>uPlot</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li> -->
+                        <?php } ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/enquiries"
                                 class="nav-link <?= $menu_active = ($menu == "enquiries") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    All Enquiries
-                                </p>
+                                <p> All Enquiries </p>
                             </a>
                         </li>
-
+                        <?php } ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/newEnquiry"
                                 class="nav-link <?= $menu_active = ($menu == "newEnquiry") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-plus"></i>
-                                <p>
-                                    New Enquiry
-
-                                </p>
+                                <p> New Enquiry </p>
                             </a>
                         </li>
+                        <?php } ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
                         <li class="nav-header">ADMISSIONS</li>
-                        <!-- <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>
-                                    Admissions
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url(); ?>admin/admissions" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>All Admissions</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url(); ?>admin/admissions/1" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Processing</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url(); ?>admin/admissions/2" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Submitted</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url(); ?>admin/admissions/3" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>On-hold</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url(); ?>admin/admissions/4" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Confirmed</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url(); ?>admin/admissions/5" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Rejected</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url(); ?>admin/admissions/6" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Cancelled</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url(); ?>admin/admissions/7" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Archieved</p>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li> -->
+                        <?php } ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/admissions"
                                 class="nav-link <?= $menu_active = ($menu == "admissions") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    All Admissions
-                                </p>
+                                <p> All Admissions </p>
                             </a>
                         </li>
+                        <?php } ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/newAdmission"
                                 class="nav-link <?= $menu_active = ($menu == "newAdmission") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-plus"></i>
-                                <p>
-                                    New Admission
-
-                                </p>
+                                <p> New Admission </p>
                             </a>
                         </li>
+                        <?php } ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
                         <li class="nav-header">ACCOUNTS</li>
+                        <?php } ?>
+                        <?php if((in_array($role, array(1,2,6,7)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/collect_payment"
                                 class="nav-link <?= $menu_active = ($menu == "collectpayment") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-bars"></i>
-                                <p>
-                                    Collect Payment
-                                </p>
+                                <p> Collect Payment </p>
                             </a>
                         </li>
+                        <?php } ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
                         <li class="nav-header">SETTINGS</li>
+                        <?php } ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/departments"
                                 class="nav-link <?= $menu_active = ($menu == "departments") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-bars"></i>
-                                <p>
-                                    Departments
-                                </p>
+                                <p> Departments </p>
                             </a>
                         </li>
+                        <?php } ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
+                        <li class="nav-item ">
+                            <a href="<?php echo base_url(); ?>admin/intake"
+                                class="nav-link <?= $menu_active = ($menu == "intake") ? 'active' : ''; ?>">
+                                <i class="nav-icon fas fa-bars"></i>
+                                <p> Intake Capacity </p>
+                            </a>
+                        </li>
+                        <?php } ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/feestructure"
                                 class="nav-link <?= $menu_active = ($menu == "feestructure") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-bars"></i>
-                                <p>
-                                    Fee Structure
-
-                                </p>
+                                <p> Fee Structure </p>
                             </a>
                         </li>
+                        <?php } ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/users"
                                 class="nav-link <?= $menu_active = ($menu == "users") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-users"></i>
-                                <p>Users</p>
+                                <p> Users </p>
                             </a>
                         </li>
+                        <?php } ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/reports"
                                 class="nav-link <?= $menu_active = ($menu == "reports") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-chart-pie"></i>
-                                <p>Reports</p>
+                                <p> Reports </p>
                             </a>
                         </li>
+                        <?php } ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/changepassword"
                                 class="nav-link <?= $menu_active = ($menu == "changepassword") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-fingerprint"></i>
-                                <p>
-                                    Change Password
-                                </p>
+                                <p> Change Password </p>
                             </a>
                         </li>
+                        <?php } ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/logout" class="nav-link">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>
-                                <p>
-                                    Logout
-
-                                </p>
+                                <p> Logout </p>
                             </a>
-                        </li>
+                        </li><?php } ?>
 
                     </ul>
                 </nav>

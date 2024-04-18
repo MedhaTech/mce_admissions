@@ -8,7 +8,7 @@
                   <div class="row">
                       <div class="col-lg-12">
 
-                          <div class="card card-gray">
+                          <div class="card card-dark">
                               <div class="card-header">
                                   <h3 class="card-title">
                                       <?=$page_title;?>
@@ -33,13 +33,22 @@
                                 echo "<td>".$key."</td>";
                                 if (array_key_exists('Aided',$val)){
                                     $aided_total_fee = $val['Aided']['final_fee'];
-                                    echo "<td>".anchor('admin/editFeeStructure/'.$val['Aided']['id'],number_format($aided_total_fee),0)."</td>";
+                                    if((in_array($role, array(1)))){
+                                        echo "<td>".anchor('admin/editFeeStructure/'.$val['Aided']['id'],number_format($aided_total_fee),0)."</td>";
+                                    }else{
+                                        echo "<td>".anchor('admin/viewFeeStructure/'.$val['Aided']['id'],number_format($aided_total_fee),0)."</td>";
+                                    }
+                                    
                                 }else{
                                     echo "<td> -- </td>";
                                 }
                                 if (array_key_exists('UnAided',$val)){
                                     $unaided_total_fee = $val['UnAided']['final_fee'];
-                                    echo "<td>".anchor('admin/editFeeStructure/'.$val['UnAided']['id'],number_format($unaided_total_fee),0)."</td>";
+                                    if((in_array($role, array(1)))){
+                                        echo "<td>".anchor('admin/editFeeStructure/'.$val['UnAided']['id'],number_format($unaided_total_fee),0)."</td>";
+                                    }else{
+                                        echo "<td>".anchor('admin/viewFeeStructure/'.$val['UnAided']['id'],number_format($unaided_total_fee),0)."</td>";
+                                    }
                                 }else{
                                     echo "<td> -- </td>";
                                 }

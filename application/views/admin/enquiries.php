@@ -9,9 +9,11 @@
                       </div>
                       <div class="card-tools">
                           <ul class="nav nav-pills ml-auto">
+                              <?php if((in_array($role, array(1,2,3,4,5)))){ ?>
                               <li class="nav-item">
                                   <?php echo anchor('admin/newEnquiry', '<span class="icon"><i class="fas fa-plus"></i></span><span class="text"> New Enquiry</span>', 'class="btn btn-dark btn-sm"'); ?>
                               </li>
+                              <?php } ?>
                               <!-- <li class="nav-item">
                                   <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
                               </li> -->

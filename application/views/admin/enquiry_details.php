@@ -21,6 +21,7 @@
                           </div>
                           <div class="col-md-6 text-right">
                               <?php  if ($enquiryDetails->status != 6 && $enquiryDetails->status != 7) { ?>
+                              <?php if((in_array($role, array(1,2)))){ ?>
                               <button class="btn btn-warning btn-sm btn-icon-split" id="block_student"
                                   name="block_student">
                                   <span class="icon text-white-50">
@@ -35,6 +36,7 @@
                                   </span>
                                   <span class="text"> Admit Student</span>
                               </button>
+                              <?php } ?>
                               <?php echo anchor('admin/editEnquiry/' . $enquiryDetails->id, '<span class="icon"><i class="fas fa-edit"></i></span> <span class="text">Edit</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
                               <?php } ?>
                               <?php  if ($enquiryDetails->status == 7) { ?>
@@ -57,7 +59,7 @@
                           </div>
                       </div>
                       <table class="table">
-                        <?php
+                          <?php
                             if($enquiryDetails->status == 7){
                                 // print_r($enquiryDetails);
                                 echo "<tr class='bg-gray-light'>";
@@ -177,6 +179,7 @@
               <?php } ?>
 
               <?php if ($enquiryDetails->status != 6) { ?>
+              <?php if((in_array($role, array(1,2,3,4,5)))){ ?>
               <div class="card mb-4">
                   <div class="card-body">
                       <?php echo form_open('admin/updateComments/' . $enquiryDetails->id, 'class="user"'); ?>
@@ -213,6 +216,7 @@
                       </form>
                   </div>
               </div>
+              <?php } ?>
               <?php } ?>
           </div>
 

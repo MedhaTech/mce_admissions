@@ -45,6 +45,7 @@ class Admin extends CI_Controller
 				$sess_array = array(
 					'id' => $row->user_id,
 					'username' => $row->username,
+					'full_name' => $row->full_name,
 					'role' => $row->role
 				);
 				$this->session->set_userdata('logged_in', $sess_array);
@@ -60,7 +61,11 @@ class Admin extends CI_Controller
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
 			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
 			$data['page_title'] = "Dashboard";
 			$data['menu'] = "dashboard";
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
@@ -77,7 +82,11 @@ class Admin extends CI_Controller
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
 			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
 			$data['page_title'] = "Dashboard";
 			$data['menu'] = "dashboard";
 			$data['departments'] = $this->admin_model->getActiveDepartments()->result();
@@ -90,10 +99,12 @@ class Admin extends CI_Controller
 	public function enquiries()
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
-			$data['role'] = $sess['role'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
 			$data['page_title'] = 'Enquiries List';
 			$data['menu'] = 'enquiries';
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
@@ -108,10 +119,11 @@ class Admin extends CI_Controller
 	function newEnquiry()
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
-			$data['role'] = $sess['role'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
 
 			$data['page_title'] = 'New Enquiry';
 			$data['menu'] = 'newEnquiry';
@@ -223,10 +235,11 @@ class Admin extends CI_Controller
 	public function enquiryDetails($id)
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
-			$data['role'] = $sess['role'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
 
 			$data['page_title'] = 'Enquiries';
 			$data['menu'] = 'enquiries';
@@ -256,10 +269,11 @@ class Admin extends CI_Controller
 	function editEnquiry($id)
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
-			$data['role'] = $sess['role'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
 
 			$data['page_title'] = 'Edit Enquiry';
 			$data['menu'] = 'enquiries';
@@ -339,10 +353,11 @@ class Admin extends CI_Controller
 	function courses()
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
-			$data['role'] = $sess['role'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
 
 			$details = $this->admin_model->getDetailsbyfield('1', 'status', 'departments')->result();
 
@@ -361,10 +376,11 @@ class Admin extends CI_Controller
 	function getFeeCourses()
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
-			$data['role'] = $sess['role'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
 
 			$courses = $this->globals->courseFees();
 			$result = array_keys($courses);
@@ -378,10 +394,11 @@ class Admin extends CI_Controller
 	function updateComments($enq_id)
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
-			$data['role'] = $sess['role'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
 
 
 			$data['page_title'] = 'Enquiries';
@@ -422,10 +439,11 @@ class Admin extends CI_Controller
 	function getFee()
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
-			$data['role'] = $sess['role'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
 
 			if ($this->input->post('quota') == "MGMT") {
 
@@ -461,10 +479,11 @@ class Admin extends CI_Controller
 	function admitStudent()
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
-			$data['role'] = $sess['role'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
 
 			$data['page_title'] = 'Admit Studnet';
 			$data['menu'] = 'admissions';
@@ -595,7 +614,11 @@ class Admin extends CI_Controller
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
 			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
 			$data['page_title'] = "Enquiries List";
 			$data['menu'] = "Enquirieslist";
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
@@ -612,41 +635,50 @@ class Admin extends CI_Controller
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
 			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
 			$data['page_title'] = "Departments";
 			$data['menu'] = "departments";
 
 			$data['details'] = $this->admin_model->getDepartments()->result();
-			// print_r($details); die;
-			// $feeDetails = array();
-
-			// foreach ($fee_structure as $fee1) {
-			// 	$quota = $fee1->quota;
-
-			// 	if ($fee1->department_id) {
-			// 		$dept_name = $this->admin_model->getDetailsbyfield($fee1->department_id, 'department_id', 'departments')->row();
-			// 		$dept_name = $dept_name->department_name;
-			// 		$quota1 = $fee1->quota . ' - ' . $dept_name;
-			// 	} else {
-			// 		$quota1 = $fee1->quota;
-			// 	}
-			// 	if (array_key_exists($quota1, $feeDetails)) {
-			// 		if (array_key_exists($fee1->sub_quota, $feeDetails[$quota1])) {
-			// 			$category =  array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
-			// 			array_push($feeDetails[$quota1][$fee1->sub_quota], $category);
-			// 		} else {
-			// 			$category =  array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
-			// 			$feeDetails[$quota1][$fee1->sub_quota] = $category;
-			// 		}
-			// 	} else {
-			// 		$category = array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, 'id' => $fee1->id);
-			// 		$sub_quota =  array($fee1->sub_quota => $category);
-			// 		$feeDetails[$quota1] = $sub_quota;
-			// 	}
-			// }
-			// $data['feeDetails'] = $feeDetails;
-			// // print_r($feeDetails);d
+			// echo "<pre>"; print_r($data['details']); die;
+		
 			$this->admin_template->show('admin/departments', $data);
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+	function intake()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = "Intake Capacity";
+			$data['menu'] = "intake";
+
+			$details = $this->admin_model->getDepartments()->result();
+			$aided = array();
+			$unaided = array();
+			foreach($details as $details1){
+				if($details1->aided_intake){
+					array_push($aided, $details1);
+				}
+				if($details1->unaided_intake){
+					array_push($unaided, $details1);
+				}
+			}
+			$data['aided'] = $aided;
+			$data['unaided'] = $unaided;
+			
+			$this->admin_template->show('admin/intake', $data);
 		} else {
 			redirect('admin', 'refresh');
 		}
@@ -657,7 +689,11 @@ class Admin extends CI_Controller
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
 			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
 			$data['page_title'] = "Fee Structure";
 			$data['menu'] = "feestructure";
 
@@ -700,7 +736,10 @@ class Admin extends CI_Controller
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
 			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
 			$data['page_title'] = "Edit Fee Structure";
 			$data['menu'] = "feestructure";
 
@@ -781,11 +820,34 @@ class Admin extends CI_Controller
 		}
 	}
 
+	function viewFeeStructure($id)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			$data['page_title'] = "View Fee Structure";
+			$data['menu'] = "feestructure";
+
+			$data['fee_structure'] = $this->admin_model->get_details_by_id($id, 'id', 'fee_structure');
+			$this->admin_template->show('admin/viewFeeStructure', $data);
+
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
 	function reports()
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
 			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
 			$data['page_title'] = "Reports";
 			$data['menu'] = "reports";
 
@@ -798,10 +860,11 @@ class Admin extends CI_Controller
 	function subquotaDropdown()
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
-			$data['role'] = $sess['role'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
 
 			$quota = $this->input->post('quota');
 			$dept = $this->input->post('dept');
@@ -826,10 +889,11 @@ class Admin extends CI_Controller
 	public function enquiryAdmission($encryptAadhar)
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
-			$data['role'] = $sess['role'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
 
 			// echo $encryptAadhar;
 			$aadhar = base64_decode($encryptAadhar);
@@ -850,10 +914,11 @@ class Admin extends CI_Controller
 	public function admissions($status = null)
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
-			$data['role'] = $sess['role'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
 
 			$data['admissionStatus'] = $this->globals->admissionStatus();
 
@@ -873,10 +938,12 @@ class Admin extends CI_Controller
 	public function report($report, $download = '')
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
-			$data['role'] = $sess['role'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
 			$data['page_title'] = 'Reports';
 			$data['menu'] = 'reports';
 			$data['report_type'] = $report;
@@ -1097,10 +1164,12 @@ class Admin extends CI_Controller
 	public function report_department($download = '')
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
-			$data['role'] = $sess['role'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
 			$data['page_title'] = 'Reports';
 			$data['menu'] = 'reports';
 			$data['report_type'] = $report;
@@ -1162,10 +1231,12 @@ class Admin extends CI_Controller
 	public function report_category($download = '')
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
-			$data['role'] = $sess['role'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
 			$data['page_title'] = 'Reports';
 			$data['menu'] = 'reports';
 			$data['report_type'] = $report;
@@ -1264,9 +1335,11 @@ class Admin extends CI_Controller
 	{
 
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
 
 			$data['page_title'] = 'Admission Details';
 			$data['menu'] = 'admissions';
@@ -1296,16 +1369,17 @@ class Admin extends CI_Controller
 
 		$ci = &get_instance();
 		$message = $ci->load->view('email/registration', $email, true);
-		$this->aws_sdk->triggerEmail('girish@medhatech.in', 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!', $message);
+		$this->aws_sdk->triggerEmail('sreeni@medhatech.in', 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!', $message);
 		// echo  $this->aws_sdk->triggerEmail('girish@medhatech.in', 'test', 'testing');
 	}
 	function newAdmission()
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
-			$data['role'] = $sess['role'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
 
 			$data['page_title'] = 'New Admission';
 			$data['menu'] = 'newAdmission';
@@ -1506,10 +1580,11 @@ class Admin extends CI_Controller
 	function blockStudent()
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
-			$data['role'] = $sess['role'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
 
 			$data['page_title'] = 'Admit Studnet';
 			$data['menu'] = 'admissions';
@@ -1540,10 +1615,12 @@ class Admin extends CI_Controller
 	public function users()
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
-			$data['role'] = $sess['role'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
 			$data['page_title'] = 'Users';
 			$data['menu'] = 'users';
 
@@ -1560,9 +1637,11 @@ class Admin extends CI_Controller
 	function changepassword()
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
 
 			$data['page_title'] = 'Change Password';
 			$data['menu'] = 'changepassword';
@@ -1609,9 +1688,12 @@ class Admin extends CI_Controller
 	function collect_payment()
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
 			// $data['action'] = 'admin/collect_fee';
 
 			$data['page_title'] = 'Collect Payment';
@@ -1657,9 +1739,11 @@ class Admin extends CI_Controller
 	function collect_fee()
 	{
 		if ($this->session->userdata('logged_in')) {
-			$sess = $this->session->userdata('logged_in');
-			$data['id'] = $sess['id'];
-			$data['username'] = $sess['username'];
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
 
 			$data['page_title'] = 'Collect Fee';
 			$data['menu'] = 'collectfee';
