@@ -16,16 +16,16 @@
     <p>This is to confirm that we have received your application for course registration. </p>
 
     <p>This Email confirms our receipt of your online application form with the necessary details. Please make a note of
-        your mobile number <strong><?=$mobile;?></strong> as a reference for any further reference.
+        your mobile number <strong><?=$mobile;?></strong> as a reference for any further reference.</p>
 
-    <p>Further details will be shared with you shortly. Please stay tuned.
+    <p>Please visit the management office for further discussion. Please stay tuned. </p>
 
     <p>In the meantime, if you have any questions or require further information, please feel free to contact us at <a
             href="tel:08172-245317">08172-245317</a> or email to <a
-            href="mailto:admissions@mcehassan.ac.in">admissions@mcehassan.ac.in</a>.
+            href="mailto:admissions@mcehassan.ac.in">admissions@mcehassan.ac.in</a>.</p>
 
     <p>We appreciate your interest in our program and look forward to potentially welcoming you as a student at Malnad
-        College of Engineering.
+        College of Engineering.</p>
 
     <p>Regards,<br>
         Admission Team,<br>
