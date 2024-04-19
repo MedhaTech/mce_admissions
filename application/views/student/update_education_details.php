@@ -37,9 +37,7 @@
                           <div class="col-md-3 col-sm-6">
                               <div class="form-group">
                                   <label class="label">Board / University</label>
-                                  <?php $board_options = array(" " => "Select Board / University", "CBSE" => "CBSE", "ICSE" => "ICSE", "KEEB" => "KEEB", "OTHERS" => "OTHERS", "PUC-OPEN" => "PUC-OPEN");
-                                    echo form_dropdown('inst_board', $board_options, (set_value('inst_board')) ? set_value('inst_board') : $inst_board, 'class="form-control " id="inst_board"');
-                                    ?>
+                                  <input type="text" name="inst_board" id="inst_board" class="form-control" placeholder="Enter Institution Board" value="<?php echo (set_value('inst_board')) ? set_value('inst_board') : $inst_board; ?>">
                                   <span class="text-danger"><?php echo form_error('inst_board'); ?></span>
                               </div>
                           </div>

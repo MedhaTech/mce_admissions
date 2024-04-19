@@ -121,7 +121,7 @@ class Student extends CI_Controller
 			$session_data = $this->session->userdata('logged_in');
 			$data['id'] = $session_data['id'];
 			$data['student_name'] = $session_data['student_name'];
-			$data['page_title'] = "Admissiondetails";
+			$data['page_title'] = "ADMISSION DETAILS";
 			$data['menu'] = "admissiondetails";
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
@@ -205,7 +205,7 @@ class Student extends CI_Controller
 			$session_data = $this->session->userdata('logged_in');
 			$data['student_name'] = $session_data['student_name'];
 			$data['id'] = $session_data['id'];
-			$data['page_title'] = "Entrance Exam Details";
+			$data['page_title'] = "ENTRANCE EXAM DETAILS";
 			$data['menu'] = "entrancedetails";
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
@@ -279,7 +279,7 @@ class Student extends CI_Controller
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
 			$data['student_name'] = $session_data['student_name'];
-			$data['page_title'] = "Personaldetails";
+			$data['page_title'] = "PERSONAL DETAILS";
 			$data['menu'] = "personaldetails";
 
 			$data['username'] = $session_data['username'];
@@ -413,7 +413,7 @@ class Student extends CI_Controller
 			$session_data = $this->session->userdata('logged_in');
 			$data['username'] = $session_data['username'];
 			$data['id'] = $session_data['id'];
-			$data['page_title'] = "Parent's Details";
+			$data['page_title'] = "PARENTS DETAILS";
 			$data['menu'] = "parentdetails";
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
@@ -508,8 +508,8 @@ class Student extends CI_Controller
 			$data['student_name'] = $session_data['student_name'];
 			$data['id'] = $session_data['id'];
 			$student_id = $session_data['id'];
-			$data['page_title'] = 'Education Details';
-			$data['menu'] = 'educationdetails';
+			$data['page_title'] = "EDUCATION DETAILS";
+			$data['menu'] = "educationdetails";
 
 			$this->form_validation->set_rules('education_level', 'Education Level', 'required');
 			$this->form_validation->set_rules('inst_type', 'Institution Type', 'required');
