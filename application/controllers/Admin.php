@@ -34,11 +34,11 @@ class Admin extends CI_Controller
 	function check_database($password)
 	{
 		//Field validation succeeded.  Validate against database
-		$username = $this->input->post('username');
+		$username = $this->input->post('username').'@mcehassan.ac.in';
 
 		//query the database
 		$result = $this->admin_model->login($username, md5($password));
-
+		 
 		if ($result) {
 			$sess_array = array();
 			foreach ($result as $row) {
@@ -54,6 +54,57 @@ class Admin extends CI_Controller
 		} else {
 			$this->form_validation->set_message('check_database', 'Invalid username or password');
 			return false;
+		}
+	}
+
+	function forgot_password()
+	{
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+		$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]');
+
+		if ($this->form_validation->run() == FALSE) {
+			$data['page_title'] = "Forgot Password";
+			$data['action'] = 'admin/forgot_password';
+
+			$this->login_template->show('admin/forgot_password', $data);
+		} else {
+			$username = $this->input->post('username');
+			redirect('admin/dashboard', 'refresh');
+		}
+	}
+
+	public function reset_password($encryptTxt)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			// echo $encryptAadhar;
+			$txt = base64_decode($encryptTxt);
+			$txtArray = (explode(",",$txt));
+			
+			$updateDetails = array(
+				'password' => md5($txtArray[0]),
+				'updated_at' => date('Y-m-d H:i:s'),
+				'updated_by' => $data['username']
+			);
+ 
+			$result = $this->admin_model->updateDetailsbyfield('user_id', $txtArray[1], $updateDetails,'users');
+			 
+			if ($result) {
+				$this->session->set_flashdata('message', 'Password reset to mobile number successfully...!');
+				$this->session->set_flashdata('status', 'alert-success');
+			} else {
+				$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+				$this->session->set_flashdata('status', 'alert-warning');
+			}
+
+			redirect('admin/users', 'refresh');
+		} else {
+			redirect('admin/timeout');
 		}
 	}
 
