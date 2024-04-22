@@ -2,8 +2,8 @@
   <div class="content-wrapper">
       <section class="content-header">
           <div class="container-fluid">
-              <div class="card">
-                  <div class="card-header bg-gray-light">
+              <div class="card card-dark">
+                  <div class="card-header">
                       <div class="card-title">
                           <h6 class="m-0"><?= $page_title; ?></h6>
                       </div>
@@ -15,7 +15,7 @@
                       <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
                           <?php  
 							if (count($users)) {
-								$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+								$table_setup = array('table_open' => '<table class="table" id="example2" >');
 								$this->table->set_template($table_setup);
 								$print_fields = array('S.No', 'Account Name', 'Login ID','Mobile', 'Role');
 								$this->table->set_heading($print_fields);

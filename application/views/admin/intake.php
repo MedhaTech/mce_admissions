@@ -15,7 +15,7 @@
                                   </h3>
                               </div>
                               <div class="card-body">
-                                  <table class="table table-hover text-center">
+                                  <table class="table table-hover text-center table-sm">
                                       <thead>
                                           <tr>
                                               <th width="5%">S.NO</th>
@@ -44,6 +44,7 @@
                                                 echo "<td>".$aided1->aided_snq_intake."</td>";
                                                 echo "</tr>";
                                             } 
+                                            $i=1;
                                             echo "<tr><th class='bg-gray' colspan='8'>UG COURSES (UNAIDED)</th></tr>";
                                             foreach ($unaided as $unaided1) {
                                                 echo "<tr>";

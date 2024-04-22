@@ -289,15 +289,15 @@
                                   <div class="col">
                                       <div class="form-group">
                                           <label class="form-label">Total College Fee</label>
-                                          <input type="text" class="form-control" id="total_university_fee"
-                                              name="total_university_fee" placeholder="Total College fee" readonly>
+                                          <input type="text" class="form-control" id="total_college_fee"
+                                              name="total_college_fee" placeholder="Total College fee" readonly>
                                       </div>
                                   </div>
                                   <div class="col">
                                       <div class="form-group">
                                           <label class="form-label">Corpus Fund</label>
-                                          <input type="text" class="form-control" id="corpus_fee" name="corpus_fee"
-                                              placeholder="Corpus Fee" readonly>
+                                          <input type="text" class="form-control" id="corpus_fund" name="corpus_fund"
+                                              placeholder="Corpus Fund" readonly>
                                       </div>
                                   </div>
                                   <div class="col">
@@ -332,13 +332,9 @@
                                               placeholder="Payable Fee" readonly>
                                       </div>
                                   </div>
-
-
                               </div>
 
                               <div class="form-row">
-
-
                                   <div class="col">
                                       <div class="form-group">
                                           <label class="form-label">Remarks</label>
@@ -487,17 +483,11 @@ $(document).ready(function() {
                 'cache': false,
                 'success': function(data) {
 
-                    $('#total_university_fee').val(data.total_university_fee);
-                    var total_university_fee = data.total_university_fee;
-                    $('#corpus_fee').val(data.corpus_fund);
-                    var corpus = data.corpus_fund;
-                    $('#total_tution_fee').val(data.total_tution_fee);
-                    var total_tution_fee = data.total_tution_fee;
-
-                    var total_college_fee = collegeAmount();
-                    $('#total_college_fee').val(collegeAmount);
+                    $('#total_college_fee').val(data.total_college_fee);
+                    $('#corpus_fund').val(data.corpus_fund);
+                    $('#total_tution_fee').val(data.final_fee);
                     var final_amount = finalAmount();
-                    $('#final_amount').val(finalAmount);
+                    $('#final_amount').val(final_amount);
 
                     $("#insert").removeAttr("disabled");
                 }
@@ -682,9 +672,10 @@ $(document).ready(function() {
         event.preventDefault();
         var final_amount = finalAmount();
         $('#final_amount').val(finalAmount);
-        var total_college_fee = collegeAmount();
-        $('#total_college_fee').val(collegeAmount);
+        var final_amount = collegeAmount();
+        $('#final_amount').val(final_amount);
     });
+    
     $("#corpus_fee").change(function() {
         event.preventDefault();
         var final_amount = finalAmount();
@@ -692,25 +683,20 @@ $(document).ready(function() {
     });
 
     function finalAmount() {
-        var total_university_fee = $("#total_university_fee").val();
+        var total_college_fee = $("#total_college_fee").val();
+        var corpus_fund = $("#corpus_fund").val();
         var total_tution_fee = $("#total_tution_fee").val();
         var concession_fee = $("#concession_fee").val();
-        var corpus = $("#corpus_fee").val();
-        var total_college_fee = parseInt(total_university_fee) + parseInt(total_tution_fee) - parseInt(
-            concession_fee);
-
-
-        var final_amount = parseInt(total_college_fee) + parseInt(corpus);
+        
+        var final_amount = parseInt(total_tution_fee) + parseInt(concession_fee);
         return final_amount;
     }
 
     function collegeAmount() {
-        var total_university_fee = $("#total_university_fee").val();
         var total_tution_fee = $("#total_tution_fee").val();
         var concession_fee = $("#concession_fee").val();
 
-        var total_college_fee = parseInt(total_university_fee) + parseInt(total_tution_fee) - parseInt(
-            concession_fee);
+        var total_college_fee = parseInt(total_tution_fee) - parseInt(concession_fee);
 
         return total_college_fee;
     }
@@ -788,8 +774,6 @@ $(document).ready(function() {
         var concession_type = $("#concession_type").val();
         var concession_fee = $("#concession_fee").val();
         var final_amount = $('#final_amount').val();
-
-
 
         $.ajax({
             'type': 'POST',

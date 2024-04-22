@@ -61,16 +61,19 @@ $(function() {
         "responsive": true,
         "lengthChange": false,
         "autoWidth": false,
+        "stateSave": true,
         "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
     $('#example2').DataTable({
         "paging": true,
-        "lengthChange": false,
+        "lengthChange": true,
         "searching": true,
         "ordering": true,
         "info": true,
         "autoWidth": false,
         "responsive": true,
+        "stateSave": true,
     });
 });
 </script>

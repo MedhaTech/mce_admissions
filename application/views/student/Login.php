@@ -1,6 +1,6 @@
 <div class="login-box">
   <div class="login-logo">
-    <a href=""><b>Student</b> Portal</a>
+    <?=$page_title;?>
   </div>
   <!-- /.login-logo -->
   <div class="card">
