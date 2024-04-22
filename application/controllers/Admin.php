@@ -281,6 +281,8 @@ class Admin extends CI_Controller
 
 			$data['academicYear'] = $this->globals->academicYear();
 			$data['course_options'] = array(" " => "Select") + $this->courses();
+			$data['type_options'] = array(" " => "Select") + $this->globals->category();
+			$data['states'] = array(" " => "Select State") + $this->globals->states();
 
 
 			$this->form_validation->set_rules('academic_year', 'Academic Year', 'required');
@@ -288,9 +290,20 @@ class Admin extends CI_Controller
 
 			$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]');
 			$this->form_validation->set_rules('email', 'Email', 'trim|valid_email');
+			$this->form_validation->set_rules('par_name', 'Parent Name', 'required');
+			$this->form_validation->set_rules('par_mobile', 'Parent Mobile', 'required');
+			$this->form_validation->set_rules('par_email', 'Parent Email', 'required');
 			$this->form_validation->set_rules('course', 'Course', 'required');
+			$this->form_validation->set_rules('course1', 'Course', 'required');
+			$this->form_validation->set_rules('course2', 'Course', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
+			// $this->form_validation->set_rules('adhaar', 'Adhaar', 'required');
 			$this->form_validation->set_rules('state', 'State', 'required');
 			$this->form_validation->set_rules('city', 'City', 'required');
+			$this->form_validation->set_rules('category', 'Category', 'required');
+			$this->form_validation->set_rules('sslc_grade', 'Sslc Grade', 'required');
+			$this->form_validation->set_rules('puc1_grade', 'Puc Grade', 'required');
+			$this->form_validation->set_rules('puc2_grade', 'Puc Grade', 'required');
 			$this->form_validation->set_rules('register_grade', '10+2 Percentage / Grade', 'required');
 			$this->form_validation->set_rules('exam_board', 'Exam Board', 'required');
 			$this->form_validation->set_rules('register_number', 'Register Number', 'required');
@@ -307,9 +320,20 @@ class Admin extends CI_Controller
 
 				$data['mobile'] = $enquiryDetails->mobile;
 				$data['email'] =  $enquiryDetails->email;
+				$data['par_name'] =  $enquiryDetails->par_name;
+				$data['par_mobile'] =  $enquiryDetails->par_mobile;
+				$data['par_email'] =  $enquiryDetails->par_email;
 				$data['course'] =  $enquiryDetails->course_id;
+				$data['course1'] =  $enquiryDetails->course_id;
+				$data['course2'] =  $enquiryDetails->course_id;
+				$data['gender'] =  $enquiryDetails->gender;
+				$data['adhaar'] =  $enquiryDetails->adhaar;
 				$data['state'] =  $enquiryDetails->state;
 				$data['city'] =  $enquiryDetails->city;
+				$data['category'] =  $enquiryDetails->category;
+				$data['sslc_grade'] =  $enquiryDetails->sslc_grade;
+				$data['puc1_grade'] =  $enquiryDetails->puc1_grade;
+				$data['puc2_grade'] =  $enquiryDetails->puc2_grade;
 				$data['exam_board'] =  $enquiryDetails->exam_board;
 				$data['register_number'] =  $enquiryDetails->register_number;
 				$data['register_grade'] = $enquiryDetails->register_grade;
@@ -325,10 +349,21 @@ class Admin extends CI_Controller
 					'register_grade' => $this->input->post('register_grade'),
 					'mobile' => $this->input->post('mobile'),
 					'email' => strtolower($this->input->post('email')),
+					'par_name' => $this->input->post('par_name'),
+					'par_mobile' => $this->input->post('par_mobile'),
+					'par_email' => $this->input->post('par_email'),
 					'course_id' => $this->input->post('course'),
+					'course_id' => $this->input->post('course1'),
+					'course_id' => $this->input->post('course2'),
+					'gender' => $this->input->post('gender'),
+					'adhaar' => $this->input->post('adhaar'),
 					'course' => $course,
 					'state' => $this->input->post('state'),
 					'city' => $this->input->post('city'),
+					'category' => $this->input->post('category'),
+					'sslc_grade' => $this->input->post('sslc_grade'),
+					'puc1_grade' => $this->input->post('puc1_grade'),
+					'puc2_grade' => $this->input->post('puc2_grade'),
 
 					'exam_board' => strtoupper($this->input->post('exam_board')),
 					'register_number' => $this->input->post('register_number')
@@ -1355,7 +1390,24 @@ class Admin extends CI_Controller
 			$data['personalDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$data['parentDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
+			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'id', 'student_education_details')->result();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+
+			
+			$upload_path = "./assets/students/$id/";
+
+				// Check if the directory exists
+				if (is_dir($upload_path)) {
+					// Get list of files in the directory
+					$files = scandir($upload_path);
+		
+					// Remove . and .. from the list
+					$data['files'] = array_diff($files, array('.', '..'));
+				}
+				else
+				{
+					$data['files'] = array();
+				}
 			$this->admin_template->show('admin/admission_details', $data);
 		} else {
 			redirect('admin/timeout');

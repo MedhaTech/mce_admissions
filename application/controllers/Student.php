@@ -121,7 +121,7 @@ class Student extends CI_Controller
 			$student_session = $this->session->userdata('student_in');
 			$data['id'] = $student_session['id'];
 			$data['student_name'] = $student_session['student_name'];
-			$data['page_title'] = "Admissiondetails";
+			$data['page_title'] = "ADMISSION DETAILS";
 			$data['menu'] = "admissiondetails";
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
@@ -205,7 +205,7 @@ class Student extends CI_Controller
 			$student_session = $this->session->userdata('student_in');
 			$data['student_name'] = $student_session['student_name'];
 			$data['id'] = $student_session['id'];
-			$data['page_title'] = "Entrance Exam Details";
+			$data['page_title'] = "ENTRANCE EXAM DETAILS";
 			$data['menu'] = "entrancedetails";
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
@@ -279,7 +279,7 @@ class Student extends CI_Controller
 		if ($this->session->userdata('student_in')) {
 			$student_session = $this->session->userdata('student_in');
 			$data['student_name'] = $student_session['student_name'];
-			$data['page_title'] = "Personaldetails";
+			$data['page_title'] = "PERSONAL DETAILS";
 			$data['menu'] = "personaldetails";
 
 			$data['username'] = $student_session['username'];
@@ -413,7 +413,7 @@ class Student extends CI_Controller
 			$student_session = $this->session->userdata('student_in');
 			$data['username'] = $student_session['username'];
 			$data['id'] = $student_session['id'];
-			$data['page_title'] = "Parent's Details";
+			$data['page_title'] = "PARENTS DETAILS";
 			$data['menu'] = "parentdetails";
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
@@ -508,8 +508,8 @@ class Student extends CI_Controller
 			$data['student_name'] = $student_session['student_name'];
 			$data['id'] = $student_session['id'];
 			$student_id = $student_session['id'];
-			$data['page_title'] = 'Education Details';
-			$data['menu'] = 'educationdetails';
+			$data['page_title'] = "EDUCATION DETAILS";
+			$data['menu'] = "educationdetails";
 
 			$this->form_validation->set_rules('education_level', 'Education Level', 'required');
 			$this->form_validation->set_rules('inst_type', 'Institution Type', 'required');
@@ -671,13 +671,14 @@ class Student extends CI_Controller
 
 				$config['upload_path'] = './assets/students/' . $data['id'].'/';
 				$config['allowed_types']    = 'jpg|png|pdf'; // Adjust file types as needed
-				$config['max_size']         = 1024; // Maximum file size in kilobytes (10MB)
+				$config['max_size']         = 10240; // Maximum file size in kilobytes (10MB)
 				$config['encrypt_name']     = FALSE; // Encrypt the file name for security
 				// Make sure the directory exists, if not, create it
 				if (!is_dir($config['upload_path'])) {
 					mkdir($config['upload_path'], 0777, true);
 				}
 				$upload_path=$config['upload_path'];
+				
 
 
 				$this->load->library('upload', $config);
@@ -690,7 +691,9 @@ class Student extends CI_Controller
 				if (file_exists($existing_file_path)) {
 					unlink($existing_file_path);
 				}
-	
+				var_dump($upload_path);
+				var_dump($existing_file_path);
+				die();
 				if (!$this->upload->do_upload('photo')) {
 					// If upload fails, show error message
 					$error = array('error' => $this->upload->display_errors());

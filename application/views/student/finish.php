@@ -6,7 +6,7 @@
             <div class="card m-2 shadow card-info">
                 <div class="card-header ">
                     <h3 class="card-title">
-                        Admission Details
+                        ADMISSION DETAILS
                     </h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
@@ -155,7 +155,7 @@
             <div class="card m-2 shadow card-info">
                 <div class="card-header ">
                     <h3 class="card-title">
-                        Entrance Exam Details
+                        ENTRANCE EXAM DETAILS
                     </h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
@@ -230,7 +230,7 @@
                 <div class="card-header ">
                     <h3 class="card-title">
                         <!-- <i class="fas fa-chart-pie mr-1"></i> -->
-                        Personal Details
+                        PERSONAL DETAILS
                     </h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
@@ -408,7 +408,7 @@
             <div class="card m-2 shadow card-info">
                 <div class="card-header ">
                     <h3 class="card-title">
-                        Parent's Details
+                        PARENTS DETAILS
                     </h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
@@ -499,7 +499,7 @@
             <div class="card m-2 shadow card-info">
                 <div class="card-header ">
                     <h3 class="card-title">
-                        Educational Qualification Details
+                        EDUCATION QUALIFICATION DETAILS
                     </h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
@@ -635,6 +635,8 @@
                                 $min_marks = $edu->{"subject_" . $i . "_min_marks"};
                                 $max_marks = $edu->{"subject_" . $i . "_max_marks"};
                                 $obtained_marks = $edu->{"subject_" . $i . "_obtained_marks"};
+                            
+                                if($subject_name!= ''){
                                 ?>
                             <tr>
                                 <td>
@@ -650,7 +652,7 @@
                                 <?= $obtained_marks;?>
                                 </td>
                             </tr>
-                            <?php } ?>
+                            <?php } }?>
                         
                         </tbody>
                         
@@ -665,7 +667,7 @@
             <div class="card m-2 shadow card-info">
                 <div class="card-header ">
                     <h3 class="card-title">
-                        Documents
+                        DOCUMENTS
                     </h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
@@ -710,7 +712,7 @@
           } else {
             echo "<div class='text-center'><img src='" . base_url() . "assets/img/no_data.jpg' class='nodata'></div>";
           } ?>
-        </div>
+                 </div>
                 </div>
             </div>
             <div class="card m-2 shadow">
@@ -722,14 +724,14 @@
                                     acknowledge that the college has the authority for taking punitive actions against
                                     me for violation or non-compliance of the same*</label></div>
                         </div>
-                        <div class="col-md-4 mt-2">
+                        <div class="col-md-6 mt-2">
                             <div class="form-group">
                                 <label class="font-weight-normal">Applicant Name</label>
                                 <input type="text" class="form-control" id="student_name" name="student_name" value="<?php echo (set_value('student_name')) ? set_value('student_name') : $student_name; ?>" placeholder="Enter Student Name" readonly>
                                 <span class="text-danger"><?php echo form_error('student_name'); ?></span>
                             </div>
                         </div>
-                        <div class="col-md-4 mt-2">
+                        <!-- <div class="col-md-4 mt-2">
                             <div class="form-group">
                                 <?php //print_r($admissionDetails); 
                                 ?>
@@ -737,8 +739,8 @@
                                 <input type="text" class="form-control" id="father_name" name="father_name" value="<?php echo (set_value('father_name')) ? set_value('father_name') : $father_name; ?>" placeholder="Enter Student Name" readonly>
                                 <span class="text-danger"><?php echo form_error('father_name'); ?></span>
                             </div>
-                        </div>
-                        <div class="col-md-4 mt-2">
+                        </div> -->
+                        <div class="col-md-6 mt-2">
                             <div class="form-group">
                                 <label class="font-weight-normal">Date</label>
                                 <input type="text" class="form-control" id="date" name="date" value="<?php echo date('d/m/Y'); ?>" placeholder="Enter Student Name" readonly>
