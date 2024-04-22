@@ -695,6 +695,8 @@ class Student extends CI_Controller
 					// If upload fails, show error message
 					$error = array('error' => $this->upload->display_errors());
 					// Handle error as needed
+					var_dump($error);
+					die();
 					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
 					$this->session->set_flashdata('status', 'alert-warning');
 				} else {
