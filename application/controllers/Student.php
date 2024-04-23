@@ -691,9 +691,6 @@ class Student extends CI_Controller
 				if (file_exists($existing_file_path)) {
 					unlink($existing_file_path);
 				}
-				var_dump($upload_path);
-				var_dump($existing_file_path);
-				die();
 				if (!$this->upload->do_upload('photo')) {
 					// If upload fails, show error message
 					$error = array('error' => $this->upload->display_errors());
