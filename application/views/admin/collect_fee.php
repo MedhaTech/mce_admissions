@@ -144,7 +144,7 @@
 
 
                 </div>
-
+            </div>
             
             <!-- /.col -->
             <div class="card m-2 shadow card-info">
@@ -187,15 +187,15 @@
                         <div class="col-md-4 col-sm-12">
                         <div class="form-group">
                                 <label>Type</label>
-                                <input class="form-control" type="text" id="type" value="<?php echo (set_value('type')) ? set_value('type') : $type; ?>" name="type"  placeholder="Enter Type" />
-                                <span class="text-danger"><?php echo form_error('type'); ?></span>
+                                <input class="form-control" type="text" id="fee_type" value="<?php echo (set_value('fee_type')) ? set_value('fee_type') : $fee_type; ?>" name="fee_type"  placeholder="Enter Type" />
+                                <span class="text-danger"><?php echo form_error('fee_type'); ?></span>
                             </div>  
                         </div>
                         <div class="col-md-4 col-sm-12">
                         <div class="form-group">
                                 <label>Amount</label>
                                 <input class="form-control" type="text" id="amount" value="<?php echo (set_value('amount')) ? set_value('amount') : $amount; ?>" name="amount"  placeholder="Enter Amount" />
-                                <span class="text-danger"><?php echo form_error('amount'); ?></span>
+                                <span class="text-dangePr"><?php echo form_error('amount'); ?></span>
                             </div>  
                         </div>
                     </div>
@@ -204,15 +204,15 @@
                         <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                                 <label>Cheque/DD/Challan Date</label>
-                                <input class="form-control" type="date" id="challan" value="<?php echo (set_value('challan')) ? set_value('challan') : $challan; ?>" name="challan"  placeholder="Enter Challan" />
-                                <span class="text-danger"><?php echo form_error('challan'); ?></span>
+                                <input class="form-control" type="date" id="ref_date" value="<?php echo (set_value('ref_date')) ? set_value('ref_date') : $ref_date; ?>" name="ref_date"  placeholder="Enter Challan" />
+                                <span class="text-danger"><?php echo form_error('ref_date'); ?></span>
                             </div>  
                         </div>
                         <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                                 <label>Cheque/DD/Challen Number</label>
-                                <input class="form-control" type="text" id="challan_number" value="<?php echo (set_value('challan_number')) ? set_value('challan_number') : $challan_number; ?>" name="challan_number"  placeholder="Enter Challan Number" />
-                                <span class="text-danger"><?php echo form_error('challan_number'); ?></span>
+                                <input class="form-control" type="text" id="ref_number" value="<?php echo (set_value('ref_number')) ? set_value('ref_number') : $ref_number; ?>" name="ref_number"  placeholder="Enter Challan Number" />
+                                <span class="text-danger"><?php echo form_error('ref_number'); ?></span>
                             </div>  
                         </div>
                     </div>
@@ -221,8 +221,8 @@
                         <div class="col-md-12 col-sm-12">
                         <div class="form-group">
                                 <label>Bank Name/Branch</label>
-                                <input class="form-control" type="text" id="branch" value="<?php echo (set_value('branch')) ? set_value('branch') : $branch; ?>" name="branch"  placeholder="Enter Bank Name/Branch Name" />
-                                <span class="text-danger"><?php echo form_error('branch'); ?></span>
+                                <input class="form-control" type="text" id="bank_branch" value="<?php echo (set_value('bank_branch')) ? set_value('bank_branch') : $bank_branch; ?>" name="bank_branch"  placeholder="Enter Bank Name/Branch Name" />
+                                <span class="text-danger"><?php echo form_error('bank_branch'); ?></span>
                             </div>  
                         </div>
                     </div>
@@ -231,8 +231,8 @@
                         <div class="col-md-12">
                         <div class="form-group">
                                 <label>Remarks</label>
-                                <textarea class="form-control" type="text" id="remark" value="<?php echo (set_value('remark')) ? set_value('remark') : $remark; ?>" name="remark"  placeholder="Enter Remark"> </textarea>
-                                <span class="text-danger"><?php echo form_error('remark'); ?></span>
+                                <textarea class="form-control" type="text" id="remarks" value="<?php echo (set_value('remarks')) ? set_value('remarks') : $remarks; ?>" name="remarks"  placeholder="Enter Remark"> </textarea>
+                                <span class="text-danger"><?php echo form_error('remarks'); ?></span>
                             </div>  
                         </div>
                     </div>
@@ -242,7 +242,7 @@
             </div>
            
 
-
+        
 
     </section>
     <!-- /.content -->
