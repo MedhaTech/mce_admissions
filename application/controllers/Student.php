@@ -1,8 +1,24 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+use io\billdesk\client\hmacsha256\BillDeskJWEHS256Client;
+use io\billdesk\client\Logging;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use PHPUnit\Framework\TestCase;
+
 class Student extends CI_Controller
 {
+
+	private $client;
+
+	function setUp()
+    {
+        $this->client = new BillDeskJWEHS256Client("https://pguat.billdesk.io", "<your client id here>", "<your secret key here>");
+        $logger = new Logger("default");
+        $logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
+        $this->client->setLogger($logger);
+    }
 
 	function __construct()
 	{
@@ -555,7 +571,12 @@ class Student extends CI_Controller
 				}
 				$data['educations_details'] = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'student_education_details')->result();
 				$data['action'] = 'student/educationdetails/';
-
+				$data['student_name'] = $student_session['student_name'];
+				$data['id'] = $student_session['id'];
+				$student_id = $student_session['id'];
+				$data['page_title'] = "EDUCATION DETAILS";
+				$data['menu'] = "educationdetails";
+				
 				$this->student_template->show('student/education_details', $data);
 			} else {
 
@@ -617,6 +638,25 @@ class Student extends CI_Controller
 			$data['page_title'] = "Finish";
 			$data['menu'] = "finish";
 			$data['id'] = $student_session['id'];
+		} else {
+			redirect('student', 'refresh');
+		}
+	}
+
+	function fee_details()
+	{
+		if ($this->session->userdata('student_in')) {
+			$student_session = $this->session->userdata('student_in');
+			$data['student_name'] = $student_session['student_name'];
+			echo $data['id'] = $student_session['id'];
+			$student_id = $student_session['id'];
+			$data['page_title'] = "Fee Details";
+			$data['menu'] = "fee_details";
+
+			$data['fees'] = $this->admin_model->getDetailsbyfield($data['id'], 'student_id', 'fee_master')->row();
+
+			$this->student_template->show('student/fee_details', $data);			 
+
 		} else {
 			redirect('student', 'refresh');
 		}
@@ -815,6 +855,11 @@ class Student extends CI_Controller
 					// }
 				}
 				$data['action'] = 'student/updateeducationdetails/' . $edu_id;
+				$data['student_name'] = $student_session['student_name'];
+				$data['id'] = $student_session['id'];
+				$data['page_title'] = 'Education Details';
+				$data['menu'] = 'educationdetails';
+
 				$this->student_template->show('student/update_education_details', $data);
 			} else {
 

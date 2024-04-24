@@ -133,10 +133,10 @@
                         </li>
 
                         <li class="nav-item ">
-                            <a href="<?php echo base_url();?>student/admissionfee"
-                                class="nav-link <?=$menu_active = ($menu == "admissionfee")? 'active' :''; ?>">
+                            <a href="<?php echo base_url();?>student/fee_details"
+                                class="nav-link <?=$menu_active = ($menu == "fee_details")? 'active' :''; ?>">
                                 <i class="nav-icon far fa-circle"></i>
-                                <p>Application Fee</p>
+                                <p>Fee Details</p>
                             </a>
                         </li>
 

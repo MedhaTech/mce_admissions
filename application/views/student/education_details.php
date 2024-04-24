@@ -11,7 +11,7 @@
               <div class="card card-info shadow mb-2">
               <div class="card-header">
                       <h3 class="card-title">
-                          EDUCATION DETAILS
+                          EDUCATION DETAILS 
                       </h3>
                       <div class="card-tools">
                           <ul class="nav nav-pills ml-auto">
