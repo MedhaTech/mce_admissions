@@ -145,6 +145,84 @@
 
                 </div>
             </div>
+
+            <div class="card m-2 shadow card-info">
+                  <div class="card-header">
+                      <h3 class="card-title">Student Fee Details</h3>
+                      <div class="card-tools">
+                          <ul class="nav nav-pills ml-auto">
+                              <li class="nav-item">
+                                
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+                  <div class="card-body">
+                      <?php // print_r($fees); ?>
+                      <div class="row">
+                          <!-- <div class="col-2">
+                              <div class="form-group">
+                                  <label class="form-label">Total College Fee + Corpus Fund - Concession Fee (Rs.)</label>
+                                  <h4><?php echo number_format($fees->total_college_fee,0).' + '.number_format($fees->corpus_fund,0).' - '.number_format($studentDetails->concession_fee,0); ?>
+                                  </h4>
+                              </div>
+                          </div> -->
+                          <div class="col-md-2 col-sm-12">
+                              <div class="form-group">
+                                  <label class="form-label">College Fee</label>
+                                  <h4><?php echo number_format($fees->total_college_fee,0); ?>
+                                  </h4>
+                              </div>
+                          </div>
+                          <div class="col-md-2 col-sm-12">
+                              <div class="form-group">
+                                  <label class="form-label">Corpus Fund</label>
+                                  <h4><?php echo number_format($fees->corpus_fund,0); ?>
+                                  </h4>
+                              </div>
+                          </div>
+                          <div class="col-md-2 col-sm-12">
+                              <div class="form-group">
+                                  <label class="form-label">Concession Fee</label>
+                                  <h4><?php echo number_format($fees->concession_fee,0); ?>
+                                  </h4>
+                              </div>
+                          </div>
+                          <!-- <div class="col-2">
+                              <div class="form-group">
+                                  <label class="form-label">Total College Fee + Corpus Fund - Concession Fee
+                                      (Rs.)</label>
+                                  <h4><?php echo number_format($fees->total_college_fee,0).' + '.number_format($fees->corpus_fund,0).' - '.number_format($studentDetails->concession_fee,0); ?>
+                                  </h4>
+                              </div>
+                          </div> -->
+                          <div class="col-md-2 col-sm-12">
+                              <div class="form-group">
+                                  <label class="form-label">Total Fee (Rs.)</label>
+                                  <h4 class="text-primary"><?php echo number_format($fees->final_fee,2); ?>
+                                  </h4>
+                              </div>
+                          </div>
+                          <div class="col-md-2 col-sm-12">
+                              <div class="form-group">
+                                  <label class="form-label">Paid Fee (Rs.)</label>
+                                  <h4 class="text-success"><?php echo number_format($paid_amount,2); ?></h4>
+                              </div>
+                          </div>
+                          <div class="col-md-2 col-sm-12">
+                              <div class="form-group">
+                                  <label class="form-label">Balance Fee (Rs.)</label>
+                                  <h4 class="text-danger">
+                                      <?php $balance_amount = $fees->final_fee - $paid_amount; 
+                                        echo number_format($balance_amount,2); ?>
+                                  </h4>
+                                  <!-- <?php echo anchor('','Pay Balance Fee','class="btn btn-danger btn-sm"'); ?> -->
+                              </div>
+                          </div>
+                      </div>
+
+                  </div>
+              </div>
             
             <!-- /.col -->
             <div class="card m-2 shadow card-info">
@@ -161,81 +239,77 @@
                 
                 <div class="card-body">
                 <?php echo form_open_multipart($action, 'class="user"'); ?>
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12">
-                            <div class="form-group">
-                                <label class="form-label">Mode of Payment</label><br>
-                                <input type="radio" name="time" id="cheque" value="cheque"> Cheque &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="radio" name="time" id="dd" value="dd"> DD   &nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="radio" name="time" id="challan" value="challan"> Challan  &nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="radio" name="time" id="neft" value="neft"> NEFT &nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="radio" name="time" id="scholarship" value="scholarship"> Scholarship  &nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="radio" name="time" id="freeship" value="freeship"> Freeship &nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="radio" name="time" id="others" value="others"> Others
+                <div class="col-md-6 col-sm-12">
+                        <input type="hidden" id="rec" name="rec" value="<?=$rec;?>" readonly/>
+                        <input type="hidden" id="paid_amount" name="paid_amount" value="<?=$paid_amount;?>" readonly/>
+                        <label class="form-label text-primary">Mode of Payment</label>
+                        
+                        <div class="form-group  col-sm-12">
+                            <label class="radio-inline mr-3">
+                              <input type="radio" name="mode_of_payment" id="mode_of_payment" value="Cash"> Cash
+                            </label>
+                            <label class="radio-inline mr-3">
+                              <input type="radio" name="mode_of_payment" id="mode_of_payment" value="ChequeDD"> Cheque/DD
+                            </label>
+                            <label class="radio-inline mr-3">
+                              <input type="radio" name="mode_of_payment" id="mode_of_payment" value="OnlinePayment"> Online Payment
+                            </label>    
+                            <span class="text-danger"><?php echo form_error('mode_of_payment'); ?></span>
+                        </div>
+                        
+                        <div id="cash_details">
+                            <h6 class="form-label text-primary">Pay by cash in MCE College Accounts Office.</h6>
+                            <div class="form-group col-md-6 col-sm-12">    
+                                <label class="form-label">Paid Date:</label>
+                                <input type="date" class="form-control" placeholder="Enter Date" id="cash_date" name="cash_date" value="" >
+                        		<span class="text-danger"><?php echo form_error('cash_date'); ?></span>
+                            </div>
+                            <div class="form-group col-md-6 col-sm-12">    
+                                <label class="form-label">Amount:</label>
+                                <input type="text" class="form-control" placeholder="Enter amount" id="cash_amount" name="cash_amount" value="" >
+                    		    <span class="text-danger"><?php echo form_error('cash_amount'); ?></span>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-4 col-sm-12">
-                            <div class="form-group">
-                                <label>Year Fee</label>
-                                <input class="form-control" type="text" id="yearfee" value="<?php echo (set_value('yearfee')) ? set_value('yearfee') : $yearfee; ?>" name="yearfee"  placeholder="Enter Year Fee" />
-                                <span class="text-danger"><?php echo form_error('yearfee'); ?></span>
-                            </div>  
+                        <div id="cheque_dd_details">
+                            <div class="form-group col-md-6 col-sm-12">    
+                                <label class="form-label">Cheque/DD Date:</label>
+                                <input type="date" class="form-control" placeholder="Enter Date" id="cheque_dd_date" name="cheque_dd_date" value="" >
+                        		<span class="text-danger"><?php echo form_error('cheque_dd_date'); ?></span>
+                            </div>
+                            <div class="form-group col-md-6 col-sm-12">    
+                                <label class="form-label">Cheque/DD Number:</label>
+                                <input type="text" class="form-control" placeholder="Enter number" id="cheque_dd_number" name="cheque_dd_number" value="" >
+                    		    <span class="text-danger"><?php echo form_error('cheque_dd_number'); ?></span>
+                            </div>
+                            <div class="form-group col-md-6 col-sm-12">    
+                                <label class="form-label">Bank Name & Branch:</label>
+                                <input type="text" class="form-control" placeholder="Enter bank name" id="cheque_dd_bank" name="cheque_dd_bank" value="" >
+                    		    <span class="text-danger"><?php echo form_error('cheque_dd_bank'); ?></span>
+                            </div>
+                            <div class="form-group col-md-6 col-sm-12">    
+                                <label class="form-label">Amount:</label>
+                                <input type="text" class="form-control" placeholder="Enter amount" id="cheque_dd_amount" name="cheque_dd_amount" value="" >
+                    		    <span class="text-danger"><?php echo form_error('cheque_dd_amount'); ?></span>
+                            </div>
                         </div>
-                        <div class="col-md-4 col-sm-12">
-                        <div class="form-group">
-                                <label>Type</label>
-                                <input class="form-control" type="text" id="fee_type" value="<?php echo (set_value('fee_type')) ? set_value('fee_type') : $fee_type; ?>" name="fee_type"  placeholder="Enter Type" />
-                                <span class="text-danger"><?php echo form_error('fee_type'); ?></span>
-                            </div>  
+                        <div id="online_payment_details">
+                            <div class="form-group col-md-6 col-sm-12">    
+                                <label class="form-label">Transaction Date:</label>
+                                <input type="date" class="form-control" placeholder="Enter Date" id="transaction_date" name="transaction_date" value=""  >
+                        		<span class="text-danger"><?php echo form_error('transaction_date'); ?></span>
+                            </div>
+                            <div class="form-group col-md-6 col-sm-12">    
+                                <label class="form-label">Transaction Reference ID:</label>
+                                <input type="text" class="form-control" placeholder="Enter number" id="transaction_id" name="transaction_id" value="" >
+                    		    <span class="text-danger"><?php echo form_error('transaction_id'); ?></span>
+                            </div>
+                            <div class="form-group col-md-6 col-sm-12">    
+                                <label class="form-label">Amount:</label>
+                                <input type="text" class="form-control" placeholder="Enter amount" id="transaction_amount" name="transaction_amount" value="" >
+                    		    <span class="text-danger"><?php echo form_error('transaction_amount'); ?></span>
+                            </div>
                         </div>
-                        <div class="col-md-4 col-sm-12">
-                        <div class="form-group">
-                                <label>Amount</label>
-                                <input class="form-control" type="text" id="amount" value="<?php echo (set_value('amount')) ? set_value('amount') : $amount; ?>" name="amount"  placeholder="Enter Amount" />
-                                <span class="text-dangePr"><?php echo form_error('amount'); ?></span>
-                            </div>  
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 col-sm-12">
-                        <div class="form-group">
-                                <label>Cheque/DD/Challan Date</label>
-                                <input class="form-control" type="date" id="ref_date" value="<?php echo (set_value('ref_date')) ? set_value('ref_date') : $ref_date; ?>" name="ref_date"  placeholder="Enter Challan" />
-                                <span class="text-danger"><?php echo form_error('ref_date'); ?></span>
-                            </div>  
-                        </div>
-                        <div class="col-md-6 col-sm-12">
-                        <div class="form-group">
-                                <label>Cheque/DD/Challen Number</label>
-                                <input class="form-control" type="text" id="ref_number" value="<?php echo (set_value('ref_number')) ? set_value('ref_number') : $ref_number; ?>" name="ref_number"  placeholder="Enter Challan Number" />
-                                <span class="text-danger"><?php echo form_error('ref_number'); ?></span>
-                            </div>  
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12">
-                        <div class="form-group">
-                                <label>Bank Name/Branch</label>
-                                <input class="form-control" type="text" id="bank_branch" value="<?php echo (set_value('bank_branch')) ? set_value('bank_branch') : $bank_branch; ?>" name="bank_branch"  placeholder="Enter Bank Name/Branch Name" />
-                                <span class="text-danger"><?php echo form_error('bank_branch'); ?></span>
-                            </div>  
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                        <div class="form-group">
-                                <label>Remarks</label>
-                                <textarea class="form-control" type="text" id="remarks" value="<?php echo (set_value('remarks')) ? set_value('remarks') : $remarks; ?>" name="remarks"  placeholder="Enter Remark"> </textarea>
-                                <span class="text-danger"><?php echo form_error('remarks'); ?></span>
-                            </div>  
-                        </div>
-                    </div>
+                      </div>
 
                     <?php echo form_close(); ?>
                 </div>
@@ -247,3 +321,31 @@
     </section>
     <!-- /.content -->
 </div>
+
+<script>
+	$(document).ready(function(){
+		var base_url = '<?php echo base_url(); ?>';
+        
+        $("#cash_details").hide();
+        $("#cheque_dd_details").hide();
+        $("#online_payment_details").hide();
+        
+        $('input[type=radio][name=mode_of_payment]').change(function() {
+            if(this.value == "Cash"){
+                $("#cash_details").show();
+                $("#cheque_dd_details").hide();
+                $("#online_payment_details").hide();
+            }
+            if(this.value == "ChequeDD"){
+                $("#cash_details").hide();
+                $("#cheque_dd_details").show();
+                $("#online_payment_details").hide();
+            }
+            if(this.value == "OnlinePayment"){
+                $("#cash_details").hide();
+                $("#cheque_dd_details").hide();
+                $("#online_payment_details").show();
+            }
+        });
+    })
+</script>
