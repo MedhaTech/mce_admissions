@@ -596,7 +596,7 @@
 
                    
                     </div>
-                    <table class="table" border="1">
+                    <table class="table table-border">
                         <thead>
                             <tr>
                                 <th>Subject Name</th>
@@ -612,6 +612,7 @@
                                 $min_marks = $edu->{"subject_" . $i . "_min_marks"};
                                 $max_marks = $edu->{"subject_" . $i . "_max_marks"};
                                 $obtained_marks = $edu->{"subject_" . $i . "_obtained_marks"};
+                                if($subject_name){
                                 ?>
                             <tr>
                                 <td>
@@ -627,7 +628,7 @@
                                 <?= $obtained_marks;?>
                                 </td>
                             </tr>
-                            <?php } ?>
+                            <?php } } ?>
                         
                         </tbody>
                         
