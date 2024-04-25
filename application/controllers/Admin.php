@@ -34,11 +34,11 @@ class Admin extends CI_Controller
 	function check_database($password)
 	{
 		//Field validation succeeded.  Validate against database
-		$username = $this->input->post('username');
+		$username = $this->input->post('username').'@mcehassan.ac.in';
 
 		//query the database
 		$result = $this->admin_model->login($username, md5($password));
-
+		 
 		if ($result) {
 			$sess_array = array();
 			foreach ($result as $row) {
@@ -54,6 +54,57 @@ class Admin extends CI_Controller
 		} else {
 			$this->form_validation->set_message('check_database', 'Invalid username or password');
 			return false;
+		}
+	}
+
+	function forgot_password()
+	{
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+		$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]');
+
+		if ($this->form_validation->run() == FALSE) {
+			$data['page_title'] = "Forgot Password";
+			$data['action'] = 'admin/forgot_password';
+
+			$this->login_template->show('admin/forgot_password', $data);
+		} else {
+			$username = $this->input->post('username');
+			redirect('admin/dashboard', 'refresh');
+		}
+	}
+
+	public function reset_password($encryptTxt)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			// echo $encryptAadhar;
+			$txt = base64_decode($encryptTxt);
+			$txtArray = (explode(",",$txt));
+			
+			$updateDetails = array(
+				'password' => md5($txtArray[0]),
+				'updated_at' => date('Y-m-d H:i:s'),
+				'updated_by' => $data['username']
+			);
+ 
+			$result = $this->admin_model->updateDetailsbyfield('user_id', $txtArray[1], $updateDetails,'users');
+			 
+			if ($result) {
+				$this->session->set_flashdata('message', 'Password reset to mobile number successfully...!');
+				$this->session->set_flashdata('status', 'alert-success');
+			} else {
+				$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+				$this->session->set_flashdata('status', 'alert-warning');
+			}
+
+			redirect('admin/users', 'refresh');
+		} else {
+			redirect('admin/timeout');
 		}
 	}
 
@@ -281,6 +332,8 @@ class Admin extends CI_Controller
 
 			$data['academicYear'] = $this->globals->academicYear();
 			$data['course_options'] = array(" " => "Select") + $this->courses();
+			$data['type_options'] = array(" " => "Select") + $this->globals->category();
+			$data['states'] = array(" " => "Select State") + $this->globals->states();
 
 
 			$this->form_validation->set_rules('academic_year', 'Academic Year', 'required');
@@ -288,9 +341,20 @@ class Admin extends CI_Controller
 
 			$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]');
 			$this->form_validation->set_rules('email', 'Email', 'trim|valid_email');
+			$this->form_validation->set_rules('par_name', 'Parent Name', 'required');
+			$this->form_validation->set_rules('par_mobile', 'Parent Mobile', 'required');
+			$this->form_validation->set_rules('par_email', 'Parent Email', 'required');
 			$this->form_validation->set_rules('course', 'Course', 'required');
+			$this->form_validation->set_rules('course1', 'Course', 'required');
+			$this->form_validation->set_rules('course2', 'Course', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
+			// $this->form_validation->set_rules('adhaar', 'Adhaar', 'required');
 			$this->form_validation->set_rules('state', 'State', 'required');
 			$this->form_validation->set_rules('city', 'City', 'required');
+			$this->form_validation->set_rules('category', 'Category', 'required');
+			$this->form_validation->set_rules('sslc_grade', 'Sslc Grade', 'required');
+			$this->form_validation->set_rules('puc1_grade', 'Puc Grade', 'required');
+			$this->form_validation->set_rules('puc2_grade', 'Puc Grade', 'required');
 			$this->form_validation->set_rules('register_grade', '10+2 Percentage / Grade', 'required');
 			$this->form_validation->set_rules('exam_board', 'Exam Board', 'required');
 			$this->form_validation->set_rules('register_number', 'Register Number', 'required');
@@ -307,9 +371,20 @@ class Admin extends CI_Controller
 
 				$data['mobile'] = $enquiryDetails->mobile;
 				$data['email'] =  $enquiryDetails->email;
+				$data['par_name'] =  $enquiryDetails->par_name;
+				$data['par_mobile'] =  $enquiryDetails->par_mobile;
+				$data['par_email'] =  $enquiryDetails->par_email;
 				$data['course'] =  $enquiryDetails->course_id;
+				$data['course1'] =  $enquiryDetails->course_id;
+				$data['course2'] =  $enquiryDetails->course_id;
+				$data['gender'] =  $enquiryDetails->gender;
+				$data['adhaar'] =  $enquiryDetails->adhaar;
 				$data['state'] =  $enquiryDetails->state;
 				$data['city'] =  $enquiryDetails->city;
+				$data['category'] =  $enquiryDetails->category;
+				$data['sslc_grade'] =  $enquiryDetails->sslc_grade;
+				$data['puc1_grade'] =  $enquiryDetails->puc1_grade;
+				$data['puc2_grade'] =  $enquiryDetails->puc2_grade;
 				$data['exam_board'] =  $enquiryDetails->exam_board;
 				$data['register_number'] =  $enquiryDetails->register_number;
 				$data['register_grade'] = $enquiryDetails->register_grade;
@@ -325,10 +400,21 @@ class Admin extends CI_Controller
 					'register_grade' => $this->input->post('register_grade'),
 					'mobile' => $this->input->post('mobile'),
 					'email' => strtolower($this->input->post('email')),
+					'par_name' => $this->input->post('par_name'),
+					'par_mobile' => $this->input->post('par_mobile'),
+					'par_email' => $this->input->post('par_email'),
 					'course_id' => $this->input->post('course'),
+					'course_id' => $this->input->post('course1'),
+					'course_id' => $this->input->post('course2'),
+					'gender' => $this->input->post('gender'),
+					'adhaar' => $this->input->post('adhaar'),
 					'course' => $course,
 					'state' => $this->input->post('state'),
 					'city' => $this->input->post('city'),
+					'category' => $this->input->post('category'),
+					'sslc_grade' => $this->input->post('sslc_grade'),
+					'puc1_grade' => $this->input->post('puc1_grade'),
+					'puc2_grade' => $this->input->post('puc2_grade'),
 
 					'exam_board' => strtoupper($this->input->post('exam_board')),
 					'register_number' => $this->input->post('register_number')
@@ -1355,7 +1441,24 @@ class Admin extends CI_Controller
 			$data['personalDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$data['parentDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
+			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'id', 'student_education_details')->result();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+
+			
+			$upload_path = "./assets/students/$id/";
+
+				// Check if the directory exists
+				if (is_dir($upload_path)) {
+					// Get list of files in the directory
+					$files = scandir($upload_path);
+		
+					// Remove . and .. from the list
+					$data['files'] = array_diff($files, array('.', '..'));
+				}
+				else
+				{
+					$data['files'] = array();
+				}
 			$this->admin_template->show('admin/admission_details', $data);
 		} else {
 			redirect('admin/timeout');
@@ -1685,60 +1788,43 @@ class Admin extends CI_Controller
 		}
 	}
 
-	function collect_payment()
-	{
-		if ($this->session->userdata('logged_in')) {
-			$session_data = $this->session->userdata('logged_in');
-			$data['id'] = $session_data['id'];
-			$data['username'] = $session_data['username'];
-			$data['full_name'] = $session_data['full_name'];
-			$data['role'] = $session_data['role'];
-
-			// $data['action'] = 'admin/collect_fee';
-
-			$data['page_title'] = 'Collect Payment';
-			$data['menu'] = 'collectpayment';
-
-
-			$this->form_validation->set_rules('usn', 'USN', 'required');
-	        
+	    public function collect_payment(){
+			if ($this->session->userdata('logged_in')) {
+						$session_data = $this->session->userdata('logged_in');
+						$data['id'] = $session_data['id'];
+						$data['username'] = $session_data['username'];
+						$data['full_name'] = $session_data['full_name'];
+						$data['role'] = $session_data['role'];
+			
+						
+			
+						$data['page_title'] = 'Collect Payment';
+						$data['menu'] = 'collectpayment';
+						// $data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
+			
+			$this->form_validation->set_rules('mobile', 'Mobile', 'required');
 	        if($this->form_validation->run() === FALSE){
-	        
-				// $data['action'] = 'admin/collect_fee/'. $data['id'];
-				$data['usn'] = $this->input->post('usn');
+	           $data['action'] = 'admin/collect_fee/'. $data['id'];
 	            $this->admin_template->show('admin/collect_payment',$data);
 	        }else{
-	            $usn = $this->input->post('usn');
-	        
-				$data['details'] = $this->admin_model->getDetailsbyfield($usn, 'usn' ,'admissions')->row();
-				// print_r($data['details']->id); die;
-				$data['studentDetails'] = $this->admin_model->getDetailsbyfield($data['details']->id, 'student_id' ,'fee_master');
-				$this->admin_template->show('admin/collect_fee',$data);
-				// $data['details'] = $this->admin_model->getDetailsbyfield($usn, 'usn' ,'admissions');
-				// $data['studentDetails'] = $this->admin_model->getDetailsbyfield($details, 'student_id' ,'fee_master');
-				// 	$result = $this->admin_model->getDetailsbyfield($data['id'], 'usn' ,'admissions');
-    	        //     if($result){
-    	        //       $this->session->set_flashdata('message', 'usn is found');
-    	        //       $this->session->set_flashdata('status', 'alert-success');
-    	        //     }else{
-    	        //       $this->session->set_flashdata('message', 'usn is not found');
-    	        //       $this->session->set_flashdata('status', 'alert-warning');
-    	        //     }  
-				// $student_id = $this->admin_model->getDetailsbyfield($details, 'student_id' ,'fee_master')->row();
-	            // if($student_id){
-	            //     $student_id = $details->id;
-				// }
-	            // redirect('/admin/collect_payment', 'refresh');  
-	       }
+	            
+	            $mobile = $this->input->post('mobile');
+	            $details = $this->admin_model->getDetailsbyfield( $mobile, 'mobile', 'admissions')->row();
+	            if($details){
+	                $student_id = $details->id;
+	                redirect('admin/collect_fee/'.$student_id, 'refresh');      
+	            }else{
+	                redirect('admin/collect_payment', 'refresh');      
+	            }
+	            
+	        }
+		}else {
+				redirect('admin/timeout');
+		}
+    }
 
-	    }else{
-	      redirect('admin', 'refresh');
-	    }
-	}
-
-	function collect_fee()
-	{
-		if ($this->session->userdata('logged_in')) {
+	public function collect_fee($student_id){
+	    if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
 			$data['id'] = $session_data['id'];
 			$data['username'] = $session_data['username'];
@@ -1747,37 +1833,30 @@ class Admin extends CI_Controller
 
 			$data['page_title'] = 'Collect Fee';
 			$data['menu'] = 'collectfee';
- 
-			// $data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
-			// $data['departmentDetails'] = $this->admin_model->getDetails('departments', $id)->row();
- 
-		
-		    $this->form_validation->set_rules('usn', 'USN', 'required');
-	        
+
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $student_id)->row();
+			$data['fees'] = $this->admin_model->getDetailsbyfield($data['id'], 'student_id', 'fee_master')->row();
+			
+			
 	        if($this->form_validation->run() === FALSE){
-	        
-				$data['action'] = 'admin/collect_fee/'. $data['id'];
+
+				
+				$data['action'] = 'admin/collect_fee/'.$student_id;
 	            $this->admin_template->show('admin/collect_fee',$data);
 	        }else{
-	            $usn = $this->input->post('usn');
-	        
- 
-					$result = $this->admin_model->getDetailsbyfield( $usn, 'usn' ,'admissions');
-					$adm_id=
-					$this->admin_model->getDetailsbyfield( $adm_id, 'student_id' ,'fee_master');
- 
-    	            if($result){
-    	              $this->session->set_flashdata('message', 'usn is found');
-    	              $this->session->set_flashdata('status', 'alert-success');
-    	            }else{
-    	              $this->session->set_flashdata('message', 'usn is not found');
-    	              $this->session->set_flashdata('status', 'alert-warning');
-    	            }  
-	            redirect('/admin/collect_fee', 'refresh');  
-	       }
-
-	    }else{
-	      redirect('admin', 'refresh');
-	    }
-	}
+	            
+	         	            
+	            if($result){
+    	           $this->session->set_flashdata('message', 'Fee Payment details udpated successfully...!');
+    	           $this->session->set_flashdata('status', 'alert-success');
+    	        }else{
+    	           $this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+    	           $this->session->set_flashdata('status', 'alert-warning');
+    	        }  
+	            redirect('admin/collectPayment/'.$student_id, 'refresh');
+	        }
+		}else {
+				redirect('admin/timeout');
+		}
+    }
 }

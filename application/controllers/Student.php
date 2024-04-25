@@ -1,8 +1,24 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+use io\billdesk\client\hmacsha256\BillDeskJWEHS256Client;
+use io\billdesk\client\Logging;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use PHPUnit\Framework\TestCase;
+
 class Student extends CI_Controller
 {
+
+	private $client;
+
+	function setUp()
+    {
+        $this->client = new BillDeskJWEHS256Client("https://pguat.billdesk.io", "<your client id here>", "<your secret key here>");
+        $logger = new Logger("default");
+        $logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
+        $this->client->setLogger($logger);
+    }
 
 	function __construct()
 	{
@@ -46,7 +62,7 @@ class Student extends CI_Controller
 					'student_name' => $row->student_name,
 					'flow' => $row->flow
 				);
-				$this->session->set_userdata('logged_in', $sess_array);
+				$this->session->set_userdata('student_in', $sess_array);
 			}
 			return TRUE;
 		} else {
@@ -57,11 +73,11 @@ class Student extends CI_Controller
 
 	function dashboard()
 	{
-		if ($this->session->userdata('logged_in')) {
-			$session_data = $this->session->userdata('logged_in');
-			$data['id'] = $session_data['id'];
-			$student_id = $session_data['id'];
-			$data['student_name'] = $session_data['student_name'];
+		if ($this->session->userdata('student_in')) {
+			$student_session = $this->session->userdata('student_in');
+			$data['id'] = $student_session['id'];
+			$student_id = $student_session['id'];
+			$data['student_name'] = $student_session['student_name'];
 			$data['page_title'] = "Dashboard";
 			$data['menu'] = "dashboard";
 
@@ -99,10 +115,10 @@ class Student extends CI_Controller
 
 	function startProcess()
 	{
-		if ($this->session->userdata('logged_in')) {
-			$session_data = $this->session->userdata('logged_in');
-			$data['id'] = $session_data['id'];
-			$data['student_name'] = $session_data['student_name'];
+		if ($this->session->userdata('student_in')) {
+			$student_session = $this->session->userdata('student_in');
+			$data['id'] = $student_session['id'];
+			$data['student_name'] = $student_session['student_name'];
 			$data['page_title'] = "Dashboard";
 			$data['menu'] = "dashboard";
 
@@ -117,11 +133,11 @@ class Student extends CI_Controller
 
 	function admissiondetails()
 	{
-		if ($this->session->userdata('logged_in')) {
-			$session_data = $this->session->userdata('logged_in');
-			$data['id'] = $session_data['id'];
-			$data['student_name'] = $session_data['student_name'];
-			$data['page_title'] = "Admissiondetails";
+		if ($this->session->userdata('student_in')) {
+			$student_session = $this->session->userdata('student_in');
+			$data['id'] = $student_session['id'];
+			$data['student_name'] = $student_session['student_name'];
+			$data['page_title'] = "ADMISSION DETAILS";
 			$data['menu'] = "admissiondetails";
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
@@ -201,11 +217,11 @@ class Student extends CI_Controller
 
 	function entranceexamdetails()
 	{
-		if ($this->session->userdata('logged_in')) {
-			$session_data = $this->session->userdata('logged_in');
-			$data['student_name'] = $session_data['student_name'];
-			$data['id'] = $session_data['id'];
-			$data['page_title'] = "Entrance Exam Details";
+		if ($this->session->userdata('student_in')) {
+			$student_session = $this->session->userdata('student_in');
+			$data['student_name'] = $student_session['student_name'];
+			$data['id'] = $student_session['id'];
+			$data['page_title'] = "ENTRANCE EXAM DETAILS";
 			$data['menu'] = "entrancedetails";
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
@@ -276,14 +292,14 @@ class Student extends CI_Controller
 
 	function personaldetails()
 	{
-		if ($this->session->userdata('logged_in')) {
-			$session_data = $this->session->userdata('logged_in');
-			$data['student_name'] = $session_data['student_name'];
-			$data['page_title'] = "Personaldetails";
+		if ($this->session->userdata('student_in')) {
+			$student_session = $this->session->userdata('student_in');
+			$data['student_name'] = $student_session['student_name'];
+			$data['page_title'] = "PERSONAL DETAILS";
 			$data['menu'] = "personaldetails";
 
-			$data['username'] = $session_data['username'];
-			$data['id'] = $session_data['id'];
+			$data['username'] = $student_session['username'];
+			$data['id'] = $student_session['id'];
 			$data['menu'] = "personaldetails";
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
@@ -409,11 +425,11 @@ class Student extends CI_Controller
 
 	function parentdetails()
 	{
-		if ($this->session->userdata('logged_in')) {
-			$session_data = $this->session->userdata('logged_in');
-			$data['username'] = $session_data['username'];
-			$data['id'] = $session_data['id'];
-			$data['page_title'] = "Parent's Details";
+		if ($this->session->userdata('student_in')) {
+			$student_session = $this->session->userdata('student_in');
+			$data['username'] = $student_session['username'];
+			$data['id'] = $student_session['id'];
+			$data['page_title'] = "PARENTS DETAILS";
 			$data['menu'] = "parentdetails";
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
@@ -503,13 +519,13 @@ class Student extends CI_Controller
 
 	function educationdetails()
 	{
-		if ($this->session->userdata('logged_in')) {
-			$session_data = $this->session->userdata('logged_in');
-			$data['student_name'] = $session_data['student_name'];
-			$data['id'] = $session_data['id'];
-			$student_id = $session_data['id'];
-			$data['page_title'] = 'Education Details';
-			$data['menu'] = 'educationdetails';
+		if ($this->session->userdata('student_in')) {
+			$student_session = $this->session->userdata('student_in');
+			$data['student_name'] = $student_session['student_name'];
+			$data['id'] = $student_session['id'];
+			$student_id = $student_session['id'];
+			$data['page_title'] = "EDUCATION DETAILS";
+			$data['menu'] = "educationdetails";
 
 			$this->form_validation->set_rules('education_level', 'Education Level', 'required');
 			$this->form_validation->set_rules('inst_type', 'Institution Type', 'required');
@@ -555,7 +571,12 @@ class Student extends CI_Controller
 				}
 				$data['educations_details'] = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'student_education_details')->result();
 				$data['action'] = 'student/educationdetails/';
-
+				$data['student_name'] = $student_session['student_name'];
+				$data['id'] = $student_session['id'];
+				$student_id = $student_session['id'];
+				$data['page_title'] = "EDUCATION DETAILS";
+				$data['menu'] = "educationdetails";
+				
 				$this->student_template->show('student/education_details', $data);
 			} else {
 
@@ -611,12 +632,31 @@ class Student extends CI_Controller
 
 	function finish()
 	{
-		if ($this->session->userdata('logged_in')) {
-			$session_data = $this->session->userdata('logged_in');
-			$data['student_name'] = $session_data['student_name'];
+		if ($this->session->userdata('student_in')) {
+			$student_session = $this->session->userdata('student_in');
+			$data['student_name'] = $student_session['student_name'];
 			$data['page_title'] = "Finish";
 			$data['menu'] = "finish";
-			$data['id'] = $session_data['id'];
+			$data['id'] = $student_session['id'];
+		} else {
+			redirect('student', 'refresh');
+		}
+	}
+
+	function fee_details()
+	{
+		if ($this->session->userdata('student_in')) {
+			$student_session = $this->session->userdata('student_in');
+			$data['student_name'] = $student_session['student_name'];
+			echo $data['id'] = $student_session['id'];
+			$student_id = $student_session['id'];
+			$data['page_title'] = "Fee Details";
+			$data['menu'] = "fee_details";
+
+			$data['fees'] = $this->admin_model->getDetailsbyfield($data['id'], 'student_id', 'fee_master')->row();
+
+			$this->student_template->show('student/fee_details', $data);			 
+
 		} else {
 			redirect('student', 'refresh');
 		}
@@ -624,9 +664,9 @@ class Student extends CI_Controller
 
 	function admissionfee()
 	{
-		if ($this->session->userdata('logged_in')) {
-			$session_data = $this->session->userdata('logged_in');
-			$data['student_name'] = $session_data['student_name'];
+		if ($this->session->userdata('student_in')) {
+			$student_session = $this->session->userdata('student_in');
+			$data['student_name'] = $student_session['student_name'];
 			$data['page_title'] = "Admissionfee";
 			$data['menu'] = "admissionfee";
 			$this->student_template->show('student/admission_fee', $data);
@@ -637,13 +677,13 @@ class Student extends CI_Controller
 
 	function documents()
 	{
-		if ($this->session->userdata('logged_in')) {
-			$session_data = $this->session->userdata('logged_in');
-			$data['student_name'] = $session_data['student_name'];
+		if ($this->session->userdata('student_in')) {
+			$student_session = $this->session->userdata('student_in');
+			$data['student_name'] = $student_session['student_name'];
 			$data['page_title'] = "New Document";
 			$data['menu'] = "documents";
-			$data['id'] = $session_data['id'];
-			$student_id = $session_data['id'];
+			$data['id'] = $student_session['id'];
+			$student_id = $student_session['id'];
 			$data['admissions'] = $this->admin_model->getDetails('admissions', 'id', $data['id'])->row();
 			$this->form_validation->set_rules('documents', 'Document Type', 'required');
 			
@@ -671,13 +711,14 @@ class Student extends CI_Controller
 
 				$config['upload_path'] = './assets/students/' . $data['id'].'/';
 				$config['allowed_types']    = 'jpg|png|pdf'; // Adjust file types as needed
-				$config['max_size']         = 1024; // Maximum file size in kilobytes (10MB)
+				$config['max_size']         = 10240; // Maximum file size in kilobytes (10MB)
 				$config['encrypt_name']     = FALSE; // Encrypt the file name for security
 				// Make sure the directory exists, if not, create it
 				if (!is_dir($config['upload_path'])) {
 					mkdir($config['upload_path'], 0777, true);
 				}
 				$upload_path=$config['upload_path'];
+				
 
 
 				$this->load->library('upload', $config);
@@ -690,7 +731,6 @@ class Student extends CI_Controller
 				if (file_exists($existing_file_path)) {
 					unlink($existing_file_path);
 				}
-	
 				if (!$this->upload->do_upload('photo')) {
 					// If upload fails, show error message
 					$error = array('error' => $this->upload->display_errors());
@@ -714,10 +754,10 @@ class Student extends CI_Controller
 
 	function changePassword()
 	{
-		if ($this->session->userdata('logged_in')) {
-			$session_data = $this->session->userdata('logged_in');
-			$data['student_name'] = $session_data['student_name'];
-			$data['id'] = $session_data['id'];
+		if ($this->session->userdata('student_in')) {
+			$student_session = $this->session->userdata('student_in');
+			$data['student_name'] = $student_session['student_name'];
+			$data['id'] = $student_session['id'];
 			$data['page_title'] = "Change password";
 			$data['menu'] = "changepassword";
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
@@ -760,10 +800,10 @@ class Student extends CI_Controller
 
 	function updateeducationdetails($edu_id)
 	{
-		if ($this->session->userdata('logged_in')) {
-			$session_data = $this->session->userdata('logged_in');
-			$data['student_name'] = $session_data['student_name'];
-			$data['id'] = $session_data['id'];
+		if ($this->session->userdata('student_in')) {
+			$student_session = $this->session->userdata('student_in');
+			$data['student_name'] = $student_session['student_name'];
+			$data['id'] = $student_session['id'];
 			$data['page_title'] = 'Education Details';
 			$data['menu'] = 'educationdetails';
 
@@ -812,6 +852,11 @@ class Student extends CI_Controller
 					// }
 				}
 				$data['action'] = 'student/updateeducationdetails/' . $edu_id;
+				$data['student_name'] = $student_session['student_name'];
+				$data['id'] = $student_session['id'];
+				$data['page_title'] = 'Education Details';
+				$data['menu'] = 'educationdetails';
+
 				$this->student_template->show('student/update_education_details', $data);
 			} else {
 
@@ -868,7 +913,7 @@ class Student extends CI_Controller
 
 	function logout()
 	{
-		$this->session->unset_userdata('logged_in');
+		$this->session->unset_userdata('student_in');
 		session_destroy();
 		redirect('student', 'refresh');
 	}

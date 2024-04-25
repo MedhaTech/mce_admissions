@@ -84,12 +84,12 @@ class Welcome extends CI_Controller {
 					//Setting values for tabel columns
 					$insertDetails = array(
 						'academic_year' => "2024-2025",
-						'student_name' => $this->input->post('name'),
+						'student_name' => strtoupper($this->input->post('name')),
 						'mobile' => $this->input->post('mobile'),
-						'email' => $this->input->post('email'),
-						'par_name' => $this->input->post('par_name'),
+						'email' => strtolower($this->input->post('email')),
+						'par_name' => strtoupper($this->input->post('par_name')),
 						'par_mobile' => $this->input->post('par_mobile'),
-						'par_email' => $this->input->post('par_email'),
+						'par_email' => strtolower($this->input->post('par_email')),
 						'sslc_grade' => $this->input->post('sslc_grade'),
 						'puc1_grade' => $this->input->post('puc1_grade'),
 						'puc2_grade' => $this->input->post('puc2_grade'),
@@ -104,7 +104,7 @@ class Welcome extends CI_Controller {
 						'gender' => $this->input->post('gender'),
 						'category' => $this->input->post('category'),
 						'status' => '1',
-						'reg_by' => $this->input->post('name'),
+						'reg_by' => strtoupper($this->input->post('name')),
 						'reg_date' => date('Y-m-d H:i:s')
 					);	
 					$result = $this->admin_model->insertDetails('enquiries', $insertDetails);

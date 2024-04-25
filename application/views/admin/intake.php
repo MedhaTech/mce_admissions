@@ -15,7 +15,7 @@
                                   </h3>
                               </div>
                               <div class="card-body">
-                                  <table class="table table-hover text-center">
+                                  <table class="table table-hover text-center table-sm">
                                       <thead>
                                           <tr>
                                               <th width="5%">S.NO</th>
@@ -44,6 +44,7 @@
                                                 echo "<td>".$aided1->aided_snq_intake."</td>";
                                                 echo "</tr>";
                                             } 
+                                            $i=1;
                                             echo "<tr><th class='bg-gray' colspan='8'>UG COURSES (UNAIDED)</th></tr>";
                                             foreach ($unaided as $unaided1) {
                                                 echo "<tr>";
@@ -53,7 +54,7 @@
                                                 echo "<td class='text-center font-weight-bold'>".$unaided1->unaided_intake."</td>";
                                                 echo "<td class='bg-gray-light'>".$unaided1->unaided_mgmt_intake."</td>";
                                                 echo "<td>".$unaided1->unaided_comed_k_intake."</td>";
-                                                echo "<td>".$unaided1->uaaided_kea_intake."</td>";
+                                                echo "<td>".$unaided1->unaided_kea_intake."</td>";
                                                 echo "<td>".$unaided1->unaided_snq_intake."</td>";
                                                 echo "</tr>";
                                             } 

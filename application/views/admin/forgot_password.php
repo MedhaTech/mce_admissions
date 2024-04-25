@@ -1,38 +1,39 @@
 <div class="login-box">
     <div class="login-logo">
-        <h2 class='text-white'> Malnad College of Engineering <br /> <span class="h4 text-uppercase">Student Panel
-            </span></h2>
+        <h2 class='text-white'> Malnad College of Engineering </h2>
     </div>
     <!-- /.login-logo -->
-    <div class="card">
+    <div class="card card-outline card-danger">
+
         <div class="card-body login-card-body">
-            <p class="login-box-msg text-uppercase1 p">Enter credentials to Sign in to your account</p>
+            <p class="login-box-msg text-uppercase1 p">Enter your email address and mobile number associated with your
+                account. We'll send you a link to reset your password.</p>
 
             <?php echo form_open($action, 'class="js-validation-signin" method="POST"'); ?>
             <?php echo '<span class="text-danger">'.validation_errors().'</span>'; ?>
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Email" name="email">
+                <input type="text" class="form-control" placeholder="Enter Email" name="email">
                 <div class="input-group-append">
                     <div class="input-group-text">
-                        <span class="fas fa-envelope"></span>
+                        <i class="fas fa-envelope ml-2"></i>
                     </div>
                 </div>
             </div>
             <div class="input-group mb-3">
-                <input type="password" class="form-control" id="password-field" name="password" placeholder="Password">
+                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Enter Mobile" value="">
                 <div class="input-group-append">
                     <div class="input-group-text">
-                    <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                        <span class="fa fa-fw fa-mobile-alt"></span>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-8">
-                    <?php echo anchor('admin/forgot_password','Forgot Password?','class="text-danger"'); ?>
+                <div class="col-6">
+                    <?php echo anchor('admin','<i class="fas fa-caret-left"></i> Back to Login ','class="text-danger"'); ?>
                 </div>
                 <!-- /.col -->
-                <div class="col-4">
-                    <button type="submit" class="btn btn-danger btn-block">Sign In</button>
+                <div class="col-6">
+                    <button type="submit" class="btn btn-danger btn-block">Reset Password</button>
                 </div>
                 <!-- /.col -->
             </div>
@@ -43,6 +44,7 @@
         </div>
         <!-- /.login-card-body -->
     </div>
+
     <div class="text-center text-white mt-3">
         <p>Copyright © <?=date('Y');?>. Powered by
             <?php echo anchor('https://medhatech.in/','MedhaTech','target="_blank" class="text-white font-weight-bold"');?>

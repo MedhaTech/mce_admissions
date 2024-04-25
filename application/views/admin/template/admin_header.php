@@ -59,9 +59,9 @@
             <?php echo form_open_multipart('admin/collect_payment', 'class="user"'); ?>
             <!-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"> -->
             <div class="input-group">
-                <input type="text" class="form-control bg-light border-0 small" placeholder="Enter usn number"
-                    aria-label="Search" id="usn" name="usn" aria-describedby="basic-addon2"
-                    value="<?php echo (set_value('usn')) ? set_value('usn') : $usn; ?>">
+                <input type="text" class="form-control bg-light border-0 small" placeholder="Enter Mobile number"
+                    aria-label="Search" id="mobile" name="mobile" aria-describedby="basic-addon2"
+                    value="<?php echo (set_value('mobile')) ? set_value('mobile') : $mobile; ?>">
                 <div class="input-group-append">
                     <button class="btn btn-primary" type="submit">
                         <i class="fas fa-search fa-sm"></i>
@@ -105,10 +105,10 @@
                             </a>
                         </li>
                         <?php } ?>
-                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
+                        <?php if((in_array($role, array(1,2,3,8)))){ ?>
                         <li class="nav-header">ENQUIRIES</li>
                         <?php } ?>
-                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
+                        <?php if((in_array($role, array(1,2,3,8)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/enquiries"
                                 class="nav-link <?= $menu_active = ($menu == "enquiries") ? 'active' : ''; ?>">
@@ -117,7 +117,7 @@
                             </a>
                         </li>
                         <?php } ?>
-                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
+                        <?php if((in_array($role, array(1,2,3,8)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/newEnquiry"
                                 class="nav-link <?= $menu_active = ($menu == "newEnquiry") ? 'active' : ''; ?>">
@@ -126,7 +126,7 @@
                             </a>
                         </li>
                         <?php } ?>
-                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
+                        <?php if((in_array($role, array(1,2,4,5)))){ ?>
                         <li class="nav-header">ADMISSIONS</li>
                         <?php } ?>
                         <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
@@ -147,7 +147,7 @@
                             </a>
                         </li>
                         <?php } ?>
-                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
+                        <?php if((in_array($role, array(1,6,7)))){ ?>
                         <li class="nav-header">ACCOUNTS</li>
                         <?php } ?>
                         <?php if((in_array($role, array(1,2,6,7)))){ ?>
@@ -189,7 +189,7 @@
                             </a>
                         </li>
                         <?php } ?>
-                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
+                        <?php if((in_array($role, array(1,2)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/users"
                                 class="nav-link <?= $menu_active = ($menu == "users") ? 'active' : ''; ?>">

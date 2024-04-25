@@ -8,9 +8,18 @@
 
               <!-- <h1 class="h3 mb-2 text-gray-800"> Grievance Tickets </h1> -->
 
-              <div class="card card-gray mb-4">
-                  <div class="card-header">
-                      <h3 class="m-0 card-title text-uppercase">Education Details</h6>
+              <div class="card card-info shadow mb-2">
+              <div class="card-header">
+                      <h3 class="card-title">
+                          EDUCATION DETAILS 
+                      </h3>
+                      <div class="card-tools">
+                          <ul class="nav nav-pills ml-auto">
+                              <li class="nav-item">
+                                  <?php echo anchor('student/dashboard', '<i class="fas fa-tachometer-alt"></i> Dashboard ', 'class="btn btn-dark btn-sm"'); ?>
+                              </li>
+                          </ul>
+                      </div>
                   </div>
                   <div class="card-body">
 
@@ -50,6 +59,8 @@
                             } ?>
                       </div>
                   </div>
+              </div>
+              <div class="card card-info shadow mb-2">
                   <div class="card-header">
                       <h3 class="m-0 card-title text-uppercase">New Education Details</h6>
                   </div>
@@ -77,9 +88,7 @@
                           <div class="col-md-3 col-sm-6">
                               <div class="form-group">
                                   <label class="label">Board / University</label>
-                                  <?php $board_options = array(" " => "Select Board / University", "CBSE" => "CBSE", "ICSE" => "ICSE", "KEEB" => "KEEB", "OTHERS" => "OTHERS", "PUC-OPEN" => "PUC-OPEN");
-                                    echo form_dropdown('inst_board', $board_options, (set_value('inst_board')) ? set_value('inst_board') : 'inst_board', 'class="form-control " id="inst_board"');
-                                    ?>
+                                  <input type="text" name="inst_board" id="inst_board" class="form-control" placeholder="Enter Institution Board">
                                   <span class="text-danger"><?php echo form_error('inst_board'); ?></span>
                               </div>
                           </div>
@@ -298,9 +307,21 @@
 
 
                   </div>
-                  <div class="card-footer">
+                  <!-- <div class="card-footer">
                       <button type="submit" class="btn btn-danger btn-sm" name="Insert" id="Insert"><i class="fas fa-edit"></i> Submit </button>
                       <?php echo anchor('student/dashboard/', '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Cancel', 'class="btn btn-dark btn-sm float-right" '); ?>
+                  </div> -->
+                  <div class="card-footer">
+                      <div class="row">
+                          <div class="col-md-6">
+                              <?php echo anchor('student/parentdetails', 'BACK', 'class="btn btn-danger btn-square" '); ?>
+                          </div>
+                          <div class="col-md-6 text-right">
+                              <button type="submit" class="btn btn-info btn-square" name="Update" id="Update"> SAVE &
+                                  PROCEED </button>
+                              <?php echo anchor('student/documents', 'NEXT', 'class="btn btn-danger btn-square float-right" '); ?>
+                          </div>
+                      </div>
                   </div>
                   </form>
               </div>

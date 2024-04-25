@@ -4167,7 +4167,7 @@ input[type="button"].btn-block {
   color: #495057;
   text-align: center;
   white-space: nowrap;
-  background-color: #e9ecef;
+  background-color: #f5f6fa;
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
 }
@@ -36953,14 +36953,14 @@ a.disabled.mailbox-attachment-close {
 
 .login-logo a,
 .register-logo a {
-  color: #495057;
+  color: #fff;
 }
 
 .login-page,
 .register-page {
   -ms-flex-align: center;
   align-items: center;
-  background-color: #e9ecef;
+  background-color: #0e4b99;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-direction: column;
@@ -36972,7 +36972,7 @@ a.disabled.mailbox-attachment-close {
 
 .login-box,
 .register-box {
-  width: 360px;
+  width: 420px;
 }
 
 @media (max-width: 576px) {

@@ -20,9 +20,18 @@
     <div class="card card-info shadow mb-4 m-4">
 
 
-      <div class="card-header">
-        <h3 class="m-0 card-title text-uppercase">Documents Details</h6>
-      </div>
+            <div class="card-header">
+                      <h3 class="card-title">
+                          DOCUMENTS DETAILS
+                      </h3>
+                      <div class="card-tools">
+                          <ul class="nav nav-pills ml-auto">
+                              <li class="nav-item">
+                                  <?php echo anchor('student/dashboard', '<i class="fas fa-tachometer-alt"></i> Dashboard ', 'class="btn btn-dark btn-sm"'); ?>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
       <div class="card-body">
 
         <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
@@ -58,7 +67,9 @@
           } ?>
         </div>
       </div>
+      </div>
 
+      <div class="card card-info shadow mb-2 m-4">
       <div class="card-header py-3 d-flex flex-row align-items-start justify-content">
         <h6 class="m-0  text-uppercase"><?= $page_title; ?></h6>
       
@@ -105,7 +116,25 @@
           <!-- <div class="col-2 text-right">
                     <a href="#" class="btn btn-success btn-sm">Proceed to Next</a>                </div>     -->
         </div>
+
+           <h4 class="card-header  d-flex flex-row align-items-start justify-content">Instructions</h4>
+           <ol type="I">
+              <li>Upload the file formate in jpg/png/pdf</li>
+              <li>Make sure the file should be less than 10MB</li>
+           </ol>
         </form>
+        <div class="card-footer">
+                      <div class="row">
+                          <div class="col-md-6">
+                              <?php echo anchor('student/educationdetails', 'BACK', 'class="btn btn-danger btn-square" '); ?>
+                          </div>
+                          <div class="col-md-6 text-right">
+                              <button type="submit" class="btn btn-info btn-square" name="Update" id="Update"> SAVE &
+                                  PROCEED </button>
+                              <?php echo anchor('student/admissionfee', 'NEXT', 'class="btn btn-danger btn-square float-right" '); ?>
+                          </div>
+                      </div>
+                  </div>
       </div>
     </div>
   </div>
