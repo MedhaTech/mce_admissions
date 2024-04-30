@@ -4,7 +4,7 @@
           <div class="container-fluid">
 
               <div class="card">
-                  <div class="card-header bg-gray-light">
+                  <div class="card-header bg-dark">
                       <h6 class="m-0"><?= $page_title; ?></h6>
                   </div>
                   <div class="card-body">

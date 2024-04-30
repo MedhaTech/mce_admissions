@@ -546,7 +546,7 @@ class Admin extends CI_Controller
 			// $details = [
 			// 	"aided_unaided" => "Aided",
 			// 	"category" => "2",
-			// 	"college_fee_total" => "6000",
+			// 	"total_college_fee" => "6000",
 			// 	"combination" => "",
 			// 	"course" => "BTECH",
 			// 	"id" => "4",
@@ -1834,17 +1834,213 @@ class Admin extends CI_Controller
 			$data['page_title'] = 'Collect Fee';
 			$data['menu'] = 'collectfee';
 
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			// $data['transactionDetails'] = $this->admin_model->getDetails('transactions','admissions_id', $student_id)->result();
+			// $data['paid_amount'] = $this->admin_model->paidAmount($student_id)->row()->amount;
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $student_id)->row();
 			$data['fees'] = $this->admin_model->getDetailsbyfield($data['id'], 'student_id', 'fee_master')->row();
 			
-			
+			$this->form_validation->set_rules('mode_of_payment', 'Mode of Payment', 'required');
 	        if($this->form_validation->run() === FALSE){
-
-				
 				$data['action'] = 'admin/collect_fee/'.$student_id;
 	            $this->admin_template->show('admin/collect_fee',$data);
 	        }else{
 	            
+				$rec = $this->input->post('rec');
+	            $mode_of_payment = $this->input->post('mode_of_payment');
+	            $paid_amount = $this->input->post('paid_amount');
+	            
+	            $final_fee = $data['studentDetails']->final_fee;
+	            $total_college_fee = $data['studentDetails']->total_college_fee;
+	            $total_university_fee = $data['studentDetails']->total_university_fee;
+	            
+	            $current_balance_amount = $data['studentDetails']->final_amount - $data['paid_amount'];
+	            
+	            $paying_amount = 0;
+	            
+	            if($mode_of_payment == "Cash"){
+	                $paying_amount = $this->input->post('cash_amount');    
+					$academic_year = "2024-2025";
+	                $receipt_no = 1;
+	                $transaciton_date = date('Y-m-d');
+	                $transaction_type = '1';
+	                $bank_name = "";
+	                $reference_no = "";
+	                $reference_date = date('Y-m-d', strtotime($this->input->post('cash_date')));
+					$paid_amount = "0";
+	                $remarks = '';
+	                $transaction_status = '1';
+	            }
+	            if($mode_of_payment == "ChequeDD"){
+	                $paying_amount = $this->input->post('cheque_dd_amount');  
+					$academic_year = "2024-2025";
+	                $receipt_no = 0;
+	                $transaciton_date = "";
+	                $transaction_type = '2';
+	                $bank_name = $this->input->post('cheque_dd_bank');
+	                $reference_no = $this->input->post('cheque_dd_number');
+	                $reference_date = date('Y-m-d', strtotime($this->input->post('cheque_dd_date')));
+					$paid_amount = "0";
+	                $remarks = '';
+	                $transaction_status = '0';
+	            }
+	            if($mode_of_payment == "OnlinePayment"){
+	                $paying_amount = $this->input->post('transaction_amount');    
+					$academic_year = "2024-2025";
+	                $receipt_no = 1;
+	                $transaciton_date = date('Y-m-d');
+	                $transaction_type = '3';
+	                $bank_name = "";
+	                $reference_no = $this->input->post('transaction_id');
+	                $reference_date = date('Y-m-d', strtotime($this->input->post('transaction_date')));
+					$paid_amount = "0";
+	                $remarks = '';
+	                $transaction_status = '1';
+	            }
+	            
+	        //    echo $data['studentDetails']->aided_unaided;
+	        //    echo "<br>";
+	        //    echo "Cur Balance:".$current_balance_amount;
+	        //    echo "<br>";
+	        //    echo "Paying:".$paying_amount;
+	        //    echo "<br>";
+	           
+	           $aided_fee = 0; $mgt_fee = 0; $unaided_fee = 0; 
+	           
+	           if($data['studentDetails']->aided_unaided === "Aided"){
+	               if($final_amount == $current_balance_amount){
+	                   if($paying_amount >= $total_college_fee){
+    	                $second_payment = $paying_amount - $total_college_fee;
+    	                if($second_payment == 0){
+    	                    $aided_fee = $total_college_fee;
+    	                    $mgt_fee = 0;
+    	                }
+    	                if($second_payment){
+    	                    $aided_fee = $total_college_fee;
+    	                    $mgt_fee = $second_payment;
+    	                }
+    	               }
+    	           }else{
+    	               $aided_fee = 0;
+    	               $mgt_fee = $paying_amount;
+    	           }
+	           }else{
+	               $unaided_fee = $paying_amount;
+	           }
+	           
+	           //echo "<br>";
+	           //echo "Aided:".$aided_fee;
+	           //echo "<br>";
+	           //echo "Mgt:".$mgt_fee;
+	           //echo "<br>";
+	           //echo "UnAided:".$unaided_fee;
+	            
+	           //die;
+	            if($aided_fee){
+	                $adm_type = "Aided";
+	                if($receipt_no){
+	                    $tag = $this->receiptPre[$adm_type];
+    	                $receipt_no = null;
+    	                $cnt_number = $this->getReceiptNo($adm_type);
+    	                $receipt_no = $tag.$cnt_number;
+	                }else{
+	                    $receipt_no = '';
+	                }
+	               // $balance_amount = $current_balance_amount - $aided_fee;    
+	                $balance_amount = 0;
+	                $transactionDetails = array('academic_year' => "2024-2025",
+						                   'admissions_id' => $data['admissionDetails']->id,
+	                                       'mobile' => $data['admissionDetails']->mobile,
+	                                       'aided_unaided' => $adm_type,
+	                                       'receipt_no' => $receipt_no,
+	                                       'year'=>'1',
+	                                       'transaciton_date' => date('Y-m-d'),
+	                                       'transaction_type' => $transaction_type,
+	                                       'bank_name' => $bank_name,
+	                                       'reference_no' => $reference_no,
+	                                       'reference_date' => $reference_date,
+	                                       'paid_amount' => $paid_amount,
+	                                       'amount' => $aided_fee,
+	                                       'balance_amount' => $balance_amount,
+	                                       'remarks' => $remarks,
+	                                       'transaction_status' => $transaction_status,
+	                                       'created_by' => $data['name'],
+	                                       'created_on' => date('Y-m-d h:i:s')
+	                                    );
+	               //print_r($transactionDetails);
+	               $result = $this->admin_model->insertDetails('transactions', $transactionDetails);
+	            }
+	            if($mgt_fee){
+	                $adm_type = "Mgt";
+	                if($receipt_no){
+    	                $tag = $this->receiptPre[$adm_type];
+    	                $receipt_no = null;
+    	                $cnt_number = $this->getReceiptNo($adm_type);
+    	                $receipt_no = $tag.$cnt_number;
+	                }else{
+	                    $receipt_no = '';   
+	                }
+	                $balance_amount = ($current_balance_amount - ($mgt_fee + $aided_fee));
+	                $transactionDetails = array('academic_year' => "2024-2025",
+										   'admissions_id' => $data['admissionDetails']->id,
+	                                       'mobile' => $data['admissionDetails']->mobile,
+	                                       'aided_unaided' => $adm_type,
+	                                       'receipt_no' => $receipt_no,
+	                                       'year'=>'1',
+	                                       'transaciton_date' => date('Y-m-d'),
+	                                       'transaction_type' => $transaction_type,
+	                                       'bank_name' => $bank_name,
+	                                       'reference_no' => $reference_no,
+	                                       'reference_date' => $reference_date,
+	                                       'paid_amount' => $paid_amount,
+	                                       'amount' => $mgt_fee,
+	                                       'balance_amount' => $balance_amount,
+	                                       'remarks' => $remarks,
+	                                       'transaction_status' => $transaction_status,
+	                                       'created_by' => $data['name'],
+	                                       'created_on' => date('Y-m-d h:i:s')
+	                                    );
+	               //print_r($transactionDetails);
+	               $result = $this->admin_model->insertDetails('transactions', $transactionDetails);
+	            }
+	            if($unaided_fee){
+	                $adm_type = "UnAided";
+	                if($receipt_no){
+	                    $tag = $this->receiptPre[$adm_type];
+	                    $receipt_no = null;
+	                    $cnt_number = $this->getReceiptNo($adm_type);
+	                    $receipt_no = $tag.$cnt_number;
+	                }else{
+	                    $receipt_no = '';
+	                }
+	                $balance_amount = $current_balance_amount - $unaided_fee;
+	                $transactionDetails = array('academic_year' => "2024-2025",
+										   'admissions_id' => $data['admissionDetails']->id,
+	                                       'mobile' => $data['admissionDetails']->mobile,
+	                                       'aided_unaided' => $adm_type,
+	                                       'receipt_no' => $receipt_no,
+	                                       'year'=>'1',
+	                                       'transaciton_date' => date('Y-m-d'),
+	                                       'transaction_type' => $transaction_type,
+	                                       'bank_name' => $bank_name,
+	                                       'reference_no' => $reference_no,
+	                                       'reference_date' => $reference_date,
+	                                       'paid_amount' => $paid_amount,
+	                                       'amount' => $unaided_fee,
+	                                       'balance_amount' => $balance_amount,
+	                                       'remarks' => $remarks,
+	                                       'transaction_status' => $transaction_status,
+	                                       'created_by' => $data['name'],
+	                                       'created_on' => date('Y-m-d h:i:s')
+	                                    );
+	               //print_r($transactionDetails);
+	               $result = $this->admin_model->insertDetails('transactions', $transactionDetails);
+	            }
+	            	            
+	            if($rec){
+	                $updateDetails = array('adm_date' => date('Y-m-d'));
+ 	                $res = $this->admin_model->updateDetails('admissions', $data['studentDetails']->id, $updateDetails);    
+	            }
 	         	            
 	            if($result){
     	           $this->session->set_flashdata('message', 'Fee Payment details udpated successfully...!');
@@ -1853,10 +2049,21 @@ class Admin extends CI_Controller
     	           $this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
     	           $this->session->set_flashdata('status', 'alert-warning');
     	        }  
-	            redirect('admin/collectPayment/'.$student_id, 'refresh');
+	            redirect('admin/collect_payment/'.$student_id, 'refresh');
 	        }
 		}else {
 				redirect('admin/timeout');
 		}
     }
+
+	public function getReceiptNo($adm_type){
+        $cnt = $this->admin_model->getReceiptsCount($adm_type)->row()->cnt;
+        $cnt_number = $cnt +1;
+        $strlen = strlen(($cnt_number));
+        if($strlen == 1){  $cnt_number = "000".$cnt_number; }
+        if($strlen == 2){  $cnt_number = "00".$cnt_number; }
+        if($strlen == 3){  $cnt_number = "0".$cnt_number; }
+        return $cnt_number;
+    }
+	
 }
