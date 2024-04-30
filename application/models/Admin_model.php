@@ -339,5 +339,28 @@ class Admin_model extends CI_Model
     return $this->db->get();
     
   }
+
+  public function getReceiptsCount($aided_unaided)
+    {
+        $this->db->select('COUNT(id) as cnt');
+        $this->db->where('receipt_no != ""');
+        $this->db->where('transaction_status','1');
+        $this->db->where('aided_unaided',$aided_unaided);
+        return $this->db->get('transactions');    
+    }
+
+    function paidAmount($admission_id){
+      $this->db->select('SUM(amount) as amount');
+      $this->db->where('admissions_id', $admission_id);
+      $this->db->where('transaction_status', '1');
+      return $this->db->get('transactions');
+    }
+
+    function feeDetails(){
+      $this->db->select('admissions_id, SUM(amount) as paid_amount');
+      $this->db->group_by('admissions_id');
+       $this->db->where('transaction_status','1');
+      return $this->db->get('transactions');   
+    }
 }
  

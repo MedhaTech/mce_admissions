@@ -49,7 +49,7 @@
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="<?php echo base_url(); ?>admin/dashboard" class="nav-link d-block text-dark"><i
+                    <a href="<?php echo base_url(); ?>student/dashboard" class="nav-link d-block text-dark"><i
                             class="fas fa-user-circle"></i>
                         Welcome <?=$student_name;?></a>
                 </li>

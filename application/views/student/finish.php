@@ -11,7 +11,7 @@
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
                             <li class="nav-item">
-                                <?php echo anchor('student/admissiondetails', '<i class="fas fa-edit"></i> Edit ', 'class="btn btn-dark btn-sm"'); ?>
+                                <!-- <?php echo anchor('student/admissiondetails', '<i class="fas fa-edit"></i> Edit ', 'class="btn btn-dark btn-sm"'); ?> -->
                             </li>
                             <!-- <li class="nav-item">
                                   <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
