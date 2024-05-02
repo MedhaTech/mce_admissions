@@ -4,13 +4,16 @@
     <section class="content-header">
       
     <div class="col-md-6 offset-1">
-    <div class="card-body login-card-body">
-    <p class="login-box-msg">Change Password</p>
     <?php if ($this->session->flashdata('message')) { ?>
                                     <div align="center" class="alert <?= $this->session->flashdata('status'); ?>" id="msg">
                                         <?php echo $this->session->flashdata('message') ?>
                                     </div>
                                     <?php } ?>
+    <div class="card card-dark shadow mb-2">
+                  <div class="card-header">
+                      <h3 class="m-0 card-title text-uppercase">Change Password</h6>
+                  </div>
+                  <div class="card-body login-card-body">
     <?php echo form_open($action, 'class="js-validation-signin" method="POST"'); ?>                               
                             <div class="form-group">
                                 <label>Old Password</label>

@@ -12,13 +12,13 @@ class Student extends CI_Controller
 
 	private $client;
 
-	function setUp()
+	protected function setUp(): void
     {
-        $this->client = new BillDeskJWEHS256Client("https://pguat.billdesk.io", "<your client id here>", "<your secret key here>");
+        $this->client = new BillDeskJWEHS256Client("https://pguat.billdesk.io", "bduatv2ktk", "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX");
         $logger = new Logger("default");
         $logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
         $this->client->setLogger($logger);
-    }
+    } 
 
 	function __construct()
 	{
@@ -70,6 +70,28 @@ class Student extends CI_Controller
 			return false;
 		}
 	}
+
+	public function testCreateOrder() {
+        $request = array(
+            'mercid' => "112233",
+            'orderid' => uniqid(),
+            'amount' => "1.0",
+            'order_date' => date_format(new \DateTime(), DATE_W3C),
+            'currency' => "1000",
+            'ru' => "https://www.billdesk.io",
+            'itemcode' => "DIRECT",
+            'device' => array(
+                'init_channel' => 'internet',
+                'ip' => "192.168.1.1",
+                'user_agent' => 'Mozilla/5.0'
+            )
+        );
+        $response = $this->client->createOrder($request);
+
+        $this->assertEquals(200, $response->getResponseStatus());
+
+		
+    }
 
 	function dashboard()
 	{

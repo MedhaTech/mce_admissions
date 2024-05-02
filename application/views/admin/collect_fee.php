@@ -266,7 +266,7 @@
                             </div>
                             <div class="form-group col-md-6 col-sm-12">    
                                 <label class="form-label">Amount:</label>
-                                <input type="text" class="form-control" placeholder="Enter amount" id="cash_amount" name="cash_amount" value="" >
+                                <input type="number" class="form-control" placeholder="Enter amount" id="cash_amount" name="cash_amount" value="" >
                     		    <span class="text-danger"><?php echo form_error('cash_amount'); ?></span>
                             </div>
                         </div>
@@ -288,7 +288,7 @@
                             </div>
                             <div class="form-group col-md-6 col-sm-12">    
                                 <label class="form-label">Amount:</label>
-                                <input type="text" class="form-control" placeholder="Enter amount" id="cheque_dd_amount" name="cheque_dd_amount" value="" >
+                                <input type="number" class="form-control" placeholder="Enter amount" id="cheque_dd_amount" name="cheque_dd_amount" value="" >
                     		    <span class="text-danger"><?php echo form_error('cheque_dd_amount'); ?></span>
                             </div>
                         </div>
@@ -305,12 +305,18 @@
                             </div>
                             <div class="form-group col-md-6 col-sm-12">    
                                 <label class="form-label">Amount:</label>
-                                <input type="text" class="form-control" placeholder="Enter amount" id="transaction_amount" name="transaction_amount" value="" >
+                                <input type="number" class="form-control" placeholder="Enter amount" id="transaction_amount" name="transaction_amount" value="" >
                     		    <span class="text-danger"><?php echo form_error('transaction_amount'); ?></span>
                             </div>
                         </div>
                       </div>
-
+                      <div class="row">
+                        <div class="col-6">
+                        </div>
+                        <div class="col-6 text-right">
+                            <button class="btn btn-danger btn-sm" type="submit">Collect Payment</button>
+                        </div>
+                    </div>
                     <?php echo form_close(); ?>
                 </div>
             </div>
