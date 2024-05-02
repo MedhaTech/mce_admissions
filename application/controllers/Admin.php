@@ -2096,12 +2096,10 @@ class Admin extends CI_Controller
 			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
-			$data['entranceDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
-			$data['personalDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
-			$data['parentDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+
 			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
 			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'id', 'student_education_details')->result();
-			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+	
 
 
 			$this->load->library('fpdf'); // Load library
@@ -2116,27 +2114,42 @@ class Admin extends CI_Controller
 
 			$topGap = 20;
 
-			$pdf->SetFont('Arial', '', 10);
+			$pdf->SetY($topGap + 5);
+			$pdf->SetFont('Arial', '', 7);
+			$pdf->Cell(0, 3, "No.MCE/".$this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"]."/".$data['admissionDetails']->adm_no."/2024-25", 0, 1, 'L');
+			$pdf->SetFont('Arial', 'B', 7);
+			$pdf->Cell(0, 3, 'Ashok Haranahalli', 0, 1, 'L');
+			$pdf->SetFont('Arial', '', 7);
+			$pdf->Cell(0, 3, 'Chairman, Governing Council', 0, 1, 'L');
+			$pdf->Cell(0, 3, 'of M.C.E. Hassan.', 0, 1, 'L');
+
+			$pdf->SetXY(-30, $topGap + 5);
+			$pdf->Cell(0, 10, 'Date:'.date('d-m-Y'), 0, 1, 'R');
 
 			$pdf->SetFont('Arial', 'BU', 12);
-			$pdf->SetY($topGap + 10);
-			$pdf->Cell(0, 10, 'ADMISSION LETTER', 0, 1, 'C');
+			$pdf->SetY($topGap + 20);
+			$pdf->Cell(0, 10, ': LETTER OF ALLOTMENT :', 0, 1, 'C');
 
 
 			$pdf->SetFont('Arial', '', 9);
 
 
 
-			$content = $data['admissionDetails']->student_name . "  has sought admission to the 1st Semester B.E. course in " . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . " branch at Malnad College of Engineering, Hassan for the year 2024-25.
-					
-					There is a likelihood of some seats remaining vacant from the COMED-K process, and if so, your request for admission will be considered. If for any reason seats are filled up from the COMED-K, you have no right to seek admissions.
-					
-					In the meanwhile, subject to the above conditions, you are instructed to approach the Principal, Malnad College of Engineering, and to pay the required fee, produce the certificate in original, and provisionally get admitted as per rules prescribed by the State Government and the Visweswaraiah Technological University, Belgaum.
-				";
+			$content = " You have sought for admission to the 1st B.E., (Bachelor of Engineering course for the academic year 2023-24 in our college (i.e,., Malnad College of Engineering.) 
 
+			We are pleased to provisionally offer you a seat for 1st year Bachelor of Engineering Course Four years duration in " . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ".
+			
+			You are hereby informed to pay the requisite fee in the college. You are required to produce original marks card of 2nd PUC/10+2 at the College.
+			
+			If the fees are not paid within the stipulated time. We presume you are no more interested in getting admission to our college and seat will be allotted to others. Any amount paid by you shall not be refunded. In case you decide to discontinue your studies without completing the four years duration you shall be liable to pay fee to the college for all the four years. The Malnad College of Engineering is one of the reputed college in the country.
+			
+			We hope that you will utilize the facilities in the college, secure good marks and bring credit to our institution.
+			
+			
+			With good wishes";
 
-			$pdf->SetY($topGap + 25);
-			$pdf->MultiCell(0, 6, $content);
+			$pdf->SetY($topGap + 35);
+			$pdf->MultiCell(0, 4, $content);
 
 
 			$fileName = $data['admissionDetails']->student_name . '-Admit_Letter.pdf';
