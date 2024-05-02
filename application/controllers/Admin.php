@@ -1757,8 +1757,8 @@ class Admin extends CI_Controller
 
 			if ($this->form_validation->run() === FALSE) {
 
-				$data['action'] = 'admin/changePassword/' . $data['id'];
-				$this->admin_template->show('admin/changePassword', $data);
+				$data['action'] = 'admin/changepassword/' . $data['id'];
+				$this->admin_template->show('admin/changepassword', $data);
 			} else {
 				// $oldPassword = $this->input->post('oldPassword');
 				$oldpassword = $this->input->post('oldpassword');
@@ -1781,7 +1781,7 @@ class Admin extends CI_Controller
 						$this->session->set_flashdata('status', 'alert-warning');
 					}
 				}
-				redirect('/admin/changePassword', 'refresh');
+				redirect('/admin/changepassword', 'refresh');
 			}
 		} else {
 			redirect('admin', 'refresh');
