@@ -2121,7 +2121,7 @@ class Admin extends CI_Controller
 
 			$pdf->SetY($topGap + 5);
 			$pdf->SetFont('Arial', '', 7);
-			$pdf->Cell(0, 3, "No.MCE/".$this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"]."/".$data['admissionDetails']->adm_no."/2024-25", 0, 1, 'L');
+			$pdf->Cell(0, 3, "No.MCE/".$this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"]."/".$data['admissionDetails']->adm_no."/".$data['admissionDetails']->academic_year, 0, 1, 'L');
 			$pdf->SetFont('Arial', 'B', 7);
 			$pdf->Cell(0, 3, 'Ashok Haranahalli', 0, 1, 'L');
 			$pdf->SetFont('Arial', '', 7);
@@ -2138,23 +2138,37 @@ class Admin extends CI_Controller
 
 			$pdf->SetFont('Arial', '', 9);
 
+			$pdf->Ln(10);
 
+			$content = "  You have sought for admission to the 1st B.E., (Bachelor of Engineering course for the academic year ".$data['admissionDetails']->academic_year." in our college (i.e,., Malnad College of Engineering.) 
 
-			$content = " You have sought for admission to the 1st B.E., (Bachelor of Engineering course for the academic year 2023-24 in our college (i.e,., Malnad College of Engineering.) 
-
-			We are pleased to provisionally offer you a seat for 1st year Bachelor of Engineering Course Four years duration in " . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ".
+		We are pleased to provisionally offer you a seat for 1st year Bachelor of Engineering Course Four years duration in " . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ".
 			
-			You are hereby informed to pay the requisite fee in the college. You are required to produce original marks card of 2nd PUC/10+2 at the College.
+		You are hereby informed to pay the requisite fee in the college. You are required to produce original marks card of 2nd PUC/10+2 at the College.
 			
-			If the fees are not paid within the stipulated time. We presume you are no more interested in getting admission to our college and seat will be allotted to others. Any amount paid by you shall not be refunded. In case you decide to discontinue your studies without completing the four years duration you shall be liable to pay fee to the college for all the four years. The Malnad College of Engineering is one of the reputed college in the country.
+		If the fees are not paid within the stipulated time. We presume you are no more interested in getting admission to our college and seat will be allotted to others. Any amount paid by you shall not be refunded. In case you decide to discontinue your studies without completing the four years duration you shall be liable to pay fee to the college for all the four years. The Malnad College of Engineering is one of the reputed college in the country.
 			
-			We hope that you will utilize the facilities in the college, secure good marks and bring credit to our institution.
+		We hope that you will utilize the facilities in the college, secure good marks and bring credit to our institution.
 			
 			
-			With good wishes";
+		With good wishes";
 
 			$pdf->SetY($topGap + 35);
 			$pdf->MultiCell(0, 4, $content);
+
+
+			$additionalDataY = $pdf->GetY() + 5;
+
+			// Additional data after content
+			$pdf->SetFont('Arial', 'B', 9);
+			$pdf->SetY($additionalDataY);
+			$pdf->Cell(0, 5, "To,", 0, 1, 'L');
+			$pdf->SetFont('Arial', '', 8);
+			$pdf->Cell(0, 4, $data['admissionDetails']->student_name, 0, 1, 'L');
+			$pdf->Cell(0, 4, $data['admissionDetails']->father_name, 0, 1, 'L');
+			$pdf->Cell(0, 4, $data['admissionDetails']->present_address, 0, 1, 'L');
+			$pdf->Cell(0, 4, $data['admissionDetails']->mobile, 0, 1, 'L');
+			$pdf->Cell(0, 4, $data['admissionDetails']->email, 0, 1, 'L');
 
 
 			$fileName = $data['admissionDetails']->student_name . '-Admit_Letter.pdf';
