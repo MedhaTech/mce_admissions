@@ -958,7 +958,7 @@ class Student extends CI_Controller
 		$payload['amount']              = "10.00";
 		$payload['currency']            = '356';
 
-		$payload['ru'] 	           =  base_url() . 'payment/callback/billdesk'; // Return URL
+		$payload['ru'] 	           =  base_url() . 'student/callback'; // Return URL
 
 		$payload['additional_info']    =  array(
 			"additional_info1" => "B200910EC",
@@ -1029,5 +1029,51 @@ class Student extends CI_Controller
 			$message = "Billdesk create order status - " . $status;
 			$this->logger->write('billdesk','debug', $message);
 		}
+	}
+
+
+	public function callback()
+	{		
+		$message = "BillDesk Response - " . json_encode($_POST);
+		$this->logger->write_log('debug', $message);
+		$tx = "";
+		 if(!empty($_POST)) { 
+		     $tx_array = $_POST;
+		     if (isset($tx_array['transaction_response'])) {
+		         $tx = $tx_array['transaction_response'];
+		     }
+		}
+
+
+		if(!empty($tx)){
+            $response_decoded = JWT::decode($tx, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", 'HS256');
+			$response_array = (array) $response_decoded;
+			$response_json =  json_encode($response_array);
+			$message = "BillDesk callback Response decode - " . $response_json;
+			$this->logger->write_log('debug', $message);
+
+			if($response_array['auth_status'] == '0300'){
+	            $status = 'pass';
+			}
+			else if($response_array['auth_status'] == '0002'){
+	            $status = 'unknown';
+			}else{
+	            $status = 'fail';
+			}    
+			
+	        $return['amount']	    = (int)$response_array['amount'];
+			$return['order_id']	    = $response_array['orderid'];			
+			$return['status']		= $status;
+			$return['pgresponse']	= $response_json;
+			$return['pgid']	        = $response_array['transactionid'];
+	        
+
+			
+		}
+		else{
+			$status = 'fail';
+			$return['status']		= $status;
+		}
+		var_dump($return);
 	}
 }
