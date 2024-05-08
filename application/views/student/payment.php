@@ -11,9 +11,9 @@
 <body>
     <script>
         var flow_config = {
-            merchantId: <?= $merchantId;?>,
-            bdOrderId: <?= $transactionid;?>,
-            authToken: <?= $authtoken;?>,
+            merchantId: "<?= $merchantId;?>",
+            bdOrderId: "<?= $transactionid;?>",
+            authToken: "<?= $authtoken;?>",
             childWindow: false,
             returnUrl: "https://www.example.com/merchant/api/pgresponse",
             retryCount: 0
