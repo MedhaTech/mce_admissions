@@ -13,20 +13,21 @@ class Student extends CI_Controller
 	private $client;
 
 	protected function setUp(): void
-    {
-        $this->client = new BillDeskJWEHS256Client("https://pguat.billdesk.io", "bduatv2ktk", "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX");
-        $logger = new Logger("default");
-        $logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
-        $this->client->setLogger($logger);
-    } 
+	{
+		$this->client = new BillDeskJWEHS256Client("https://pguat.billdesk.io", "bduatv2ktk", "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX");
+		$logger = new Logger("default");
+		$logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
+		$this->client->setLogger($logger);
+	}
 
 	function __construct()
 	{
 		parent::__construct();
 		$this->CI = &get_instance();
 		$this->load->model('admin_model', '', TRUE);
+		
 		$this->load->library(array('table', 'form_validation'));
-		$this->load->helper(array('form', 'form_helper'));
+		$this->load->helper(array('form', 'form_helper','file'));
 		date_default_timezone_set('Asia/Kolkata');
 		ini_set('upload_max_filesize', '20M');
 	}
@@ -71,27 +72,26 @@ class Student extends CI_Controller
 		}
 	}
 
-	public function testCreateOrder() {
-        $request = array(
-            'mercid' => "112233",
-            'orderid' => uniqid(),
-            'amount' => "1.0",
-            'order_date' => date_format(new \DateTime(), DATE_W3C),
-            'currency' => "1000",
-            'ru' => "https://www.billdesk.io",
-            'itemcode' => "DIRECT",
-            'device' => array(
-                'init_channel' => 'internet',
-                'ip' => "192.168.1.1",
-                'user_agent' => 'Mozilla/5.0'
-            )
-        );
-        $response = $this->client->createOrder($request);
+	public function testCreateOrder()
+	{
+		$request = array(
+			'mercid' => "112233",
+			'orderid' => uniqid(),
+			'amount' => "1.0",
+			'order_date' => date_format(new \DateTime(), DATE_W3C),
+			'currency' => "1000",
+			'ru' => "https://www.billdesk.io",
+			'itemcode' => "DIRECT",
+			'device' => array(
+				'init_channel' => 'internet',
+				'ip' => "192.168.1.1",
+				'user_agent' => 'Mozilla/5.0'
+			)
+		);
+		$response = $this->client->createOrder($request);
 
-        $this->assertEquals(200, $response->getResponseStatus());
-
-		
-    }
+		$this->assertEquals(200, $response->getResponseStatus());
+	}
 
 	function dashboard()
 	{
@@ -111,19 +111,17 @@ class Student extends CI_Controller
 				$data['personalDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$data['parentDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$data['educations_details'] = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'student_education_details')->result();
-		
+
 				$upload_path = "./assets/students/$student_id/";
 
 				// Check if the directory exists
 				if (is_dir($upload_path)) {
 					// Get list of files in the directory
 					$files = scandir($upload_path);
-		
+
 					// Remove . and .. from the list
 					$data['files'] = array_diff($files, array('.', '..'));
-				}
-				else
-				{
+				} else {
 					$data['files'] = array();
 				}
 				$this->student_template->show('student/finish', $data);
@@ -598,7 +596,7 @@ class Student extends CI_Controller
 				$student_id = $student_session['id'];
 				$data['page_title'] = "EDUCATION DETAILS";
 				$data['menu'] = "educationdetails";
-				
+
 				$this->student_template->show('student/education_details', $data);
 			} else {
 
@@ -677,8 +675,7 @@ class Student extends CI_Controller
 
 			$data['fees'] = $this->admin_model->getDetailsbyfield($data['id'], 'student_id', 'fee_master')->row();
 
-			$this->student_template->show('student/fee_details', $data);			 
-
+			$this->student_template->show('student/fee_details', $data);
 		} else {
 			redirect('student', 'refresh');
 		}
@@ -708,7 +705,7 @@ class Student extends CI_Controller
 			$student_id = $student_session['id'];
 			$data['admissions'] = $this->admin_model->getDetails('admissions', 'id', $data['id'])->row();
 			$this->form_validation->set_rules('documents', 'Document Type', 'required');
-			
+
 			if ($this->form_validation->run() === FALSE) {
 
 				$upload_path = "./assets/students/$student_id/";
@@ -717,12 +714,10 @@ class Student extends CI_Controller
 				if (is_dir($upload_path)) {
 					// Get list of files in the directory
 					$files = scandir($upload_path);
-		
+
 					// Remove . and .. from the list
 					$data['files'] = array_diff($files, array('.', '..'));
-				}
-				else
-				{
+				} else {
 					$data['files'] = array();
 				}
 				$data['action'] = 'student/documents';
@@ -731,7 +726,7 @@ class Student extends CI_Controller
 
 				$documents = $this->input->post('documents');
 
-				$config['upload_path'] = './assets/students/' . $data['id'].'/';
+				$config['upload_path'] = './assets/students/' . $data['id'] . '/';
 				$config['allowed_types']    = 'jpg|png|pdf'; // Adjust file types as needed
 				$config['max_size']         = 10240; // Maximum file size in kilobytes (10MB)
 				$config['encrypt_name']     = FALSE; // Encrypt the file name for security
@@ -739,8 +734,8 @@ class Student extends CI_Controller
 				if (!is_dir($config['upload_path'])) {
 					mkdir($config['upload_path'], 0777, true);
 				}
-				$upload_path=$config['upload_path'];
-				
+				$upload_path = $config['upload_path'];
+
 
 
 				$this->load->library('upload', $config);
@@ -764,10 +759,10 @@ class Student extends CI_Controller
 					$data = array('upload_data' => $this->upload->data());
 					// Handle success as needed
 					$this->session->set_flashdata('message', 'Document udpated successfully...!');
-						$this->session->set_flashdata('status', 'alert-success');
+					$this->session->set_flashdata('status', 'alert-success');
 				}
 
-			 redirect('student/documents', 'refresh');
+				redirect('student/documents', 'refresh');
 			}
 		} else {
 			redirect('student', 'refresh');
@@ -938,5 +933,121 @@ class Student extends CI_Controller
 		$this->session->unset_userdata('student_in');
 		session_destroy();
 		redirect('student', 'refresh');
+	}
+
+	public function testorder()
+	{
+		require_once APPPATH . 'libraries/Jwt.php';
+		$this->load->library('logger');
+		$headers = array(
+			"alg" => "HS256",
+			"clientid" => "bduatv2ktk"
+			// "kid" => "HMAC"
+		);
+		$order_id = rand('8');
+		$trace_id = rand();
+		$servertime = time();
+		//    $config                         = $this->CI->config->item('billdesk');
+		$api_url                        = "https://uat1.billdesk.com/u2/payments/ve1_2/orders/create";
+		$payload                        = array();
+		// $payload = [
+		// 	"orderid" => "MALbe".$order_id,
+		// 	"amount" => "10.00",
+		// 	"order_date" => date("c"),
+		// 	"currency" => "356",
+		// 	"ru" => "https://merchant.com",
+		// 	"additional_info" => [
+		// 		"additional_info1" => "B200910EC",
+		// 		"additional_info2" => "Anand",
+		// 		"additional_info3" => "abc@gmail.com",
+		// 		"additional_info4" => "NA",
+		// 		"additional_info5" => "NA",
+		// 		"additional_info6" => "NA",
+		// 		"additional_info7" => "NA"
+		// 	],
+		// 	"itemcode" => "DIRECT",
+		// 	"device" => [
+		// 		"init_channel" => "internet",
+		// 		"ip" => "126.51.87.35",
+		// 		"user_agent" => "Mozilla/5.0",
+		// 		"accept_header" => "text/html"
+		// 	]
+		// ];
+		
+		$payload['orderid']             = "MALbe".$order_id;
+		$payload['mercid']              = "BDUATV2KTK";
+		$payload['order_date']          = date("c");
+		$payload['amount']              = "10.00";
+		$payload['currency']            = '356';
+
+		$payload['ru'] 	           =  base_url() . 'payment/callback/billdesk'; // Return URL
+
+		$payload['additional_info']    =  array(
+			"additional_info1" => "B200910EC",
+			"additional_info2" => "Anand",
+			"additional_info3" => "abc@gmail.com",
+			"additional_info4" => "NA",
+			"additional_info5" => "NA",
+			"additional_info6" => "NA",
+			"additional_info7" => "NA"
+		);
+		$payload['itemcode']           = 'DIRECT';
+		$payload['device']             =  array(
+			"init_channel" => "internet",
+			"ip" => $_SERVER['REMOTE_ADDR'],
+			"user_agent"    => $_SERVER['HTTP_USER_AGENT'],
+			"accept_header" => "text/html",
+		);
+
+
+		/*****************************************/
+		// Encode payload
+		/*****************************************/
+		$curl_payload = JWT::encode($payload, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", "HS256", $headers);
+
+
+
+		/*****************************************/
+		// Submit to Billdesk
+		/*****************************************/
+		$ch = curl_init($api_url);
+		$ch_headers = array(
+			"Content-Type: application/jose",
+			"accept: application/jose",
+			"bd-traceid: $trace_id",
+			"bd-timestamp: $servertime"
+		);
+		
+		// Append additional headers
+		$ch_headers[] = "Content-Length: " . strlen($curl_payload);
+		// pr($ch_headers);exit;
+		$message = "Billdesk create order curl header - " . json_encode($ch_headers);
+		$this->logger->write('billdesk','debug', $message);
+		$message1 = "Billdesk Request payload - " . $curl_payload;
+		$this->logger->write('billdesk','debug', $message1);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $ch_headers);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $curl_payload);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$response = curl_exec($ch);
+		$message2 = "Billdesk create order response - " . $response;
+		$this->logger->write('billdesk','debug', $message2);
+		curl_close($response);
+		$result_decoded = JWT::decode($response, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", 'HS256');
+		$result_array = (array) $result_decoded;
+		$message = "Billdesk create order response decoded - " . json_encode($result_array);
+		$this->logger->write('billdesk','debug', $message);
+		if ($result_decoded->status == 'ACTIVE') {
+			$transactionid = $result_array['links'][1]->parameters->bdorderid;
+			$authtoken = $result_array['links'][1]->headers->authorization;
+			$requestParams['order_id'] = $result_decoded->orderid;
+			$requestParams['transactionid'] = $transactionid;
+			$requestParams['authtoken'] = $authtoken;
+			return $requestParams;
+		} else {
+			$status = isset($result_decoded->status) ? $result_decoded->status : "Status not available";
+			$message = "Billdesk create order status - " . $status;
+			$this->logger->write('billdesk','debug', $message);
+		}
 	}
 }
