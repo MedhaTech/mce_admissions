@@ -944,7 +944,7 @@ class Student extends CI_Controller
 			"clientid" => "bduatv2ktk"
 			// "kid" => "HMAC"
 		);
-		$order_id = rand('8');
+		$order_id = rand(8);
 		$trace_id = rand();
 		$servertime = time();
 		//    $config                         = $this->CI->config->item('billdesk');
