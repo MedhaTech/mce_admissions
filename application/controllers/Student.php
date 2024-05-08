@@ -1034,6 +1034,8 @@ class Student extends CI_Controller
 
 	public function callback()
 	{		
+		require_once APPPATH . 'libraries/Jwt.php';
+		$this->load->library('logger');
 		$message = "BillDesk Response - " . json_encode($_POST);
 		$this->logger->write('billdesk','debug', $message);
 		$tx = "";
