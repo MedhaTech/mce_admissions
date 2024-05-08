@@ -950,29 +950,7 @@ class Student extends CI_Controller
 		//    $config                         = $this->CI->config->item('billdesk');
 		$api_url                        = "https://uat1.billdesk.com/u2/payments/ve1_2/orders/create";
 		$payload                        = array();
-		// $payload = [
-		// 	"orderid" => "MALbe".$order_id,
-		// 	"amount" => "10.00",
-		// 	"order_date" => date("c"),
-		// 	"currency" => "356",
-		// 	"ru" => "https://merchant.com",
-		// 	"additional_info" => [
-		// 		"additional_info1" => "B200910EC",
-		// 		"additional_info2" => "Anand",
-		// 		"additional_info3" => "abc@gmail.com",
-		// 		"additional_info4" => "NA",
-		// 		"additional_info5" => "NA",
-		// 		"additional_info6" => "NA",
-		// 		"additional_info7" => "NA"
-		// 	],
-		// 	"itemcode" => "DIRECT",
-		// 	"device" => [
-		// 		"init_channel" => "internet",
-		// 		"ip" => "126.51.87.35",
-		// 		"user_agent" => "Mozilla/5.0",
-		// 		"accept_header" => "text/html"
-		// 	]
-		// ];
+		
 		
 		$payload['orderid']             = "MALbe".$order_id;
 		$payload['mercid']              = "BDUATV2KTK";
@@ -1041,9 +1019,11 @@ class Student extends CI_Controller
 			$transactionid = $result_array['links'][1]->parameters->bdorderid;
 			$authtoken = $result_array['links'][1]->headers->authorization;
 			$requestParams['order_id'] = $result_decoded->orderid;
+			$requestParams['merchantId'] = $result_decoded->mercid;
 			$requestParams['transactionid'] = $transactionid;
 			$requestParams['authtoken'] = $authtoken;
-			return $requestParams;
+			// return $requestParams;
+			$this->load->view('student/payment', $requestParams);
 		} else {
 			$status = isset($result_decoded->status) ? $result_decoded->status : "Status not available";
 			$message = "Billdesk create order status - " . $status;
