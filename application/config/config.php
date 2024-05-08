@@ -543,10 +543,3 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
-$config['billdesk'] = array(
-    'api_order' => 'https://uat1.billdesk.com/u2/payments/ve1_2/orders/create',
-    'mercid'=>'BDUATV2KTK',
-    'clientid' =>'bduatv2ktk',
-    'secret_key'=>'16uUloqqrs2iMUZnrojXtmkTeSQqjYIX',
-    
-);

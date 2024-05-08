@@ -25,7 +25,7 @@ class Student extends CI_Controller
 		parent::__construct();
 		$this->CI = &get_instance();
 		$this->load->model('admin_model', '', TRUE);
-		$billdesk = $this->CI->config->item('billdesk');
+		
 		$this->load->library(array('table', 'form_validation'));
 		$this->load->helper(array('form', 'form_helper','file'));
 		date_default_timezone_set('Asia/Kolkata');
@@ -941,19 +941,19 @@ class Student extends CI_Controller
 		$this->load->library('logger');
 		$headers = array(
 			"alg" => "HS256",
-			"clientid" => $config['clientid']
+			"clientid" => "bduatv2ktk"
 			// "kid" => "HMAC"
 		);
 		$order_id = rand();
 		$trace_id = rand();
 		$servertime = time();
-		
-		$api_url                        = $config['api_order'];
+		//    $config                         = $this->CI->config->item('billdesk');
+		$api_url                        = "https://uat1.billdesk.com/u2/payments/ve1_2/orders/create";
 		$payload                        = array();
 		
 		
 		$payload['orderid']             = "MALbe".$order_id;
-		$payload['mercid']              = $config['mercid'];
+		$payload['mercid']              = "BDUATV2KTK";
 		$payload['order_date']          = date("c");
 		$payload['amount']              = "10.00";
 		$payload['currency']            = '356';
@@ -981,7 +981,7 @@ class Student extends CI_Controller
 		/*****************************************/
 		// Encode payload
 		/*****************************************/
-		$curl_payload = JWT::encode($payload, $config['secret_key'], "HS256", $headers);
+		$curl_payload = JWT::encode($payload, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", "HS256", $headers);
 
 
 
@@ -1011,7 +1011,7 @@ class Student extends CI_Controller
 		$message2 = "Billdesk create order response - " . $response;
 		$this->logger->write('billdesk','debug', $message2);
 		curl_close($response);
-		$result_decoded = JWT::decode($response, $config['secret_key'], 'HS256');
+		$result_decoded = JWT::decode($response, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", 'HS256');
 		$result_array = (array) $result_decoded;
 		$message = "Billdesk create order response decoded - " . json_encode($result_array);
 		$this->logger->write('billdesk','debug', $message);
@@ -1048,7 +1048,7 @@ class Student extends CI_Controller
 
 
 		if(!empty($tx)){
-            $response_decoded = JWT::decode($tx, $config['secret_key'], 'HS256');
+            $response_decoded = JWT::decode($tx, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", 'HS256');
 			$response_array = (array) $response_decoded;
 			$response_json =  json_encode($response_array);
 			$message = "BillDesk callback Response decode - " . $response_json;
