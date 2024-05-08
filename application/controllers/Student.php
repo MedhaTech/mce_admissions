@@ -1035,7 +1035,7 @@ class Student extends CI_Controller
 	public function callback()
 	{		
 		$message = "BillDesk Response - " . json_encode($_POST);
-		$this->logger->write_log('debug', $message);
+		$this->logger->write('billdesk','debug', $message);
 		$tx = "";
 		 if(!empty($_POST)) { 
 		     $tx_array = $_POST;
@@ -1050,7 +1050,7 @@ class Student extends CI_Controller
 			$response_array = (array) $response_decoded;
 			$response_json =  json_encode($response_array);
 			$message = "BillDesk callback Response decode - " . $response_json;
-			$this->logger->write_log('debug', $message);
+			$this->logger->write('billdesk','debug', $message);
 
 			if($response_array['auth_status'] == '0300'){
 	            $status = 'pass';
