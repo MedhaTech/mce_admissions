@@ -362,5 +362,20 @@ class Admin_model extends CI_Model
        $this->db->where('transaction_status','1');
       return $this->db->get('transactions');   
     }
+
+    function validate_member(){
+      $query = $this->db->query("SELECT * from enquiries WHERE mobile='$mobile'"); 
+$mobile = $query->result();
+
+if(count($mobile))
+{
+    return false;
+}
+else
+{
+    return true;
+}       
+
+    }
 }
  
