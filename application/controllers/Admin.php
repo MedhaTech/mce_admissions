@@ -1834,7 +1834,8 @@ class Admin extends CI_Controller
 
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $student_id)->row();
-			$data['transactionDetails'] = $this->admin_model->getDetails('transactions', $admissions_id)->result();
+			
+			$data['transactionDetails'] = $this->admin_model->getDetailsbyfield($student_id,'admissions_id','transactions' )->result();
 			// Var_dump($data['transactionDetails']);
 			// die();
 			// var_dump($this->db->last_query());
@@ -2140,7 +2141,7 @@ class Admin extends CI_Controller
 
 			$pdf->Ln(10);
 
-			$content = "  You have sought for admission to the 1st B.E., (Bachelor of Engineering course for the academic year ".$data['admissionDetails']->academic_year." in our college (i.e,., Malnad College of Engineering.) 
+			$content = "  You have sought for admission to the 1s-t B.E., (Bachelor of Engineering course for the academic year ".$data['admissionDetails']->academic_year." in our college (i.e,., Malnad College of Engineering.) 
 
 		We are pleased to provisionally offer you a seat for 1st year Bachelor of Engineering Course Four years duration in " . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ".
 			
@@ -2194,12 +2195,10 @@ class Admin extends CI_Controller
 			// $id = base64_decode($encryptId);
 
 			$currentAcademicYear = $this->globals->currentAcademicYear();
-			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $student_id)->row();
-			$data['transactionDetails'] = $this->admin_model->getDetails('transactions', $admission_id)->result();
-			// Var_dump($data['transactionDetails']);
-			// die();
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $admission_id)->row();
+			$transactionDetails = $this->admin_model->getDetails('transactions', $transaction_id)->row();
 			
-			// $paid_amount = $this->campusModel->paidAmount($student_id)->row()->amount;
+			
 			$currentAcademicYear = $this->globals->currentAcademicYear();
 			
 			$this->load->library('fpdf'); // Load library
@@ -2233,7 +2232,7 @@ class Admin extends CI_Controller
             $pdf->Cell(0,$row,"Application No",1,0,'L', false);
             $pdf->setFont ('Arial','',9);
             $pdf->SetXY(50, $y+$row); 
-            $pdf->Cell(0,$row,$studentDetails->app_no,1,0,'L', false); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->app_no,1,0,'L', false); 
             
             $y = $pdf->getY();
             $pdf->setFont ('Arial','B',9);
@@ -2241,12 +2240,12 @@ class Admin extends CI_Controller
             $pdf->Cell(0,$row,"Name of the Student",1,0,'L', false);
             $pdf->setFont ('Arial','',9);
             $pdf->SetXY(50, $y+$row); 
-            $pdf->Cell(0,$row,$studentDetails->student_name,1,0,'L', false); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->student_name,1,0,'L', false); 
             
-            if($studentDetails->dsc_1 == $studentDetails->dsc_2){
-                $combination = $studentDetails->dsc_1;
+            if($admissionDetails->dsc_1 == $admissionDetails->dsc_2){
+                $combination = $admissionDetails->dsc_1;
             }else{
-                $combination = $studentDetails->dsc_1.' - '.$studentDetails->dsc_2;
+                $combination = $admissionDetails->dsc_1.' - '.$admissionDetails->dsc_2;
             }
 
             $y = $pdf->getY();
@@ -2255,7 +2254,7 @@ class Admin extends CI_Controller
             $pdf->Cell(0,$row,"Course & Combination",1,0,'L', false);
             $pdf->setFont ('Arial','',9);
             $pdf->SetXY(50, $y+$row); 
-            $pdf->Cell(0,$row,$this->romanYears[$transactionDetails->year].' Year - '.$studentDetails->course.' ['.$combination.']',1,0,'L', false); 
+            $pdf->Cell(0,$row,$this->romanYears[$data['admissionDetails']->year].' Year - '.$data['admissionDetails']->course.' ['.$combination.']',1,0,'L', false); 
             
             $y = $pdf->getY();
             $pdf->setFont ('Arial','B',9);
@@ -2263,7 +2262,7 @@ class Admin extends CI_Controller
             $pdf->Cell(0,$row,"Category",1,0,'L', false);
             $pdf->setFont ('Arial','',9);
             $pdf->SetXY(50, $y+$row); 
-            $pdf->Cell(0,$row,$studentDetails->category,1,0,'L', false); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->category,1,0,'L', false); 
             
             $y = $pdf->getY();
             $pdf->setFont ('Arial','B',9);
@@ -2271,7 +2270,7 @@ class Admin extends CI_Controller
             $pdf->Cell(0,$row,"Mobile",1,0,'L', false);
             $pdf->setFont ('Arial','',9);
             $pdf->SetXY(50, $y+$row); 
-            $pdf->Cell(0,$row,$studentDetails->mobile,1,0,'L', false); 
+            $pdf->Cell(0,$row,$transactionDetails->mobile,1,0,'L', false); 
             
             $y = $pdf->getY();
             $pdf->setFont ('Arial','B',9);
@@ -2291,7 +2290,7 @@ class Admin extends CI_Controller
             $transactionTypes = array("1" => "Cash", "2"=>"Cheque/DD", "3"=>"Online Payment");
             $pdf->Cell(0,$row,$transactionTypes[$transactionDetails->transaction_type],1,0,'L', false); 
             
-            $final_amount = $studentDetails->final_amount;
+            $final_amount = $admissionDetails->final_amount;
             $paid_amount = $transactionDetails->amount;
             $balance = $transactionDetails->balance_amount;
             // $final_amount - $paid_amount;
@@ -2312,7 +2311,7 @@ class Admin extends CI_Controller
                 $pdf->Cell(0,$row,"Rupees (in words)",1,0,'L', false);
                 $pdf->setFont ('Arial','',8);
                 $pdf->SetXY(50, $y+$row); 
-                $pdf->Cell(0,$row,$this->globals->getIndianCurrency($paid_amount),1,0,'L', false); 
+                $pdf->Cell(0,$row,"Rs.".number_format($paid_amount,0)."/-",1,0,'L', false); 
                 
             }
             
@@ -2348,7 +2347,7 @@ class Admin extends CI_Controller
                 $pdf->Cell(0,$row,"Rupees (in words)",1,0,'L', false);
                 $pdf->setFont ('Arial','',8);
                 $pdf->SetXY(50, $y+$row); 
-                $pdf->Cell(0,$row,$this->globals->getIndianCurrency($paid_amount),1,0,'L', false); 
+                $pdf->Cell(0,$row,"Rs.".number_format($paid_amount,0)."/-",1,0,'L', false); 
                 
             }
             
@@ -2375,7 +2374,7 @@ class Admin extends CI_Controller
                 $pdf->Cell(0,$row,"Rupees (in words)",1,0,'L', false);
                 $pdf->setFont ('Arial','',8);
                 $pdf->SetXY(50, $y+$row); 
-                $pdf->Cell(0,$row,$this->globals->getIndianCurrency($paid_amount),1,0,'L', false); 
+                $pdf->Cell(0,$row,"Rs.".number_format($paid_amount,0)."/-",1,0,'L', false); 
                 
             }
             
@@ -2413,7 +2412,8 @@ class Admin extends CI_Controller
                 $pdf->Cell(0,$row,"Principal",0,0,'L', false);    
             }
             
-            
+            // Var_dump( $pdf->output());
+			// die();
             $fileName = $transactionDetails->receipt_no.'.pdf'; 
 			// var_dump($transactionDetails);
 		    $pdf->output($fileName,'D'); 

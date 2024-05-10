@@ -44,7 +44,7 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label class="form-label">Department</label><br>
-                                <?= $departmentDetails->dept_name; ?>
+                                <?= $admissionDetails->dept_name; ?>
                             </div>
                         </div>
                         <div class="col-md-2">
