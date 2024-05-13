@@ -30,7 +30,9 @@ class Welcome extends CI_Controller {
 				$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 	
 				$this->form_validation->set_rules('name', 'Name', 'required');
-				$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]|callback_validate_member|is_unique[enquiries.mobile]');
+				$this->form_validation->set_rules('mobile', 'Mobile Number', 'required|regex_match[/^[0-9]{10}$/]|is_unique[enquiries.mobile]',array(
+					'is_unique'     => 'This %s is exists in student name.'
+			    ));
 				$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
 				$this->form_validation->set_rules('par_name', 'Parent Name', 'required');
 				$this->form_validation->set_rules('par_mobile', 'Parent Mobile', 'required|regex_match[/^[0-9]{10}$/]|is_unique[enquiries.mobile]');
