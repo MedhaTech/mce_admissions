@@ -1134,8 +1134,11 @@ class Student extends CI_Controller
 
 			$res['amount'] = (int)$response_array['amount'];
 			
-			pr($res);exit;
+			
 		}
+
+		var_dump($res);
+		exit;
 		return $res;
 	}
 }
