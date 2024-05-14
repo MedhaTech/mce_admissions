@@ -25,9 +25,9 @@ class Student extends CI_Controller
 		parent::__construct();
 		$this->CI = &get_instance();
 		$this->load->model('admin_model', '', TRUE);
-		
+
 		$this->load->library(array('table', 'form_validation'));
-		$this->load->helper(array('form', 'form_helper','file'));
+		$this->load->helper(array('form', 'form_helper', 'file'));
 		date_default_timezone_set('Asia/Kolkata');
 		ini_set('upload_max_filesize', '20M');
 	}
@@ -941,8 +941,8 @@ class Student extends CI_Controller
 		$this->load->library('logger');
 		$headers = array(
 			"alg" => "HS256",
-			"clientid" => "bduatv2ktk"
-			// "kid" => "HMAC"
+			"clientid" => "bduatv2ktk",
+			 "kid" => "HMAC"
 		);
 		$order_id = rand();
 		$trace_id = rand();
@@ -950,9 +950,9 @@ class Student extends CI_Controller
 		//    $config                         = $this->CI->config->item('billdesk');
 		$api_url                        = "https://uat1.billdesk.com/u2/payments/ve1_2/orders/create";
 		$payload                        = array();
-		
-		
-		$payload['orderid']             = "MALbe".$order_id;
+
+
+		$payload['orderid']             = "MALbe" . $order_id;
 		$payload['mercid']              = "BDUATV2KTK";
 		$payload['order_date']          = date("c");
 		$payload['amount']              = "10.00";
@@ -995,26 +995,26 @@ class Student extends CI_Controller
 			"bd-traceid: $trace_id",
 			"bd-timestamp: $servertime"
 		);
-		
+
 		// Append additional headers
 		$ch_headers[] = "Content-Length: " . strlen($curl_payload);
 		// pr($ch_headers);exit;
 		$message = "Billdesk create order curl header - " . json_encode($ch_headers);
-		$this->logger->write('billdesk','debug', $message);
+		$this->logger->write('billdesk', 'debug', $message);
 		$message1 = "Billdesk Request payload - " . $curl_payload;
-		$this->logger->write('billdesk','debug', $message1);
+		$this->logger->write('billdesk', 'debug', $message1);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $ch_headers);
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $curl_payload);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$response = curl_exec($ch);
 		$message2 = "Billdesk create order response - " . $response;
-		$this->logger->write('billdesk','debug', $message2);
+		$this->logger->write('billdesk', 'debug', $message2);
 		curl_close($response);
 		$result_decoded = JWT::decode($response, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", 'HS256');
 		$result_array = (array) $result_decoded;
 		$message = "Billdesk create order response decoded - " . json_encode($result_array);
-		$this->logger->write('billdesk','debug', $message);
+		$this->logger->write('billdesk', 'debug', $message);
 		if ($result_decoded->status == 'ACTIVE') {
 			$transactionid = $result_array['links'][1]->parameters->bdorderid;
 			$authtoken = $result_array['links'][1]->headers->authorization;
@@ -1027,55 +1027,115 @@ class Student extends CI_Controller
 		} else {
 			$status = isset($result_decoded->status) ? $result_decoded->status : "Status not available";
 			$message = "Billdesk create order status - " . $status;
-			$this->logger->write('billdesk','debug', $message);
+			$this->logger->write('billdesk', 'debug', $message);
 		}
 	}
 
 
 	public function callback()
-	{		
+	{
 		require_once APPPATH . 'libraries/Jwt.php';
 		$this->load->library('logger');
 		$message = "BillDesk Response - " . json_encode($_POST);
-		$this->logger->write('billdesk','debug', $message);
+		$this->logger->write('billdesk', 'debug', $message);
 		$tx = "";
-		 if(!empty($_POST)) { 
-		     $tx_array = $_POST;
-		     if (isset($tx_array['transaction_response'])) {
-		         $tx = $tx_array['transaction_response'];
-		     }
+		if (!empty($_POST)) {
+			$tx_array = $_POST;
+			if (isset($tx_array['transaction_response'])) {
+				$tx = $tx_array['transaction_response'];
+			}
 		}
 
 
-		if(!empty($tx)){
-            $response_decoded = JWT::decode($tx, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", 'HS256');
+		if (!empty($tx)) {
+			$response_decoded = JWT::decode($tx, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", 'HS256');
 			$response_array = (array) $response_decoded;
 			$response_json =  json_encode($response_array);
 			$message = "BillDesk callback Response decode - " . $response_json;
-			$this->logger->write('billdesk','debug', $message);
+			$this->logger->write('billdesk', 'debug', $message);
 
-			if($response_array['auth_status'] == '0300'){
-	            $status = 'pass';
+			if ($response_array['auth_status'] == '0300') {
+				$status = 'pass';
+			} else if ($response_array['auth_status'] == '0002') {
+				$status = 'unknown';
+			} else {
+				$status = 'fail';
 			}
-			else if($response_array['auth_status'] == '0002'){
-	            $status = 'unknown';
-			}else{
-	            $status = 'fail';
-			}    
-			
-	        $return['amount']	    = (int)$response_array['amount'];
-			$return['order_id']	    = $response_array['orderid'];			
+
+			$return['amount']	    = (int)$response_array['amount'];
+			$return['order_id']	    = $response_array['orderid'];
 			$return['status']		= $status;
 			$return['pgresponse']	= $response_json;
 			$return['pgid']	        = $response_array['transactionid'];
-	        
-
-			
-		}
-		else{
+		} else {
 			$status = 'fail';
 			$return['status']		= $status;
 		}
 		var_dump($return);
+	}
+
+
+	public function getTransactionDetails($order_id)
+	{
+		require_once APPPATH . 'libraries/Jwt.php';
+		$this->load->library('logger');
+
+
+		$billdesk_URL_retrive = "https://pguat.billdesk.io/payments/ve1_2/transactions/get";
+		$trace_id = rand();
+		$servertime = time();
+		$headers = array("alg" => "HS256", "clientid" => "bduatv2ktk", "kid" => "HMAC");
+		$payload = array(
+			"mercid" => 'BDUATV2KTK',
+			"orderid" => $order_id,
+		);
+		$curl_payload = JWT::encode($payload, '16uUloqqrs2iMUZnrojXtmkTeSQqjYIX', 'HS256', $headers);
+		$message = "BillDesk retrieve payload - " . $curl_payload;
+		$this->logger->write('billdesk', 'debug', $message);
+		$ch = curl_init($billdesk_URL_retrive);
+		$ch_headers = array(
+			"Content-Type: application/jose",
+			"accept: application/jose",
+			"BD-Traceid: $trace_id",
+			"BD-Timestamp: $servertime"
+		);
+		
+		$message = "BillDesk retrieve curl header - " . json_encode($ch_headers);
+		$this->logger->write('billdesk', 'debug', $message);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $ch_headers);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $curl_payload);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$response = curl_exec($ch);
+
+		$message = "Billdesk retrieve order response - " . $response;
+		$this->logger->write('billdesk', 'debug', $message);
+		curl_close($ch);
+		$result_decoded = JWT::decode($response, '16uUloqqrs2iMUZnrojXtmkTeSQqjYIX', 'HS256');
+		$response_array = (array) $result_decoded;
+		$message = "Billdesk retrieve order response decoded - " . json_encode($response_array);
+		$this->logger->write('billdesk', 'debug', $message);
+		$res['status'] = 3;
+		$res['reason'] = "UNKNOWN";
+
+		if ($response_array['transactionid']) {
+
+			if ($response_array['auth_status'] == '0300') {
+				$res['status'] = 5;
+				$res['txn_id'] = $response_array['transactionid'];
+				$res['reason'] = 'success';
+			} else if ($response_array['auth_status'] == '0002') {
+				$res['status'] = 2;
+				$res['reason'] = 'pending';
+			} else if ($response_array['auth_status'] == '0399') {
+				$res['status'] = 6;
+				$res['reason'] = 'fail';
+			}
+
+			$res['amount'] = (int)$response_array['amount'];
+			
+			pr($res);exit;
+		}
+		return $res;
 	}
 }
