@@ -1081,7 +1081,7 @@ class Student extends CI_Controller
 		$this->load->library('logger');
 
 
-		$billdesk_URL_retrive = "https://pguat.billdesk.io/payments/ve1_2/transactions/get";
+		$billdesk_URL_retrive = "https://uat1.billdesk.com/u2/payments/ve1_2/transactions/get";
 		$trace_id = rand();
 		$servertime = time();
 		$headers = array("alg" => "HS256", "clientid" => "bduatv2ktk", "kid" => "HMAC");
