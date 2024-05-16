@@ -1220,8 +1220,8 @@ class Student extends CI_Controller
 				"user_agent"    => $_SERVER['HTTP_USER_AGENT'],
 				"accept_header" => "text/html",
 			);
-			var_dump($payload);
-			die();
+			// var_dump($payload);
+			// die();
 
 			/*****************************************/
 			// Encode payload
