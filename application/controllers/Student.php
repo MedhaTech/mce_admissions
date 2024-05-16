@@ -668,11 +668,12 @@ class Student extends CI_Controller
 		if ($this->session->userdata('student_in')) {
 			$student_session = $this->session->userdata('student_in');
 			$data['student_name'] = $student_session['student_name'];
-			echo $data['id'] = $student_session['id'];
+			$data['id'] = $student_session['id'];
 			$student_id = $student_session['id'];
 			$data['page_title'] = "Fee Details";
 			$data['menu'] = "fee_details";
-
+			$data['action'] = "student/pay_now";
+			$data['student'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 			$data['fees'] = $this->admin_model->getDetailsbyfield($data['id'], 'student_id', 'fee_master')->row();
 
 			$this->student_template->show('student/fee_details', $data);
@@ -942,7 +943,7 @@ class Student extends CI_Controller
 		$headers = array(
 			"alg" => "HS256",
 			"clientid" => "bduatv2ktk",
-			 "kid" => "HMAC"
+			"kid" => "HMAC"
 		);
 		$order_id = rand();
 		$trace_id = rand();
@@ -1067,11 +1068,16 @@ class Student extends CI_Controller
 			$return['status']		= $status;
 			$return['pgresponse']	= $response_json;
 			$return['pgid']	        = $response_array['transactionid'];
+			$this->session->set_flashdata('message', 'Payment was successfull...!');
+			$this->session->set_flashdata('status', 'alert-success');
 		} else {
 			$status = 'fail';
 			$return['status']		= $status;
+			$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+			$this->session->set_flashdata('status', 'alert-warning');
 		}
-		var_dump($return);
+	
+		redirect('student/fee_details');
 	}
 
 
@@ -1099,7 +1105,7 @@ class Student extends CI_Controller
 			"BD-Traceid: $trace_id",
 			"BD-Timestamp: $servertime"
 		);
-		
+
 		$message = "BillDesk retrieve curl header - " . json_encode($ch_headers);
 		$this->logger->write('billdesk', 'debug', $message);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $ch_headers);
@@ -1133,12 +1139,126 @@ class Student extends CI_Controller
 			}
 
 			$res['amount'] = (int)$response_array['amount'];
-			
-			
 		}
 
 		var_dump($res);
 		exit;
 		return $res;
+	}
+
+	public function pay_now()
+	{
+
+		if ($this->session->userdata('student_in')) {
+			$student_session = $this->session->userdata('student_in');
+			$data['student_name'] = $student_session['student_name'];
+			$data['id'] = $student_session['id'];
+			require_once APPPATH . 'libraries/Jwt.php';
+			$this->load->library('logger');
+			$insert = array(
+				'amount' => number_format((float)$this->input->post('amount'), 2, '.', ''),
+				'USN' => $this->input->post('usn'),
+				'email' => $this->input->post('email'),
+				'mobile' => $this->input->post('mobile'),
+				'reference_no' => $this->input->post('usn') . time(),
+				'transaction_type' => '1'
+			);
+
+			// var_dump($insert);
+
+			$headers = array(
+				"alg" => "HS256",
+				"clientid" => "bduatv2ktk",
+				"kid" => "HMAC"
+			);
+			$order_id = rand();
+			$trace_id = rand();
+			$servertime = time();
+			//    $config                         = $this->CI->config->item('billdesk');
+			$api_url                        = "https://uat1.billdesk.com/u2/payments/ve1_2/orders/create";
+			$payload                        = array();
+
+
+			$payload['orderid']             = $insert['reference_no'];
+			$payload['mercid']              = "BDUATV2KTK";
+			$payload['order_date']          = date("c");
+			$payload['amount']              = $insert['amount'];
+			$payload['currency']            = '356';
+
+			$payload['ru'] 	           =  base_url() . 'student/callback'; // Return URL
+
+			$payload['additional_info']    =  array(
+				"additional_info1" => $insert['USN'],
+				"additional_info2" => $this->input->post('name'),
+				"additional_info3" => $insert['email'],
+				"additional_info4" => $insert['mobile'],
+				"additional_info5" => "NA",
+				"additional_info6" => "NA",
+				"additional_info7" => "NA"
+			);
+			$payload['itemcode']           = 'DIRECT';
+			$payload['device']             =  array(
+				"init_channel" => "internet",
+				"ip" => $_SERVER['REMOTE_ADDR'],
+				"user_agent"    => $_SERVER['HTTP_USER_AGENT'],
+				"accept_header" => "text/html",
+			);
+			// var_dump($payload);
+			// die();
+
+			/*****************************************/
+			// Encode payload
+			/*****************************************/
+			$curl_payload = JWT::encode($payload, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", "HS256", $headers);
+
+
+
+			/*****************************************/
+			// Submit to Billdesk
+			/*****************************************/
+			$ch = curl_init($api_url);
+			$ch_headers = array(
+				"Content-Type: application/jose",
+				"accept: application/jose",
+				"bd-traceid: $trace_id",
+				"bd-timestamp: $servertime"
+			);
+
+			// Append additional headers
+			$ch_headers[] = "Content-Length: " . strlen($curl_payload);
+			// pr($ch_headers);exit;
+			$message = "Billdesk create order curl header - " . json_encode($ch_headers);
+			$this->logger->write('billdesk', 'debug', $message);
+			$message1 = "Billdesk Request payload - " . $curl_payload;
+			$this->logger->write('billdesk', 'debug', $message1);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $ch_headers);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $curl_payload);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$response = curl_exec($ch);
+			$message2 = "Billdesk create order response - " . $response;
+			$this->logger->write('billdesk', 'debug', $message2);
+			curl_close($response);
+			$result_decoded = JWT::decode($response, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", 'HS256');
+			$result_array = (array) $result_decoded;
+			$message = "Billdesk create order response decoded - " . json_encode($result_array);
+			$this->logger->write('billdesk', 'debug', $message);
+			if ($result_decoded->status == 'ACTIVE') {
+				$transactionid = $result_array['links'][1]->parameters->bdorderid;
+				$authtoken = $result_array['links'][1]->headers->authorization;
+				$requestParams['order_id'] = $result_decoded->orderid;
+				$requestParams['merchantId'] = $result_decoded->mercid;
+				$requestParams['transactionid'] = $transactionid;
+				$requestParams['authtoken'] = $authtoken;
+				// return $requestParams;
+				$this->load->view('student/payment', $requestParams);
+			} else {
+				$status = isset($result_decoded->status) ? $result_decoded->status : "Status not available";
+				$message = "Billdesk create order status - " . $status;
+				$this->logger->write('billdesk', 'debug', $message);
+			}
+		} else {
+			redirect('student', 'refresh');
+		}
 	}
 }
