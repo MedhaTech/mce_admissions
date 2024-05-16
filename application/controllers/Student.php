@@ -1063,11 +1063,23 @@ class Student extends CI_Controller
 				$status = 'fail';
 			}
 
+
+
 			$return['amount']	    = (int)$response_array['amount'];
 			$return['order_id']	    = $response_array['orderid'];
 			$return['status']		= $status;
 			$return['pgresponse']	= $response_json;
 			$return['pgid']	        = $response_array['transactionid'];
+
+			$updateDetails = array(
+				'transaciton_date' => date('Y-m-d'),
+				'transaction_id' => $response_array['transactionid'],
+				'txn_response' => $response_json
+			);
+
+			$result = $this->admin_model->updateDetailsbyfield('reference_no', $response_array['orderid'], $updateDetails, 'transactions');
+
+
 			$this->session->set_flashdata('message', 'Payment was successfull...!');
 			$this->session->set_flashdata('status', 'alert-success');
 		} else {
@@ -1076,7 +1088,7 @@ class Student extends CI_Controller
 			$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
 			$this->session->set_flashdata('status', 'alert-warning');
 		}
-	
+
 		redirect('student/fee_details');
 	}
 
@@ -1157,14 +1169,19 @@ class Student extends CI_Controller
 			$this->load->library('logger');
 			$insert = array(
 				'amount' => number_format((float)$this->input->post('amount'), 2, '.', ''),
-				'USN' => $this->input->post('usn'),
-				'email' => $this->input->post('email'),
+				'reg_no' => $this->input->post('usn'),
+				// 'email' => $this->input->post('email'),
 				'mobile' => $this->input->post('mobile'),
 				'reference_no' => $this->input->post('usn') . time(),
-				'transaction_type' => '1'
+				'transaction_type' => '3',
+				'academic_year' => "2024-2025",
+				'admissions_id' => $data['id'],
+				'reference_date' => date('Y-m-d'),
+				'transaction_status' => '0',
+				'created_on' => date('Y-m-d h:i:s')
 			);
 
-			// var_dump($insert);
+			$result = $this->admin_model->insertDetails('transactions', $insert);
 
 			$headers = array(
 				"alg" => "HS256",
@@ -1188,9 +1205,9 @@ class Student extends CI_Controller
 			$payload['ru'] 	           =  base_url() . 'student/callback'; // Return URL
 
 			$payload['additional_info']    =  array(
-				"additional_info1" => $insert['USN'],
+				"additional_info1" => $insert['reg_no'],
 				"additional_info2" => $this->input->post('name'),
-				"additional_info3" => $insert['email'],
+				"additional_info3" => $this->input->post('email'),
 				"additional_info4" => $insert['mobile'],
 				"additional_info5" => "NA",
 				"additional_info6" => "NA",
@@ -1203,8 +1220,8 @@ class Student extends CI_Controller
 				"user_agent"    => $_SERVER['HTTP_USER_AGENT'],
 				"accept_header" => "text/html",
 			);
-			// var_dump($payload);
-			// die();
+			var_dump($payload);
+			die();
 
 			/*****************************************/
 			// Encode payload
