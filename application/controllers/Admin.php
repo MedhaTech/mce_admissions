@@ -158,15 +158,37 @@ class Admin extends CI_Controller
 
 			$data['page_title'] = 'Enquiries List';
 			$data['menu'] = 'enquiries';
+			$data['action'] = 'admin/enquiries';
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['enquiries'] = $this->admin_model->getEnquiries($data['currentAcademicYear'])->result();
-			$this->admin_template->show('admin/enquiries', $data);
+			$data['states'] = array("" => "Select State") + $this->globals->states();
+			$data['course_options'] = array(" " => "Select Branch") + $this->courses();
+			
+			
+			  
+				if ($this->input->post()) {
+					$sslc=$this->input->post('sslc');
+					$puc1=$this->input->post('puc1');
+					$puc2=$this->input->post('puc2');
+					$state=$this->input->post('state');
+					$course=$this->input->post('course');
+					$data['enquiries'] = $this->admin_model->getEnquiries_filter($data['currentAcademicYear'],$sslc,$puc1,$puc2,$state,$course)->result();
+				}
+				else
+				{
+				$data['enquiries'] = $this->admin_model->getEnquiries($data['currentAcademicYear'])->result();
+				}
+				// var_dump($this->db->last_query());
+				$this->admin_template->show('admin/enquiries', $data);
+			
 		} else {
 			redirect('admin/timeout');
 		}
+	
 	}
+
 	function newEnquiry()
 	{
 		if ($this->session->userdata('logged_in')) {
