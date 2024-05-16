@@ -145,21 +145,6 @@ class Welcome extends CI_Controller {
 		
 	}
 
-	function validate_member($mobile)
-{
-	$data['enquiries'] = $mobile; //this is redundant, but it's to show you how
-   //the content of the fields gets automatically passed to the method
-
-   if($this->admin_model->validate_member($data['enquiries']))
-   {
-     return TRUE;
-   }
-   else
-   {
-     return FALSE;
-   }
-}
-
 	function courses()
 	{
 		

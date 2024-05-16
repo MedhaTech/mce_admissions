@@ -275,6 +275,27 @@ class Admin_model extends CI_Model
     $this->db->order_by('reg_date', 'DESC');
     return $this->db->get('enquiries');
   }
+  function getEnquiries_filter($academic_year,$sslc='',$puc1='',$puc2='',$state='',$course='')
+  {
+    $this->db->where('academic_year', $academic_year);
+    if($sslc)
+    $this->db->where('sslc_grade>=', $sslc);
+    if($puc1)
+    $this->db->where('puc1_grade>=', $puc1);
+    if($puc2)
+    $this->db->where('puc2_grade>=', $puc2);
+    if($state)
+    $this->db->where('state', $state);
+    if($course)
+    {
+    $this->db->where('course_id', $course);
+    $this->db->or_where('course1', $course);
+    $this->db->or_where('course2', $course);
+
+    }
+    $this->db->order_by('reg_date', 'DESC');
+    return $this->db->get('enquiries');
+  }
   function getEnquiries_category($academic_year,$category)
   {
     $this->db->where('academic_year', $academic_year);
@@ -361,21 +382,6 @@ class Admin_model extends CI_Model
       $this->db->group_by('admissions_id');
        $this->db->where('transaction_status','1');
       return $this->db->get('transactions');   
-    }
-
-    function validate_member(){
-      $query = $this->db->query("SELECT * from enquiries WHERE mobile='$mobile'"); 
-$mobile = $query->result();
-
-if(count($mobile))
-{
-    return false;
-}
-else
-{
-    return true;
-}       
-
     }
 }
  
