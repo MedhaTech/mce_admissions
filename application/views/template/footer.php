@@ -68,7 +68,7 @@ $(function() {
         for (i = 48; i < 58; i++) myArray.push(i);
         if (!(myArray.indexOf(e.which) >= 0)) e.preventDefault();
     });
-    $("#adhaar").keypress(function(e) {
+    $("#aadhaar").keypress(function(e) {
         let myArray = [];
         for (i = 48; i < 58; i++) myArray.push(i);
         if (!(myArray.indexOf(e.which) >= 0)) e.preventDefault();

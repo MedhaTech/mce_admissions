@@ -126,7 +126,7 @@ class Student extends CI_Controller
 				}
 				$this->student_template->show('student/finish', $data);
 			} else {
-				$this->student_template->show('student/Dashboard', $data);
+				$this->student_template->show('student/dashboard', $data);
 			}
 		} else {
 			redirect('student', 'refresh');
@@ -173,7 +173,7 @@ class Student extends CI_Controller
 			$this->form_validation->set_rules('student_name', 'Student Name', 'required');
 			$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]');
 			$this->form_validation->set_rules('email', 'Email', 'trim|valid_email');
-			$this->form_validation->set_rules('aadhar', 'Aadhar Number', 'required|regex_match[/^[0-9]{12}$/]');
+			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]');
 			$this->form_validation->set_rules('dept_id', 'Department Id', 'required');
 			$this->form_validation->set_rules('quota', 'Quota', 'required');
 			$this->form_validation->set_rules('sub_quota', 'sub_quota', 'required');
@@ -191,7 +191,7 @@ class Student extends CI_Controller
 				$data['student_name'] =  $admissionDetails->student_name;
 				$data['mobile'] = $admissionDetails->mobile;
 				$data['email'] = $admissionDetails->email;
-				$data['aadhar'] = $admissionDetails->aadhar;
+				$data['aadhaar'] = $admissionDetails->aadhaar;
 				$data['dept_id'] = $admissionDetails->dept_id;
 				$data['quota'] = $admissionDetails->quota;
 				$data['sub_quota'] = $admissionDetails->sub_quota;
@@ -205,7 +205,7 @@ class Student extends CI_Controller
 					'student_name' => strtoupper($this->input->post('student_name')),
 					'mobile' => $this->input->post('mobile'),
 					'email' => strtolower($this->input->post('email')),
-					'adhaar' => $this->input->post('adhaar'),
+					'aadhaar' => $this->input->post('aadhaar'),
 					'dept_id' => $this->input->post('dept_id'),
 					'quota' => $this->input->post('quota'),
 					'sub_quota' => $this->input->post('sub_quota'),
@@ -737,8 +737,6 @@ class Student extends CI_Controller
 				}
 				$upload_path = $config['upload_path'];
 
-
-
 				$this->load->library('upload', $config);
 
 				$file_info = pathinfo($_FILES['photo']['name']);
@@ -822,7 +820,7 @@ class Student extends CI_Controller
 			$student_session = $this->session->userdata('student_in');
 			$data['student_name'] = $student_session['student_name'];
 			$data['id'] = $student_session['id'];
-			$data['page_title'] = 'Education Details';
+			$data['page_title'] = 'Update Education Details';
 			$data['menu'] = 'educationdetails';
 
 			$this->form_validation->set_rules('education_level', 'Education Level', 'required');
@@ -872,7 +870,7 @@ class Student extends CI_Controller
 				$data['action'] = 'student/updateeducationdetails/' . $edu_id;
 				$data['student_name'] = $student_session['student_name'];
 				$data['id'] = $student_session['id'];
-				$data['page_title'] = 'Education Details';
+				$data['page_title'] = 'Update Education Details';
 				$data['menu'] = 'educationdetails';
 
 				$this->student_template->show('student/update_education_details', $data);

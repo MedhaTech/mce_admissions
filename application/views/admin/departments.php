@@ -18,9 +18,9 @@
                                   <table class="table table-hover text-center">
                                       <thead>
                                           <tr>
-                                              <th width="5%">S.NO</th>
+                                              <th width="10%">S.NO</th>
                                               <th width="20%">Stream</th>
-                                              <th width="35%">DEPARTMENT</th>
+                                              <th width="70%" class="text-left">DEPARTMENT</th>
                                               <!-- <th width="15%">TOTAL <br /> INTAKE</th> -->
                                               <!-- <th width="15%">MGMT <br /> INTAKE</th> -->
                                               <!-- <th width="15%">COLLEGE <br /> INTAKE</th> -->

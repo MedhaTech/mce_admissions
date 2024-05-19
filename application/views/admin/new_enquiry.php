@@ -128,10 +128,10 @@
 
                           <div class="col-md-4 col-sm-12">
                               <div class="form-group">
-                                  <label for="dsc-2">Adhaar Number </label>
-                                  <input type="text" name="adhaar" id="adhaar" class="form-control"
-                                      value="<?php echo (set_value('adhaar')) ? set_value('adhaar') : $adhaar; ?>">
-                                  <span class="text-danger"><?php echo form_error('adhaar'); ?></span>
+                                  <label for="dsc-2">Aadhaar Number </label>
+                                  <input type="text" name="aadhaar" id="aadhaar" class="form-control"
+                                      value="<?php echo (set_value('aadhaar')) ? set_value('aadhaar') : $aadhaar; ?>">
+                                  <span class="text-danger"><?php echo form_error('aadhaar'); ?></span>
                               </div>
                           </div>
                           <div class="col-md-4 col-sm-12">

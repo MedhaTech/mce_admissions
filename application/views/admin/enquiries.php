@@ -104,7 +104,7 @@
 										anchor('admin/enquiryDetails/' . $enquiries1->id, $enquiries1->student_name),
 										$enquiries1->mobile,
 										$enquiries1->course,
-										$enquiries1->adhaar,
+										$enquiries1->aadhaar,
 										'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
 										date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
 									);

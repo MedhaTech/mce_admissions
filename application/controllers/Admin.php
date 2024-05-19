@@ -82,7 +82,7 @@ class Admin extends CI_Controller
 			$data['full_name'] = $session_data['full_name'];
 			$data['role'] = $session_data['role'];
 
-			// echo $encryptAadhar;
+			// echo $encryptAadhaar;
 			$txt = base64_decode($encryptTxt);
 			$txtArray = (explode(",", $txt));
 
@@ -123,7 +123,7 @@ class Admin extends CI_Controller
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['departments'] = $this->admin_model->getActiveDepartments()->result();
-			$this->admin_template->show('admin/Dashboard', $data);
+			$this->admin_template->show('admin/dashboard', $data);
 		} else {
 			redirect('admin', 'refresh');
 		}
@@ -141,7 +141,7 @@ class Admin extends CI_Controller
 			$data['page_title'] = "Dashboard";
 			$data['menu'] = "dashboard";
 			$data['departments'] = $this->admin_model->getActiveDepartments()->result();
-			$this->admin_template->show('admin/Dashboard1', $data);
+			$this->admin_template->show('admin/dashboard1', $data);
 		} else {
 			redirect('admin', 'refresh');
 		}
@@ -224,7 +224,7 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('gender', 'Gender', 'required');
 			$this->form_validation->set_rules('category', 'Category', 'required');
 			$this->form_validation->set_rules('sports', 'Sports', 'required');
-			$this->form_validation->set_rules('adhaar', 'Adhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.adhaar]');
+			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.aadhaar]');
 			$this->form_validation->set_rules('puc1_grade', 'PUC-I(10+1) Percentage/Grade', 'required');
 			$this->form_validation->set_rules('sslc_grade', 'SSLC Percentage/Grade', 'required');
 
@@ -250,7 +250,7 @@ class Admin extends CI_Controller
 				$data['puc1_grade'] = $this->input->post('puc1_grade');
 				$data['sslc_grade'] = $this->input->post('sslc_grade');
 				$data['gender'] = $this->input->post('gender');
-				$data['adhaar'] = $this->input->post('adhaar');
+				$data['aadhaar'] = $this->input->post('aadhaar');
 
 				$this->admin_template->show('admin/new_enquiry', $data);
 			} else {
@@ -279,7 +279,7 @@ class Admin extends CI_Controller
 					'category' => $this->input->post('category'),
 					'sports' => $this->input->post('sports'),
 					'gender' => $this->input->post('gender'),
-					'adhaar' => $this->input->post('adhaar'),
+					'aadhaar' => $this->input->post('aadhaar'),
 					'sslc_grade' => $this->input->post('sslc_grade'),
 					'puc1_grade' => strtoupper($this->input->post('puc1_grade')),
 					'puc2_grade' => $this->input->post('puc2_grade'),
@@ -370,7 +370,7 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('course1', 'Course', 'required');
 			$this->form_validation->set_rules('course2', 'Course', 'required');
 			$this->form_validation->set_rules('gender', 'Gender', 'required');
-			// $this->form_validation->set_rules('adhaar', 'Adhaar', 'required');
+			// $this->form_validation->set_rules('aadhaar', 'Aadhaar', 'required');
 			$this->form_validation->set_rules('state', 'State', 'required');
 			$this->form_validation->set_rules('city', 'City', 'required');
 			$this->form_validation->set_rules('category', 'Category', 'required');
@@ -380,7 +380,7 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('register_grade', '10+2 Percentage / Grade', 'required');
 			$this->form_validation->set_rules('exam_board', 'Exam Board', 'required');
 			$this->form_validation->set_rules('register_number', 'Register Number', 'required');
-			$this->form_validation->set_rules('adhaar', 'Adhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.adhaar]');
+			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.aadhaar]');
 
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/editEnquiry/' . $id;
@@ -400,7 +400,7 @@ class Admin extends CI_Controller
 				$data['course1'] =  $enquiryDetails->course_id;
 				$data['course2'] =  $enquiryDetails->course_id;
 				$data['gender'] =  $enquiryDetails->gender;
-				$data['adhaar'] =  $enquiryDetails->adhaar;
+				$data['aadhaar'] =  $enquiryDetails->aadhaar;
 				$data['state'] =  $enquiryDetails->state;
 				$data['city'] =  $enquiryDetails->city;
 				$data['category'] =  $enquiryDetails->category;
@@ -429,7 +429,7 @@ class Admin extends CI_Controller
 					'course_id' => $this->input->post('course1'),
 					'course_id' => $this->input->post('course2'),
 					'gender' => $this->input->post('gender'),
-					'adhaar' => $this->input->post('adhaar'),
+					'aadhaar' => $this->input->post('aadhaar'),
 					'course' => $course,
 					'state' => $this->input->post('state'),
 					'city' => $this->input->post('city'),
@@ -654,8 +654,10 @@ class Admin extends CI_Controller
 				'student_name' => strtoupper($enquiryDetails->student_name),
 				'mobile' => $enquiryDetails->mobile,
 				'email' => strtolower($enquiryDetails->email),
-				'father_name' => strtoupper($enquiryDetails->father_name),
-				'aadhar' => $enquiryDetails->adhaar,
+				'father_name' => strtoupper($enquiryDetails->par_name),
+				'father_mobile' => $enquiryDetails->par_mobile,
+				'father_email' => $enquiryDetails->par_email,
+				'aadhaar' => $enquiryDetails->aadhaar,
 				'quota' => $this->input->post('quota'),
 				'sub_quota' => $this->input->post('subquota'),
 				'exam_rank' => $this->input->post('exam_rank'),
@@ -699,7 +701,6 @@ class Admin extends CI_Controller
 			if (!file_exists($url)) {
 				mkdir($url, 0777);
 			}
-
 
 			if ($result1) {
 				$email['name'] = strtoupper($enquiryDetails->student_name);
@@ -993,7 +994,7 @@ class Admin extends CI_Controller
 		}
 	}
 
-	public function enquiryAdmission($encryptAadhar)
+	public function enquiryAdmission($encryptAadhaar)
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
@@ -1002,11 +1003,11 @@ class Admin extends CI_Controller
 			$data['full_name'] = $session_data['full_name'];
 			$data['role'] = $session_data['role'];
 
-			// echo $encryptAadhar;
-			$aadhar = base64_decode($encryptAadhar);
-			// $aadhar = $this->encrypt->decode(base64_decode($encryptAadhar));
+			// echo $encryptAadhaar;
+			$aadhaar = base64_decode($encryptAadhaar);
+			// $aadhaar = $this->encrypt->decode(base64_decode($encryptAadhaar));
 
-			$details = $this->admin_model->fetchDetails1('id', 'aadhar', $aadhar, 'admissions')->row();
+			$details = $this->admin_model->fetchDetails1('id', 'aadhaar', $aadhaar, 'admissions')->row();
 
 			$encryptId = base64_encode($details->id);
 			// $encryptId = base64_encode($this->encrypt->encode($details->id));
@@ -1075,7 +1076,7 @@ class Admin extends CI_Controller
 							$enquiries1->student_name,
 							$enquiries1->mobile,
 							$enquiries1->course,
-							$enquiries1->adhaar,
+							$enquiries1->aadhaar,
 							$enquiries1->sslc_grade,
 							$enquiries1->puc1_grade,
 							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
@@ -1106,7 +1107,7 @@ class Admin extends CI_Controller
 								$enquiries1->student_name,
 								$enquiries1->mobile,
 								$enquiries1->course,
-								$enquiries1->adhaar,
+								$enquiries1->aadhaar,
 								$enquiries1->sslc_grade,
 								$enquiries1->puc1_grade,
 								'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
@@ -1138,7 +1139,7 @@ class Admin extends CI_Controller
 								$enquiries1->student_name,
 								$enquiries1->mobile,
 								$enquiries1->course,
-								$enquiries1->adhaar,
+								$enquiries1->aadhaar,
 								$enquiries1->sslc_grade,
 								$enquiries1->puc1_grade,
 								'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
@@ -1170,7 +1171,7 @@ class Admin extends CI_Controller
 							$enquiries1->student_name,
 							$enquiries1->mobile,
 							$enquiries1->course,
-							$enquiries1->adhaar,
+							$enquiries1->aadhaar,
 							$enquiries1->sslc_grade,
 							$enquiries1->puc1_grade,
 							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
@@ -1201,7 +1202,7 @@ class Admin extends CI_Controller
 							$enquiries1->student_name,
 							$enquiries1->mobile,
 							$enquiries1->course,
-							$enquiries1->adhaar,
+							$enquiries1->aadhaar,
 							$enquiries1->state,
 							$enquiries1->sslc_grade,
 							$enquiries1->puc1_grade,
@@ -1233,7 +1234,7 @@ class Admin extends CI_Controller
 							$enquiries1->student_name,
 							$enquiries1->mobile,
 							$enquiries1->course,
-							$enquiries1->adhaar,
+							$enquiries1->aadhaar,
 							$enquiries1->sports,
 							$enquiries1->sslc_grade,
 							$enquiries1->puc1_grade,
@@ -1308,7 +1309,7 @@ class Admin extends CI_Controller
 							$enquiries1->student_name,
 							$enquiries1->mobile,
 							$enquiries1->course,
-							$enquiries1->adhaar,
+							$enquiries1->aadhaar,
 							$enquiries1->sslc_grade,
 							$enquiries1->puc1_grade,
 							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
@@ -1376,7 +1377,7 @@ class Admin extends CI_Controller
 							$enquiries1->student_name,
 							$enquiries1->mobile,
 							$enquiries1->course,
-							$enquiries1->adhaar,
+							$enquiries1->aadhaar,
 							$enquiries1->sslc_grade,
 							$enquiries1->puc1_grade,
 							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
@@ -1521,7 +1522,7 @@ class Admin extends CI_Controller
 
 			$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]');
 			$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[admissions.email]');
-			$this->form_validation->set_rules('aadhar', 'Adhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[admissions.aadhar]');
+			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[admissions.aadhaar]');
 			$this->form_validation->set_rules('course', 'Department', 'required');
 			$this->form_validation->set_rules('quota', 'Quota', 'required');
 			$this->form_validation->set_rules('subquota', 'sub quota', 'required');
@@ -1547,7 +1548,7 @@ class Admin extends CI_Controller
 				$data['mobile'] = $this->input->post('mobile');
 				$data['email'] = $this->input->post('email');
 				$data['course'] = $this->input->post('course');
-				$data['aadhar'] = $this->input->post('aadhar');
+				$data['aadhaar'] = $this->input->post('aadhaar');
 				$data['quota'] = $this->input->post('quota');
 				$data['sub_quota'] = $this->input->post('subquota');
 				$data['category_alloted'] = $this->input->post('category_alloted');
@@ -1619,7 +1620,7 @@ class Admin extends CI_Controller
 					'student_name' => strtoupper($this->input->post('student_name')),
 					'mobile' => $this->input->post('mobile'),
 					'email' => strtolower($this->input->post('email')),
-					'aadhar' => $this->input->post('aadhar'),
+					'aadhaar' => $this->input->post('aadhaar'),
 					'dept_id' => $this->input->post('course'),
 					'quota' => $this->input->post('quota'),
 					'sub_quota' => $this->input->post('subquota'),
@@ -2129,7 +2130,6 @@ class Admin extends CI_Controller
 			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'id', 'student_education_details')->result();
 	
 
-
 			$this->load->library('fpdf'); // Load library
 			ini_set("session.auto_start", 0);
 			ini_set('memory_limit', '-1');
@@ -2163,25 +2163,24 @@ class Admin extends CI_Controller
 
 			$pdf->Ln(10);
 
-			$content = "  You have sought for admission to the 1s-t B.E., (Bachelor of Engineering course for the academic year ".$data['admissionDetails']->academic_year." in our college (i.e,., Malnad College of Engineering.) 
+			$content = "You have sought for admission to the 1st B.E., (Bachelor of Engineering course for the academic year ".$data['admissionDetails']->academic_year." in our college (i.e,., Malnad College of Engineering.) 
 
-		We are pleased to provisionally offer you a seat for 1st year Bachelor of Engineering Course Four years duration in " . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ".
+We are pleased to provisionally offer you a seat for 1st year Bachelor of Engineering Course Four years duration in " . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ".
+
+You are hereby informed to pay the requisite fee in the college. You are required to produce original marks card of 2nd PUC/10+2 at the College.
 			
-		You are hereby informed to pay the requisite fee in the college. You are required to produce original marks card of 2nd PUC/10+2 at the College.
+If the fees are not paid within the stipulated time. We presume you are no more interested in getting admission to our college and seat will be allotted to others. Any amount paid by you shall not be refunded. In case you decide to discontinue your studies without completing the four years duration you shall be liable to pay fee to the college for all the four years. The Malnad College of Engineering is one of the reputed college in the country.
 			
-		If the fees are not paid within the stipulated time. We presume you are no more interested in getting admission to our college and seat will be allotted to others. Any amount paid by you shall not be refunded. In case you decide to discontinue your studies without completing the four years duration you shall be liable to pay fee to the college for all the four years. The Malnad College of Engineering is one of the reputed college in the country.
-			
-		We hope that you will utilize the facilities in the college, secure good marks and bring credit to our institution.
-			
-			
-		With good wishes";
+We hope that you will utilize the facilities in the college, secure good marks and bring credit to our institution.
+
+With good wishes";
 
 			$pdf->SetY($topGap + 35);
 			$pdf->MultiCell(0, 4, $content);
 
 
 			$additionalDataY = $pdf->GetY() + 5;
-
+ 
 			// Additional data after content
 			$pdf->SetFont('Arial', 'B', 9);
 			$pdf->SetY($additionalDataY);
@@ -2189,9 +2188,10 @@ class Admin extends CI_Controller
 			$pdf->SetFont('Arial', '', 8);
 			$pdf->Cell(0, 4, $data['admissionDetails']->student_name, 0, 1, 'L');
 			$pdf->Cell(0, 4, $data['admissionDetails']->father_name, 0, 1, 'L');
-			$pdf->Cell(0, 4, $data['admissionDetails']->present_address, 0, 1, 'L');
-			$pdf->Cell(0, 4, $data['admissionDetails']->mobile, 0, 1, 'L');
-			$pdf->Cell(0, 4, $data['admissionDetails']->email, 0, 1, 'L');
+			// $pdf->Cell(0, 4, $data['admissionDetails']->present_address, 0, 1, 'L');
+			$pdf->Cell(0, 4, "Mobile : ".$data['admissionDetails']->mobile, 0, 1, 'L');
+			$pdf->Cell(0, 4, "Email : ".$data['admissionDetails']->email, 0, 1, 'L');
+			$pdf->Cell(0, 4, "Aadhaar : ".$data['admissionDetails']->aadhaar, 0, 1, 'L');
 
 
 			$fileName = $data['admissionDetails']->student_name . '-Admit_Letter.pdf';

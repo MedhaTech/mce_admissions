@@ -48,7 +48,7 @@
                       </div>
 
                       <div class="form-row">
-                          <div class="col-md-4 col-sm-12">
+                          <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Admission Order No<span class="text-danger">*</span></label>
                                   <input type="text" name="admission_order_no" id="admission_order_no"
@@ -58,7 +58,7 @@
                                   <span class="text-danger"><?php echo form_error('admission_order_no'); ?></span>
                               </div>
                           </div>
-                          <div class="col-md-4 col-sm-12">
+                          <div class="col-md-2 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Admission Order Date<span class="text-danger">*</span></label>
 
@@ -69,7 +69,7 @@
                                   <span class="text-danger"><?php echo form_error('admission_order_date'); ?></span>
                               </div>
                           </div>
-                          <div class="col-md-4 col-sm-12">
+                          <div class="col-md-2 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Fees Paid<span class="text-danger">*</span></label>
                                   <input type="number" name="fees_paid" id="fees_paid" class="form-control"
@@ -78,10 +78,7 @@
                                   <span class="text-danger"><?php echo form_error('fees_paid'); ?></span>
                               </div>
                           </div>
-                      </div>
-
-                      <div class="form-row">
-                          <div class="col-md-4 col-sm-12">
+                          <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Fees Receipt No<span class="text-danger">*</span></label>
                                   <input type="text" name="fees_receipt_no" id="fees_receipt_no" class="form-control"
@@ -90,7 +87,7 @@
                                   <span class="text-danger"><?php echo form_error('fees_receipt_no'); ?></span>
                               </div>
                           </div>
-                          <div class="col-md-4 col-sm-12">
+                          <div class="col-md-2 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Fees Receipt Date<span class="text-danger">*</span></label>
                                   <input type="date" name="fees_receipt_date" id="fees_receipt_date"

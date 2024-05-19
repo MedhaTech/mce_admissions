@@ -122,9 +122,9 @@
               </div>
               <div class="col-md-3 col-sm-12">
                 <div class="form-group">
-                  <label for="adhaar">Adhaar Number</label>
-                  <input type="text" name="adhaar" id="adhaar" class="form-control" value="<?php echo (set_value('adhaar')) ? set_value('adhaar') : $adhaar; ?>">
-                  <span class="text-danger"><?php echo form_error('adhaar'); ?></span>
+                  <label for="aadhaar">Aadhaar Number</label>
+                  <input type="text" name="aadhaar" id="aadhaar" class="form-control" value="<?php echo (set_value('aadhaar')) ? set_value('aadhaar') : $aadhaar; ?>">
+                  <span class="text-danger"><?php echo form_error('aadhaar'); ?></span>
                 </div>
               </div>
             </div>
@@ -159,7 +159,7 @@
               </div>
               <div class="col-md-3 col-sm-12">
                 <div class="form-group">
-                  <label for="adhaar">SSLC Percentage/Grade</label>
+                  <label for="aadhaar">SSLC Percentage/Grade</label>
                   <input type="text" name="sslc_grade" id="sslc_grade" class="form-control" value="<?php echo (set_value('sslc_grade')) ? set_value('sslc_grade') : $sslc_grade; ?>">
                   <span class="text-danger"><?php echo form_error('sslc_grade'); ?></span>
                 </div>
@@ -185,7 +185,7 @@
             <div class="form-row">
               <div class="col-md-4 col-sm-12">
                 <div class="form-group">
-                <label for="adhaar">PUC-I(10+1) Percentage/Grade</label>
+                <label for="aadhaar">PUC-I(10+1) Percentage/Grade</label>
                   <input type="text" name="puc1_grade" id="puc1_grade" class="form-control" value="<?php echo (set_value('puc1_grade')) ? set_value('puc1_grade') : $puc1_grade; ?>">
                   <span class="text-danger"><?php echo form_error('puc1_grade'); ?></span>
                 </div>
@@ -200,7 +200,7 @@
               </div>
               <div class="col-md-4 col-sm-12">
               <div class="form-group">
-                 <label for="adhaar">PUC-II(10+2) Percentage/Grade</label>
+                 <label for="aadhaar">PUC-II(10+2) Percentage/Grade</label>
                   <input type="text" name="puc2_grade" id="puc2_grade" class="form-control" value="<?php echo (set_value('puc2_grade')) ? set_value('puc2_grade') : $puc2_grade; ?>">
                   <span class="text-danger"><?php echo form_error('puc2_grade'); ?></span>
                 </div>

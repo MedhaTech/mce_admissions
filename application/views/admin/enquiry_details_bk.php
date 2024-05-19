@@ -100,8 +100,8 @@
                 <td><?= $enquiryDetails->gender; ?></td>
               </tr>
               <tr>
-                <th>Adhaar Number</th>
-                <td><?= $enquiryDetails->adhaar; ?></td>
+                <th>Aadhaar Number</th>
+                <td><?= $enquiryDetails->aadhaar; ?></td>
               </tr>
               <tr>
                 <th>State</th>

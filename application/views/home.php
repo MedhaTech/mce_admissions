@@ -236,13 +236,13 @@
                                                     <span class="text-danger"><?php echo form_error('sports'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="label font-13">Aadhar Number<span
+                                                    <label class="label font-13">Aadhaar Number<span
                                                             class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control form-control-sm" id="adhaar"
+                                                    <input type="text" class="form-control form-control-sm" id="aadhaar"
                                                         maxlength="12" minlength="12"
-                                                        value="<?php echo (set_value('adhaar')) ? set_value('adhaar') : $adhaar; ?>"
-                                                        name="adhaar" placeholder="Enter Aadhar No">
-                                                    <span class="text-danger"><?php echo form_error('adhaar'); ?></span>
+                                                        value="<?php echo (set_value('aadhaar')) ? set_value('aadhaar') : $aadhaar; ?>"
+                                                        name="aadhaar" placeholder="Enter Aadhaar No">
+                                                    <span class="text-danger"><?php echo form_error('aadhaar'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label font-13">Gender<span

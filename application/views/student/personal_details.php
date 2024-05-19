@@ -41,19 +41,18 @@
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="form-label">Sports</label>
-                                  <input type="text" class="form-control" placeholder="Enter Sports" id="sports"
-                                      value="<?php echo (set_value('sports')) ? set_value('sports') : $sports; ?>"
-                                      name="sports">
+                                  <?php $sports_options = array(" "=>"Select Sports","State Level"=>"State Level","National Level"=>"National Level","International Level"=>"International Level","Not Applicable"=>"Not Applicable");
+                                        echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : 'sports', 'class="form-control" id="sports"'); 
+                                  ?>
                                   <span class="text-danger"><?php echo form_error('sports'); ?></span>
                               </div>
                           </div>
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="form-label">Blood Group</label>
-                                  <input type="text" class="form-control" placeholder="Enter Blood Group"
-                                      id="blood_group"
-                                      value="<?php echo (set_value('blood_group')) ? set_value('blood_group') : $blood_group; ?>"
-                                      name="blood_group">
+                                  <?php $blood_groups = array(" "=>"Select Blood Group","O-"=>"O-","O+"=>"O+","A-"=>"A-","A+"=>"A+","B-"=>"B-","B+"=>"B+","AB-"=>"AB-","AB+"=>"AB+");
+                                        echo form_dropdown('blood_group', $blood_groups, (set_value('blood_group')) ? set_value('blood_group') : 'blood_group', 'class="form-control" id="blood_group"'); 
+                                  ?>
                                   <span class="text-danger"><?php echo form_error('blood_group'); ?></span>
                               </div>
                           </div>
@@ -156,7 +155,7 @@
                                   <span class="text-danger"><?php echo form_error('domicile_of_state'); ?></span>
                               </div>
                           </div>
-                          <div class="col-md-3 col-sm-12">
+                          <div class="col-md-6 col-sm-12">
                               <div class="form-group">
                                   <label class="form-label">Hobbies</label>
                                   <input type="text" class="form-control" placeholder="Enter Hobbies" id="hobbies"
