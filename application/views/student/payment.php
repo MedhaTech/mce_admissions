@@ -15,7 +15,7 @@
             bdOrderId: "<?= $transactionid;?>",
             authToken: "<?= $authtoken;?>",
             childWindow: false,
-            returnUrl: "https://www.example.com/merchant/api/pgresponse",
+            returnUrl: <?= base_url();?>'student/callback',
             retryCount: 0
         };
         var responseHandler = function(txn) {
