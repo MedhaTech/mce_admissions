@@ -66,8 +66,7 @@
                             <div class="col-md-4 col-sm-12">
                                 <div class="form-group">
                                     <label class="label">Department<span class="text-danger">*</span></label>
-                                    <input type="text" name="dept_id" id="dept_id"
-                                        value="<?php echo (set_value('dept_id')) ? set_value('dept_id') : $dept_id; ?>"
+                                    <input type="text" value="<?= $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_name"]; ?>"
                                         class="form-control" placeholder="Enter Department Id" readonly>
                                     <span class="text-danger"><?php echo form_error('dept_id'); ?></span>
                                 </div>

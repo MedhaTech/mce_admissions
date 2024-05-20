@@ -24,32 +24,72 @@
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Student Name</label>
-                                <p><?= $admissionDetails->student_name; ?></p>
+                                <label class="form-label mb-0">Student Name</label><br>
+                                <?php
+                                if($admissionDetails->student_name != NULL)
+                                    {
+                                        echo $admissionDetails->student_name;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>  
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Mobile</label>
-                                <p><?= $admissionDetails->mobile; ?></p>
+                                <label class="form-label mb-0" onclick="copy(this)">Mobile</label><br>
+                                <?php
+                                if($admissionDetails->mobile != NULL)
+                                    {
+                                        echo $admissionDetails->mobile;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>&nbsp;<i class="fas fa-copy fa-sm fa-fw"></i>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Email</label>
-                                <p><?= $admissionDetails->email; ?></p>
+                                <label class="form-label mb-0">Email</label><br>
+                                <?php
+                                if($admissionDetails->email != NULL)
+                                    {
+                                        echo $admissionDetails->email;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Aadhaar Number</label>
-                                <p><?= $admissionDetails->aadhaar; ?></p>
+                                <label class="form-label mb-0">Aadhaar Number</label><br>
+                                <?php
+                                if($admissionDetails->aadhaar != NULL)
+                                    {
+                                        echo $admissionDetails->aadhaar;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="form-label mb-0">Department</label>
-                                <p><?=$this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_name"]; ?></p>
+                                <label class="form-label mb-0">Department</label><br>
+                                <?php
+                                if($this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_name"] != NULL)
+                                    {
+                                        echo $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_name"];
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -57,32 +97,72 @@
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Quota</label>
-                                <p><?= $admissionDetails->quota; ?></p>
+                                <label class="form-label mb-0">Quota</label><br>
+                                <?php
+                                if($admissionDetails->quota != NULL)
+                                    {
+                                        echo $admissionDetails->quota;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Sub Quota</label>
-                                <p><?= $admissionDetails->sub_quota; ?></p>
+                                <label class="form-label mb-0">Sub Quota</label><br>
+                                <?php
+                                if($admissionDetails->sub_quota != NULL)
+                                    {
+                                        echo $admissionDetails->sub_quota;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Category Allocated</label>
-                                <p><?= $admissionDetails->category_allotted; ?></p>
+                                <label class="form-label mb-0">Category Allocated</label><br>
+                                <?php
+                                if($admissionDetails->category_allotted != NULL)
+                                    {
+                                        echo $admissionDetails->category_allotted;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Category Claimed</label>
-                                <p><?= $admissionDetails->category_claimed; ?></p>
+                                <label class="form-label mb-0">Category Claimed</label><br>
+                                <?php
+                                if($admissionDetails->category_claimed != NULL)
+                                    {
+                                        echo $admissionDetails->category_claimed;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">College Code</label>
-                                <p><?= $admissionDetails->college_code; ?></p>
+                                <label class="form-label mb-0">College Code</label><br>
+                                <?php
+                                if($admissionDetails->college_code != NULL)
+                                    {
+                                        echo $admissionDetails->college_code;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -105,38 +185,86 @@
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Entrance Type</label>
-                                <p><?= $admissionDetails->entrance_type; ?></p>
+                                <label class="form-label mb-0">Entrance Type</label><br>
+                                <?php
+                                if($admissionDetails->entrance_type != NULL)
+                                    {
+                                        echo $admissionDetails->entrance_type;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Entrance Registration Number</label>
-                                <p><?= $admissionDetails->entrance_reg_no; ?></p>
+                                <label class="form-label mb-0">Entrance Registration Number</label><br>
+                                <?php
+                                if($admissionDetails->entrance_reg_no != NULL)
+                                    {
+                                        echo $admissionDetails->entrance_reg_no;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Entrance Exam Rank</label>
-                                <p><?= $admissionDetails->entrance_rank; ?></p>
+                                <label class="form-label mb-0">Entrance Exam Rank</label><br>
+                                <?php
+                                if($admissionDetails->entrance_rank != NULL)
+                                    {
+                                        echo $admissionDetails->entrance_rank;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Admission Order No</label>
-                                <p><?= $admissionDetails->admission_order_no; ?></p>
+                                <label class="form-label mb-0">Admission Order No</label><br>
+                                <?php
+                                if($admissionDetails->admission_order_no != NULL)
+                                    {
+                                        echo $admissionDetails->admission_order_no;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Admission Order Date</label>
-                                <p><?= $admissionDetails->admission_order_date; ?></p>
+                                <label class="form-label mb-0">Admission Order Date</label><br>
+                                <?php
+                                if($admissionDetails->admission_order_date != NULL)
+                                    {
+                                        echo $admissionDetails->admission_order_date;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Fees Paid</label>
-                                <p><?= $admissionDetails->fees_paid; ?></p>
+                                <label class="form-label mb-0">Fees Paid</label><br>
+                                <?php
+                                if($admissionDetails->fees_paid != NULL)
+                                    {
+                                        echo $admissionDetails->fees_paid;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -144,14 +272,30 @@
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Fees Receipt No</label>
-                                <p><?= $admissionDetails->fees_receipt_no; ?></p>
+                                <label class="form-label mb-0">Fees Receipt No</label><br>
+                                <?php
+                                if($admissionDetails->fees_receipt_no != NULL)
+                                    {
+                                        echo $admissionDetails->fees_receipt_no;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Fees Receipt Date</label>
-                                <p><?= $admissionDetails->fees_receipt_date; ?></p>
+                                <label class="form-label mb-0">Fees Receipt Date</label><br>
+                                <?php
+                                if($admissionDetails->fees_receipt_date != NULL)
+                                    {
+                                        echo $admissionDetails->fees_receipt_date;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -175,38 +319,86 @@
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Date of Birth</label>
-                                <p><?= $admissionDetails->date_of_birth; ?></p>
+                                <label class="form-label mb-0">Date of Birth</label><br>
+                                <?php
+                                if($admissionDetails->date_of_birth != NULL)
+                                    {
+                                        echo $admissionDetails->date_of_birth;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Gender</label>
-                                <p><?= $admissionDetails->gender; ?></p>
+                                <label class="form-label mb-0">Gender</label><br>
+                                <?php
+                                if($admissionDetails->gender != NULL)
+                                    {
+                                        echo $admissionDetails->gender;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Sports</label>
-                                <p><?= $admissionDetails->sports; ?></p>
+                                <label class="form-label mb-0">Sports</label><br>
+                                <?php
+                                if($admissionDetails->sports != NULL)
+                                    {
+                                        echo $admissionDetails->sports;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Blood Group</label>
-                                <p><?= $admissionDetails->blood_group; ?></p>
+                                <label class="form-label mb-0">Blood Group</label><br>
+                                <?php
+                                if($admissionDetails->blood_group != NULL)
+                                    {
+                                        echo $admissionDetails->blood_group;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Place of Birth</label>
-                                <p><?= $admissionDetails->place_of_birth; ?></p>
+                                <label class="form-label mb-0">Place of Birth</label><br>
+                                <?php
+                                if($admissionDetails->place_of_birth != NULL)
+                                    {
+                                        echo $admissionDetails->place_of_birth;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Country of Birth</label>
-                                <p><?= $admissionDetails->country_of_birth; ?></p>
+                                <label class="form-label mb-0">Country of Birth</label><br>
+                                <?php
+                                if($admissionDetails->country_of_birth != NULL)
+                                    {
+                                        echo $admissionDetails->country_of_birth;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -214,38 +406,86 @@
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Nationality</label>
-                                <p><?= $admissionDetails->nationality; ?></p>
+                                <label class="form-label mb-0">Nationality</label><br>
+                                <?php
+                                if($admissionDetails->nationality != NULL)
+                                    {
+                                        echo $admissionDetails->nationality;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Religion</label>
-                                <p><?= $admissionDetails->religion; ?></p>
+                                <label class="form-label mb-0">Religion</label><br>
+                                <?php
+                                if($admissionDetails->religion != NULL)
+                                    {
+                                        echo $admissionDetails->religion;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Mother Tongue</label>
-                                <p><?= $admissionDetails->mother_tongue; ?></p>
+                                <label class="form-label mb-0">Mother Tongue</label><br>
+                                <?php
+                                if($admissionDetails->mother_tongue != NULL)
+                                    {
+                                        echo $admissionDetails->mother_tongue;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Caste</label>
-                                <p><?= $admissionDetails->caste; ?></p>
+                                <label class="form-label mb-0">Caste</label><br>
+                                <?php
+                                if($admissionDetails->caste != NULL)
+                                    {
+                                        echo $admissionDetails->caste;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Disability</label>
-                                <p><?= $admissionDetails->disability; ?></p>
+                                <label class="form-label mb-0">Disability</label><br>
+                                <?php
+                                if($admissionDetails->disability != NULL)
+                                    {
+                                        echo $admissionDetails->disability;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Type of Disability</label>
-                                <p><?= $admissionDetails->type_of_disability; ?></p>
+                                <label class="form-label mb-0">Type of Disability</label><br>
+                                <?php
+                                if($admissionDetails->type_of_disability != NULL)
+                                    {
+                                        echo $admissionDetails->type_of_disability;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -253,20 +493,44 @@
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Economically Backward</label>
-                                <p><?= $admissionDetails->economically_backward; ?></p>
+                                <label class="form-label mb-0">Economically Backward</label><br>
+                                <?php
+                                if($admissionDetails->economically_backward != NULL)
+                                    {
+                                        echo $admissionDetails->economically_backward;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Domicile of State</label>
-                                <p><?= $admissionDetails->domicile_of_state; ?></p>
+                                <label class="form-label mb-0">Domicile of State</label><br>
+                                <?php
+                                if($admissionDetails->domicile_of_state != NULL)
+                                    {
+                                        echo $admissionDetails->domicile_of_state;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Hobbies</label>
-                                <p><?= $admissionDetails->hobbies; ?></p>
+                                <label class="form-label mb-0">Hobbies</label><br>
+                                <?php
+                                if($admissionDetails->hobbies != NULL)
+                                    {
+                                        echo $admissionDetails->hobbies;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -276,54 +540,150 @@
                             <label class="form-label mb-0 text-primary">CURRENT ADDRESS</label>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Current Address</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->current_address; ?></p>
+                                <?php
+                                if($admissionDetails->current_address != NULL)
+                                    {
+                                        echo $admissionDetails->current_address;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Current City</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->current_city; ?></p>
+                                <?php
+                                if($admissionDetails->current_city != NULL)
+                                    {
+                                        echo $admissionDetails->current_city;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Current District</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->current_district; ?></p>
+                                <?php
+                                if($admissionDetails->current_district != NULL)
+                                    {
+                                        echo $admissionDetails->current_district;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Current State</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->current_state; ?></p>
+                                <?php
+                                if($admissionDetails->current_state != NULL)
+                                    {
+                                        echo $admissionDetails->current_state;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Current Country</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->current_country; ?></p>
+                                <?php
+                                if($admissionDetails->current_country != NULL)
+                                    {
+                                        echo $admissionDetails->current_country;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Current Pincode</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->current_pincode; ?></p>
+                                <?php
+                                if($admissionDetails->current_pincode != NULL)
+                                    {
+                                        echo $admissionDetails->current_pincode;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label mb-0 text-primary">PERMANENT ADDRESS</label>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Permanent Address</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->present_address; ?></p>
+                                <?php
+                                if($admissionDetails->present_address != NULL)
+                                    {
+                                        echo $admissionDetails->present_address;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">permanent City</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->present_city; ?></p>
+                                <?php
+                                if($admissionDetails->present_city != NULL)
+                                    {
+                                        echo $admissionDetails->present_city;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">permanent District</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->present_district; ?></p>
+                                <?php
+                                if($admissionDetails->present_district != NULL)
+                                    {
+                                        echo $admissionDetails->present_district;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">permanent State</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->present_state; ?></p>
+                                <?php
+                                if($admissionDetails->present_state != NULL)
+                                    {
+                                        echo $admissionDetails->present_state;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">permanent Country</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->present_country; ?></p>
+                                <?php
+                                if($admissionDetails->present_country != NULL)
+                                    {
+                                        echo $admissionDetails->present_country;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">permanent Pincode</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->present_pincode; ?></p>
+                                <?php
+                                if($admissionDetails->present_pincode != NULL)
+                                    {
+                                        echo $admissionDetails->present_pincode;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -349,69 +709,189 @@
                             <label class="form-label mb-0 text-primary">FATHER DETAILS</label>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Name</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->father_name; ?></p>
+                                <?php
+                                if($admissionDetails->father_name != NULL)
+                                    {
+                                        echo $admissionDetails->father_name;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Mobile</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->father_mobile; ?></p>
+                                <?php
+                                if($admissionDetails->father_mobile != NULL)
+                                    {
+                                        echo $admissionDetails->father_mobile;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Email</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->father_email; ?></p>
+                                <?php
+                                if($admissionDetails->father_email != NULL)
+                                    {
+                                        echo $admissionDetails->father_email;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Occupation</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->father_occupation; ?></p>
+                                <?php
+                                if($admissionDetails->father_occupation != NULL)
+                                    {
+                                        echo $admissionDetails->father_occupation;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Annual Income</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->father_annual_income; ?></p>
+                                <?php
+                                if($admissionDetails->father_annual_income != NULL)
+                                    {
+                                        echo $admissionDetails->father_annual_income;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label mb-0 text-primary">MOTHER DETAILS</label>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Name</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->mother_name; ?></p>
+                                <?php
+                                if($admissionDetails->mother_name != NULL)
+                                    {
+                                        echo $admissionDetails->mother_name;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Mobile</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->mother_mobile; ?></p>
+                                <?php
+                                if($admissionDetails->mother_mobile != NULL)
+                                    {
+                                        echo $admissionDetails->mother_mobile;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Email</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->mother_email; ?></p>
+                                <?php
+                                if($admissionDetails->mother_email != NULL)
+                                    {
+                                        echo $admissionDetails->mother_email;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Occupation</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->mother_occupation; ?></p>
+                                <?php
+                                if($admissionDetails->mother_occupation != NULL)
+                                    {
+                                        echo $admissionDetails->mother_occupation;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Annual Income</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->mother_annual_income; ?></p>
+                                <?php
+                                if($admissionDetails->mother_annual_income != NULL)
+                                    {
+                                        echo $admissionDetails->mother_annual_income;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label mb-0 text-primary">GUARDIAN DETAILS</label>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Name</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->guardian_name; ?></p>
+                                <?php
+                                if($admissionDetails->guardian_name != NULL)
+                                    {
+                                        echo $admissionDetails->guardian_name;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Mobile</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->guardian_mobile; ?></p>
+                                <?php
+                                if($admissionDetails->guardian_mobile != NULL)
+                                    {
+                                        echo $admissionDetails->guardian_mobile;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Email</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->guardian_email; ?></p>
+                                <?php
+                                if($admissionDetails->guardian_email != NULL)
+                                    {
+                                        echo $admissionDetails->guardian_email;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Occupation</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->guardian_occupation; ?></p>
+                                <?php
+                                if($admissionDetails->guardian_occupation != NULL)
+                                    {
+                                        echo $admissionDetails->guardian_occupation;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="form-label mb-0">Annual Income</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <p><?= $admissionDetails->guardian_annual_income; ?></p>
+                                <?php
+                                if($admissionDetails->guardian_annual_income != NULL)
+                                    {
+                                        echo $admissionDetails->guardian_annual_income;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -436,26 +916,58 @@
 
                         <div class="col-md-3 col-sm-6">
                             <div class="form-group">
-                                <label class="form-label mb-0">Level</label>
-                                <p><?= $edu->education_level;?></p>
+                                <label class="form-label mb-0">Level</label><br>
+                                <?php
+                                if($edu->education_level != NULL)
+                                    {
+                                        echo $edu->education_level;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6">
                             <div class="form-group">
-                                <label class="form-label mb-0">Institution Type</label>
-                                <p><?= $edu->inst_type;?></p>
+                                <label class="form-label mb-0">Institution Type</label><br>
+                                <?php
+                                if($edu->inst_type != NULL)
+                                    {
+                                        echo $edu->inst_type;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6">
                             <div class="form-group">
-                                <label class="form-label mb-0">Board / University</label>
-                                <p><?= $edu->inst_board;?></p>
+                                <label class="form-label mb-0">Board / University</label><br>
+                                <?php
+                                if($edu->inst_board != NULL)
+                                    {
+                                        echo $edu->inst_board;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6">
                             <div class="form-group">
-                                <label class="form-label mb-0">Institution Name</label>
-                                <p><?= $edu->inst_name;?></p>
+                                <label class="form-label mb-0">Institution Name</label><br>
+                                <?php
+                                if($edu->inst_name != NULL)
+                                    {
+                                        echo $edu->inst_name;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
 
@@ -465,53 +977,118 @@
                     <div class="form-row">
                         <div class="col-md-3 col-sm-6">
                             <div class="form-group">
-                                <label class="form-label mb-0">Institution Address</label>
-                                <p><?= $edu->inst_address;?></p>
+                                <label class="form-label mb-0">Institution Address</label><br>
+                                <?php
+                                if($edu->inst_address != NULL)
+                                    {
+                                        echo $edu->inst_address;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6">
                             <div class="form-group">
-                                <label class="form-label mb-0">Institution City</label>
-                                <p><?= $edu->inst_city;?></p>
+                                <label class="form-label mb-0">Institution City</label><br>
+                                <?php
+                                if($edu->inst_city != NULL)
+                                    {
+                                        echo $edu->inst_city;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6">
                             <div class="form-group">
-                                <label class="form-label mb-0">Institution State</label>
-                                <p><?= $edu->inst_state;?></p>
+                                <label class="form-label mb-0">Institution State</label><br>
+                                <?php
+                                if($edu->inst_state != NULL)
+                                    {
+                                        echo $edu->inst_state;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6">
                             <div class="form-group">
-                                <label class="form-label mb-0">Institution Country</label>
-                                <p><?= $edu->inst_country;?></p>
+                                <label class="form-label mb-0">Institution Country</label><br>
+                                <?php
+                                if($edu->inst_country != NULL)
+                                    {
+                                        echo $edu->inst_country;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-md-3 col-sm-6">
                             <div class="form-group">
-                                <label class="form-label mb-0">Medium of Instruction</label>
-                                <p><?= $edu->medium_of_instruction;?></p>
+                                <label class="form-label mb-0">Medium of Instruction</label><br>
+                                <?php
+                                if($edu->medium_of_instruction != NULL)
+                                    {
+                                        echo $edu->medium_of_instruction;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6">
                             <div class="form-group">
-                                <label class="form-label mb-0">Register Number</label>
-                                <p><?= $edu->register_number;?></p>
+                                <label class="form-label mb-0">Register Number</label><br>
+                                <?php
+                                if($edu->register_number != NULL)
+                                    {
+                                        echo $edu->register_number;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6">
                             <div class="form-group">
-                                <label class="form-label mb-0">Year of Passing</label>
-                                <p><?= $edu->year_of_passing;?></p>
+                                <label class="form-label mb-0">Year of Passing</label><br>
+                                <?php
+                                if($edu->year_of_passing != NULL)
+                                    {
+                                        echo $edu->year_of_passing;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
 
                         <div class="col-md-3 col-sm-6">
                             <div class="form-group">
-                                <label class="form-label mb-0">Aggregate</label>
-                                <p><?= $edu->aggregate;?>%</p>
+                                <label class="form-label mb-0">Aggregate</label><br>
+                                <!-- <p><?= $edu->aggregate;?>%</p> -->
+                                <?php
+                                if($edu->aggregate != NULL)
+                                    {
+                                        echo $edu->aggregate;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -611,3 +1188,14 @@
     </section>
     <!-- /.content -->
 </div>
+
+<script>
+    function copy(that){
+var inp =document.createElement('input');
+document.body.appendChild(inp)
+inp.value =that.textContent
+inp.select();
+document.execCommand('copy',false);
+inp.remove();
+}
+</script>

@@ -378,9 +378,9 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('puc1_grade', 'Puc Grade', 'required');
 			$this->form_validation->set_rules('puc2_grade', 'Puc Grade', 'required');
 			$this->form_validation->set_rules('register_grade', '10+2 Percentage / Grade', 'required');
-			$this->form_validation->set_rules('exam_board', 'Exam Board', 'required');
+			$this->form_validation->set_rules('exam_board', 'Exam Board');
 			$this->form_validation->set_rules('register_number', 'Register Number', 'required');
-			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.aadhaar]');
+			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]');
 
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/editEnquiry/' . $id;
