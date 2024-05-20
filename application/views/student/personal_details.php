@@ -168,9 +168,10 @@
                       <hr>
                       <div class="row">
                           <div class="col-md-6">
-                              <label class="form-label text-primary">CURRENT ADDRESS</label>
+                              <label class="form-label text-primary">Current Address</label>
+                              <div class="form-row">
                               <div class="form-group col-md-12 col-sm-12">
-                                  <label class="form-label">Current Address</label>
+                                  <label class="form-label">Address</label>
                                   <input type="text" class="form-control" placeholder="Enter Current Address"
                                       id="current_address"
                                       value="<?php echo (set_value('current_address')) ? set_value('current_address') : $current_address; ?>"
@@ -178,7 +179,7 @@
                                   <span class="text-danger"><?php echo form_error('current_address'); ?></span>
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
-                                  <label class="form-label">Current City</label>
+                                  <label class="form-label">City</label>
                                   <input type="text" class="form-control" placeholder="Enter Current City"
                                       id="current_city"
                                       value="<?php echo (set_value('current_city')) ? set_value('current_city') : $current_city; ?>"
@@ -186,7 +187,7 @@
                                   <span class="text-danger"><?php echo form_error('current_city'); ?></span>
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
-                                  <label class="form-label">Current District</label>
+                                  <label class="form-label">District</label>
                                   <input type="text" class="form-control" placeholder="Enter Current District"
                                       id="current_district"
                                       value="<?php echo (set_value('current_district')) ? set_value('current_district') : $current_district; ?>"
@@ -194,40 +195,42 @@
                                   <span class="text-danger"><?php echo form_error('current_district'); ?></span>
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
-                                  <label class="form-label">Current State</label>
+                                  <label class="form-label">State</label>
                                   <input type="text" class="form-control" placeholder="Enter Current State"
                                       id="current_state"
                                       value="<?php echo (set_value('current_state')) ? set_value('current_state') : $current_state; ?>"
                                       name="current_state">
                                   <span class="text-danger"><?php echo form_error('current_state'); ?></span>
                               </div>
-                              <div class="form-group col-md-12 col-sm-12">
-                                  <label class="form-label">Current Country</label>
+                              <div class="form-group col-md-6 col-sm-12">
+                                  <label class="form-label">Country</label>
                                   <input type="text" class="form-control" placeholder="Enter Current Country"
                                       id="current_country"
                                       value="<?php echo (set_value('current_country')) ? set_value('current_country') : $current_country; ?>"
                                       name="current_country">
                                   <span class="text-danger"><?php echo form_error('current_country'); ?></span>
                               </div>
-                              <div class="form-group col-md-12 col-sm-12">
-                                  <label class="form-label">Current Pincode</label>
+                              <div class="form-group col-md-6 col-sm-12">
+                                  <label class="form-label">Pincode</label>
                                   <input type="number" class="form-control" placeholder="Enter Current Pincode"
                                       id="current_pincode"
                                       value="<?php echo (set_value('current_pincode')) ? set_value('current_pincode') : $current_pincode; ?>"
                                       name="current_pincode">
                                   <span class="text-danger"><?php echo form_error('current_pincode'); ?></span>
                               </div>
+                            </div>
                           </div>
                           <div class="col-md-6">
                               <div class="form-group row m-0">
-                                  <label class="form-label col-md-6 text-primary">PERMANENT ADDRESS</label>
+                                  <label class="form-label col-md-6 text-primary">Permanent Address</label>
                                   <div class="col-md-6 custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                <label class="form-label custom-control-label" for="customCheck1">Same As Current Address</label>
-                            </div>
+                                      <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                      <label class="form-label custom-control-label" for="customCheck1">Same As Current Address</label>
+                                  </div>
                               </div>
+                              <div class="form-row">
                               <div class="form-group col-md-12 col-sm-12">
-                                  <label class="form-label">Permanent Address</label>
+                                  <label class="form-label">Address</label>
                                   <input type="text" class="form-control" placeholder="Enter Permanent Address"
                                       id="present_address"
                                       value="<?php echo (set_value('present_address')) ? set_value('present_address') : $present_address; ?>"
@@ -235,7 +238,7 @@
                                   <span class="text-danger"><?php echo form_error('present_address'); ?></span>
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
-                                  <label class="form-label">Permanent City</label>
+                                  <label class="form-label">City</label>
                                   <input type="text" class="form-control" placeholder="Enter Permanent State"
                                       id="present_city"
                                       value="<?php echo (set_value('present_city')) ? set_value('present_city') : $present_city; ?>"
@@ -243,7 +246,7 @@
                                   <span class="text-danger"><?php echo form_error('present_city'); ?></span>
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
-                                  <label class="form-label">Permanent District</label>
+                                  <label class="form-label">District</label>
                                   <input type="text" class="form-control" placeholder="Enter Permanent State"
                                       id="present_district"
                                       value="<?php echo (set_value('present_district')) ? set_value('present_district') : $present_district; ?>"
@@ -251,29 +254,30 @@
                                   <span class="text-danger"><?php echo form_error('present_district'); ?></span>
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
-                                  <label class="form-label">Permanent State</label>
+                                  <label class="form-label">State</label>
                                   <input type="text" class="form-control" placeholder="Enter Permanent State"
                                       id="present_state"
                                       value="<?php echo (set_value('present_state')) ? set_value('present_state') : $present_state; ?>"
                                       name="present_state">
                                   <span class="text-danger"><?php echo form_error('present_state'); ?></span>
                               </div>
-                              <div class="form-group col-md-12 col-sm-12">
-                                  <label class="form-label">Permanent Country</label>
+                              <div class="form-group col-md-6 col-sm-12">
+                                  <label class="form-label">Country</label>
                                   <input type="text" class="form-control" placeholder="Enter Permanent Country"
                                       id="present_country"
                                       value="<?php echo (set_value('present_country')) ? set_value('present_country') : $present_country; ?>"
                                       name="present_country">
                                   <span class="text-danger"><?php echo form_error('present_country'); ?></span>
                               </div>
-                              <div class="form-group col-md-12 col-sm-12">
-                                  <label class="form-label">Permanent Pincode</label>
+                              <div class="form-group col-md-6 col-sm-12">
+                                  <label class="form-label">Pincode</label>
                                   <input type="number" class="form-control" placeholder="Enter Permanent Pincode"
                                       id="present_pincode"
                                       value="<?php echo (set_value('present_pincode')) ? set_value('present_pincode') : $present_pincode; ?>"
                                       name="present_pincode">
                                   <span class="text-danger"><?php echo form_error('present_pincode'); ?></span>
                               </div>
+                            </div>
                           </div>
                       </div>
                   </div>

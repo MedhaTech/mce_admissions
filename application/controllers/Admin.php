@@ -123,7 +123,7 @@ class Admin extends CI_Controller
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['departments'] = $this->admin_model->getActiveDepartments()->result();
-			$this->admin_template->show('admin/dashboard', $data);
+			$this->admin_template->show('admin/Dashboard', $data);
 		} else {
 			redirect('admin', 'refresh');
 		}
@@ -141,7 +141,7 @@ class Admin extends CI_Controller
 			$data['page_title'] = "Dashboard";
 			$data['menu'] = "dashboard";
 			$data['departments'] = $this->admin_model->getActiveDepartments()->result();
-			$this->admin_template->show('admin/dashboard1', $data);
+			$this->admin_template->show('admin/Dashboard1', $data);
 		} else {
 			redirect('admin', 'refresh');
 		}
