@@ -150,33 +150,33 @@
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="label font-13">SSLC Percentage/Grade<span
+                                                    <label class="label font-13">SSLC Percentage<span
                                                             class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control form-control-sm"
+                                                    <input type="number" class="form-control form-control-sm"
                                                         id="sslc_grade"
                                                         value="<?php echo (set_value('sslc_grade')) ? set_value('sslc_grade') : $sslc_grade; ?>"
-                                                        name="sslc_grade" placeholder="Enter SSLC Percentage/Grade*">
+                                                        name="sslc_grade" placeholder="Enter SSLC Percentage*">
                                                     <span
                                                         class="text-danger"><?php echo form_error('sslc_grade'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="label font-13">PUC-I(10+1) Percentage/Grade<span
+                                                    <label class="label font-13">PUC-I(10+1) Percentage<span
                                                             class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control form-control-sm"
+                                                    <input type="number" class="form-control form-control-sm"
                                                         id="puc1_grade"
                                                         value="<?php echo (set_value('puc1_grade')) ? set_value('puc1_grade') : $puc1_grade; ?>"
                                                         name="puc1_grade"
-                                                        placeholder="Enter PUC-I(10+1) Percentage/Grade*">
+                                                        placeholder="Enter PUC-I(10+1) Percentage*">
                                                     <span
                                                         class="text-danger"><?php echo form_error('puc1_grade'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="label font-13">PUC-II(10+2) Percentage/Grade</label>
-                                                    <input type="text" class="form-control form-control-sm"
+                                                    <label class="label font-13">PUC-II(10+2) Percentage</label>
+                                                    <input type="number" class="form-control form-control-sm"
                                                         id="puc2_grade"
                                                         value="<?php echo (set_value('puc2_grade')) ? set_value('puc2_grade') : $puc2_grade; ?>"
                                                         name="puc2_grade"
-                                                        placeholder="Enter PUC-II(10+2) Percentage/Grade*">
+                                                        placeholder="Enter PUC-II(10+2) Percentage*">
                                                     <span
                                                         class="text-danger"><?php echo form_error('puc2_grade'); ?></span>
                                                 </div>
@@ -236,13 +236,13 @@
                                                     <span class="text-danger"><?php echo form_error('sports'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="label font-13">Aadhar Number<span
+                                                    <label class="label font-13">Aadhaar Number<span
                                                             class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control form-control-sm" id="adhaar"
+                                                    <input type="text" class="form-control form-control-sm" id="aadhaar"
                                                         maxlength="12" minlength="12"
-                                                        value="<?php echo (set_value('adhaar')) ? set_value('adhaar') : $adhaar; ?>"
-                                                        name="adhaar" placeholder="Enter Aadhar No">
-                                                    <span class="text-danger"><?php echo form_error('adhaar'); ?></span>
+                                                        value="<?php echo (set_value('aadhaar')) ? set_value('aadhaar') : $aadhaar; ?>"
+                                                        name="aadhaar" placeholder="Enter Aadhaar No">
+                                                    <span class="text-danger"><?php echo form_error('aadhaar'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label font-13">Gender<span

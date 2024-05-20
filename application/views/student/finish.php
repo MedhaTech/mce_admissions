@@ -42,8 +42,8 @@
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label">AAdhar Number</label><br>
-                                <?= $admissionDetails->aadhar; ?>
+                                <label class="form-label">Aadhaar Number</label><br>
+                                <?= $admissionDetails->aadhaar; ?>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -697,12 +697,8 @@
               $result_array = array(
                 $i++,
                 //   $admissions1->app_no,
-
-
-                $document_type,
-
-                
-                anchor('assets/students/' . $id.'/'.$file, '<span class="icon"><i class="fas fa-file-o"></i></span> <span class="text">Download</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm" target="_blank"')
+                $document_type,                
+                anchor('assets/students/' . $id.'/'.$file, '<i class="fas fa-download"></i> Download ', 'class="btn btn-outline-info btn-sm" target="_blank"')
 
               );
               $this->table->add_row($result_array);
@@ -740,7 +736,7 @@
                                 <span class="text-danger"><?php echo form_error('father_name'); ?></span>
                             </div>
                         </div> -->
-                        <div class="col-md-6 mt-2">
+                        <div class="col-md-3 mt-2">
                             <div class="form-group">
                                 <label class="font-weight-normal">Date</label>
                                 <input type="text" class="form-control" id="date" name="date" value="<?php echo date('d/m/Y'); ?>" placeholder="Enter Student Name" readonly>
@@ -750,9 +746,8 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <?php //echo anchor('student/enquiries/', '<i class="fas fa-credit-card fa-sm fa-fw"></i> Back', 'class="btn btn-danger btn-sm float-right" '); 
-                    ?>
-                    <?php echo anchor('student/admissionfee/', '<i class="fas fa-credit-card fa-sm fa-fw"></i> Make Payment', 'class="btn btn-danger btn-square btn-sm float-right" '); ?>
+                    <?php //echo anchor('student/enquiries/', '<i class="fas fa-credit-card fa-sm fa-fw"></i> Back', 'class="btn btn-danger btn-sm float-right" ');  ?>
+                    <?php echo anchor('student/admissionfee/', '<i class="fas fa-save fa-sm fa-fw"></i> SUBMIT APPLICATION', 'class="btn btn-danger btn-square btn-sm float-right" '); ?>
                 </div>
             </div>
 

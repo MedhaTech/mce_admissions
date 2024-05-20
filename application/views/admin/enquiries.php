@@ -1,7 +1,63 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
       <section class="content-header">
-          <div class="container-fluid">
+        <div class="container-fluid">
+            <div class="row">
+               <div class="col-md-4">
+                <div class="card card-dark">
+                  <div class="card-header card bg-dark">
+                      <div class="card-title">
+                          <h6 class="m-0">Options</h6>
+                      </div>
+                  </div>
+                 <div class="card-body bg-white">
+                   <?php echo form_open_multipart($action, 'class="user"'); ?>
+                     <div class="form-group col-md-12 col-sm-12">
+                                    <label class="label font-13">SSLC Percentage<span
+                                    class="text-danger">*</span></label>
+                                    <?php $marks_options =array(" "=>"Select Marks","50"=>">50","60"=>">60","75"=>"Distinction");
+                                        echo form_dropdown('sslc', $marks_options, (set_value('sslc')) ? set_value('sslc') : 'sslc', 'class="form-control form-control-md" id="marks"'); 
+                                    ?>
+                                    <span class="text-danger"><?php echo form_error('marks'); ?></span>
+                            
+                                    <label class="label font-13">PUC-I(10+1) Percentage<span
+                                    class="text-danger">*</span></label>
+                                    <?php $marks_options = array(" "=>"Select Marks","50"=>">50","60"=>">60","75"=>"Distinction");
+                                                                            echo form_dropdown('puc1', $marks_options, (set_value('puc1')) ? set_value('puc1') : 'puc1', 'class="form-control form-control-md" id="marks1"'); 
+                                                                        ?>
+                                    <span class="text-danger"><?php echo form_error('marks1'); ?></span>
+                                    <label class="label font-13">PUC-II(10+2) Percentage<span
+                                    class="text-danger">*</span></label>
+                                    <?php $marks_options = array(" "=>"Select Marks","50"=>">50","60"=>">60","75"=>"Distinction");
+                                                                            echo form_dropdown('puc2', $marks_options, (set_value('puc2')) ? set_value('puc2') : 'puc2', 'class="form-control form-control-md" id="marks2"'); 
+                                                                        ?>
+                                    <span class="text-danger"><?php echo form_error('marks2'); ?></span>
+                                    <label class="label font-13">Branch Preference<span
+                                    class="text-danger">*</span></label>
+                                    <?php 
+                                    echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control form-control-md" id="course" '); 
+                                    ?>
+                                    <span class="text-danger"><?php echo form_error('course'); ?></span>
+                                    <label class="label font-13">State<span
+                                    class="text-danger">*</span></label>
+                                <?php 
+                                    echo form_dropdown('state', $states, (set_value('state')) ? set_value('state') : $state, 'class="form-control form-control-md" id="state" '); 
+                                ?>
+                                    <span class="text-danger"><?php echo form_error('state'); ?></span>
+                      </div>
+                     <div class="form-group row">
+                        <div class="col-sm-2"> &nbsp;</div>
+                         <div class="col-sm-10 text-right">
+                            <button type="submit" class="btn btn-danger btn-sm" name="Update" id="Update"><i
+                              class="fas fa-edit"></i> Filter </button>  
+                        </div>
+                    </div>
+                  </form>
+                 </div>
+                </div>
+                </div>  
+
+              <div class="col-md-8">
               <div class="card card-dark">
                   <div class="card-header">
                       <div class="card-title">
@@ -48,7 +104,7 @@
 										anchor('admin/enquiryDetails/' . $enquiries1->id, $enquiries1->student_name),
 										$enquiries1->mobile,
 										$enquiries1->course,
-										$enquiries1->adhaar,
+										$enquiries1->aadhaar,
 										'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
 										date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
 									);
@@ -63,6 +119,8 @@
                       </div>
                   </div>
               </div>
-          </div>
+              </div>
+           </div>              
+        </div>
       </section>
   </div>

@@ -56,11 +56,11 @@
 
                             <div class="col-md-4 col-sm-12">
                                 <div class="form-group">
-                                    <label class="label">Aadhar Number<span class="text-danger">*</span></label>
-                                    <input type="text" name="aadhar" id="aadhar"
-                                        value="<?php echo (set_value('aadhar')) ? set_value('aadhar') : $aadhar; ?>"
-                                        class="form-control" placeholder="Enter Aadhar Number" readonly>
-                                    <span class="text-danger"><?php echo form_error('aadhar'); ?></span>
+                                    <label class="label">Aadhaar Number<span class="text-danger">*</span></label>
+                                    <input type="text" name="aadhaar" id="aadhaar"
+                                        value="<?php echo (set_value('aadhaar')) ? set_value('aadhaar') : $aadhaar; ?>"
+                                        class="form-control" placeholder="Enter Aadhaar Number" readonly>
+                                    <span class="text-danger"><?php echo form_error('aadhaar'); ?></span>
                                 </div>
                             </div>
                             <div class="col-md-4 col-sm-12">

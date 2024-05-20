@@ -50,9 +50,9 @@
                               <?php } ?>
                               <?php  if ($enquiryDetails->status == 6) { ?>
                               <?php 
-                                $encryptAadhar = base64_encode($enquiryDetails->adhaar);
-                                // $encryptAadhar = base64_encode($this->encrypt->encode($enquiryDetails->adhaar));
-                                echo anchor('admin/enquiryAdmission/'.$encryptAadhar, '<span class="text">Admitted Details</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
+                                $encryptAadhaar = base64_encode($enquiryDetails->aadhaar);
+                                // $encryptAadhaar = base64_encode($this->encrypt->encode($enquiryDetails->aadhaar));
+                                echo anchor('admin/enquiryAdmission/'.$encryptAadhaar, '<span class="text">Admitted Details</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
                               <?php } ?>
 
                               <?php echo anchor('admin/enquiries', '<span class="icon"><i class="fas fa-arrow-left"></i></span> <span class="text">Back to List</span>', 'class="btn btn-secondary btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"'); ?>
@@ -119,8 +119,8 @@
                               <td><?= $enquiryDetails->gender; ?></td>
                           </tr>
                           <tr>
-                              <th>Adhaar Number</th>
-                              <td><?= $enquiryDetails->adhaar; ?></td>
+                              <th>Aadhaar Number</th>
+                              <td><?= $enquiryDetails->aadhaar; ?></td>
                           </tr>
                           <tr>
                               <th>State</th>
@@ -539,6 +539,11 @@ $(document).ready(function() {
                         $('select[name="subquota"]').empty();
                         $('select[name="subquota"]').append(data);
                         $('select[name="subquota"]').removeAttr("disabled");
+                        $('#total_college_fee').val(0);
+                        $('#corpus_fund').val(0);
+                        $('#total_tution_fee').val(0);
+                        $('#total_tution_fee').val(0);
+                        $('#final_amount').val(0);
                         $("#insert").attr('disabled', 'disabled');
 
                     }

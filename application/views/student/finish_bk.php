@@ -42,8 +42,8 @@
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label">AAdhar Number</label><br>
-                                <?= $admissionDetails->aadhar; ?>
+                                <label class="form-label">AAdhaar Number</label><br>
+                                <?= $admissionDetails->aadhaar; ?>
                             </div>
                         </div>
                         <div class="col-md-2">

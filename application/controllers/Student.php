@@ -13,20 +13,21 @@ class Student extends CI_Controller
 	private $client;
 
 	protected function setUp(): void
-    {
-        $this->client = new BillDeskJWEHS256Client("https://pguat.billdesk.io", "bduatv2ktk", "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX");
-        $logger = new Logger("default");
-        $logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
-        $this->client->setLogger($logger);
-    } 
+	{
+		$this->client = new BillDeskJWEHS256Client("https://pguat.billdesk.io", "bduatv2ktk", "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX");
+		$logger = new Logger("default");
+		$logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
+		$this->client->setLogger($logger);
+	}
 
 	function __construct()
 	{
 		parent::__construct();
 		$this->CI = &get_instance();
 		$this->load->model('admin_model', '', TRUE);
+
 		$this->load->library(array('table', 'form_validation'));
-		$this->load->helper(array('form', 'form_helper'));
+		$this->load->helper(array('form', 'form_helper', 'file'));
 		date_default_timezone_set('Asia/Kolkata');
 		ini_set('upload_max_filesize', '20M');
 	}
@@ -71,27 +72,26 @@ class Student extends CI_Controller
 		}
 	}
 
-	public function testCreateOrder() {
-        $request = array(
-            'mercid' => "112233",
-            'orderid' => uniqid(),
-            'amount' => "1.0",
-            'order_date' => date_format(new \DateTime(), DATE_W3C),
-            'currency' => "1000",
-            'ru' => "https://www.billdesk.io",
-            'itemcode' => "DIRECT",
-            'device' => array(
-                'init_channel' => 'internet',
-                'ip' => "192.168.1.1",
-                'user_agent' => 'Mozilla/5.0'
-            )
-        );
-        $response = $this->client->createOrder($request);
+	public function testCreateOrder()
+	{
+		$request = array(
+			'mercid' => "112233",
+			'orderid' => uniqid(),
+			'amount' => "1.0",
+			'order_date' => date_format(new \DateTime(), DATE_W3C),
+			'currency' => "1000",
+			'ru' => "https://www.billdesk.io",
+			'itemcode' => "DIRECT",
+			'device' => array(
+				'init_channel' => 'internet',
+				'ip' => "192.168.1.1",
+				'user_agent' => 'Mozilla/5.0'
+			)
+		);
+		$response = $this->client->createOrder($request);
 
-        $this->assertEquals(200, $response->getResponseStatus());
-
-		
-    }
+		$this->assertEquals(200, $response->getResponseStatus());
+	}
 
 	function dashboard()
 	{
@@ -111,24 +111,22 @@ class Student extends CI_Controller
 				$data['personalDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$data['parentDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$data['educations_details'] = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'student_education_details')->result();
-		
+
 				$upload_path = "./assets/students/$student_id/";
 
 				// Check if the directory exists
 				if (is_dir($upload_path)) {
 					// Get list of files in the directory
 					$files = scandir($upload_path);
-		
+
 					// Remove . and .. from the list
 					$data['files'] = array_diff($files, array('.', '..'));
-				}
-				else
-				{
+				} else {
 					$data['files'] = array();
 				}
 				$this->student_template->show('student/finish', $data);
 			} else {
-				$this->student_template->show('student/Dashboard', $data);
+				$this->student_template->show('student/dashboard', $data);
 			}
 		} else {
 			redirect('student', 'refresh');
@@ -175,7 +173,7 @@ class Student extends CI_Controller
 			$this->form_validation->set_rules('student_name', 'Student Name', 'required');
 			$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]');
 			$this->form_validation->set_rules('email', 'Email', 'trim|valid_email');
-			$this->form_validation->set_rules('aadhar', 'Aadhar Number', 'required|regex_match[/^[0-9]{12}$/]');
+			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]');
 			$this->form_validation->set_rules('dept_id', 'Department Id', 'required');
 			$this->form_validation->set_rules('quota', 'Quota', 'required');
 			$this->form_validation->set_rules('sub_quota', 'sub_quota', 'required');
@@ -193,7 +191,7 @@ class Student extends CI_Controller
 				$data['student_name'] =  $admissionDetails->student_name;
 				$data['mobile'] = $admissionDetails->mobile;
 				$data['email'] = $admissionDetails->email;
-				$data['aadhar'] = $admissionDetails->aadhar;
+				$data['aadhaar'] = $admissionDetails->aadhaar;
 				$data['dept_id'] = $admissionDetails->dept_id;
 				$data['quota'] = $admissionDetails->quota;
 				$data['sub_quota'] = $admissionDetails->sub_quota;
@@ -207,7 +205,7 @@ class Student extends CI_Controller
 					'student_name' => strtoupper($this->input->post('student_name')),
 					'mobile' => $this->input->post('mobile'),
 					'email' => strtolower($this->input->post('email')),
-					'adhaar' => $this->input->post('adhaar'),
+					'aadhaar' => $this->input->post('aadhaar'),
 					'dept_id' => $this->input->post('dept_id'),
 					'quota' => $this->input->post('quota'),
 					'sub_quota' => $this->input->post('sub_quota'),
@@ -598,7 +596,7 @@ class Student extends CI_Controller
 				$student_id = $student_session['id'];
 				$data['page_title'] = "EDUCATION DETAILS";
 				$data['menu'] = "educationdetails";
-				
+
 				$this->student_template->show('student/education_details', $data);
 			} else {
 
@@ -670,15 +668,15 @@ class Student extends CI_Controller
 		if ($this->session->userdata('student_in')) {
 			$student_session = $this->session->userdata('student_in');
 			$data['student_name'] = $student_session['student_name'];
-			echo $data['id'] = $student_session['id'];
+			$data['id'] = $student_session['id'];
 			$student_id = $student_session['id'];
 			$data['page_title'] = "Fee Details";
 			$data['menu'] = "fee_details";
-
+			$data['action'] = "student/pay_now";
+			$data['student'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 			$data['fees'] = $this->admin_model->getDetailsbyfield($data['id'], 'student_id', 'fee_master')->row();
 
-			$this->student_template->show('student/fee_details', $data);			 
-
+			$this->student_template->show('student/fee_details', $data);
 		} else {
 			redirect('student', 'refresh');
 		}
@@ -708,7 +706,7 @@ class Student extends CI_Controller
 			$student_id = $student_session['id'];
 			$data['admissions'] = $this->admin_model->getDetails('admissions', 'id', $data['id'])->row();
 			$this->form_validation->set_rules('documents', 'Document Type', 'required');
-			
+
 			if ($this->form_validation->run() === FALSE) {
 
 				$upload_path = "./assets/students/$student_id/";
@@ -717,12 +715,10 @@ class Student extends CI_Controller
 				if (is_dir($upload_path)) {
 					// Get list of files in the directory
 					$files = scandir($upload_path);
-		
+
 					// Remove . and .. from the list
 					$data['files'] = array_diff($files, array('.', '..'));
-				}
-				else
-				{
+				} else {
 					$data['files'] = array();
 				}
 				$data['action'] = 'student/documents';
@@ -731,7 +727,7 @@ class Student extends CI_Controller
 
 				$documents = $this->input->post('documents');
 
-				$config['upload_path'] = './assets/students/' . $data['id'].'/';
+				$config['upload_path'] = './assets/students/' . $data['id'] . '/';
 				$config['allowed_types']    = 'jpg|png|pdf'; // Adjust file types as needed
 				$config['max_size']         = 10240; // Maximum file size in kilobytes (10MB)
 				$config['encrypt_name']     = FALSE; // Encrypt the file name for security
@@ -739,9 +735,7 @@ class Student extends CI_Controller
 				if (!is_dir($config['upload_path'])) {
 					mkdir($config['upload_path'], 0777, true);
 				}
-				$upload_path=$config['upload_path'];
-				
-
+				$upload_path = $config['upload_path'];
 
 				$this->load->library('upload', $config);
 
@@ -764,10 +758,10 @@ class Student extends CI_Controller
 					$data = array('upload_data' => $this->upload->data());
 					// Handle success as needed
 					$this->session->set_flashdata('message', 'Document udpated successfully...!');
-						$this->session->set_flashdata('status', 'alert-success');
+					$this->session->set_flashdata('status', 'alert-success');
 				}
 
-			 redirect('student/documents', 'refresh');
+				redirect('student/documents', 'refresh');
 			}
 		} else {
 			redirect('student', 'refresh');
@@ -826,7 +820,7 @@ class Student extends CI_Controller
 			$student_session = $this->session->userdata('student_in');
 			$data['student_name'] = $student_session['student_name'];
 			$data['id'] = $student_session['id'];
-			$data['page_title'] = 'Education Details';
+			$data['page_title'] = 'Update Education Details';
 			$data['menu'] = 'educationdetails';
 
 			$this->form_validation->set_rules('education_level', 'Education Level', 'required');
@@ -876,7 +870,7 @@ class Student extends CI_Controller
 				$data['action'] = 'student/updateeducationdetails/' . $edu_id;
 				$data['student_name'] = $student_session['student_name'];
 				$data['id'] = $student_session['id'];
-				$data['page_title'] = 'Education Details';
+				$data['page_title'] = 'Update Education Details';
 				$data['menu'] = 'educationdetails';
 
 				$this->student_template->show('student/update_education_details', $data);
@@ -938,5 +932,348 @@ class Student extends CI_Controller
 		$this->session->unset_userdata('student_in');
 		session_destroy();
 		redirect('student', 'refresh');
+	}
+
+	public function testorder()
+	{
+		require_once APPPATH . 'libraries/Jwt.php';
+		$this->load->library('logger');
+		$headers = array(
+			"alg" => "HS256",
+			"clientid" => "bduatv2ktk",
+			"kid" => "HMAC"
+		);
+		$order_id = rand();
+		$trace_id = rand();
+		$servertime = time();
+		//    $config                         = $this->CI->config->item('billdesk');
+		$api_url                        = "https://uat1.billdesk.com/u2/payments/ve1_2/orders/create";
+		$payload                        = array();
+
+
+		$payload['orderid']             = "MALbe" . $order_id;
+		$payload['mercid']              = "BDUATV2KTK";
+		$payload['order_date']          = date("c");
+		$payload['amount']              = "10.00";
+		$payload['currency']            = '356';
+
+		$payload['ru'] 	           =  base_url() . 'student/callback'; // Return URL
+
+		$payload['additional_info']    =  array(
+			"additional_info1" => "B200910EC",
+			"additional_info2" => "Anand",
+			"additional_info3" => "abc@gmail.com",
+			"additional_info4" => "NA",
+			"additional_info5" => "NA",
+			"additional_info6" => "NA",
+			"additional_info7" => "NA"
+		);
+		$payload['itemcode']           = 'DIRECT';
+		$payload['device']             =  array(
+			"init_channel" => "internet",
+			"ip" => $_SERVER['REMOTE_ADDR'],
+			"user_agent"    => $_SERVER['HTTP_USER_AGENT'],
+			"accept_header" => "text/html",
+		);
+
+
+		/*****************************************/
+		// Encode payload
+		/*****************************************/
+		$curl_payload = JWT::encode($payload, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", "HS256", $headers);
+
+
+
+		/*****************************************/
+		// Submit to Billdesk
+		/*****************************************/
+		$ch = curl_init($api_url);
+		$ch_headers = array(
+			"Content-Type: application/jose",
+			"accept: application/jose",
+			"bd-traceid: $trace_id",
+			"bd-timestamp: $servertime"
+		);
+
+		// Append additional headers
+		$ch_headers[] = "Content-Length: " . strlen($curl_payload);
+		// pr($ch_headers);exit;
+		$message = "Billdesk create order curl header - " . json_encode($ch_headers);
+		$this->logger->write('billdesk', 'debug', $message);
+		$message1 = "Billdesk Request payload - " . $curl_payload;
+		$this->logger->write('billdesk', 'debug', $message1);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $ch_headers);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $curl_payload);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$response = curl_exec($ch);
+		$message2 = "Billdesk create order response - " . $response;
+		$this->logger->write('billdesk', 'debug', $message2);
+		curl_close($response);
+		$result_decoded = JWT::decode($response, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", 'HS256');
+		$result_array = (array) $result_decoded;
+		$message = "Billdesk create order response decoded - " . json_encode($result_array);
+		$this->logger->write('billdesk', 'debug', $message);
+		if ($result_decoded->status == 'ACTIVE') {
+			$transactionid = $result_array['links'][1]->parameters->bdorderid;
+			$authtoken = $result_array['links'][1]->headers->authorization;
+			$requestParams['order_id'] = $result_decoded->orderid;
+			$requestParams['merchantId'] = $result_decoded->mercid;
+			$requestParams['transactionid'] = $transactionid;
+			$requestParams['authtoken'] = $authtoken;
+			// return $requestParams;
+			$this->load->view('student/payment', $requestParams);
+		} else {
+			$status = isset($result_decoded->status) ? $result_decoded->status : "Status not available";
+			$message = "Billdesk create order status - " . $status;
+			$this->logger->write('billdesk', 'debug', $message);
+		}
+	}
+
+
+	public function callback()
+	{
+		require_once APPPATH . 'libraries/Jwt.php';
+		$this->load->library('logger');
+		$message = "BillDesk Response - " . json_encode($_POST). "\n";
+		$this->logger->write('billdesk', 'debug', $message);
+		$tx = "";
+		if (!empty($_POST)) {
+			$tx_array = $_POST;
+			if (isset($tx_array['transaction_response'])) {
+				$tx = $tx_array['transaction_response'];
+			}
+		}
+
+
+		if (!empty($tx)) {
+			$response_decoded = JWT::decode($tx, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", 'HS256');
+			$response_array = (array) $response_decoded;
+			$response_json =  json_encode($response_array);
+			$message = "BillDesk callback Response decode - " . $response_json. "\n";
+			$this->logger->write('billdesk', 'debug', $message);
+
+			if ($response_array['auth_status'] == '0300') {
+				$status = 'pass';
+			} else if ($response_array['auth_status'] == '0002') {
+				$status = 'unknown';
+			} else {
+				$status = 'fail';
+			}
+
+
+
+			$return['amount']	    = (int)$response_array['amount'];
+			$return['order_id']	    = $response_array['orderid'];
+			$return['status']		= $status;
+			$return['pgresponse']	= $response_json;
+			$return['pgid']	        = $response_array['transactionid'];
+
+			$updateDetails = array(
+				'transaciton_date' => date('Y-m-d'),
+				'transaction_id' => $response_array['transactionid'],
+				'txn_response' => $response_json
+			);
+
+			$result = $this->admin_model->updateDetailsbyfield('reference_no', $response_array['orderid'], $updateDetails, 'transactions');
+
+
+			$this->session->set_flashdata('message', 'Payment was successfull...!');
+			$this->session->set_flashdata('status', 'alert-success');
+		} else {
+			$status = 'fail';
+			$return['status']		= $status;
+			$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+			$this->session->set_flashdata('status', 'alert-warning');
+		}
+
+		redirect('student/fee_details');
+	}
+
+
+	public function getTransactionDetails($order_id)
+	{
+		require_once APPPATH . 'libraries/Jwt.php';
+		$this->load->library('logger');
+
+
+		$billdesk_URL_retrive = "https://uat1.billdesk.com/u2/payments/ve1_2/transactions/get";
+		$trace_id = rand();
+		$servertime = time();
+		$headers = array("alg" => "HS256", "clientid" => "bduatv2ktk", "kid" => "HMAC");
+		$payload = array(
+			"mercid" => 'BDUATV2KTK',
+			"orderid" => $order_id,
+		);
+		$curl_payload = JWT::encode($payload, '16uUloqqrs2iMUZnrojXtmkTeSQqjYIX', 'HS256', $headers);
+		$message = "BillDesk retrieve payload - " . $curl_payload. "\n";
+		$this->logger->write('billdesk', 'debug', $message);
+		$ch = curl_init($billdesk_URL_retrive);
+		$ch_headers = array(
+			"Content-Type: application/jose",
+			"accept: application/jose",
+			"BD-Traceid: $trace_id",
+			"BD-Timestamp: $servertime"
+		);
+
+		$message = "BillDesk retrieve curl header - " . json_encode($ch_headers). "\n";
+		$this->logger->write('billdesk', 'debug', $message);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $ch_headers);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $curl_payload);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$response = curl_exec($ch);
+
+		$message = "Billdesk retrieve order response - " . $response;
+		$this->logger->write('billdesk', 'debug', $message);
+		curl_close($ch);
+		$result_decoded = JWT::decode($response, '16uUloqqrs2iMUZnrojXtmkTeSQqjYIX', 'HS256');
+		$response_array = (array) $result_decoded;
+		$message = "Billdesk retrieve order response decoded - " . json_encode($response_array);
+		$this->logger->write('billdesk', 'debug', $message);
+		$res['status'] = 3;
+		$res['reason'] = "UNKNOWN";
+
+		if ($response_array['transactionid']) {
+
+			if ($response_array['auth_status'] == '0300') {
+				$res['status'] = 5;
+				$res['txn_id'] = $response_array['transactionid'];
+				$res['reason'] = 'success';
+			} else if ($response_array['auth_status'] == '0002') {
+				$res['status'] = 2;
+				$res['reason'] = 'pending';
+			} else if ($response_array['auth_status'] == '0399') {
+				$res['status'] = 6;
+				$res['reason'] = 'fail';
+			}
+
+			$res['amount'] = (int)$response_array['amount'];
+		}
+
+		var_dump($res);
+		exit;
+		return $res;
+	}
+
+	public function pay_now()
+	{
+
+		if ($this->session->userdata('student_in')) {
+			$student_session = $this->session->userdata('student_in');
+			$data['student_name'] = $student_session['student_name'];
+			$data['id'] = $student_session['id'];
+			require_once APPPATH . 'libraries/Jwt.php';
+			$this->load->library('logger');
+			$insert = array(
+				'amount' => number_format((float)$this->input->post('amount'), 2, '.', ''),
+				'reg_no' => $this->input->post('usn'),
+				// 'email' => $this->input->post('email'),
+				'mobile' => $this->input->post('mobile'),
+				'reference_no' => $this->input->post('usn') . time(),
+				'transaction_type' => '3',
+				'academic_year' => "2024-2025",
+				'admissions_id' => $data['id'],
+				'reference_date' => date('Y-m-d'),
+				'transaction_status' => '0',
+				'created_on' => date('Y-m-d h:i:s')
+			);
+
+			$result = $this->admin_model->insertDetails('transactions', $insert);
+
+			$headers = array(
+				"alg" => "HS256",
+				"clientid" => "bduatv2ktk",
+				"kid" => "HMAC"
+			);
+			$order_id = rand();
+			$trace_id = rand();
+			$servertime = time();
+			//    $config                         = $this->CI->config->item('billdesk');
+			$api_url                        = "https://uat1.billdesk.com/u2/payments/ve1_2/orders/create";
+			$payload                        = array();
+
+
+			$payload['orderid']             = $insert['reference_no'];
+			$payload['mercid']              = "BDUATV2KTK";
+			$payload['order_date']          = date("c");
+			$payload['amount']              = $insert['amount'];
+			$payload['currency']            = '356';
+
+			$payload['ru'] 	           =  base_url() . 'student/callback'; // Return URL
+
+			$payload['additional_info']    =  array(
+				"additional_info1" => $insert['reg_no'],
+				"additional_info2" => $this->input->post('name'),
+				"additional_info3" => $this->input->post('email'),
+				"additional_info4" => $insert['mobile'],
+				"additional_info5" => "NA",
+				"additional_info6" => "NA",
+				"additional_info7" => "NA"
+			);
+			$payload['itemcode']           = 'DIRECT';
+			$payload['device']             =  array(
+				"init_channel" => "internet",
+				"ip" => $_SERVER['REMOTE_ADDR'],
+				"user_agent"    => $_SERVER['HTTP_USER_AGENT'],
+				"accept_header" => "text/html",
+			);
+			// var_dump($payload);
+			// die();
+
+			/*****************************************/
+			// Encode payload
+			/*****************************************/
+			$curl_payload = JWT::encode($payload, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", "HS256", $headers);
+
+
+
+			/*****************************************/
+			// Submit to Billdesk
+			/*****************************************/
+			$ch = curl_init($api_url);
+			$ch_headers = array(
+				"Content-Type: application/jose",
+				"accept: application/jose",
+				"bd-traceid: $trace_id",
+				"bd-timestamp: $servertime"
+			);
+
+			// Append additional headers
+			$ch_headers[] = "Content-Length: " . strlen($curl_payload);
+			// pr($ch_headers);exit;
+			$message = "Billdesk create order curl header - " . json_encode($ch_headers). "\n";
+			$this->logger->write('billdesk', 'debug', $message);
+			$message1 = "Billdesk Request payload - " . $curl_payload. "\n";
+			$this->logger->write('billdesk', 'debug', $message1);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $ch_headers);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $curl_payload);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$response = curl_exec($ch);
+			$message2 = "Billdesk create order response - " . $response. "\n";
+			$this->logger->write('billdesk', 'debug', $message2);
+			curl_close($response);
+			$result_decoded = JWT::decode($response, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", 'HS256');
+			$result_array = (array) $result_decoded;
+			$message = "Billdesk create order response decoded - " . json_encode($result_array). "\n";
+			$this->logger->write('billdesk', 'debug', $message);
+			if ($result_decoded->status == 'ACTIVE') {
+				$transactionid = $result_array['links'][1]->parameters->bdorderid;
+				$authtoken = $result_array['links'][1]->headers->authorization;
+				$requestParams['order_id'] = $result_decoded->orderid;
+				$requestParams['merchantId'] = $result_decoded->mercid;
+				$requestParams['transactionid'] = $transactionid;
+				$requestParams['authtoken'] = $authtoken;
+				// return $requestParams;
+				$this->load->view('student/payment', $requestParams);
+			} else {
+				$status = isset($result_decoded->status) ? $result_decoded->status : "Status not available";
+				$message = "Billdesk create order status - " . $status;
+				$this->logger->write('billdesk', 'debug', $message);
+			}
+		} else {
+			redirect('student', 'refresh');
+		}
 	}
 }

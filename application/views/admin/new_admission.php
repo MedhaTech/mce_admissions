@@ -43,9 +43,9 @@
 
                           <div class="col">
                               <div class="form-group">
-                                  <label for="dsc-2">Adhaar Number </label>
-                                  <input type="number" name="aadhar" id="aadhar" class="form-control" value="<?php echo (set_value('aadhar')) ? set_value('aadhar') : $aadhar; ?>">
-                                  <span class="text-danger"><?php echo form_error('aadhar'); ?></span>
+                                  <label for="dsc-2">Aadhaar Number </label>
+                                  <input type="number" name="aadhaar" id="aadhaar" class="form-control" value="<?php echo (set_value('aadhaar')) ? set_value('aadhaar') : $aadhaar; ?>">
+                                  <span class="text-danger"><?php echo form_error('aadhaar'); ?></span>
                               </div>
                           </div>
                           <div class="col">

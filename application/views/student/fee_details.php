@@ -75,7 +75,17 @@
                                       <?php $balance_amount = $fees->final_fee - $paid_amount; 
                                         echo number_format($balance_amount,2); ?>
                                   </h4>
-                                  <?php echo anchor('','Pay Balance Fee','class="btn btn-danger btn-sm"'); ?>
+
+                                  <?php echo form_open_multipart($action, 'class="user"'); ?>
+
+                                  <input type="hidden" name="usn" id="usn" value="<?= $student->adm_no;?>">
+                                  <input type="hidden" name="name" id="name" value="<?= $student->student_name;?>">
+                                  <input type="hidden" name="email" id="email" value="<?= $student->email;?>">
+                                  <input type="hidden" name="mobile" id="mobile" value="<?= $student->mobile;?>">
+                                  <input type="hidden" name="amount" id="amount" value="<?= $balance_amount;?>">
+                                  <button type="submit" class="btn btn-danger btn-sm" name="Update" id="Update"> Pay Balance Fee </button>
+                                 
+                                  </form>
                               </div>
                           </div>
                       </div>

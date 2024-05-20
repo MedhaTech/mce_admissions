@@ -8,9 +8,9 @@
 
               <!-- <h1 class="h3 mb-2 text-gray-800"> Grievance Tickets </h1> -->
 
-              <div class="card card-gray mb-4">
+              <div class="card card-info mb-4">
                   <div class="card-header">
-                      <h3 class="m-0 card-title text-uppercase"><?= $page_title; ?></h6>
+                      <h3 class="m-0 card-title text-uppercase"><?=$page_title;?></h6>
                   </div>
                   <div class="card-body">
 
@@ -108,7 +108,7 @@
                               </div>
                           </div>
                       </div>
-                      <table class="table" border="1">
+                      <table class="table table-bordered">
                           <thead>
                               <tr>
                                   <th>Subject Name</th>
@@ -258,7 +258,7 @@
                   </div>
                   <div class="card-footer">
                       <button type="submit" class="btn btn-danger btn-sm" name="Insert" id="Insert"><i class="fas fa-edit"></i> Submit </button>
-                      <?php echo anchor('student/dashboard/', '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Cancel', 'class="btn btn-dark btn-sm float-right" '); ?>
+                      <?php echo anchor('student/educationdetails', '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Cancel', 'class="btn btn-dark btn-sm float-right" '); ?>
                   </div>
                   </form>
               </div>

@@ -30,7 +30,9 @@ class Welcome extends CI_Controller {
 				$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 	
 				$this->form_validation->set_rules('name', 'Name', 'required');
-				$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]|is_unique[enquiries.mobile]');
+				$this->form_validation->set_rules('mobile', 'Mobile Number', 'required|regex_match[/^[0-9]{10}$/]|is_unique[enquiries.mobile]',array(
+					'is_unique'     => 'This %s is exists in student name.'
+			    ));
 				$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
 				$this->form_validation->set_rules('par_name', 'Parent Name', 'required');
 				$this->form_validation->set_rules('par_mobile', 'Parent Mobile', 'required|regex_match[/^[0-9]{10}$/]|is_unique[enquiries.mobile]');
@@ -44,7 +46,7 @@ class Welcome extends CI_Controller {
 				$this->form_validation->set_rules('state', 'State', 'required');
 				$this->form_validation->set_rules('city', 'City', 'required');
 				$this->form_validation->set_rules('sports', 'Sports', 'required');
-				$this->form_validation->set_rules('adhaar', 'Adhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.adhaar]');
+				$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.aadhaar]');
 				$this->form_validation->set_rules('gender', 'Gender', 'required');
 				$this->form_validation->set_rules('category', 'Category', 'required');
 	
@@ -65,7 +67,7 @@ class Welcome extends CI_Controller {
 					$data['state'] = $this->input->post('state');
 					$data['city'] = $this->input->post('city');
 					$data['sports'] = $this->input->post('sports');
-					$data['adhaar'] = $this->input->post('adhaar');
+					$data['aadhaar'] = $this->input->post('aadhaar');
 					$data['gender'] = $this->input->post('gender');
 					$data['category'] = $this->input->post('category');
 					
@@ -100,7 +102,7 @@ class Welcome extends CI_Controller {
 						'state' => $this->input->post('state'),
 						'city' => $this->input->post('city'),
 						'sports' => $this->input->post('sports'),
-						'adhaar' => $this->input->post('adhaar'),
+						'aadhaar' => $this->input->post('aadhaar'),
 						'gender' => $this->input->post('gender'),
 						'category' => $this->input->post('category'),
 						'status' => '1',

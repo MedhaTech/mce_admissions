@@ -82,7 +82,7 @@ class Admin extends CI_Controller
 			$data['full_name'] = $session_data['full_name'];
 			$data['role'] = $session_data['role'];
 
-			// echo $encryptAadhar;
+			// echo $encryptAadhaar;
 			$txt = base64_decode($encryptTxt);
 			$txtArray = (explode(",", $txt));
 
@@ -158,15 +158,37 @@ class Admin extends CI_Controller
 
 			$data['page_title'] = 'Enquiries List';
 			$data['menu'] = 'enquiries';
+			$data['action'] = 'admin/enquiries';
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['enquiries'] = $this->admin_model->getEnquiries($data['currentAcademicYear'])->result();
-			$this->admin_template->show('admin/enquiries', $data);
+			$data['states'] = array("" => "Select State") + $this->globals->states();
+			$data['course_options'] = array(" " => "Select Branch") + $this->courses();
+			
+			
+			  
+				if ($this->input->post()) {
+					$sslc=$this->input->post('sslc');
+					$puc1=$this->input->post('puc1');
+					$puc2=$this->input->post('puc2');
+					$state=$this->input->post('state');
+					$course=$this->input->post('course');
+					$data['enquiries'] = $this->admin_model->getEnquiries_filter($data['currentAcademicYear'],$sslc,$puc1,$puc2,$state,$course)->result();
+				}
+				else
+				{
+				$data['enquiries'] = $this->admin_model->getEnquiries($data['currentAcademicYear'])->result();
+				}
+				// var_dump($this->db->last_query());
+				$this->admin_template->show('admin/enquiries', $data);
+			
 		} else {
 			redirect('admin/timeout');
 		}
+	
 	}
+
 	function newEnquiry()
 	{
 		if ($this->session->userdata('logged_in')) {
@@ -202,7 +224,7 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('gender', 'Gender', 'required');
 			$this->form_validation->set_rules('category', 'Category', 'required');
 			$this->form_validation->set_rules('sports', 'Sports', 'required');
-			$this->form_validation->set_rules('adhaar', 'Adhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.adhaar]');
+			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.aadhaar]');
 			$this->form_validation->set_rules('puc1_grade', 'PUC-I(10+1) Percentage/Grade', 'required');
 			$this->form_validation->set_rules('sslc_grade', 'SSLC Percentage/Grade', 'required');
 
@@ -228,7 +250,7 @@ class Admin extends CI_Controller
 				$data['puc1_grade'] = $this->input->post('puc1_grade');
 				$data['sslc_grade'] = $this->input->post('sslc_grade');
 				$data['gender'] = $this->input->post('gender');
-				$data['adhaar'] = $this->input->post('adhaar');
+				$data['aadhaar'] = $this->input->post('aadhaar');
 
 				$this->admin_template->show('admin/new_enquiry', $data);
 			} else {
@@ -257,7 +279,7 @@ class Admin extends CI_Controller
 					'category' => $this->input->post('category'),
 					'sports' => $this->input->post('sports'),
 					'gender' => $this->input->post('gender'),
-					'adhaar' => $this->input->post('adhaar'),
+					'aadhaar' => $this->input->post('aadhaar'),
 					'sslc_grade' => $this->input->post('sslc_grade'),
 					'puc1_grade' => strtoupper($this->input->post('puc1_grade')),
 					'puc2_grade' => $this->input->post('puc2_grade'),
@@ -348,7 +370,7 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('course1', 'Course', 'required');
 			$this->form_validation->set_rules('course2', 'Course', 'required');
 			$this->form_validation->set_rules('gender', 'Gender', 'required');
-			// $this->form_validation->set_rules('adhaar', 'Adhaar', 'required');
+			// $this->form_validation->set_rules('aadhaar', 'Aadhaar', 'required');
 			$this->form_validation->set_rules('state', 'State', 'required');
 			$this->form_validation->set_rules('city', 'City', 'required');
 			$this->form_validation->set_rules('category', 'Category', 'required');
@@ -358,7 +380,7 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('register_grade', '10+2 Percentage / Grade', 'required');
 			$this->form_validation->set_rules('exam_board', 'Exam Board', 'required');
 			$this->form_validation->set_rules('register_number', 'Register Number', 'required');
-			$this->form_validation->set_rules('adhaar', 'Adhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.adhaar]');
+			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.aadhaar]');
 
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/editEnquiry/' . $id;
@@ -378,7 +400,7 @@ class Admin extends CI_Controller
 				$data['course1'] =  $enquiryDetails->course_id;
 				$data['course2'] =  $enquiryDetails->course_id;
 				$data['gender'] =  $enquiryDetails->gender;
-				$data['adhaar'] =  $enquiryDetails->adhaar;
+				$data['aadhaar'] =  $enquiryDetails->aadhaar;
 				$data['state'] =  $enquiryDetails->state;
 				$data['city'] =  $enquiryDetails->city;
 				$data['category'] =  $enquiryDetails->category;
@@ -407,7 +429,7 @@ class Admin extends CI_Controller
 					'course_id' => $this->input->post('course1'),
 					'course_id' => $this->input->post('course2'),
 					'gender' => $this->input->post('gender'),
-					'adhaar' => $this->input->post('adhaar'),
+					'aadhaar' => $this->input->post('aadhaar'),
 					'course' => $course,
 					'state' => $this->input->post('state'),
 					'city' => $this->input->post('city'),
@@ -632,8 +654,10 @@ class Admin extends CI_Controller
 				'student_name' => strtoupper($enquiryDetails->student_name),
 				'mobile' => $enquiryDetails->mobile,
 				'email' => strtolower($enquiryDetails->email),
-				'father_name' => strtoupper($enquiryDetails->father_name),
-				'aadhar' => $enquiryDetails->adhaar,
+				'father_name' => strtoupper($enquiryDetails->par_name),
+				'father_mobile' => $enquiryDetails->par_mobile,
+				'father_email' => $enquiryDetails->par_email,
+				'aadhaar' => $enquiryDetails->aadhaar,
 				'quota' => $this->input->post('quota'),
 				'sub_quota' => $this->input->post('subquota'),
 				'exam_rank' => $this->input->post('exam_rank'),
@@ -677,7 +701,6 @@ class Admin extends CI_Controller
 			if (!file_exists($url)) {
 				mkdir($url, 0777);
 			}
-
 
 			if ($result1) {
 				$email['name'] = strtoupper($enquiryDetails->student_name);
@@ -971,7 +994,7 @@ class Admin extends CI_Controller
 		}
 	}
 
-	public function enquiryAdmission($encryptAadhar)
+	public function enquiryAdmission($encryptAadhaar)
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
@@ -980,11 +1003,11 @@ class Admin extends CI_Controller
 			$data['full_name'] = $session_data['full_name'];
 			$data['role'] = $session_data['role'];
 
-			// echo $encryptAadhar;
-			$aadhar = base64_decode($encryptAadhar);
-			// $aadhar = $this->encrypt->decode(base64_decode($encryptAadhar));
+			// echo $encryptAadhaar;
+			$aadhaar = base64_decode($encryptAadhaar);
+			// $aadhaar = $this->encrypt->decode(base64_decode($encryptAadhaar));
 
-			$details = $this->admin_model->fetchDetails1('id', 'aadhar', $aadhar, 'admissions')->row();
+			$details = $this->admin_model->fetchDetails1('id', 'aadhaar', $aadhaar, 'admissions')->row();
 
 			$encryptId = base64_encode($details->id);
 			// $encryptId = base64_encode($this->encrypt->encode($details->id));
@@ -1053,7 +1076,7 @@ class Admin extends CI_Controller
 							$enquiries1->student_name,
 							$enquiries1->mobile,
 							$enquiries1->course,
-							$enquiries1->adhaar,
+							$enquiries1->aadhaar,
 							$enquiries1->sslc_grade,
 							$enquiries1->puc1_grade,
 							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
@@ -1084,7 +1107,7 @@ class Admin extends CI_Controller
 								$enquiries1->student_name,
 								$enquiries1->mobile,
 								$enquiries1->course,
-								$enquiries1->adhaar,
+								$enquiries1->aadhaar,
 								$enquiries1->sslc_grade,
 								$enquiries1->puc1_grade,
 								'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
@@ -1116,7 +1139,7 @@ class Admin extends CI_Controller
 								$enquiries1->student_name,
 								$enquiries1->mobile,
 								$enquiries1->course,
-								$enquiries1->adhaar,
+								$enquiries1->aadhaar,
 								$enquiries1->sslc_grade,
 								$enquiries1->puc1_grade,
 								'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
@@ -1148,7 +1171,7 @@ class Admin extends CI_Controller
 							$enquiries1->student_name,
 							$enquiries1->mobile,
 							$enquiries1->course,
-							$enquiries1->adhaar,
+							$enquiries1->aadhaar,
 							$enquiries1->sslc_grade,
 							$enquiries1->puc1_grade,
 							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
@@ -1179,7 +1202,7 @@ class Admin extends CI_Controller
 							$enquiries1->student_name,
 							$enquiries1->mobile,
 							$enquiries1->course,
-							$enquiries1->adhaar,
+							$enquiries1->aadhaar,
 							$enquiries1->state,
 							$enquiries1->sslc_grade,
 							$enquiries1->puc1_grade,
@@ -1211,7 +1234,7 @@ class Admin extends CI_Controller
 							$enquiries1->student_name,
 							$enquiries1->mobile,
 							$enquiries1->course,
-							$enquiries1->adhaar,
+							$enquiries1->aadhaar,
 							$enquiries1->sports,
 							$enquiries1->sslc_grade,
 							$enquiries1->puc1_grade,
@@ -1286,7 +1309,7 @@ class Admin extends CI_Controller
 							$enquiries1->student_name,
 							$enquiries1->mobile,
 							$enquiries1->course,
-							$enquiries1->adhaar,
+							$enquiries1->aadhaar,
 							$enquiries1->sslc_grade,
 							$enquiries1->puc1_grade,
 							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
@@ -1354,7 +1377,7 @@ class Admin extends CI_Controller
 							$enquiries1->student_name,
 							$enquiries1->mobile,
 							$enquiries1->course,
-							$enquiries1->adhaar,
+							$enquiries1->aadhaar,
 							$enquiries1->sslc_grade,
 							$enquiries1->puc1_grade,
 							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
@@ -1499,7 +1522,7 @@ class Admin extends CI_Controller
 
 			$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]');
 			$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[admissions.email]');
-			$this->form_validation->set_rules('aadhar', 'Adhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[admissions.aadhar]');
+			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[admissions.aadhaar]');
 			$this->form_validation->set_rules('course', 'Department', 'required');
 			$this->form_validation->set_rules('quota', 'Quota', 'required');
 			$this->form_validation->set_rules('subquota', 'sub quota', 'required');
@@ -1525,7 +1548,7 @@ class Admin extends CI_Controller
 				$data['mobile'] = $this->input->post('mobile');
 				$data['email'] = $this->input->post('email');
 				$data['course'] = $this->input->post('course');
-				$data['aadhar'] = $this->input->post('aadhar');
+				$data['aadhaar'] = $this->input->post('aadhaar');
 				$data['quota'] = $this->input->post('quota');
 				$data['sub_quota'] = $this->input->post('subquota');
 				$data['category_alloted'] = $this->input->post('category_alloted');
@@ -1597,7 +1620,7 @@ class Admin extends CI_Controller
 					'student_name' => strtoupper($this->input->post('student_name')),
 					'mobile' => $this->input->post('mobile'),
 					'email' => strtolower($this->input->post('email')),
-					'aadhar' => $this->input->post('aadhar'),
+					'aadhaar' => $this->input->post('aadhaar'),
 					'dept_id' => $this->input->post('course'),
 					'quota' => $this->input->post('quota'),
 					'sub_quota' => $this->input->post('subquota'),
@@ -1833,9 +1856,15 @@ class Admin extends CI_Controller
 			$data['menu'] = 'collectfee';
 
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
-			// $data['transactionDetails'] = $this->admin_model->getDetails('transactions','admissions_id', $student_id)->result();
-			// $data['paid_amount'] = $this->admin_model->paidAmount($student_id)->row()->amount;
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $student_id)->row();
+			
+			$data['transactionDetails'] = $this->admin_model->getDetailsbyfield($student_id,'admissions_id','transactions' )->result();
+			// Var_dump($data['transactionDetails']);
+			// die();
+			// var_dump($this->db->last_query());
+			// die();
+			// $data['transactionDetails'] = $this->admin_model->getDetailsbyfield( $admissions_id,'admissions_id','transactions')->row();
+			// $data['admissionDetails'] = $this->admin_model->getDetails('admissions', $student_id)->row();
 			$data['fees'] = $this->admin_model->getDetailsbyfield($data['id'], 'student_id', 'fee_master')->row();
 
 			$this->form_validation->set_rules('mode_of_payment', 'Mode of Payment', 'required');
@@ -2052,7 +2081,7 @@ class Admin extends CI_Controller
 					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
 					$this->session->set_flashdata('status', 'alert-warning');
 				}
-				redirect('admin/collect_payment/' . $student_id, 'refresh');
+				redirect('admin/collect_fee/' . $student_id, 'refresh');
 			}
 		} else {
 			redirect('admin/timeout');
@@ -2096,13 +2125,10 @@ class Admin extends CI_Controller
 			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
-			$data['entranceDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
-			$data['personalDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
-			$data['parentDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+
 			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
 			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'id', 'student_education_details')->result();
-			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
-
+	
 
 			$this->load->library('fpdf'); // Load library
 			ini_set("session.auto_start", 0);
@@ -2116,27 +2142,56 @@ class Admin extends CI_Controller
 
 			$topGap = 20;
 
-			$pdf->SetFont('Arial', '', 10);
+			$pdf->SetY($topGap + 5);
+			$pdf->SetFont('Arial', '', 7);
+			$pdf->Cell(0, 3, "No.MCE/".$this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"]."/".$data['admissionDetails']->adm_no."/".$data['admissionDetails']->academic_year, 0, 1, 'L');
+			$pdf->SetFont('Arial', 'B', 7);
+			$pdf->Cell(0, 3, 'Ashok Haranahalli', 0, 1, 'L');
+			$pdf->SetFont('Arial', '', 7);
+			$pdf->Cell(0, 3, 'Chairman, Governing Council', 0, 1, 'L');
+			$pdf->Cell(0, 3, 'of M.C.E. Hassan.', 0, 1, 'L');
+
+			$pdf->SetXY(-30, $topGap + 5);
+			$pdf->Cell(0, 10, 'Date:'.date('d-m-Y'), 0, 1, 'R');
 
 			$pdf->SetFont('Arial', 'BU', 12);
-			$pdf->SetY($topGap + 10);
-			$pdf->Cell(0, 10, 'ADMISSION LETTER', 0, 1, 'C');
+			$pdf->SetY($topGap + 20);
+			$pdf->Cell(0, 10, ': LETTER OF ALLOTMENT :', 0, 1, 'C');
 
 
 			$pdf->SetFont('Arial', '', 9);
 
+			$pdf->Ln(10);
+
+			$content = "You have sought for admission to the 1st B.E., (Bachelor of Engineering course for the academic year ".$data['admissionDetails']->academic_year." in our college (i.e,., Malnad College of Engineering.) 
+
+We are pleased to provisionally offer you a seat for 1st year Bachelor of Engineering Course Four years duration in " . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ".
+
+You are hereby informed to pay the requisite fee in the college. You are required to produce original marks card of 2nd PUC/10+2 at the College.
+			
+If the fees are not paid within the stipulated time. We presume you are no more interested in getting admission to our college and seat will be allotted to others. Any amount paid by you shall not be refunded. In case you decide to discontinue your studies without completing the four years duration you shall be liable to pay fee to the college for all the four years. The Malnad College of Engineering is one of the reputed college in the country.
+			
+We hope that you will utilize the facilities in the college, secure good marks and bring credit to our institution.
+
+With good wishes";
+
+			$pdf->SetY($topGap + 35);
+			$pdf->MultiCell(0, 4, $content);
 
 
-			$content = $data['admissionDetails']->student_name . "  has sought admission to the 1st Semester B.E. course in " . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . " branch at Malnad College of Engineering, Hassan for the year 2024-25.
-					
-					There is a likelihood of some seats remaining vacant from the COMED-K process, and if so, your request for admission will be considered. If for any reason seats are filled up from the COMED-K, you have no right to seek admissions.
-					
-					In the meanwhile, subject to the above conditions, you are instructed to approach the Principal, Malnad College of Engineering, and to pay the required fee, produce the certificate in original, and provisionally get admitted as per rules prescribed by the State Government and the Visweswaraiah Technological University, Belgaum.
-				";
-
-
-			$pdf->SetY($topGap + 25);
-			$pdf->MultiCell(0, 6, $content);
+			$additionalDataY = $pdf->GetY() + 5;
+ 
+			// Additional data after content
+			$pdf->SetFont('Arial', 'B', 9);
+			$pdf->SetY($additionalDataY);
+			$pdf->Cell(0, 5, "To,", 0, 1, 'L');
+			$pdf->SetFont('Arial', '', 8);
+			$pdf->Cell(0, 4, $data['admissionDetails']->student_name, 0, 1, 'L');
+			$pdf->Cell(0, 4, $data['admissionDetails']->father_name, 0, 1, 'L');
+			// $pdf->Cell(0, 4, $data['admissionDetails']->present_address, 0, 1, 'L');
+			$pdf->Cell(0, 4, "Mobile : ".$data['admissionDetails']->mobile, 0, 1, 'L');
+			$pdf->Cell(0, 4, "Email : ".$data['admissionDetails']->email, 0, 1, 'L');
+			$pdf->Cell(0, 4, "Aadhaar : ".$data['admissionDetails']->aadhaar, 0, 1, 'L');
 
 
 			$fileName = $data['admissionDetails']->student_name . '-Admit_Letter.pdf';
@@ -2144,5 +2199,249 @@ class Admin extends CI_Controller
 		} else {
 			redirect('admin/timeout');
 		}
+	}
+
+	public function downloadReceipt($admission_id, $transaction_id)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+
+
+			$data['page_title'] = 'Download Receipt';
+			$data['menu'] = 'downloadreceipt';
+			// $id = base64_decode($encryptId);
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $admission_id)->row();
+			$transactionDetails = $this->admin_model->getDetails('transactions', $transaction_id)->row();
+			
+			
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			
+			$this->load->library('fpdf'); // Load library
+			ini_set("session.auto_start", 0);
+			ini_set('memory_limit', '-1');
+// 			define('FPDF_FONTPATH','plugins/font');
+    	    $pdf = new FPDF('p','mm','A5');
+            $pdf->enableheader = 0;
+            $pdf->enablefooter = 0;
+    	    $pdf->AddPage();
+    	    $pdf->Image(base_url().'assets/img/transaction.jpg', 0, 0, 148);
+    	    $pdf->setDisplayMode('fullpage');
+			
+			$row = 8;
+			
+			$pdf->SetTextColor(33,33,33);
+			$pdf->setFont ('Arial','BU',12);
+            $pdf->SetXY(20, 25); 
+            $pdf->Cell(0,10,"FEE RECEIPT ".$currentAcademicYear,0,0,'C', false);
+            
+            $y = $pdf->getY();
+            $pdf->setFont ('Arial','B',10);
+            $pdf->SetXY(10, $y+10); 
+            $pdf->Cell(0,10,"Receipt No: ".$transactionDetails->receipt_no,0,0,'L', false);
+            $pdf->SetXY(100, $y+10); 
+            $pdf->Cell(0,10, "Date: ".date('d-m-Y', strtotime($transactionDetails->transaciton_date)),0,0,'L', false); 
+            
+            $y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Application No",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->app_no,1,0,'L', false); 
+            
+            $y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Name of the Student",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->student_name,1,0,'L', false); 
+            
+            if($admissionDetails->dsc_1 == $admissionDetails->dsc_2){
+                $combination = $admissionDetails->dsc_1;
+            }else{
+                $combination = $admissionDetails->dsc_1.' - '.$admissionDetails->dsc_2;
+            }
+
+            $y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Course & Combination",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$this->romanYears[$data['admissionDetails']->year].' Year - '.$data['admissionDetails']->course.' ['.$combination.']',1,0,'L', false); 
+            
+            $y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Category",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->category,1,0,'L', false); 
+            
+            $y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Mobile",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$transactionDetails->mobile,1,0,'L', false); 
+            
+            $y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Fee Category",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $feeCategory = array("Aided" => "College Fee (A)", "UnAided"=>"College Fee (UA)", "Mgt"=>"Managemnt Fee(A)");
+            $pdf->Cell(0,$row,$feeCategory[$transactionDetails->aided_unaided],1,0,'L', false); 
+            
+            $y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Mode of Payment",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $transactionTypes = array("1" => "Cash", "2"=>"Cheque/DD", "3"=>"Online Payment");
+            $pdf->Cell(0,$row,$transactionTypes[$transactionDetails->transaction_type],1,0,'L', false); 
+            
+            $final_amount = $admissionDetails->final_amount;
+            $paid_amount = $transactionDetails->amount;
+            $balance = $transactionDetails->balance_amount;
+            // $final_amount - $paid_amount;
+            
+            if($transactionDetails->transaction_type == 1){
+                
+                $y = $pdf->getY();
+                $pdf->setFont ('Arial','B',9);
+                $pdf->SetXY(10, $y+$row); 
+                $pdf->Cell(0,$row,"Amount",1,0,'L', false);
+                $pdf->setFont ('Arial','',9);
+                $pdf->SetXY(50, $y+$row); 
+                $pdf->Cell(0,$row,"Rs.".number_format($transactionDetails->amount,0)."/-",1,0,'L', false); 
+                
+                $y = $pdf->getY();
+                $pdf->setFont ('Arial','B',9);
+                $pdf->SetXY(10, $y+$row); 
+                $pdf->Cell(0,$row,"Rupees (in words)",1,0,'L', false);
+                $pdf->setFont ('Arial','',8);
+                $pdf->SetXY(50, $y+$row); 
+                $pdf->Cell(0,$row,"Rs.".number_format($paid_amount,0)."/-",1,0,'L', false); 
+                
+            }
+            
+            if($transactionDetails->transaction_type == 2){
+                
+                $y = $pdf->getY();
+                $pdf->setFont ('Arial','B',9);
+                $pdf->SetXY(10, $y+$row); 
+                $pdf->Cell(0,$row,"Cheque/DD No & Date",1,0,'L', false);
+                $pdf->setFont ('Arial','',9);
+                $pdf->SetXY(50, $y+$row); 
+                $pdf->Cell(0,$row, $transactionDetails->reference_no.' Dt:'.date('d-m-Y', strtotime($transactionDetails->reference_date)),1,0,'L', false); 
+                
+                $y = $pdf->getY();
+                $pdf->setFont ('Arial','B',9);
+                $pdf->SetXY(10, $y+$row); 
+                $pdf->Cell(0,$row,"Name of the Bank",1,0,'L', false);
+                $pdf->setFont ('Arial','',9);
+                $pdf->SetXY(50, $y+$row); 
+                $pdf->Cell(0,$row, $transactionDetails->bank_name,1,0,'L', false); 
+                
+                $y = $pdf->getY();
+                $pdf->setFont ('Arial','B',9);
+                $pdf->SetXY(10, $y+$row); 
+                $pdf->Cell(0,$row,"Amount",1,0,'L', false);
+                $pdf->setFont ('Arial','',9);
+                $pdf->SetXY(50, $y+$row); 
+                $pdf->Cell(0,$row,"Rs.".number_format($transactionDetails->amount,0)."/-",1,0,'L', false); 
+                
+                $y = $pdf->getY();
+                $pdf->setFont ('Arial','B',9);
+                $pdf->SetXY(10, $y+$row); 
+                $pdf->Cell(0,$row,"Rupees (in words)",1,0,'L', false);
+                $pdf->setFont ('Arial','',8);
+                $pdf->SetXY(50, $y+$row); 
+                $pdf->Cell(0,$row,"Rs.".number_format($paid_amount,0)."/-",1,0,'L', false); 
+                
+            }
+            
+            if($transactionDetails->transaction_type == 3){
+                
+                $y = $pdf->getY();
+                $pdf->setFont ('Arial','B',9);
+                $pdf->SetXY(10, $y+$row); 
+                $pdf->Cell(0,$row,"Reference No & Date",1,0,'L', false);
+                $pdf->setFont ('Arial','',9);
+                $pdf->SetXY(50, $y+$row); 
+                $pdf->Cell(0,$row, $transactionDetails->reference_no.' Dt:'.date('d-m-Y', strtotime($transactionDetails->reference_date)),1,0,'L', false);
+                $y = $pdf->getY();
+                $pdf->setFont ('Arial','B',9);
+                $pdf->SetXY(10, $y+$row); 
+                $pdf->Cell(0,$row,"Amount",1,0,'L', false);
+                $pdf->setFont ('Arial','',9);
+                $pdf->SetXY(50, $y+$row); 
+                $pdf->Cell(0,$row,"Rs.".number_format($transactionDetails->amount,0)."/-",1,0,'L', false); 
+                
+                $y = $pdf->getY();
+                $pdf->setFont ('Arial','B',9);
+                $pdf->SetXY(10, $y+$row); 
+                $pdf->Cell(0,$row,"Rupees (in words)",1,0,'L', false);
+                $pdf->setFont ('Arial','',8);
+                $pdf->SetXY(50, $y+$row); 
+                $pdf->Cell(0,$row,"Rs.".number_format($paid_amount,0)."/-",1,0,'L', false); 
+                
+            }
+            
+            if($transactionDetails->aided_unaided != "Aided"){
+                $y = $pdf->getY();
+                $pdf->setFont ('Arial','B',9);
+                $pdf->SetXY(10, $y+$row); 
+                $pdf->Cell(0,$row,"Balance Amount",1,0,'L', false);
+                $pdf->setFont ('Arial','',9);
+                $pdf->SetXY(50, $y+$row); 
+                $pdf->Cell(0,$row,"Rs.".number_format($balance,0)."/-",1,0,'L', false); 
+            }
+            
+            $y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Remarks",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$transactionDetails->remarks,1,0,'L', false); 
+            
+            if($transactionDetails->transaction_status == 2){
+                $y = $pdf->getY();
+                $pdf->setFont ('Arial','B',14);
+                $pdf->SetXY(20, $y+20); 
+                $pdf->SetTextColor(255,40,0);
+                $pdf->Cell(0,$row,"RECEIPT CANCELLED",0,0,'L', false);
+            }else{
+                $y = $pdf->getY();
+                $pdf->setFont ('Arial','B',10);
+                $pdf->SetXY(20, $y+20); 
+                $pdf->Cell(0,$row,"Clerk",0,0,'L', false);
+                $pdf->setFont ('Arial','B',10);
+                $pdf->SetXY(100, $y+20); 
+                $pdf->Cell(0,$row,"Principal",0,0,'L', false);    
+            }
+            
+            // Var_dump( $pdf->output());
+			// die();
+            $fileName = $transactionDetails->receipt_no.'.pdf'; 
+			// var_dump($transactionDetails);
+		    $pdf->output($fileName,'D'); 
+
+		}else {
+				redirect('admin/timeout');
+		}           
 	}
 }
