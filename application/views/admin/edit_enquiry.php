@@ -28,8 +28,6 @@
             <h6 class="m-0 font-weight-bold"><?= $page_title; ?></h6>
           </div>
           <div class="card-body">
-            <!-- <?php print_r($facultyDetails); ?> -->
-
             <?php echo form_open_multipart($action, 'class="user"'); ?>
 
             <div class="form-row">
@@ -215,7 +213,7 @@
               </div>
             </div>
 
-            </form>
+            <?php echo form_close(); ?>
           </div>
         </div>
 

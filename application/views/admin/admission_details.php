@@ -38,16 +38,19 @@
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0" onclick="copy(this)">Mobile</label><br>
+                                <label class="form-label mb-0">Mobile</label><br>
                                 <?php
                                 if($admissionDetails->mobile != NULL)
                                     {
-                                        echo $admissionDetails->mobile;
+                                        // echo "<span class='mono' id='theList' value=".$admissionDetails->mobile.">".$admissionDetails->mobile."</span>";
+                                        // echo "<p id='myText'>".$admissionDetails->mobile.</p>
+                                        echo '<span id="myText">' .$admissionDetails->mobile.'
+                                        </span>';
                                     }
                                 else{
                                         echo "--" ;
                                 }
-                                ?>&nbsp;<i class="fas fa-copy fa-sm fa-fw"></i>
+                                ?>&nbsp;<button class="cursor: pointer; p-0 m-0"><i onclick="copyContent()" class="fas fa-copy fa-sm fa-fw"></i></button>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -1190,12 +1193,21 @@
 </div>
 
 <script>
-    function copy(that){
-var inp =document.createElement('input');
-document.body.appendChild(inp)
-inp.value =that.textContent
-inp.select();
-document.execCommand('copy',false);
-inp.remove();
-}
+//     function copyToClipboardWithJavascript() {
+//   /* Get the text field */
+//   var copyText = document.getElementById("theList");
+//   /* Select the text field */
+//   copyText.select();
+//   /* Copy the text inside the text field */
+//   document.execCommand("copy");
+// }
+let text = document.getElementById('myText').innerHTML;
+  const copyContent = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      console.log('Content copied to clipboard');
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  }
 </script>
