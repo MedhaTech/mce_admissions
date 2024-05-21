@@ -370,17 +370,18 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('course1', 'Course', 'required');
 			$this->form_validation->set_rules('course2', 'Course', 'required');
 			$this->form_validation->set_rules('gender', 'Gender', 'required');
-			// $this->form_validation->set_rules('aadhaar', 'Aadhaar', 'required');
+			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]');
 			$this->form_validation->set_rules('state', 'State', 'required');
 			$this->form_validation->set_rules('city', 'City', 'required');
 			$this->form_validation->set_rules('category', 'Category', 'required');
 			$this->form_validation->set_rules('sslc_grade', 'Sslc Grade', 'required');
 			$this->form_validation->set_rules('puc1_grade', 'Puc Grade', 'required');
-			$this->form_validation->set_rules('puc2_grade', 'Puc Grade', 'required');
-			$this->form_validation->set_rules('register_grade', '10+2 Percentage / Grade', 'required');
 			$this->form_validation->set_rules('exam_board', 'Exam Board');
-			$this->form_validation->set_rules('register_number', 'Register Number', 'required');
-			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]');
+			$this->form_validation->set_rules('puc2_grade', 'Puc2 Grade', 'required');
+			// $this->form_validation->set_rules('register_grade', '10+2 Percentage / Grade', 'required');
+			// $this->form_validation->set_rules('exam_board', 'Exam Board');
+			// $this->form_validation->set_rules('register_number', 'Register Number', 'required');
+			// $this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]');
 
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/editEnquiry/' . $id;
@@ -408,8 +409,8 @@ class Admin extends CI_Controller
 				$data['puc1_grade'] =  $enquiryDetails->puc1_grade;
 				$data['puc2_grade'] =  $enquiryDetails->puc2_grade;
 				$data['exam_board'] =  $enquiryDetails->exam_board;
-				$data['register_number'] =  $enquiryDetails->register_number;
-				$data['register_grade'] = $enquiryDetails->register_grade;
+				// $data['register_number'] =  $enquiryDetails->register_number;
+				// $data['register_grade'] = $enquiryDetails->register_grade;
 				$this->admin_template->show('admin/edit_enquiry', $data);
 			} else {
 				$course_id = $this->input->post('course');
@@ -419,7 +420,7 @@ class Admin extends CI_Controller
 
 				$updateDetails = array(
 					'student_name' => strtoupper($this->input->post('student_name')),
-					'register_grade' => $this->input->post('register_grade'),
+					// 'register_grade' => $this->input->post('register_grade'),
 					'mobile' => $this->input->post('mobile'),
 					'email' => strtolower($this->input->post('email')),
 					'par_name' => $this->input->post('par_name'),
@@ -436,13 +437,14 @@ class Admin extends CI_Controller
 					'category' => $this->input->post('category'),
 					'sslc_grade' => $this->input->post('sslc_grade'),
 					'puc1_grade' => $this->input->post('puc1_grade'),
+					// 'exam_board' => strtoupper($this->input->post('exam_board')),
 					'puc2_grade' => $this->input->post('puc2_grade'),
 
-					'exam_board' => strtoupper($this->input->post('exam_board')),
-					'register_number' => $this->input->post('register_number')
+					// 'exam_board' => strtoupper($this->input->post('exam_board')),
+					// 'register_number' => $this->input->post('register_number')
 				);
 
-				$result = $this->admin_model->updateDetails('enquiries', $id, $updateDetails);
+				$result = $this->admin_model->updateDetails($id, $updateDetails, 'enquiries');
 				if ($result) {
 					$this->session->set_flashdata('message', 'Enquiry Details updated successfully...!');
 					$this->session->set_flashdata('status', 'alert-success');

@@ -1250,13 +1250,10 @@
                 </div>
                 <div class="card-footer">
                     <?php //echo anchor('student/enquiries/', '<i class="fas fa-credit-card fa-sm fa-fw"></i> Back', 'class="btn btn-danger btn-sm float-right" ');  ?>
-                    <?php echo anchor('student/admissionfee/', '<i class="fas fa-save fa-sm fa-fw"></i> SUBMIT APPLICATION', 'class="btn btn-danger btn-square btn-sm float-right"'); ?>
-                    <!-- <button class="btn btn-danger btn-square btn-sm float-right text-white"
-                    ><a href="admissionfee/" type="submit" value="submit" name="submit" id="submit" disabled="true"><i class="fas fa-save fa-sm fa-fw"></i>SUBMIT APPLICATION</a></button>
-                    <button class="rn-button-style--2 btn_solid btn-size-sm"
-                                                        type="submit" value="submit" name="submit" id="submit"
-                                                        disabled="true"><a href="admissionfee/">Apply
-                                                        Now</a></button> -->
+                    <!-- <?php echo anchor('student/admissionfee/', '<i class="fas fa-save fa-sm fa-fw"></i> SUBMIT APPLICATION', 'class="btn btn-danger btn-square btn-sm float-right"'); ?> -->
+                    <button class="btn btn-danger btn-square btn-sm float-right"
+                    type="submit" value="submit" name="submit" id="submit"
+                    disabled="true"onclick="window.location.href='admissionfee';"><i class="fas fa-save fa-sm fa-fw"></i> Submit Application</button>                                    
                 </div>
             </div>
 
@@ -1267,7 +1264,7 @@
     <!-- /.content -->
 </div>
 
-<!-- <script>
+<script>
 function enable() {
     var applyCheck = document.getElementById("applyCheck");
     var submit = document.getElementById("submit");
@@ -1279,4 +1276,4 @@ function enable() {
         submit.style.background = 'grey';
     }
 }
-</script> -->
+</script>
