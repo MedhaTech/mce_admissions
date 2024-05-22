@@ -1070,18 +1070,18 @@ class Student extends CI_Controller
 			$return['pgid']	        = $response_array['transactionid'];
 
 			$updateDetails = array(
-				'transaciton_date' => $response_array['transaction_date'],
+				'transaction_date' => $response_array['transaction_date'],
 				'transaction_id' => $response_array['transactionid'],
 				'txn_response' => $response_json,
 
 			);
 			if ($response_array['transaction_error_type'] == 'success') {
 
-				$updateDetails['transaction_status'] = 1;
+				$updateDetails['transaction_status'] = '1';
 			} else if ($response_array['transaction_error_type'] == 'payment_processing_error') {
-				$updateDetails['transaction_status'] = 2;
+				$updateDetails['transaction_status'] = '2';
 			} else {
-				$updateDetails['transaction_status'] = 0;
+				$updateDetails['transaction_status'] = '0';
 			}
 
 
