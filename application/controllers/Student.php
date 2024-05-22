@@ -1035,7 +1035,7 @@ class Student extends CI_Controller
 	{
 		require_once APPPATH . 'libraries/Jwt.php';
 		$this->load->library('logger');
-		$message = "BillDesk Response - " . json_encode($_POST). "\n";
+		$message = "BillDesk Response - " . json_encode($_POST) . "\n";
 		$this->logger->write('billdesk', 'debug', $message);
 		$tx = "";
 		if (!empty($_POST)) {
@@ -1050,7 +1050,7 @@ class Student extends CI_Controller
 			$response_decoded = JWT::decode($tx, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", 'HS256');
 			$response_array = (array) $response_decoded;
 			$response_json =  json_encode($response_array);
-			$message = "BillDesk callback Response decode - " . $response_json. "\n";
+			$message = "BillDesk callback Response decode - " . $response_json . "\n";
 			$this->logger->write('billdesk', 'debug', $message);
 
 			if ($response_array['auth_status'] == '0300') {
@@ -1086,7 +1086,9 @@ class Student extends CI_Controller
 			$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
 			$this->session->set_flashdata('status', 'alert-warning');
 		}
-		var_dump($response_array);
+		echo "<pre>";
+		print_r($response_array);
+		echo "</pre>";
 		// redirect('student/fee_details');
 	}
 
@@ -1106,7 +1108,7 @@ class Student extends CI_Controller
 			"orderid" => $order_id,
 		);
 		$curl_payload = JWT::encode($payload, '16uUloqqrs2iMUZnrojXtmkTeSQqjYIX', 'HS256', $headers);
-		$message = "BillDesk retrieve payload - " . $curl_payload. "\n";
+		$message = "BillDesk retrieve payload - " . $curl_payload . "\n";
 		$this->logger->write('billdesk', 'debug', $message);
 		$ch = curl_init($billdesk_URL_retrive);
 		$ch_headers = array(
@@ -1116,7 +1118,7 @@ class Student extends CI_Controller
 			"BD-Timestamp: $servertime"
 		);
 
-		$message = "BillDesk retrieve curl header - " . json_encode($ch_headers). "\n";
+		$message = "BillDesk retrieve curl header - " . json_encode($ch_headers) . "\n";
 		$this->logger->write('billdesk', 'debug', $message);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $ch_headers);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -1242,21 +1244,21 @@ class Student extends CI_Controller
 			// Append additional headers
 			$ch_headers[] = "Content-Length: " . strlen($curl_payload);
 			// pr($ch_headers);exit;
-			$message = "Billdesk create order curl header - " . json_encode($ch_headers). "\n";
+			$message = "Billdesk create order curl header - " . json_encode($ch_headers) . "\n";
 			$this->logger->write('billdesk', 'debug', $message);
-			$message1 = "Billdesk Request payload - " . $curl_payload. "\n";
+			$message1 = "Billdesk Request payload - " . $curl_payload . "\n";
 			$this->logger->write('billdesk', 'debug', $message1);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $ch_headers);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $curl_payload);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$response = curl_exec($ch);
-			$message2 = "Billdesk create order response - " . $response. "\n";
+			$message2 = "Billdesk create order response - " . $response . "\n";
 			$this->logger->write('billdesk', 'debug', $message2);
 			curl_close($response);
 			$result_decoded = JWT::decode($response, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", 'HS256');
 			$result_array = (array) $result_decoded;
-			$message = "Billdesk create order response decoded - " . json_encode($result_array). "\n";
+			$message = "Billdesk create order response decoded - " . json_encode($result_array) . "\n";
 			$this->logger->write('billdesk', 'debug', $message);
 			if ($result_decoded->status == 'ACTIVE') {
 				$transactionid = $result_array['links'][1]->parameters->bdorderid;
