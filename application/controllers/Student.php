@@ -1043,66 +1043,87 @@ class Student extends CI_Controller
 			if (isset($tx_array['transaction_response'])) {
 				$tx = $tx_array['transaction_response'];
 			}
-		}
 
 
-		if (!empty($tx)) {
-			$response_decoded = JWT::decode($tx, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", 'HS256');
-			$response_array = (array) $response_decoded;
-			$response_json =  json_encode($response_array);
-			$message = "BillDesk callback Response decode - " . $response_json . "\n";
-			$this->logger->write('billdesk', 'debug', $message);
+			if (!empty($tx)) {
+				$response_decoded = JWT::decode($tx, "16uUloqqrs2iMUZnrojXtmkTeSQqjYIX", 'HS256');
+				$response_array = (array) $response_decoded;
+				$response_json =  json_encode($response_array);
+				$message = "BillDesk callback Response decode - " . $response_json . "\n";
+				$this->logger->write('billdesk', 'debug', $message);
+	
+				if ($response_array['auth_status'] == '0300') {
+					$status = 'pass';
+				} else if ($response_array['auth_status'] == '0002') {
+					$status = 'unknown';
+				} else {
+					$status = 'fail';
+				}
+	
+	
+	
+				$return['amount']	    = (int)$response_array['amount'];
+				$return['order_id']	    = $response_array['orderid'];
+				$return['status']		= $status;
+				$return['pgresponse']	= $response_json;
+				$return['pgid']	        = $response_array['transactionid'];
+	
+				$updateDetails = array(
+					'transaction_date' => $response_array['transaction_date'],
+					'transaction_id' => $response_array['transactionid'],
+					'txn_response' => $response_json,
+	
+				);
+				if ($response_array['transaction_error_type'] == 'success') {
+	
+					$updateDetails['transaction_status'] = '1';
+				} else if ($response_array['transaction_error_type'] == 'payment_processing_error') {
+					$updateDetails['transaction_status'] = '2';
+				} else {
+					$updateDetails['transaction_status'] = '0';
+				}
+	
+				$this->set_session($response_array['additional_info']->additional_info3, $response_array['additional_info']->additional_info4);
+	
+				$result = $this->admin_model->updateDetailsbyfield('reference_no', $response_array['orderid'], $updateDetails, 'transactions');
+				
+						$payment = ['orderid' => $response_array['orderid']];
+    			$this->session->set_userdata('payment', $data);
+				redirect('student/payment_status', 'refresh');
 
-			if ($response_array['auth_status'] == '0300') {
-				$status = 'pass';
-			} else if ($response_array['auth_status'] == '0002') {
-				$status = 'unknown';
 			} else {
 				$status = 'fail';
+				$return['status']		= $status;
+				redirect('student', 'refresh');
 			}
-
-
-
-			$return['amount']	    = (int)$response_array['amount'];
-			$return['order_id']	    = $response_array['orderid'];
-			$return['status']		= $status;
-			$return['pgresponse']	= $response_json;
-			$return['pgid']	        = $response_array['transactionid'];
-
-			$updateDetails = array(
-				'transaction_date' => $response_array['transaction_date'],
-				'transaction_id' => $response_array['transactionid'],
-				'txn_response' => $response_json,
-
-			);
-			if ($response_array['transaction_error_type'] == 'success') {
-
-				$updateDetails['transaction_status'] = '1';
-			} else if ($response_array['transaction_error_type'] == 'payment_processing_error') {
-				$updateDetails['transaction_status'] = '2';
-			} else {
-				$updateDetails['transaction_status'] = '0';
-			}
-
-
-
-			$result = $this->admin_model->updateDetailsbyfield('reference_no', $response_array['orderid'], $updateDetails, 'transactions');
-
-			echo "<pre>";
-			print_r($updateDetails);
-			echo "</pre>";
-			$this->session->set_flashdata('message', 'Payment was successfull...!');
-			$this->session->set_flashdata('status', 'alert-success');
-		} else {
-			$status = 'fail';
-			$return['status']		= $status;
-			$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
-			$this->session->set_flashdata('status', 'alert-warning');
 		}
-		echo "<pre>";
-		print_r($response_array);
-		echo "</pre>";
-		// redirect('student/fee_details');
+		else
+		{
+			redirect('student', 'refresh');
+		}
+
+
+		
+
+	}
+
+
+	function payment_status()
+	{
+		if ($this->session->userdata('student_in')) {
+			$student_session = $this->session->userdata('student_in');
+			$data['id'] = $student_session['id'];
+			$data['student_name'] = $student_session['student_name'];
+			$data['page_title'] = "Payment Status";
+			$data['menu'] = "payment";
+			$payment_session = $this->session->userdata('payment');
+			$orderid = $payment_session['orderid'];
+			$data['orderdetails'] = $this->admin_model->getDetailsbyfield($orderid, 'reference_no', 'transactions')->result();
+			$this->student_template->show('student/payment_status', $data);
+			
+		} else {
+			redirect('student', 'refresh');
+		}
 	}
 
 
@@ -1291,4 +1312,31 @@ class Student extends CI_Controller
 			redirect('student', 'refresh');
 		}
 	}
+
+
+	public function set_session($email, $mobile)
+	{
+		//Field validation succeeded.  Validate against database
+		$email = $this->input->post('email');
+
+		//query the database
+		$result = $this->admin_model->set_session($email, $mobile);
+		if ($result) {
+			$sess_array = array();
+			foreach ($result as $row) {
+				$sess_array = array(
+					'id' => $row->id,
+					'student_name' => $row->student_name,
+					'flow' => $row->flow
+				);
+				$this->session->set_userdata('student_in', $sess_array);
+			}
+			return TRUE;
+		} else {
+			
+			return false;
+		}
+	}
+
+
 }
