@@ -1070,10 +1070,21 @@ class Student extends CI_Controller
 			$return['pgid']	        = $response_array['transactionid'];
 
 			$updateDetails = array(
-				'transaciton_date' => date('Y-m-d'),
+				'transaciton_date' => $response_array['transaction_date'],
 				'transaction_id' => $response_array['transactionid'],
-				'txn_response' => $response_json
+				'txn_response' => $response_json,
+
 			);
+			if ($response_array['transaction_error_type'] == 'success') {
+
+				$updateDetails['transaction_status'] = 1;
+			} else if ($response_array['transaction_error_type'] == 'payment_processing_error') {
+				$updateDetails['transaction_status'] = 2;
+			} else {
+				$updateDetails['transaction_status'] = 0;
+			}
+
+
 
 			$result = $this->admin_model->updateDetailsbyfield('reference_no', $response_array['orderid'], $updateDetails, 'transactions');
 
