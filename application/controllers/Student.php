@@ -1086,8 +1086,8 @@ class Student extends CI_Controller
 			$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
 			$this->session->set_flashdata('status', 'alert-warning');
 		}
-
-		redirect('student/fee_details');
+		var_dump($response_array);
+		// redirect('student/fee_details');
 	}
 
 
