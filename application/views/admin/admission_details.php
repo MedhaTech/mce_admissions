@@ -59,12 +59,13 @@
                                 <?php
                                 if($admissionDetails->email != NULL)
                                     {
-                                        echo $admissionDetails->email;
+                                        echo '<span id="myEmail">' .$admissionDetails->email.'
+                                        </span>';
                                     }
                                 else{
                                         echo "--" ;
                                 }
-                                ?>
+                                ?>&nbsp;<button class="cursor: pointer; p-0 m-0"><i onclick="copyContent1()" class="fas fa-copy fa-sm fa-fw"></i></button>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -73,12 +74,13 @@
                                 <?php
                                 if($admissionDetails->aadhaar != NULL)
                                     {
-                                        echo $admissionDetails->aadhaar;
+                                        echo '<span id="myAadhaar">' .$admissionDetails->aadhaar.'
+                                        </span>';
                                     }
                                 else{
                                         echo "--" ;
                                 }
-                                ?>
+                                ?>&nbsp;<button class="cursor: pointer; p-0 m-0"><i onclick="copyContent2()" class="fas fa-copy fa-sm fa-fw"></i></button>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -1193,18 +1195,30 @@
 </div>
 
 <script>
-//     function copyToClipboardWithJavascript() {
-//   /* Get the text field */
-//   var copyText = document.getElementById("theList");
-//   /* Select the text field */
-//   copyText.select();
-//   /* Copy the text inside the text field */
-//   document.execCommand("copy");
-// }
 let text = document.getElementById('myText').innerHTML;
   const copyContent = async () => {
     try {
       await navigator.clipboard.writeText(text);
+      console.log('Content copied to clipboard');
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  }
+
+  let text1 = document.getElementById('myEmail').innerHTML;
+  const copyContent1 = async () => {
+    try {
+      await navigator.clipboard.writeText(text1);
+      console.log('Content copied to clipboard');
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  }
+
+  let text2 = document.getElementById('myAadhaar').innerHTML;
+  const copyContent2 = async () => {
+    try {
+      await navigator.clipboard.writeText(text2);
       console.log('Content copied to clipboard');
     } catch (err) {
       console.error('Failed to copy: ', err);
