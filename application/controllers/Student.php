@@ -1088,7 +1088,9 @@ class Student extends CI_Controller
 
 			$result = $this->admin_model->updateDetailsbyfield('reference_no', $response_array['orderid'], $updateDetails, 'transactions');
 
-
+			echo "<pre>";
+			print_r($updateDetails);
+			echo "</pre>";
 			$this->session->set_flashdata('message', 'Payment was successfull...!');
 			$this->session->set_flashdata('status', 'alert-success');
 		} else {
