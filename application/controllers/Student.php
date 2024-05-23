@@ -944,7 +944,7 @@ class Student extends CI_Controller
 			"kid" => "HMAC"
 		);
 		$order_id = rand();
-		$trace_id = rand();
+		$trace_id = rand(1000000000,9999999999);
 		$servertime = time();
 		//    $config                         = $this->CI->config->item('billdesk');
 		$api_url                        = "https://uat1.billdesk.com/u2/payments/ve1_2/orders/create";
@@ -1134,7 +1134,7 @@ class Student extends CI_Controller
 
 
 		$billdesk_URL_retrive = "https://uat1.billdesk.com/u2/payments/ve1_2/transactions/get";
-		$trace_id = rand();
+		$trace_id = rand(1000000000,9999999999);
 		$servertime = time();
 		$headers = array("alg" => "HS256", "clientid" => "bduatv2ktk", "kid" => "HMAC");
 		$payload = array(
@@ -1223,7 +1223,7 @@ class Student extends CI_Controller
 				"kid" => "HMAC"
 			);
 			$order_id = rand();
-			$trace_id = rand();
+			$trace_id = rand(1000000000,9999999999);
 			$servertime = time();
 			//    $config                         = $this->CI->config->item('billdesk');
 			$api_url                        = "https://uat1.billdesk.com/u2/payments/ve1_2/orders/create";
@@ -1243,7 +1243,7 @@ class Student extends CI_Controller
 				"additional_info2" => $this->input->post('name'),
 				"additional_info3" => $this->input->post('email'),
 				"additional_info4" => $insert['mobile'],
-				"additional_info5" => "NA",
+				"additional_info5" => "Fee Payment",
 				"additional_info6" => "NA",
 				"additional_info7" => "NA"
 			);
