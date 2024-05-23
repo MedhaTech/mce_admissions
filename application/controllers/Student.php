@@ -1089,7 +1089,8 @@ class Student extends CI_Controller
 				
 						$payment = ['orderid' => $response_array['orderid']];
     			$this->session->set_userdata('payment', $payment);
-				redirect('student/payment_status', 'refresh');
+				var_dump($this->session->userdata('payment'));
+				// redirect('student/payment_status', 'refresh');
 
 			} else {
 				$status = 'fail';
