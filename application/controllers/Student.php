@@ -1088,7 +1088,7 @@ class Student extends CI_Controller
 				$result = $this->admin_model->updateDetailsbyfield('reference_no', $response_array['orderid'], $updateDetails, 'transactions');
 				
 						$payment = ['orderid' => $response_array['orderid']];
-    			$this->session->set_userdata('payment', $data);
+    			$this->session->set_userdata('payment', $payment);
 				redirect('student/payment_status', 'refresh');
 
 			} else {
