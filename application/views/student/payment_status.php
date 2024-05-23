@@ -74,8 +74,8 @@
                       <div class="container">
 
                           <?php
-                          var_dump($orderdetails);
-                           if ($orderdetails['transaction_status'] == '1') { ?>
+                          
+                           if ($orderdetails->transaction_status == '1') { ?>
                               <div class="row justify-content-center">
                                   <div class="col-md-6">
                                       <div class="message-box _success">
@@ -110,28 +110,28 @@
                                                       <p> Amount </p>
                                                   </td>
                                                  <td>:</td>
-                                                  <td>Rs.<?= number_format($orderdetails['amount'],2);?></td>
+                                                  <td>Rs.<?= $orderdetails->amount;?></td>
                                               </tr>
                                               <tr>
                                                   <td>
                                                       <p> Date </p>
                                                   </td>
                                                  <td>:</td>
-                                                  <td><?= $orderdetails['transaction_date'];?></td>
+                                                  <td><?= $orderdetails->transaction_date;?></td>
                                               </tr>
                                               <tr>
                                                   <td>
                                                       <p> Transaction Id </p>
                                                   </td>
                                                  <td>:</td>
-                                                  <td><?= $orderdetails['transaction_id'];?></td>
+                                                  <td><?= $orderdetails->transaction_id;?></td>
                                               </tr>
                                               <tr>
                                                   <td>
                                                       <p> Order Id </p>
                                                   </td>
                                                  <td>:</td>
-                                                  <td><?= $orderdetails['reference_no'];?></td>
+                                                  <td><?= $orderdetails->reference_no;?></td>
                                               </tr>
                                           </table>
                                       </div>
@@ -174,28 +174,28 @@
                                                       <p> Amount </p>
                                                   </td>
                                                  <td>:</td>
-                                                  <td>Rs.<?= number_format($orderdetails['amount'],2);?></td>
+                                                  <td>Rs.<?= $orderdetails->amount;?></td>
                                               </tr>
                                               <tr>
                                                   <td>
                                                       <p> Date </p>
                                                   </td>
                                                  <td>:</td>
-                                                  <td><?= $orderdetails['transaction_date'];?></td>
+                                                  <td><?= $orderdetails->transaction_date;?></td>
                                               </tr>
                                               <tr>
                                                   <td>
                                                       <p> Transaction Id </p>
                                                   </td>
                                                  <td>:</td>
-                                                  <td><?= $orderdetails['transaction_id'];?></td>
+                                                  <td><?= $orderdetails->transaction_id;?></td>
                                               </tr>
                                               <tr>
                                                   <td>
                                                       <p> Order Id </p>
                                                   </td>
                                                  <td>:</td>
-                                                  <td><?= $orderdetails['reference_no'];?></td>
+                                                  <td><?= $orderdetails->reference_no;?></td>
                                               </tr>
                                           </table>
 
