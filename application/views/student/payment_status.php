@@ -36,7 +36,22 @@
           color: #495057;
           font-weight: 500;
       }
-  </style>
+     
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        /* border: 1px solid #dddddd; */
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
   <div class="content-wrapper">
       <!-- Main content -->
       <section class="content-header">
@@ -58,34 +73,135 @@
 
                       <div class="container">
 
-                     <?php if ($orderdetails['transaction_error_type'] == 'success') { ?>
-                          <div class="row justify-content-center">
-                              <div class="col-md-6">
-                                  <div class="message-box _success">
-                                      <i class="fa fa-check-circle" aria-hidden="true"></i>
-                                      <h2> Your payment was successful </h2>
-                                      <hr>
-                                      <p> Thank you for your payment. we will <br>
-                                          be in contact with more details shortly </p>
+                          <?php if ($orderdetails['transaction_status'] == '1') { ?>
+                              <div class="row justify-content-center">
+                                  <div class="col-md-6">
+                                      <div class="message-box _success">
+                                          <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                          <h2> Your payment was successful </h2>
+                                          <hr>
+                                          <table>
+                                              
+                                              <tr>
+                                                  <td>
+                                                      <p> Purpose of Payment </p>
+                                                  </td>
+                                                 <td>:</td>
+                                                  <td>Fee Payment</td>
+                                              </tr>
+                                              <tr>
+                                                  <td>
+                                                      <p> Status </p>
+                                                  </td>
+                                                 <td>:</td>
+                                                  <td>Transaction Successful</td>
+                                              </tr>
+                                              <tr>
+                                                  <td>
+                                                      <p> Payment Mode</p>
+                                                  </td>
+                                                 <td>:</td>
+                                                  <td>Online Payment</td>
+                                              </tr>
+                                              <tr>
+                                                  <td>
+                                                      <p> Amount </p>
+                                                  </td>
+                                                 <td>:</td>
+                                                  <td>Rs.<?= number_format($orderdetails['amount'],2);?></td>
+                                              </tr>
+                                              <tr>
+                                                  <td>
+                                                      <p> Date </p>
+                                                  </td>
+                                                 <td>:</td>
+                                                  <td><?= $orderdetails['transaction_date'];?></td>
+                                              </tr>
+                                              <tr>
+                                                  <td>
+                                                      <p> Transaction Id </p>
+                                                  </td>
+                                                 <td>:</td>
+                                                  <td><?= $orderdetails['transaction_id'];?></td>
+                                              </tr>
+                                              <tr>
+                                                  <td>
+                                                      <p> Order Id </p>
+                                                  </td>
+                                                 <td>:</td>
+                                                  <td><?= $orderdetails['reference_no'];?></td>
+                                              </tr>
+                                          </table>
+                                      </div>
                                   </div>
                               </div>
-                          </div>
-                         
-<?php } else {?>
 
-                          <div class="row justify-content-center">
-                              <div class="col-md-6">
-                                  <div class="message-box _success _failed">
-                                      <i class="fa fa-times-circle" aria-hidden="true"></i>
-                                      <h2> Your payment failed </h2>
-                                      <hr>
-                                      <p> Try again later </p>
+                          <?php } else { ?>
 
+                              <div class="row justify-content-center">
+                                  <div class="col-md-6">
+                                      <div class="message-box _success _failed">
+                                          <i class="fa fa-times-circle" aria-hidden="true"></i>
+                                          <h2> Your payment failed </h2>
+                                          <hr>
+                                          <table>
+                                              
+                                              <tr>
+                                                  <td>
+                                                      <p> Purpose of Payment </p>
+                                                  </td>
+                                                 <td>:</td>
+                                                  <td>Fee Payment</td>
+                                              </tr>
+                                              <tr>
+                                                  <td>
+                                                      <p> Status </p>
+                                                  </td>
+                                                 <td>:</td>
+                                                  <td>Transaction Failed</td>
+                                              </tr>
+                                              <tr>
+                                                  <td>
+                                                      <p> Payment Mode</p>
+                                                  </td>
+                                                 <td>:</td>
+                                                  <td>Online Payment</td>
+                                              </tr>
+                                              <tr>
+                                                  <td>
+                                                      <p> Amount </p>
+                                                  </td>
+                                                 <td>:</td>
+                                                  <td>Rs.<?= number_format($orderdetails['amount'],2);?></td>
+                                              </tr>
+                                              <tr>
+                                                  <td>
+                                                      <p> Date </p>
+                                                  </td>
+                                                 <td>:</td>
+                                                  <td><?= $orderdetails['transaction_date'];?></td>
+                                              </tr>
+                                              <tr>
+                                                  <td>
+                                                      <p> Transaction Id </p>
+                                                  </td>
+                                                 <td>:</td>
+                                                  <td><?= $orderdetails['transaction_id'];?></td>
+                                              </tr>
+                                              <tr>
+                                                  <td>
+                                                      <p> Order Id </p>
+                                                  </td>
+                                                 <td>:</td>
+                                                  <td><?= $orderdetails['reference_no'];?></td>
+                                              </tr>
+                                          </table>
+
+                                      </div>
                                   </div>
                               </div>
-                          </div>
 
-                          <?php }?>
+                          <?php } ?>
 
                       </div>
 
