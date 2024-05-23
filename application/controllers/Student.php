@@ -1118,10 +1118,10 @@ class Student extends CI_Controller
 			$data['page_title'] = "Payment Status";
 			$data['menu'] = "payment";
 			$payment_session = $this->session->userdata('payment');
-			var_dump($this->session->userdata('payment'));
+			
 			$orderid = $payment_session['orderid'];
-			$data['orderdetails'] = $this->admin_model->getDetailsbyfield($orderid, 'reference_no', 'transactions')->result();
-			var_dump($this->db->last_query());
+			$data['orderdetails'] = $this->admin_model->getDetailsbyfield($orderid, 'reference_no', 'transactions')->row();
+			
 			$this->student_template->show('student/payment_status', $data);
 			
 		} else {

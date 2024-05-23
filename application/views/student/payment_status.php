@@ -73,7 +73,9 @@
 
                       <div class="container">
 
-                          <?php if ($orderdetails['transaction_status'] == '1') { ?>
+                          <?php
+                          var_dump($orderdetails);
+                           if ($orderdetails['transaction_status'] == '1') { ?>
                               <div class="row justify-content-center">
                                   <div class="col-md-6">
                                       <div class="message-box _success">
