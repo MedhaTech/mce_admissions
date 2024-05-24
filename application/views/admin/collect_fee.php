@@ -280,7 +280,7 @@
         			    
         				$result_array = array($i++, 
         				                    ($transactionDetails1->receipt_no) ? anchor('admin/downloadReceipt/'.$admissionDetails->id.'/'.$transactionDetails1->id, $transactionDetails1->receipt_no) : "-",
-        				                    ($transactionDetails1->transaciton_date != "01-01-1970") ? date('d-m-Y', strtotime($transactionDetails1->transaciton_date)) : "-",
+        				                    ($transactionDetails1->transaction_date != "") ? date('d-m-Y', strtotime($transactionDetails1->transaction_date)) : "-",
         				                    $trans,
         				                    number_format($transactionDetails1->amount,0),
         				                    $transaction_status

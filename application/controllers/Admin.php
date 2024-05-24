@@ -1891,7 +1891,7 @@ class Admin extends CI_Controller
 					$paying_amount = $this->input->post('cash_amount');
 					$academic_year = "2024-2025";
 					$receipt_no = 1;
-					$transaciton_date = date('Y-m-d');
+					$transaction_date = date('Y-m-d');
 					$transaction_type = '1';
 					$bank_name = "";
 					$reference_no = "";
@@ -1904,7 +1904,7 @@ class Admin extends CI_Controller
 					$paying_amount = $this->input->post('cheque_dd_amount');
 					$academic_year = "2024-2025";
 					$receipt_no = 0;
-					$transaciton_date = "";
+					$transaction_date = "";
 					$transaction_type = '2';
 					$bank_name = $this->input->post('cheque_dd_bank');
 					$reference_no = $this->input->post('cheque_dd_number');
@@ -1917,7 +1917,7 @@ class Admin extends CI_Controller
 					$paying_amount = $this->input->post('transaction_amount');
 					$academic_year = "2024-2025";
 					$receipt_no = 1;
-					$transaciton_date = date('Y-m-d');
+					$transaction_date = date('Y-m-d');
 					$transaction_type = '3';
 					$bank_name = "";
 					$reference_no = $this->input->post('transaction_id');
@@ -1986,7 +1986,7 @@ class Admin extends CI_Controller
 						'aided_unaided' => $adm_type,
 						'receipt_no' => $receipt_no,
 						'year' => '1',
-						'transaciton_date' => date('Y-m-d'),
+						'transaction_date' => date('Y-m-d'),
 						'transaction_type' => $transaction_type,
 						'bank_name' => $bank_name,
 						'reference_no' => $reference_no,
@@ -2020,7 +2020,7 @@ class Admin extends CI_Controller
 						'aided_unaided' => $adm_type,
 						'receipt_no' => $receipt_no,
 						'year' => '1',
-						'transaciton_date' => date('Y-m-d'),
+						'transaction_date' => date('Y-m-d'),
 						'transaction_type' => $transaction_type,
 						'bank_name' => $bank_name,
 						'reference_no' => $reference_no,
@@ -2054,7 +2054,7 @@ class Admin extends CI_Controller
 						'aided_unaided' => $adm_type,
 						'receipt_no' => $receipt_no,
 						'year' => '1',
-						'transaciton_date' => date('Y-m-d'),
+						'transaction_date' => date('Y-m-d'),
 						'transaction_type' => $transaction_type,
 						'bank_name' => $bank_name,
 						'reference_no' => $reference_no,
@@ -2248,7 +2248,7 @@ With good wishes";
             $pdf->SetXY(10, $y+10); 
             $pdf->Cell(0,10,"Receipt No: ".$transactionDetails->receipt_no,0,0,'L', false);
             $pdf->SetXY(100, $y+10); 
-            $pdf->Cell(0,10, "Date: ".date('d-m-Y', strtotime($transactionDetails->transaciton_date)),0,0,'L', false); 
+            $pdf->Cell(0,10, "Date: ".date('d-m-Y', strtotime($transactionDetails->transaction_date)),0,0,'L', false); 
             
             $y = $pdf->getY();
             $pdf->setFont ('Arial','B',9);

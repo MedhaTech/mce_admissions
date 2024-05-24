@@ -1270,10 +1270,8 @@ function enable() {
     var submit = document.getElementById("submit");
     if (applyCheck.checked) {
         submit.removeAttribute("disabled")
-        submit.style.background = 'red';
     } else {
         submit.disabled = "true";
-        submit.style.background = 'grey';
     }
 }
 </script>
