@@ -105,10 +105,10 @@
                             </a>
                         </li>
                         <?php } ?>
-                        <?php if((in_array($role, array(1,2,3,8)))){ ?>
+                        <?php if((in_array($role, array(1,2,3)))){ ?>
                         <li class="nav-header">ENQUIRIES</li>
                         <?php } ?>
-                        <?php if((in_array($role, array(1,2,3,8)))){ ?>
+                        <?php if((in_array($role, array(1,2,3)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/enquiries"
                                 class="nav-link <?= $menu_active = ($menu == "enquiries") ? 'active' : ''; ?>">
@@ -117,7 +117,7 @@
                             </a>
                         </li>
                         <?php } ?>
-                        <?php if((in_array($role, array(1,2,3,8)))){ ?>
+                        <?php if((in_array($role, array(1,2,3)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/newEnquiry"
                                 class="nav-link <?= $menu_active = ($menu == "newEnquiry") ? 'active' : ''; ?>">
@@ -126,10 +126,10 @@
                             </a>
                         </li>
                         <?php } ?>
-                        <?php if((in_array($role, array(1,2,4,5)))){ ?>
+                        <?php if((in_array($role, array(1,2,4,5,8)))){ ?>
                         <li class="nav-header">ADMISSIONS</li>
                         <?php } ?>
-                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7,8)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/admissions"
                                 class="nav-link <?= $menu_active = ($menu == "admissions") ? 'active' : ''; ?>">
@@ -159,10 +159,10 @@
                             </a>
                         </li>
                         <?php } ?>
-                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7,8)))){ ?>
                         <li class="nav-header">SETTINGS</li>
                         <?php } ?>
-                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7,8)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/departments"
                                 class="nav-link <?= $menu_active = ($menu == "departments") ? 'active' : ''; ?>">
@@ -171,7 +171,7 @@
                             </a>
                         </li>
                         <?php } ?>
-                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7,8)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/intake"
                                 class="nav-link <?= $menu_active = ($menu == "intake") ? 'active' : ''; ?>">
@@ -198,7 +198,7 @@
                             </a>
                         </li>
                         <?php } ?>
-                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7,8)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/reports"
                                 class="nav-link <?= $menu_active = ($menu == "reports") ? 'active' : ''; ?>">
@@ -207,7 +207,7 @@
                             </a>
                         </li>
                         <?php } ?>
-                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7,8)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/changepassword"
                                 class="nav-link <?= $menu_active = ($menu == "changepassword") ? 'active' : ''; ?>">
@@ -216,7 +216,7 @@
                             </a>
                         </li>
                         <?php } ?>
-                        <?php if((in_array($role, array(1,2,3,4,5,6,7)))){ ?>
+                        <?php if((in_array($role, array(1,2,3,4,5,6,7,8)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/logout" class="nav-link">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>

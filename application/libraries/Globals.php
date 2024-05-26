@@ -6,7 +6,7 @@ class Globals
 
     public function userTypes()
     {
-        return array("1" => "Super Admin", "2" => "Chairman", "3" => "Principal/Director", '4' => "Dean SA", '5' => "Admission Staff", '6' => "Accounts Admin", '7' => "Accounts Staff");
+        return array("1" => "Super Admin", "2" => "Chairman", "3" => "Principal/Director", '4' => "Dean SA", '5' => "Admission Staff", '6' => "Accounts Admin", '7' => "Accounts Staff", '8'=>"COE");
     }
 
     public function enquiryStatus()
