@@ -126,7 +126,7 @@ class Student extends CI_Controller
 				}
 				$this->student_template->show('student/finish', $data);
 			} else {
-				$this->student_template->show('student/dashboard', $data);
+				$this->student_template->show('student/Dashboard', $data);
 			}
 		} else {
 			redirect('student', 'refresh');
