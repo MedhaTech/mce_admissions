@@ -1465,7 +1465,7 @@ class Admin extends CI_Controller
 			$data['personalDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$data['parentDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
-			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'id', 'student_education_details')->result();
+			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'student_id', 'student_education_details')->result();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 
 
