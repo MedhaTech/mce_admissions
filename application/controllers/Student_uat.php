@@ -682,7 +682,7 @@ class Student extends CI_Controller
 			$this->form_validation->set_rules('mode_of_payment', 'Mode of Payment', 'required');
 	        if($this->form_validation->run() === FALSE){
 	            
-	            $data['action'] = 'student/fee_details';
+	            // $data['action'] = 'student/fee_details';
 	            $this->student_template->show('student/fee_details',$data);
 	        }else{
 	            
