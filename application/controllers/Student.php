@@ -1588,7 +1588,7 @@ class Student extends CI_Controller
 			);
 
 			// Append additional headers
-			$ch_headers[] = "Content-Length: " . strlen($curl_payload);
+			// $ch_headers[] = "Content-Length: " . strlen($curl_payload);
 			// pr($ch_headers);exit;
 			$message = "Billdesk create order curl header - " . json_encode($ch_headers) . "\n";
 			$this->logger->write('billdesk', 'debug', $message);
