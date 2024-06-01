@@ -1619,6 +1619,8 @@ class Student extends CI_Controller
 				$status = isset($result_decoded->status) ? $result_decoded->status : "Status not available";
 				$message = "Billdesk create order status - " . $status;
 				$this->logger->write('billdesk', 'debug', $message);
+				$this->session->set_flashdata('process', 'Sorry, something went wrong. Please try again later.');
+				redirect('student/fee_details', 'refresh');
 			}
 		} else {
 			redirect('student', 'refresh');
