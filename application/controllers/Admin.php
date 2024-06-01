@@ -370,17 +370,18 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('course1', 'Course', 'required');
 			$this->form_validation->set_rules('course2', 'Course', 'required');
 			$this->form_validation->set_rules('gender', 'Gender', 'required');
-			// $this->form_validation->set_rules('aadhaar', 'Aadhaar', 'required');
+			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]');
 			$this->form_validation->set_rules('state', 'State', 'required');
 			$this->form_validation->set_rules('city', 'City', 'required');
 			$this->form_validation->set_rules('category', 'Category', 'required');
 			$this->form_validation->set_rules('sslc_grade', 'Sslc Grade', 'required');
 			$this->form_validation->set_rules('puc1_grade', 'Puc Grade', 'required');
-			$this->form_validation->set_rules('puc2_grade', 'Puc Grade', 'required');
-			$this->form_validation->set_rules('register_grade', '10+2 Percentage / Grade', 'required');
-			$this->form_validation->set_rules('exam_board', 'Exam Board', 'required');
-			$this->form_validation->set_rules('register_number', 'Register Number', 'required');
-			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.aadhaar]');
+			$this->form_validation->set_rules('exam_board', 'Exam Board');
+			$this->form_validation->set_rules('puc2_grade', 'Puc2 Grade', 'required');
+			// $this->form_validation->set_rules('register_grade', '10+2 Percentage / Grade', 'required');
+			// $this->form_validation->set_rules('exam_board', 'Exam Board');
+			// $this->form_validation->set_rules('register_number', 'Register Number', 'required');
+			// $this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]');
 
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/editEnquiry/' . $id;
@@ -408,8 +409,8 @@ class Admin extends CI_Controller
 				$data['puc1_grade'] =  $enquiryDetails->puc1_grade;
 				$data['puc2_grade'] =  $enquiryDetails->puc2_grade;
 				$data['exam_board'] =  $enquiryDetails->exam_board;
-				$data['register_number'] =  $enquiryDetails->register_number;
-				$data['register_grade'] = $enquiryDetails->register_grade;
+				// $data['register_number'] =  $enquiryDetails->register_number;
+				// $data['register_grade'] = $enquiryDetails->register_grade;
 				$this->admin_template->show('admin/edit_enquiry', $data);
 			} else {
 				$course_id = $this->input->post('course');
@@ -419,7 +420,7 @@ class Admin extends CI_Controller
 
 				$updateDetails = array(
 					'student_name' => strtoupper($this->input->post('student_name')),
-					'register_grade' => $this->input->post('register_grade'),
+					// 'register_grade' => $this->input->post('register_grade'),
 					'mobile' => $this->input->post('mobile'),
 					'email' => strtolower($this->input->post('email')),
 					'par_name' => $this->input->post('par_name'),
@@ -436,13 +437,14 @@ class Admin extends CI_Controller
 					'category' => $this->input->post('category'),
 					'sslc_grade' => $this->input->post('sslc_grade'),
 					'puc1_grade' => $this->input->post('puc1_grade'),
+					// 'exam_board' => strtoupper($this->input->post('exam_board')),
 					'puc2_grade' => $this->input->post('puc2_grade'),
 
-					'exam_board' => strtoupper($this->input->post('exam_board')),
-					'register_number' => $this->input->post('register_number')
+					// 'exam_board' => strtoupper($this->input->post('exam_board')),
+					// 'register_number' => $this->input->post('register_number')
 				);
 
-				$result = $this->admin_model->updateDetails('enquiries', $id, $updateDetails);
+				$result = $this->admin_model->updateDetails($id, $updateDetails, 'enquiries');
 				if ($result) {
 					$this->session->set_flashdata('message', 'Enquiry Details updated successfully...!');
 					$this->session->set_flashdata('status', 'alert-success');
@@ -1463,7 +1465,7 @@ class Admin extends CI_Controller
 			$data['personalDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$data['parentDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
-			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'id', 'student_education_details')->result();
+			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'student_id', 'student_education_details')->result();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 
 
@@ -1889,7 +1891,7 @@ class Admin extends CI_Controller
 					$paying_amount = $this->input->post('cash_amount');
 					$academic_year = "2024-2025";
 					$receipt_no = 1;
-					$transaciton_date = date('Y-m-d');
+					$transaction_date = date('Y-m-d');
 					$transaction_type = '1';
 					$bank_name = "";
 					$reference_no = "";
@@ -1902,7 +1904,7 @@ class Admin extends CI_Controller
 					$paying_amount = $this->input->post('cheque_dd_amount');
 					$academic_year = "2024-2025";
 					$receipt_no = 0;
-					$transaciton_date = "";
+					$transaction_date = "";
 					$transaction_type = '2';
 					$bank_name = $this->input->post('cheque_dd_bank');
 					$reference_no = $this->input->post('cheque_dd_number');
@@ -1915,7 +1917,7 @@ class Admin extends CI_Controller
 					$paying_amount = $this->input->post('transaction_amount');
 					$academic_year = "2024-2025";
 					$receipt_no = 1;
-					$transaciton_date = date('Y-m-d');
+					$transaction_date = date('Y-m-d');
 					$transaction_type = '3';
 					$bank_name = "";
 					$reference_no = $this->input->post('transaction_id');
@@ -1984,7 +1986,7 @@ class Admin extends CI_Controller
 						'aided_unaided' => $adm_type,
 						'receipt_no' => $receipt_no,
 						'year' => '1',
-						'transaciton_date' => date('Y-m-d'),
+						'transaction_date' => date('Y-m-d'),
 						'transaction_type' => $transaction_type,
 						'bank_name' => $bank_name,
 						'reference_no' => $reference_no,
@@ -2018,7 +2020,7 @@ class Admin extends CI_Controller
 						'aided_unaided' => $adm_type,
 						'receipt_no' => $receipt_no,
 						'year' => '1',
-						'transaciton_date' => date('Y-m-d'),
+						'transaction_date' => date('Y-m-d'),
 						'transaction_type' => $transaction_type,
 						'bank_name' => $bank_name,
 						'reference_no' => $reference_no,
@@ -2052,7 +2054,7 @@ class Admin extends CI_Controller
 						'aided_unaided' => $adm_type,
 						'receipt_no' => $receipt_no,
 						'year' => '1',
-						'transaciton_date' => date('Y-m-d'),
+						'transaction_date' => date('Y-m-d'),
 						'transaction_type' => $transaction_type,
 						'bank_name' => $bank_name,
 						'reference_no' => $reference_no,
@@ -2246,7 +2248,7 @@ With good wishes";
             $pdf->SetXY(10, $y+10); 
             $pdf->Cell(0,10,"Receipt No: ".$transactionDetails->receipt_no,0,0,'L', false);
             $pdf->SetXY(100, $y+10); 
-            $pdf->Cell(0,10, "Date: ".date('d-m-Y', strtotime($transactionDetails->transaciton_date)),0,0,'L', false); 
+            $pdf->Cell(0,10, "Date: ".date('d-m-Y', strtotime($transactionDetails->transaction_date)),0,0,'L', false); 
             
             $y = $pdf->getY();
             $pdf->setFont ('Arial','B',9);

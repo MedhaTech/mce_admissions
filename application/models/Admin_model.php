@@ -383,5 +383,24 @@ class Admin_model extends CI_Model
        $this->db->where('transaction_status','1');
       return $this->db->get('transactions');   
     }
+
+
+    function set_session($email, $mobile)
+  {
+
+    $this->db->select('id, student_name, adm_no, flow');
+    $this->db->from('admissions');
+    $this->db->where('email', $email);
+    
+      $this->db->where('mobile', $mobile);
+    //$this -> db -> where('status', '2');
+    $this->db->limit(1);
+    $query = $this->db->get();
+    if ($query->num_rows() == 1) {
+      return $query->result();
+    } else {
+      return false;
+    }
+  }
 }
  
