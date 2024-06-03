@@ -6,6 +6,11 @@
       <section class="content-header">
           <div class="container-fluid">
               <div class="card card-info shadow mb-2">
+              <?php if ($this->session->flashdata('process')) : ?>
+    <div class="alert alert-danger">
+        <?php echo $this->session->flashdata('process'); ?>
+    </div>
+<?php endif; ?>
                   <div class="card-header">
                       <h3 class="card-title">FEE DETAILS </h3>
                       <div class="card-tools">
@@ -17,7 +22,7 @@
                       </div>
                   </div>
                   <div class="card-body">
-                      <?php // print_r($fees); ?>
+                
                       <div class="row">
                           <!-- <div class="col-2">
                               <div class="form-group">
