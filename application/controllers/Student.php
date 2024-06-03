@@ -1384,7 +1384,9 @@ class Student extends CI_Controller
 	
 				);
 				if ($response_array['transaction_error_type'] == 'success') {
-	
+					$cnt_number = $this->getReceiptNo();
+					$receipt_no = $cnt_number;
+					$updateDetails['receipt_no'] = $receipt_no;
 					$updateDetails['transaction_status'] = '1';
 				} else if ($response_array['transaction_error_type'] == 'payment_processing_error') {
 					$updateDetails['transaction_status'] = '2';
@@ -1652,6 +1654,21 @@ class Student extends CI_Controller
 			return false;
 		}
 	}
-
+	public function getReceiptNo()
+	{
+		$cnt = $this->admin_model->getReceiptsCountNew()->row()->cnt;
+		$cnt_number = $cnt + 1;
+		$strlen = strlen(($cnt_number));
+		if ($strlen == 1) {
+			$cnt_number = "000" . $cnt_number;
+		}
+		if ($strlen == 2) {
+			$cnt_number = "00" . $cnt_number;
+		}
+		if ($strlen == 3) {
+			$cnt_number = "0" . $cnt_number;
+		}
+		return $cnt_number;
+	}
 
 }
