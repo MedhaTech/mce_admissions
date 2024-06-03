@@ -1514,7 +1514,7 @@ class Student extends CI_Controller
 			require_once APPPATH . 'libraries/Jwt.php';
 			$this->load->library('logger');
 			$insert = array(
-				'amount' => number_format((float)$this->input->post('amount'), 2, '.', ''),
+				// 'amount' => number_format((float)$this->input->post('amount'), 2, '.', ''),
 				'amount' => '10.00',
 				'reg_no' => $this->input->post('usn'),
 				// 'email' => $this->input->post('email'),
