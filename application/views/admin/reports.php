@@ -42,8 +42,8 @@
                                   <ul>
 
 
-                                      <li><?php echo anchor('', 'Day Book Report'); ?> </li>
-                                      <li><?php echo anchor('', 'DCB Report'); ?> </li>
+                                      <li><?php echo anchor('admin/daybook_report', 'Day Book Report'); ?> </li>
+                                      <li><?php echo anchor('admin/dcb_report', 'DCB Report'); ?> </li>
                                       <li><?php echo anchor('', 'Student wise Fee Report'); ?> </li>
                                       <li><?php echo anchor('', 'Fee Balance Report'); ?> </li>
                                       <li><?php echo anchor('', 'Corpus Fund Overall Fee Report'); ?> </li>
@@ -67,9 +67,9 @@
                                   <ul>
 
                                       <li><?php echo anchor('', 'Course wise Student Admitted Count'); ?> </li>
-                                      <li><?php echo anchor('', 'Students Details Report'); ?> </li>
-                                      <li><?php echo anchor('', 'Admission Scroll Report'); ?> </li>
-                                      <li><?php echo anchor('', 'Category wise Admissions Report'); ?> </li>
+                                      <li><?php echo anchor('admin/studentdetails_report', 'Students Details Report'); ?> </li>
+                                      <li><?php echo anchor('admin/admissionscroll_report', 'Admission Scroll Report'); ?> </li>
+                                      <li><?php echo anchor('admin/category_admissions_report', 'Category wise Admissions Report'); ?> </li>
                                       <li><?php echo anchor('', 'Admission Year Book'); ?> </li>
 
 
