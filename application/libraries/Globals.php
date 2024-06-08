@@ -28,6 +28,12 @@ class Globals
     {
         return array("1" => "info", "2" => "primary", "3" => "warning", "4" => "success", "5" => "danger", "6" => "danger", "7" => "danger");
     }
+
+    public function transactionTypes()
+    {
+        return array("1" => "Cash", "2"=>"Cheque/DD", "3"=>"Online Payment");
+    }
+
     public function currentAcademicYear()
     {
 
@@ -94,6 +100,15 @@ class Globals
            
             "Aided" => "Aided",
             "UnAided" => "UnAided"
+        );
+    }
+
+    public function college_code()
+    {
+        return array(
+            "EO24-AIDED" => "EO24-AIDED",
+            "EO47-UNAIDED" => "EO47-UNAIDED",
+            "E079-COMED-K" => "E079-COMED-K"
         );
     }
 
@@ -184,6 +199,81 @@ class Globals
             'STK'=>'STK',
             'STR'=>'STR',
             'XD'=>'XD',
+        );
+    }
+
+    public function category_claimed()
+    {
+        return array(
+            '1G'=>'1G',
+            '1GH'=>'1GH',
+            '1GHR'=>'1GHR',
+            '1GK'=>'1GK',
+            '1GR'=>'1GR',
+            '1H'=>'1H',
+            '1K'=>'1K',
+            '1R'=>'1R',
+            '2A'=>'2A',
+            '2AG'=>'2AG',
+            '2AGH'=>'2AGH',
+            '2AGK'=>'2AGK',
+            '2AGR'=>'2AGR',
+            '2AGRH'=>'2AGRH',
+            '2AGRK'=>'2AGRK',
+            '2AH'=>'2AH',
+            '2AK'=>'2AK',
+            '2AR'=>'2AR',
+            '2ARH'=>'2ARH',
+            '2B'=>'2B',
+            '2BG'=>'2BG',
+            '2BGK'=>'2BGK',
+            '2BGRK'=>'2BGRK',
+            '2BK'=>'2BK',
+            '2BR'=>'2BR',
+            '2GHR'=>'2GHR',
+            '3A'=>'3A',
+            '3AG'=>'3AG',
+            '3AGK'=>'3AGK',
+            '3AGR'=>'3AGR',
+            '3AGRK'=>'3AGRK',
+            '3AH'=>'3AH',
+            '3AR'=>'3AR',
+            '3B'=>'3B',
+            '3BG'=>'3BG',
+            '3BGH'=>'3BGH',
+            '3BGK'=>'3BGK',
+            '3BGRK'=>'3BGRK',
+            '3BH'=>'3BH',
+            '3BK'=>'3BK',
+            '3BR'=>'3BR',
+            '3BRK'=>'3BRK',
+            '3GHR'=>'3GHR',
+            'GAH'=>'GAH',
+            'GM'=>'GM',
+            'GMH'=>'GMH',
+            'GMK'=>'GMK',
+            'GMR'=>'GMR',
+            'GMRH'=>'GMRH',
+            'GMRK'=>'GMRK',   
+            'IG'=>'IG',
+            'SC'=>'SC',
+            'SCG'=>'SCG',
+            'SCGK'=>'SCGK',
+            'SCGR'=>'SCGR',
+            'SCGRH'=>'SCGRH',
+            'SCGRK'=>'SCGRK',
+            'SCH'=>'SCH',
+            'SCK'=>'SCK',
+            'SCR'=>'SCR',
+            'SCRH'=>'SCRH',
+            'ST'=>'ST',
+            'STG'=>'STG',
+            'STGH'=>'STGH',
+            'STGRK'=>'STGRK',
+            'STH'=>'STH',
+            'STK'=>'STK',
+            'STR'=>'STR',
+           
         );
     }
 

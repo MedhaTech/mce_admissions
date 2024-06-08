@@ -161,6 +161,7 @@ class Student extends CI_Controller
 			$data['menu'] = "admissiondetails";
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
+			// $data['feesDetails'] = $this->admin_model->getDetails('fee', $data['id'])->row();
 
 			$data['academicYear'] = $this->globals->academicYear();
 			$data['type_options'] = array(" " => "Select") + $this->globals->category();
@@ -322,6 +323,7 @@ class Student extends CI_Controller
 			$data['id'] = $student_session['id'];
 			$data['menu'] = "personaldetails";
 			$data['userTypes'] = $this->globals->userTypes();
+			$data['states'] = array(" " => "Select State") + $this->globals->states();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 
 
@@ -341,7 +343,7 @@ class Student extends CI_Controller
 			$this->form_validation->set_rules('caste', 'Caste', 'required');
 			$this->form_validation->set_rules('mother_tongue', 'Mother Tongue', 'required');
 			$this->form_validation->set_rules('disability', 'Disability', 'required');
-			$this->form_validation->set_rules('type_of_disability', 'Type of Disability', 'required');
+			$this->form_validation->set_rules('type_of_disability', 'Type of Disability');
 			$this->form_validation->set_rules('economically_backward', 'Economically Backward', 'required');
 			$this->form_validation->set_rules('domicile_of_state', 'Domicile of State', 'required');
 			$this->form_validation->set_rules('hobbies', 'Hobbies', 'required');
@@ -467,14 +469,14 @@ class Student extends CI_Controller
 			$this->form_validation->set_rules('father_annual_income', 'Father Annual Income', 'required');
 			$this->form_validation->set_rules('mother_name', 'Mother Name', 'required');
 			$this->form_validation->set_rules('mother_mobile', 'Mother Mobile', 'required|regex_match[/^[0-9]{10}$/]');
-			$this->form_validation->set_rules('mother_email', 'Mother Email', 'required|trim|valid_email');
-			$this->form_validation->set_rules('mother_occupation', 'Mother Occupation', 'required');
-			$this->form_validation->set_rules('mother_annual_income', 'Mother Annual Income', 'required');
+			$this->form_validation->set_rules('mother_email', 'Mother Email', 'trim|valid_email');
+			$this->form_validation->set_rules('mother_occupation', 'Mother Occupation');
+			$this->form_validation->set_rules('mother_annual_income', 'Mother Annual Income');
 			$this->form_validation->set_rules('guardian_name', 'Guardian Name', 'required');
 			$this->form_validation->set_rules('guardian_mobile', 'Guardian Mobile', 'required|regex_match[/^[0-9]{10}$/]');
-			$this->form_validation->set_rules('guardian_email', 'Guardian Email', 'required|trim|valid_email');
-			$this->form_validation->set_rules('guardian_occupation', 'Guardian Occupation', 'required');
-			$this->form_validation->set_rules('guardian_annual_income', 'Guardian Annual Income', 'required');
+			$this->form_validation->set_rules('guardian_email', 'Guardian Email', 'trim|valid_email');
+			$this->form_validation->set_rules('guardian_occupation', 'Guardian Occupation');
+			$this->form_validation->set_rules('guardian_annual_income', 'Guardian Annual Income');
 
 			if ($this->form_validation->run() === FALSE) {
 

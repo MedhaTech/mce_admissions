@@ -86,6 +86,7 @@ echo "<div class='text-center'><img src='" . base_url() . "assets/img/no_data.jp
     <option value="Diploma_Marks_cards">Diploma Marks cards</option>
     <option value="Conduct_Certificate">Conduct certificate</option>
     <option value="Transfer_certificate">Transfer certificate</option>
+    <option value="payment_recipt">Payment recipt</option>
   </select>
 
   <span class="text-danger"><?php echo form_error('documents'); ?></span>
@@ -116,8 +117,8 @@ echo "<div class='text-center'><img src='" . base_url() . "assets/img/no_data.jp
                   <?php echo anchor('student/educationdetails', 'BACK', 'class="btn btn-danger btn-square" '); ?>
               </div>
               <div class="col-md-6 text-right">
-                  <button type="submit" class="btn btn-info btn-square" name="Update" id="Update"> SAVE &
-                      PROCEED </button>
+                  <button type="submit" class="btn btn-info btn-square" name="Update" id="Update"> SAVE 
+                  </button>
                   <?php echo anchor('student/fee_details', 'NEXT', 'class="btn btn-danger btn-square float-right" '); ?>
               </div>
           </div>
