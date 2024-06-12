@@ -688,9 +688,11 @@
                                     <i class="fas fa-phone"></i>
                                 </div> -->
                                 <div class="inner">
-                                    <h4 class="title">Phone Number</h4>
-                                    <p><a href="tel:+08172245317">08172-245317</a></p>
-                                    <!-- <p><a href="tel:+856325652984">+856 325 652 984</a></p> -->
+                                    <!-- <h4 class="title">MTES-Office</h4>
+                                    <p><a href="tel:+08172245317">08172-268371</a></p> -->
+                                    <p><b>MTES-Office</b>  <a href="tel:+08172268371">08172-268371</a></p>
+                                    <p><b>Principal's Office</b>  <a href="tel:+08172245317">08172-245317</a></p>
+                                    <p><b>Dean Student Affairs</b>  <a href="tel:+9449689093">9449689093</a></p>
                                 </div>
                             </div>
                         </div>

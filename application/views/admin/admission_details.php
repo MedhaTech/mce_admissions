@@ -9,6 +9,10 @@
                     </h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
+                            <!-- <li class="nav-item">
+                                <?php $encryptId = base64_encode($admissionDetails->id);
+                                echo anchor('admin/admissionsdetails/'.$encryptId, '<i class="fas fa-download fa-sm fa-fw"></i> Download ', 'class="btn btn-danger btn-sm"'); ?>
+                            </li> -->
                             <li class="nav-item">
                                 <?php $encryptId = base64_encode($admissionDetails->id);
                                 echo anchor('admin/admissionsletter/'.$encryptId, '<i class="fas fa-download fa-sm fa-fw"></i> Admit Letter ', 'class="btn btn-danger btn-sm"'); ?>
@@ -204,7 +208,7 @@
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Entrance Registration Number</label><br>
+                                <label class="form-label mb-0">Cet/Comed-k Registration Number</label><br>
                                 <?php
                                 if($admissionDetails->entrance_reg_no != NULL)
                                     {
@@ -218,7 +222,7 @@
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label mb-0">Entrance Exam Rank</label><br>
+                                <label class="form-label mb-0">Cet/Comed-k Exam Rank</label><br>
                                 <?php
                                 if($admissionDetails->entrance_rank != NULL)
                                     {
