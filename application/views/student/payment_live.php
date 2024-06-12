@@ -15,7 +15,6 @@
             bdOrderId: "<?= $transactionid;?>",
             authToken: "<?= $authtoken;?>",
             childWindow: false,
-            crossButtonHandling: 'Y',
             returnUrl: "<?= base_url('student/callback');?>",
             retryCount: 0
         };

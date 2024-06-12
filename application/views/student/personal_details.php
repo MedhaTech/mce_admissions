@@ -42,7 +42,7 @@
                               <div class="form-group">
                                   <label class="form-label">Sports</label>
                                   <?php $sports_options = array(" "=>"Select Sports","State Level"=>"State Level","National Level"=>"National Level","International Level"=>"International Level","Not Applicable"=>"Not Applicable");
-                                        echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : 'sports', 'class="form-control" id="sports"'); 
+                                        echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : $sports , 'class="form-control" id="sports"'); 
                                   ?>
                                   <span class="text-danger"><?php echo form_error('sports'); ?></span>
                               </div>
@@ -51,7 +51,7 @@
                               <div class="form-group">
                                   <label class="form-label">Blood Group</label>
                                   <?php $blood_groups = array(" "=>"Select Blood Group","O-"=>"O-","O+"=>"O+","A-"=>"A-","A+"=>"A+","B-"=>"B-","B+"=>"B+","AB-"=>"AB-","AB+"=>"AB+");
-                                        echo form_dropdown('blood_group', $blood_groups, (set_value('blood_group')) ? set_value('blood_group') : 'blood_group', 'class="form-control" id="blood_group"'); 
+                                        echo form_dropdown('blood_group', $blood_groups, (set_value('blood_group')) ? set_value('blood_group') : $blood_group, 'class="form-control" id="blood_group"'); 
                                   ?>
                                   <span class="text-danger"><?php echo form_error('blood_group'); ?></span>
                               </div>
@@ -119,39 +119,38 @@
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="form-label">Disability</label>
-                                  <input type="text" class="form-control" placeholder="Enter Disability" id="disability"
-                                      value="<?php echo (set_value('disability')) ? set_value('disability') : $disability; ?>"
-                                      name="disability">
+                                   
+                                  <?php $select_options = array(" "=>"Select ","yes"=>"yes","no"=>"no");
+                                        echo form_dropdown('disability', $select_options, (set_value('disability')) ? set_value('disability') : $disability , 'class="form-control" id="disability"'); 
+                                  ?>
                                   <span class="text-danger"><?php echo form_error('disability'); ?></span>
                               </div>
                           </div>
-                          <div class="col-md-3 col-sm-12">
+                          <div class="col-md-3 col-sm-12 yes">
                               <div class="form-group">
-                                  <label class="form-label">Type of Disability</label>
-                                  <input type="text" class="form-control" placeholder="Enter Type of Disability"
-                                      id="type_of_disability"
+                                  <label class="labeldis" id="type_of_disability1" name="type_of_disability1">Type of Disability</label>
+                                  <input type="text" class="form-control labeldis" placeholder="Enter Type of Disability"
+                                      id="type_of_disability" 
                                       value="<?php echo (set_value('type_of_disability')) ? set_value('type_of_disability') : $type_of_disability; ?>"
                                       name="type_of_disability">
-                                  <span class="text-danger"><?php echo form_error('type_of_disability'); ?></span>
+                                  <!-- <span class="text-danger"><?php echo form_error('type_of_disability'); ?></span> -->
                               </div>
                           </div>
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="form-label">Economically Backward</label>
-                                  <input type="text" class="form-control" placeholder="Enter Economically Backward"
-                                      id="economically_backward"
-                                      value="<?php echo (set_value('economically_backward')) ? set_value('economically_backward') : $economically_backward; ?>"
-                                      name="economically_backward">
+                                  <?php $select_options = array(" "=>"Select ","yes"=>"yes","no"=>"no");
+                                        echo form_dropdown('economically_backward', $select_options, (set_value('economically_backward')) ? set_value('economically_backward') : $economically_backward , 'class="form-control" id="economically_backward"'); 
+                                  ?>
                                   <span class="text-danger"><?php echo form_error('economically_backward'); ?></span>
                               </div>
                           </div>
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="form-label">Domicile of State</label>
-                                  <input type="text" class="form-control" placeholder="Enter Economically Backward"
-                                      id="domicile_of_state"
-                                      value="<?php echo (set_value('domicile_of_state')) ? set_value('domicile_of_state') : $domicile_of_state; ?>"
-                                      name="domicile_of_state">
+                                  <?php 
+                                     echo form_dropdown('domicile_of_state', $states, (set_value('domicile_of_state')) ? set_value('domicile_of_state') : $domicile_of_state, 'class="form-control form-control" id="domicile_of_state"'); 
+                                 ?>
                                   <span class="text-danger"><?php echo form_error('domicile_of_state'); ?></span>
                               </div>
                           </div>
@@ -287,8 +286,8 @@
                               <?php echo anchor('student/entranceexamdetails', 'BACK', 'class="btn btn-danger btn-square" '); ?>
                           </div>
                           <div class="col-md-6 text-right">
-                              <button type="submit" class="btn btn-info btn-square" name="Update" id="Update"> SAVE &
-                                  PROCEED </button>
+                              <button type="submit" class="btn btn-info btn-square" name="Update" id="Update"> SAVE 
+                              </button>
                               <?php echo anchor('student/parentdetails', 'NEXT', 'class="btn btn-danger btn-square float-right" '); ?>
                           </div>
                       </div>
@@ -298,3 +297,22 @@
           </div>
       </section>
 </div>
+
+<script>
+   $(document).ready(function() {
+    var base_url = '<?php echo base_url(); ?>';
+
+        $(".labeldis").hide();
+        $("#disability").change(function () {
+            if($("#disability").val() == "yes") {
+                $(".labeldis").show();
+            }
+        })
+
+        $("#disability").change(function () {
+            if($("#disability").val() == "no") {
+                $(".labeldis").hide();
+            }
+        })
+    })
+</script>

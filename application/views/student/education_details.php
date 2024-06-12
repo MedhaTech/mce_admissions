@@ -317,8 +317,8 @@
                               <?php echo anchor('student/parentdetails', 'BACK', 'class="btn btn-danger btn-square" '); ?>
                           </div>
                           <div class="col-md-6 text-right">
-                              <button type="submit" class="btn btn-info btn-square" name="Update" id="Update"> SAVE &
-                                  PROCEED </button>
+                              <button type="submit" class="btn btn-info btn-square" name="Update" id="Update"> SAVE 
+                              </button>
                               <?php echo anchor('student/documents', 'NEXT', 'class="btn btn-danger btn-square float-right" '); ?>
                           </div>
                       </div>

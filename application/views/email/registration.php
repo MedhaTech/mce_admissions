@@ -31,6 +31,7 @@
         <li>Review your application thoroughly to ensure all information is correct.</li>
         <li>Upon completing the application, proceed to make the admission fee payment online.</li>
         <li>Once the payment is successfully processed, kindly submit your application through the portal.</li>
+        <li>You must complete your admission process within 15 days of approval; otherwise, your seat will be canceled.</li>
     </ol>
 
     <p>If you encounter any difficulties during the application process or have any questions, don't hesitate to reach

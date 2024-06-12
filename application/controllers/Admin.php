@@ -370,17 +370,18 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('course1', 'Course', 'required');
 			$this->form_validation->set_rules('course2', 'Course', 'required');
 			$this->form_validation->set_rules('gender', 'Gender', 'required');
-			// $this->form_validation->set_rules('aadhaar', 'Aadhaar', 'required');
+			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]');
 			$this->form_validation->set_rules('state', 'State', 'required');
 			$this->form_validation->set_rules('city', 'City', 'required');
 			$this->form_validation->set_rules('category', 'Category', 'required');
 			$this->form_validation->set_rules('sslc_grade', 'Sslc Grade', 'required');
 			$this->form_validation->set_rules('puc1_grade', 'Puc Grade', 'required');
-			$this->form_validation->set_rules('puc2_grade', 'Puc Grade', 'required');
-			$this->form_validation->set_rules('register_grade', '10+2 Percentage / Grade', 'required');
-			$this->form_validation->set_rules('exam_board', 'Exam Board', 'required');
-			$this->form_validation->set_rules('register_number', 'Register Number', 'required');
-			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.aadhaar]');
+			$this->form_validation->set_rules('exam_board', 'Exam Board');
+			$this->form_validation->set_rules('puc2_grade', 'Puc2 Grade', 'required');
+			// $this->form_validation->set_rules('register_grade', '10+2 Percentage / Grade', 'required');
+			// $this->form_validation->set_rules('exam_board', 'Exam Board');
+			// $this->form_validation->set_rules('register_number', 'Register Number', 'required');
+			// $this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]');
 
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/editEnquiry/' . $id;
@@ -408,8 +409,8 @@ class Admin extends CI_Controller
 				$data['puc1_grade'] =  $enquiryDetails->puc1_grade;
 				$data['puc2_grade'] =  $enquiryDetails->puc2_grade;
 				$data['exam_board'] =  $enquiryDetails->exam_board;
-				$data['register_number'] =  $enquiryDetails->register_number;
-				$data['register_grade'] = $enquiryDetails->register_grade;
+				// $data['register_number'] =  $enquiryDetails->register_number;
+				// $data['register_grade'] = $enquiryDetails->register_grade;
 				$this->admin_template->show('admin/edit_enquiry', $data);
 			} else {
 				$course_id = $this->input->post('course');
@@ -419,7 +420,7 @@ class Admin extends CI_Controller
 
 				$updateDetails = array(
 					'student_name' => strtoupper($this->input->post('student_name')),
-					'register_grade' => $this->input->post('register_grade'),
+					// 'register_grade' => $this->input->post('register_grade'),
 					'mobile' => $this->input->post('mobile'),
 					'email' => strtolower($this->input->post('email')),
 					'par_name' => $this->input->post('par_name'),
@@ -436,13 +437,14 @@ class Admin extends CI_Controller
 					'category' => $this->input->post('category'),
 					'sslc_grade' => $this->input->post('sslc_grade'),
 					'puc1_grade' => $this->input->post('puc1_grade'),
+					// 'exam_board' => strtoupper($this->input->post('exam_board')),
 					'puc2_grade' => $this->input->post('puc2_grade'),
 
-					'exam_board' => strtoupper($this->input->post('exam_board')),
-					'register_number' => $this->input->post('register_number')
+					// 'exam_board' => strtoupper($this->input->post('exam_board')),
+					// 'register_number' => $this->input->post('register_number')
 				);
 
-				$result = $this->admin_model->updateDetails('enquiries', $id, $updateDetails);
+				$result = $this->admin_model->updateDetails($id, $updateDetails, 'enquiries');
 				if ($result) {
 					$this->session->set_flashdata('message', 'Enquiry Details updated successfully...!');
 					$this->session->set_flashdata('status', 'alert-success');
@@ -1065,7 +1067,7 @@ class Admin extends CI_Controller
 				if (count($enquiries)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'SSLC Grade', 'PUC-I Grade', 'Status', 'Reg. Date');
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'SSLC Grade', 'PUC-I Grade','PUC-II Grade', 'Status', 'Reg. Date');
 					$this->table->set_heading($print_fields);
 
 					$i = 1;
@@ -1079,6 +1081,7 @@ class Admin extends CI_Controller
 							$enquiries1->aadhaar,
 							$enquiries1->sslc_grade,
 							$enquiries1->puc1_grade,
+							$enquiries1->puc2_grade,
 							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
 							date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
 						);
@@ -1463,7 +1466,7 @@ class Admin extends CI_Controller
 			$data['personalDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$data['parentDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
-			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'id', 'student_education_details')->result();
+			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'student_id', 'student_education_details')->result();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 
 
@@ -1509,9 +1512,11 @@ class Admin extends CI_Controller
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['academicYear'] = $this->globals->academicYear();
 			$data['course_options'] = array(" " => "Select") + $this->courses();
+			$data['code_options'] = array(" " => "Select") + $this->globals->college_code();
 			$data['quota_options'] = array(" " => "Select") + $this->globals->quota();
 			$data['subquota_options'] = array(" " => "Select") + $this->globals->sub_quota();
 			$data['type_options'] = array(" " => "Select") + $this->globals->category();
+			$data['category_options'] = array(" " => "Select") + $this->globals->category_claimed();
 
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
@@ -1889,7 +1894,7 @@ class Admin extends CI_Controller
 					$paying_amount = $this->input->post('cash_amount');
 					$academic_year = "2024-2025";
 					$receipt_no = 1;
-					$transaciton_date = date('Y-m-d');
+					$transaction_date = date('Y-m-d');
 					$transaction_type = '1';
 					$bank_name = "";
 					$reference_no = "";
@@ -1902,7 +1907,7 @@ class Admin extends CI_Controller
 					$paying_amount = $this->input->post('cheque_dd_amount');
 					$academic_year = "2024-2025";
 					$receipt_no = 0;
-					$transaciton_date = "";
+					$transaction_date = "";
 					$transaction_type = '2';
 					$bank_name = $this->input->post('cheque_dd_bank');
 					$reference_no = $this->input->post('cheque_dd_number');
@@ -1915,7 +1920,7 @@ class Admin extends CI_Controller
 					$paying_amount = $this->input->post('transaction_amount');
 					$academic_year = "2024-2025";
 					$receipt_no = 1;
-					$transaciton_date = date('Y-m-d');
+					$transaction_date = date('Y-m-d');
 					$transaction_type = '3';
 					$bank_name = "";
 					$reference_no = $this->input->post('transaction_id');
@@ -1984,7 +1989,7 @@ class Admin extends CI_Controller
 						'aided_unaided' => $adm_type,
 						'receipt_no' => $receipt_no,
 						'year' => '1',
-						'transaciton_date' => date('Y-m-d'),
+						'transaction_date' => date('Y-m-d'),
 						'transaction_type' => $transaction_type,
 						'bank_name' => $bank_name,
 						'reference_no' => $reference_no,
@@ -2018,7 +2023,7 @@ class Admin extends CI_Controller
 						'aided_unaided' => $adm_type,
 						'receipt_no' => $receipt_no,
 						'year' => '1',
-						'transaciton_date' => date('Y-m-d'),
+						'transaction_date' => date('Y-m-d'),
 						'transaction_type' => $transaction_type,
 						'bank_name' => $bank_name,
 						'reference_no' => $reference_no,
@@ -2052,7 +2057,7 @@ class Admin extends CI_Controller
 						'aided_unaided' => $adm_type,
 						'receipt_no' => $receipt_no,
 						'year' => '1',
-						'transaciton_date' => date('Y-m-d'),
+						'transaction_date' => date('Y-m-d'),
 						'transaction_type' => $transaction_type,
 						'bank_name' => $bank_name,
 						'reference_no' => $reference_no,
@@ -2201,6 +2206,654 @@ With good wishes";
 		}
 	}
 
+	public function admissionsdetails($encryptId)
+	{
+
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Admission Details';
+			$data['menu'] = 'admissions';
+
+			// $id = $this->encrypt->decode(base64_decode($encryptId));
+			$id = base64_decode($encryptId);
+
+			$data['admissionStatus'] = $this->globals->admissionStatus();
+			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+
+			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
+			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'id', 'student_education_details')->result();
+	
+			// var_dump($data['educations_details']);
+			// die();
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+
+			$this->load->library('fpdf'); // Load library
+			ini_set("session.auto_start", 0);
+			ini_set('memory_limit', '-1');
+			define('FPDF_FONTPATH', 'plugins/font');
+			$pdf = new FPDF('p', 'mm', 'A5');
+			$pdf->AddPage();
+
+			$pdf->Image('assets/img/mce_admission_letter.jpeg', 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHeight());
+
+
+			$row = 8;
+			$topGap = 20;
+
+			$pdf->SetY($topGap + 10);
+			$pdf->SetTextColor(33,33,33);
+			$pdf->setFont ('Arial','BU',12);
+            $pdf->SetXY(20, 25); 
+            $pdf->Cell(0,10,"Student Details".$currentAcademicYear,0,0,'C', false);
+
+			$pdf->SetY($topGap + 15);
+			$pdf->SetTextColor(33,33,33);
+			$pdf->setFont ('Arial','BU',12);
+            $pdf->SetXY(5, 30); 
+            $pdf->Cell(0,10,"Admissions Details",0,0,'C', false);
+			// $y = $pdf->getY();
+            // $pdf->setFont ('Arial','B',10);
+            // $pdf->SetXY(5, $y+10); 
+            // $pdf->Cell(0,10,"Student Name: ".$data['admissionDetails']->student_name,0,0,'L', false);
+            // $pdf->SetXY(50, $y+10); 
+            // $pdf->Cell(0,10, "Mobile: ".$data['admissionDetails']->mobile,0,0,'L', false);
+			// $pdf->SetXY(95, $y+10); 
+            // $pdf->Cell(0,10, "Email ID: ".$data['admissionDetails']->email,0,0,'L', false);
+			
+			// $y = $pdf->getY();
+            // $pdf->setFont ('Arial','B',10);
+            // $pdf->SetXY(5, $y+10); 
+            // $pdf->Cell(0,10,"Aadhar Number: ".$data['admissionDetails']->aadhaar,0,0,'L', false);
+            // $pdf->SetXY(65, $y+10); 
+            // $pdf->Cell(0,10, "Department: ".$data['admissionDetails']->dept_id,0,0,'L', false);
+
+			// $y = $pdf->getY();
+            // $pdf->setFont ('Arial','B',10);
+            // $pdf->SetXY(5, $y+10); 
+            // $pdf->Cell(0,10,"College Code: ".$data['admissionDetails']->college_code,0,0,'L', false);
+            // $pdf->SetXY(50, $y+10); 
+            // $pdf->Cell(0,10, "Category Allotted: ".$data['admissionDetails']->category_allotted,0,0,'L', false);
+			// $pdf->SetXY(95, $y+10); 
+            // $pdf->Cell(0,10, "Category Claimed: ".$data['admissionDetails']->category_claimed,0,0,'L', false);
+
+			// $y = $pdf->getY();
+            // $pdf->setFont ('Arial','B',10);
+			// $pdf->SetXY(5, $y+10); 
+            // $pdf->Cell(0,10, "Quota: ".$data['admissionDetails']->quota,0,0,'L', false);
+			// $pdf->SetXY(25, $y+10); 
+            // $pdf->Cell(0,10,"Sub Quota: ".$data['admissionDetails']->sub_quota,0,0,'L', false);
+
+			// $pdf->SetY($topGap + 110);
+			// $pdf->SetTextColor(33,33,33);
+			// $pdf->setFont ('Arial','BU',12);
+            // $pdf->SetXY(120, 5); 
+            // $pdf->Cell(0,10,"Student Details".$currentAcademicYear,0,0,'C', false);
+            
+            $y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Name of the Student",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->student_name,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Mobile Number",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->mobile,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Email ID",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->email,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Aadhar Number",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->aadhaar,1,0,'L', false); 
+        
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Department",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->dept_id,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Quota",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->quota,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Sub Quota",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->sub_quota,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Category Allocated",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->category_allotted,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Category Claimed",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->category_claimed,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"College Code",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->college_code,1,0,'L', false); 
+
+
+			$pdf->SetY($topGap + 15);
+			$pdf->SetTextColor(33,33,33);
+			$pdf->setFont ('Arial','BU',12);
+            $pdf->SetXY(5, 120); 
+            $pdf->Cell(0,10,"Entrance Exam Details",0,0,'C', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Entrance Type",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->entrance_type,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Entrance Register Number",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->entrance_reg_no,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Entrance Rank",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->entrance_rank,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Admission Order Number",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->admission_order_no,1,0,'L', false); 
+        
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Admission Order Date",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->admission_order_date,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Fees Paid",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->fees_paid,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Fees Receipt Number",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->fees_receipt_no,1,0,'L', false); 
+
+			// $pdf->SetY($topGap + 180);
+			// $pdf->SetY($topGap + 10);
+			// $pdf->SetTextColor(33,33,33);
+			// $pdf->setFont ('Arial','BU',12);
+            // $pdf->SetXY(60, 60); 
+            // $pdf->Cell(0,10,"Student Details".$currentAcademicYear,0,0,'C', false);
+
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Fees Receipt Date",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+			$pdf->SetXY(50, 10); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->fees_receipt_date,1,0,'L', false); 
+
+			$pdf->SetY($topGap + 18);
+			$pdf->SetTextColor(33,33,33);
+			$pdf->setFont ('Arial','BU',12);
+            $pdf->SetXY(5, 18); 
+            $pdf->Cell(0,10,"Personal Details",0,0,'C', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Date of Birth",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->date_of_birth,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Gender",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->gender,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Sports",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->sports,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Blood Group",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->blood_group,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Place of Birth",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->place_of_birth,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Country of Birth",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->country_of_birth,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Nationality",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->nationality,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Religion",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->religion,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Mother Tongue",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->mother_tongue,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Caste",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->caste,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Disability",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->disability,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Type of Disability",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->type_of_disability,1,0,'L', false); 
+			
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Econimically Backward",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->economically_backward,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Domicile of State",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->domicile_of_state,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Hobbies",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->hobbies,1,0,'L', false);
+
+			$y = $pdf->getY();
+			$pdf->SetTextColor(55,55,55);
+            $pdf->setFont ('Arial','B',12);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Current Address",1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Current Address",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->current_address,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Current City",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->current_city,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Current District",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->current_district,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Current State",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->current_state,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Current Country",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, 10); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->current_country,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Current Pincode",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->current_pincode,1,0,'L', false);
+
+			$y = $pdf->getY();
+			$pdf->SetTextColor(55,55,55);
+            $pdf->setFont ('Arial','B',12);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Permanent Address",1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Permanent Address",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->present_address,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Permanent City",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->present_city,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Permanent District",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->present_district,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Permanent State",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->present_state,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Permanent Country",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->present_country,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Permanent Pincode",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->present_pincode,1,0,'L', false);
+
+			$pdf->SetY($topGap + 18);
+			$pdf->SetTextColor(33,33,33);
+			$pdf->setFont ('Arial','BU',12);
+            $pdf->SetXY(5, 90); 
+            $pdf->Cell(0,10,"Parent's Details",0,0,'C', false);
+
+			$y = $pdf->getY();
+			$pdf->SetTextColor(55,55,55);
+            $pdf->setFont ('Arial','B',12);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Father Details",1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Name",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->father_name,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Mobile",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->father_mobile,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Email",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->father_email,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Occupation",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->father_occupation,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Annual Income",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->father_annual_income,1,0,'L', false);
+
+			$y = $pdf->getY();
+			$pdf->SetTextColor(55,55,55);
+            $pdf->setFont ('Arial','B',12);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Mother Details",1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Name",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->mother_name,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Mobile",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->mother_mobile,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Email",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->mother_email,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Occupation",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->mother_occupation,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Annual Income",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, 10); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->mother_annual_income,1,0,'L', false);
+
+			$y = $pdf->getY();
+			$pdf->SetTextColor(55,55,55);
+            $pdf->setFont ('Arial','B',12);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Guardian Details",1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Name",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->guardian_name,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Mobile",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->guardian_mobile,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Email",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->guardian_email,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Occupation",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->guardian_occupation,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Annual Income",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->guardian_annual_income,1,0,'L', false);
+
+			// $pdf->SetY($topGap + 18);
+			// $pdf->SetTextColor(33,33,33);
+			// $pdf->setFont ('Arial','BU',12);
+            // $pdf->SetXY(5, 90); 
+            // $pdf->Cell(0,10,"Education Details",0,0,'C', false);
+
+			// $y = $pdf->getY();
+            // $pdf->setFont ('Arial','B',9);
+            // $pdf->SetXY(10, $y+$row); 
+            // $pdf->Cell(0,$row,"Level",1,0,'L', false);
+            // $pdf->setFont ('Arial','',9);
+            // $pdf->SetXY(50, $y+$row); 
+            // $pdf->Cell(0,$row,$data['educations_details']->education_level,1,0,'L', false);
+
+			$fileName = $data['admissionDetails']->student_name . '-Admission Details.pdf';
+			$pdf->output($fileName, 'D');
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
 	public function downloadReceipt($admission_id, $transaction_id)
 	{
 		if ($this->session->userdata('logged_in')) {
@@ -2246,7 +2899,7 @@ With good wishes";
             $pdf->SetXY(10, $y+10); 
             $pdf->Cell(0,10,"Receipt No: ".$transactionDetails->receipt_no,0,0,'L', false);
             $pdf->SetXY(100, $y+10); 
-            $pdf->Cell(0,10, "Date: ".date('d-m-Y', strtotime($transactionDetails->transaciton_date)),0,0,'L', false); 
+            $pdf->Cell(0,10, "Date: ".date('d-m-Y', strtotime($transactionDetails->transaction_date)),0,0,'L', false); 
             
             $y = $pdf->getY();
             $pdf->setFont ('Arial','B',9);
@@ -2444,4 +3097,667 @@ With good wishes";
 				redirect('admin/timeout');
 		}           
 	}
+
+	public function dcb_report($download = 0){
+	    if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$data['page_title'] = $currentAcademicYear.' REPORT DEMAND COLLECTION BALANCE (DCB)';
+			$data['menu'] = 'DCBReport';
+			
+			$data['download_action'] = 'admin/dcb_report';
+			
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			// $admissions = $this->admin_model->DCBReport($currentAcademicYear)->result();
+			$admissions = $this->admin_model->DCBReport($currentAcademicYear)->result();
+
+			// var_dump($admissions);
+			
+			$fees = $this->admin_model->feeDetails()->result();
+			$feeDetails = array();
+			foreach($fees as $fees1){
+			    $feeDetails[$fees1->admissions_id] = $fees1->paid_amount;
+			}
+			
+			$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+			$this->table->set_template($table_setup);
+			// $table_setup = array ('table_open'=> '<table class="table table-bordered font14" border="1" id="dataTable" >');
+			// $this->table->set_template($table_setup);
+			
+			$print_fields = array('S.No', 'Course', 'Student Name' ,'Mobile', 'Admit. Date', 'Total Fee','Fees Paid','Balance amount','Next Due Date','Remarks');
+			
+			$this->table->set_heading($print_fields);
+			
+			$i = 1; $final_fee = 0; $fees_paid = 0; $balance_amount = 0;
+			foreach($admissions as $admissions1){
+			$dmm=$this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+			    
+			    // if($admissions1->dsc_1 == $admissions1->dsc_2){
+                //     $combination = $admissions1->dsc_1;
+                // }else{
+                //     $combination = $admissions1->dsc_1.' - '.$admissions1->dsc_2;
+                // }
+                
+			    $paid_amount = (array_key_exists($admissions1->id,$feeDetails)) ? $feeDetails[$admissions1->id] : '0';
+			    $balance_amount = $admissions1->final_fee - $paid_amount;
+			    $result_array = array($i++, 
+				                    // $admissions1->academic_year,
+				                    // $admissions1->reg_no,
+				                    $dmm,
+				                    $admissions1->student_name,
+				                    $admissions1->mobile,
+				                    ($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
+				                    number_format($admissions1->final_fee,0),
+				                    number_format($fees_paid,0),
+				                    number_format($balance_amount,0),
+				                    ($admissions1->next_due_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->next_due_date)) : '',
+				                    $admissions1->remarks
+				                    );   
+									// var_dump($result_array);
+				$this->table->add_row($result_array);   
+				$final_fee = $final_fee + $admissions1->total_college_fee;
+				$fees_paid =  $fees_paid + $paid_amount;
+				$balance_amount =  $balance_amount + $balance_amount;
+			}
+				  
+    		$data['table'] = $this->table->generate();
+			// var_dump($data['table']); die();
+			if(!$download){
+			    $this->admin_template->show('admin/dcb_report',$data);    
+			}else{
+			    $response =  array(
+					'op' => 'ok',
+					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+				);
+				die(json_encode($response));
+			}
+		}else {
+	    	redirect('admin/timeout');
+		}
+	}
+
+	public function daybook_report(){
+	    if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			
+			$data['page_title'] = 'Day Book Report';
+			$data['menu'] = 'dayBookReport';
+			
+			$data['feeStructure'] = $this->globals->courseFees();
+			
+			// var_dump($data['feeStructure']);
+			// echo "<pre>";
+			// print_r($data['feeStructure']); die;
+			
+            $data['admissionStatus'] = $this->globals->admissionStatus();
+			$data['courses'] = array("all"=>"All")+$this->globals->courses();
+			$data['academicYears'] = array(" "=>"Select")+$this->globals->academicYear();
+			
+		    $this->admin_template->show('admin/daybook_report',$data);    
+			 
+		}else {
+	    	redirect('admin/timeout');
+		}
+    }
+
+	public function dayBookReportDownload(){
+	    if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			
+			$data['page_title'] = 'Day Book Report';
+			$data['menu'] = 'dayBookReport';
+		
+			$data['feeTypes'] = $this->globals->feeTypes();
+			$data['feeTypesMgt'] = $this->globals->feeTypesMgt();
+			$courseCombination = $this->globals->courseCombination();
+			
+			// var_dump($data['feeStructure']);
+			$table_headings = array('S.No', 'Date', 'Student Name','Mobile','Class', 'Aided/Un-Aided','Category','Receipt No.', 'Bank Name', 'DD / Cheque / Challan No. & Date', 'Paid (Rs.)', 'Balance (Rs.)');
+
+			array_splice($table_headings,count($table_headings),0,$data['transaction_type']);
+			
+			array_splice($table_headings,count($table_headings),0,$data['feeTypesMgt']);
+			
+            $from_date = $this->input->post('from_date');
+			$to_date = $this->input->post('to_date');
+			
+			$details = $this->admin_model->dayBookReport($from_date, $to_date)->result();
+			
+			$table_setup = array ('table_open'=> '<table class="table table-bordered font14" border="1">');
+			$this->table->set_template($table_setup);
+			$this->table->set_heading($table_headings);
+			
+			$i = 1;
+			foreach($details as $details1){
+			    
+			    if($details1->category == "GM" || $details1->category == "2A" || $details1->category == "2B" || $details1->category == "3A" || $details1->category == "3B"){
+    			    $category = "1";
+    			}else{
+    			    $category = "2";
+    			}
+    			// $combination = null;
+    			// if (array_key_exists($details1->course,$courseCombination)){
+    			//     if (array_key_exists($details1->dsc_1,$courseCombination[$details1->course])){
+    			//         $combination = $details1->dsc_1;    
+    			//     }
+    			// }
+
+    			// $fee = $this->admin_model->feeStructure($details1->course, $combination, $category, $details1->aided_unaided)->row();
+    			
+    			// if($details1->dsc_1 == $details1->dsc_2){
+                //     $combination = $details1->dsc_1;
+                // }else{
+                //     $combination = $details1->dsc_1.' - '.$details1->dsc_2;
+                // }
+                
+			    $result_array = array($i++, 
+			                           date('d-m-Y', strtotime($details1->transaction_date)), 
+			                           $details1->student_name, 
+			                           $details1->mobile,
+			                           $details1->course.' ['.$combination.']',
+			                           $details1->aided_unaided,
+			                           $details1->category.' '.$category,
+			                           $details1->receipt_no,
+			                           $details1->bank_name,
+			                           $details1->reference_no.' '.$details1->reference_date,
+			                         //  $details1->final_amount,
+			                         //  $details1->paid_amount,
+			                           $details1->amount,
+			                           $details1->balance_amount
+			                         );
+			    $already_paid = $details1->paid_amount;
+			    $paid_amount = $details1->amount;
+			    if($fee){
+			        $balance_amount = 0; $test = 0; $balance_amount1 = 0;
+			        for($f=1; $f<=28; $f++){
+        		       $field = "field_".$f;
+        		      // PREVISOULY PAID AMOUNT - LESS
+        		        if($already_paid > 0){
+        		           $fee_amount = $fee->$field;
+        		          // $balance_amount = 0;
+        		           $balance_amount = $already_paid - $fee->$field;
+        		           if($balance_amount > 0){
+        		               $display_amount = 0;
+        		           }else{
+        		               $feeField = -($balance_amount);
+        		               
+        		               // PAID AMT
+        		               if($paid_amount < 0){
+            		             $display_amount = 0;
+            		           }else{
+                		          $balance_amount1 = $paid_amount - $feeField;
+                    		       if($balance_amount1 < 0){
+                    		        $display_amount = $paid_amount;
+                    		       }else{
+                    		        $display_amount = $feeField;    
+                    		       }
+                    		       $paid_amount = $balance_amount1;    
+                		       }
+                		       // PAID AMT
+        		               
+        		           }
+        		           $already_paid = $balance_amount;
+        		           
+        		      // PREVISOULY PAID AMOUNT - LESS
+        		        }else{
+        		            // NOW PAID AMOUNT - ADD
+            		       if($paid_amount < 0){
+            		          //   $fee_amount = "0<br>".$fee->$field."<br>".$balance_amount;    
+            		             $display_amount = 0;
+            		       }else{
+                		       $balance_amount = $paid_amount - $fee->$field;
+                		      // $fee_amount = $fee->$field;
+                		      // $fee_amount = $paid_amount."<br>".$fee->$field."<br>".$balance_amount;
+                		       if($balance_amount < 0){
+                		        $display_amount = $paid_amount;
+                		       }else{
+                		        $display_amount = $fee->$field;    
+                		       }
+                		       $paid_amount = $balance_amount;    
+            		       }
+            		       // NOW PAID AMOUNT
+        		        }
+        		      
+        		       $fee_amount = $fee->$field.'<br>'.$display_amount."<br>".$balance_amount;
+        		       $fee_amount = $display_amount;
+        		       $test = $test + $display_amount;
+        		       array_push($result_array, $fee_amount);
+        		   }    
+        		  // array_push($result_array, $test);
+			    }
+			    $this->table->add_row($result_array);
+			}
+			
+			$detailsTable = $this->table->generate();
+			
+			if ($download == 1) {
+				$response =  array(
+					'op' => 'ok',
+					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($detailsTable)
+				);
+				die(json_encode($response));
+			} else {
+				$data['admissions'] = $details;
+				$this->admin_template->show('admin/daybook_report', $data);
+			}
+			 
+		}else {
+	    	redirect('admin/timeout');
+		}
+    }
+
+	public function studentdetails_report($download = '')
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Student Details Report';
+			$data['menu'] = 'reports';
+			$data['report_type'] = $report;
+			$admissionStatus = $this->globals->admissionStatus();
+			$admissionStatusColor = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissionStatus'] = array(" "=>"Select Admission Status")+$this->globals->admissionStatus();
+			$data['course_options'] = array(" " => "Select") + $this->courses();
+			$data['action'] = 'admin/studentdetails_report';
+			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			if ($this->form_validation->run() === FALSE) {
+
+				$this->admin_template->show('admin/studentdetails_report', $data);
+			} else {
+				$data['course'] = $this->input->post('course');
+				$data['status'] = $this->input->post('admission_status');
+
+				
+
+				$admissions = $this->admin_model->getAdmissions_course($data['currentAcademicYear'], $data['course'],$data['status'])->result();
+
+				if (count($admissions)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
+
+
+					$selectedValues = $this->input->post('selectedValues');
+			if($selectedValues){
+			foreach($selectedValues as $selectedValues1){
+			    if($selectedValues1 == "date_place_of_birth"){
+		            $select = $select.",date_of_birth, place_of_birth"; 
+		            $table_headings[] = 'Date of Birth';
+		            $table_headings[] = 'Place of Birth';
+			    }
+			    if($selectedValues1 == "caste_category"){
+		            $select = $select.",caste, category_claimed"; 
+		            $table_headings[] = 'Caste';
+		            $table_headings[] = 'Category';
+			    }
+			    if($selectedValues1 == "nationality"){
+		            $select = $select.",nationality"; 
+		            $table_headings[] = 'Nationality';
+			    }
+			    if($selectedValues1 == "religion"){
+		            $select = $select.",religion";
+		            $table_headings[] = 'Religion';
+			    }
+			    if($selectedValues1 == "aadhar"){
+		            $select = $select.",aadhar"; 
+		            $table_headings[] = 'Aadhar';
+			    }
+			    
+				if($selectedValues1 == "current_address"){
+		            $select = $select.",current_address,current_city,current_district,current_state,current_pincode"; 
+		            $table_headings[] = 'Current Location';
+		            $table_headings[] = 'Current City';
+		            $table_headings[] = 'Current District';
+		            $table_headings[] = 'Current State';
+		            $table_headings[] = 'Current Pincode';
+			    }
+
+			    if($selectedValues1 == "present_address"){
+		            $select = $select.",present_address,present_city,present_district,present_state,present_pincode"; 
+		            $table_headings[] = 'Present Location';
+		            $table_headings[] = 'Present City';
+		            $table_headings[] = 'Present District';
+		            $table_headings[] = 'Present State';
+		            $table_headings[] = 'Present Pincode';
+			    }
+			    
+			    if($selectedValues1 == "father_details"){
+		            $select = $select.",father_name, father_occupation, father_mobile, father_email, father_annual_income"; 
+		            $table_headings[] = 'Father Name';
+		            $table_headings[] = 'Father Occupation';
+		            $table_headings[] = 'Father Mobile';
+		            $table_headings[] = 'Father Email';
+		            $table_headings[] = 'Father Annual Income';
+			    }
+			    
+			    if($selectedValues1 == "mother_details"){
+		            $select = $select.",mother_name, mother_occupation, mother_mobile, mother_email, mother_annual_income"; 
+		            $table_headings[] = 'Mother Name';
+		            $table_headings[] = 'Mother Occupation';
+		            $table_headings[] = 'Mother Mobile';
+		            $table_headings[] = 'Mother Email';
+		            $table_headings[] = 'Mother Annual Income';
+			    }
+			    
+			    if($selectedValues1 == "guardian_details"){
+		            $select = $select.",guardian_name, guardian_occupation, guardian_mobile, guardian_email, guardian_annual_income"; 
+		            $table_headings[] = 'Guardian Name';
+		            $table_headings[] = 'Guardian Occupation';
+		            $table_headings[] = 'Guardian Mobile';
+		            $table_headings[] = 'Guardian Email';
+		            $table_headings[] = 'Guardian Annual Income';
+			    }
+			    
+			    if($selectedValues1 == "previous_exam_details"){
+		            $select = $select.",entrance_type, entrance_reg_no, entrance_rank, admission_order_no, admission_order_date"; 
+		            $table_headings[] = 'Entrance Type';
+		            $table_headings[] = 'Entrance Register Number';
+		            $table_headings[] = 'Entrance Rank';
+		            $table_headings[] = 'Admission Order Number';
+		            $table_headings[] = 'Admission Order Date';
+			    }
+			    
+			    if($selectedValues1 == "other_details"){
+		            $select = $select.",sports,ncc,nss"; 
+		            $table_headings[] = 'Sports';
+		            $table_headings[] = 'NCC';
+		            $table_headings[] = 'NSS';
+			    }
+			    
+			} 
+			}
+
+					$this->table->set_heading($table_headings);
+
+					$i = 1;
+					foreach ($admissions as $admissions1) {
+						$dmp=$this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$admissions1->student_name,
+							$admissions1->mobile,
+							$dmp,
+							$admissions1->aadhaar,
+							$admissions1->quota,
+							$admissions1->sub_quota,
+							'<strong class="text-' . $admissionStatusColor[$admissions1->status] . '">' . $admissionStatus[$admissions1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($admissions1->admit_date))
+						);
+
+
+						if($selectedValues){                    
+							foreach($selectedValues as $selectedValues1){
+								if($selectedValues1 == "date_place_of_birth"){
+									$result_array[] = $admissions1->date_of_birth;
+									$result_array[] = $admissions1->place_of_birth;
+								}
+								if($selectedValues1 == "caste_category"){
+									$result_array[] = $admissions1->caste;
+									$result_array[] = $admissions1->category_claimed;
+								}
+								if($selectedValues1 == "nationality"){
+									$result_array[] = $admissions1->nationality;
+								}
+								if($selectedValues1 == "religion"){
+									$result_array[] = $admissions1->religion;
+								}
+								if($selectedValues1 == "aadhar"){
+									$result_array[] = $admissions1->aadhar;
+								}
+								
+								if($selectedValues1 == "current_address"){
+									$result_array[] = $admissions1->current_address;
+									$result_array[] = $admissions1->current_city;
+									$result_array[] = $admissions1->current_district;
+									$result_array[] = $admissions1->current_state;
+									$result_array[] = $admissions1->current_pincode;
+								}
+								
+								if($selectedValues1 == "present_address"){
+									$result_array[] = $admissions1->present_address;
+									$result_array[] = $admissions1->present_city;
+									$result_array[] = $admissions1->present_district;
+									$result_array[] = $admissions1->present_state;
+									$result_array[] = $admissions1->present_pincode;
+								}
+								
+								if($selectedValues1 == "father_details"){
+									$result_array[] = $admissions1->father_name;
+									$result_array[] = $admissions1->father_occupation;
+									$result_array[] = $admissions1->father_mobile;
+									$result_array[] = $admissions1->father_email;
+									$result_array[] = $admissions1->father_annual_income; 
+								}
+								
+								if($selectedValues1 == "mother_details"){
+									$result_array[] = $admissions1->mother_name;
+									$result_array[] = $admissions1->mother_occupation;
+									$result_array[] = $admissions1->mother_mobile;
+									$result_array[] = $admissions1->mother_email;
+									$result_array[] = $admissions1->mother_annual_income; 
+								}
+								
+								if($selectedValues1 == "guardian_details"){
+									$result_array[] = $admissions1->guardian_name;
+									$result_array[] = $admissions1->guardian_occupation;
+									$result_array[] = $admissions1->guardian_mobile;
+									$result_array[] = $admissions1->guardian_email;
+									$result_array[] = $admissions1->guardian_annual_income; 
+								}
+								
+								if($selectedValues1 == "previous_exam_details"){
+									$result_array[] = $admissions1->entrance_type;
+									$result_array[] = $admissions1->entrance_reg_no;
+									$result_array[] = $admissions1->entrance_rank;
+									$result_array[] = $admissions1->admission_order_no;
+									$result_array[] = $admissions1->admission_order_date;
+								}
+								
+								
+								if($selectedValues1 == "other_details"){
+									$result_array[] = $admissions1->sports;
+									$result_array[] = $admissions1->ncc;
+									$result_array[] = $admissions1->nss;
+								}
+								
+								
+							}
+						}
+						$this->table->add_row($result_array);
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+
+				Var_dump($this->db->last_query()); 
+				if ($download == 1) {
+					$response =  array(
+						'op' => 'ok',
+						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
+					);
+					die(json_encode($response));
+				} else {
+					$data['admissions'] = $details;
+					$this->admin_template->show('admin/studentdetails_report', $data);
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function admissionscroll_report($download = 0){
+	    if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$data['page_title'] = $currentAcademicYear.' ADMISSION SCROLL REPORT';
+			$data['menu'] = 'AdmissionScrollReport';
+			
+			$data['download_action'] = 'admin/AdmissionScrollReport/1';
+			
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$transactions = $this->admin_model->transactions('1')->result();
+			$transactionTypes = $this->globals->transactionTypes();
+			
+// 			print_r($transactions); 
+			if($download){
+			    $table = "<table class='table table-bordered' border='1' id='dataTable' >";
+			}else{
+			    $table = "<table class='table table-bordered font14' border='1' id='dataTable' >";
+			}
+			$table .= '<thead>';
+			if($download){
+			    $table .= '<tr><th colspan="11" class="font20">'.$currentAcademicYear.' ADMISSION SCROLL</th></tr>';
+			}
+			$table .= '<tr><th>S.No</th>
+			               <th> Student Name </th>
+			               <th> Receipt No. </th>
+			               <th> Date </th>
+			               <th> Mode of Payment </th>
+			               <th> Reference No. </th>
+			               <th> Reference Date </th>
+			               <th> Bank Name </th>
+			               <th> Amount </th>
+			          </tr>';
+			
+			$table .= '</thead>';
+    	    $table .= '<tbody>';
+    	    $i = 1;
+    		foreach($transactions as $transactions1){
+    		  //  print_r($transactions1); 
+    		    // if($transactions1->dsc_1 == $transactions1->dsc_2){
+                //     $combination = $transactions1->dsc_1;
+                // }else{
+                //     $combination = $transactions1->dsc_1.' - '.$transactions1->dsc_2;
+                // }
+    		 $table .= '<tr>'; 
+    		 $table .= '<td>'.$i++.'</td>';   
+    		 $table .= '<td>'.$transactions1->student_name.'</td>';   
+    		//  $table .= '<td>'.$transactions1->course.'</td>';   
+    		//  $table .= '<td>'.$combination.'</td>';   
+    		 $table .= '<td>'.$transactions1->receipt_no.'</td>';   
+    		 $table .= '<td>'.date('d-m-Y', strtotime($transactions1->transaction_date)).'</td>';   
+    		 $table .= '<td>'.$transactionTypes[$transactions1->transaction_type].'</td>';   
+    		 $table .= '<td>'.$transactions1->reference_no.'</td>';   
+    		 $table .= '<td>'.date('d-m-Y', strtotime($transactions1->reference_date)).'</td>';   
+    		 $table .= '<td>'.$transactions1->bank_name.'</td>';   
+    		 $table .= '<td>'.number_format($transactions1->amount,0).'</td>';   
+    		 $table .= '</tr>';
+    		}
+    		$table .= '</tbody>';
+    		$table .= '</table>';
+    		$data['table'] = $table;
+			if(!$download){
+			    $this->admin_template->show('admin/admissionscroll_report',$data);    
+			}else{
+			    $response =  array(
+					'op' => 'ok',
+					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+				);
+				die(json_encode($response));
+			}
+		}else {
+	    	redirect('admin/timeout');
+		}
+    }
+
+	public function category_admissions_report($download = '')
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'CATEGORY ADMISSIONS REPORT';
+			$data['menu'] = 'reports';
+			// $data['report_type'] = $report;
+			$admissionStatus = $this->globals->admissionStatus();
+			$admissionStatusColor = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['course_options'] = array(" " => "Select") + $this->courses();
+			$data['type_options'] = array(" " => "Select") + $this->globals->category();
+			$data['action'] = 'admin/category_admissions_report';
+			$this->form_validation->set_rules('category', 'Category', 'required');
+			if ($this->form_validation->run() === FALSE) {
+
+				$this->admin_template->show('admin/category_admissions_report', $data);
+			} else {
+				$data['category'] = $this->input->post('category');
+
+				$admissions = $this->admin_model->getAdmissions_category($data['currentAcademicYear'], $data['category'])->result();
+
+				// var_dump($admissions); die();
+
+				if (count($admissions)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
+					$this->table->set_heading($print_fields);
+
+					$i = 1;
+					foreach ($admissions as $admissions1) {
+						$dmn=$this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$admissions1->student_name,
+							$admissions1->mobile,
+							$dmn,
+							$admissions1->aadhaar,
+							$admissions1->quota,
+							$admissions1->sub_quota,
+							'<strong class="text-' . $admissionStatusColor[$admissions1->status] . '">' . $admissionStatus[$admissions1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($admissions1->admit_date))
+						);
+						$this->table->add_row($result_array);
+						$course = $data['course_options'][$course_id];
+					}
+					$details = $this->table->generate();
+	
+				} else {
+					$details = 'No student details found';
+				}
+				if ($download == 1) {
+					$response =  array(
+						'op' => 'ok',
+						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
+					);
+					die(json_encode($response));
+				} else {
+					$data['admissions'] = $details;
+					$this->admin_template->show('admin/category_admissions_report', $data);
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
 }
