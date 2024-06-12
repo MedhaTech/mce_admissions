@@ -1067,7 +1067,7 @@ class Admin extends CI_Controller
 				if (count($enquiries)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'SSLC Grade', 'PUC-I Grade', 'Status', 'Reg. Date');
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'SSLC Grade', 'PUC-I Grade','PUC-II Grade', 'Status', 'Reg. Date');
 					$this->table->set_heading($print_fields);
 
 					$i = 1;
@@ -1081,6 +1081,7 @@ class Admin extends CI_Controller
 							$enquiries1->aadhaar,
 							$enquiries1->sslc_grade,
 							$enquiries1->puc1_grade,
+							$enquiries1->puc2_grade,
 							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
 							date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
 						);
@@ -2199,6 +2200,654 @@ With good wishes";
 
 
 			$fileName = $data['admissionDetails']->student_name . '-Admit_Letter.pdf';
+			$pdf->output($fileName, 'D');
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function admissionsdetails($encryptId)
+	{
+
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Admission Details';
+			$data['menu'] = 'admissions';
+
+			// $id = $this->encrypt->decode(base64_decode($encryptId));
+			$id = base64_decode($encryptId);
+
+			$data['admissionStatus'] = $this->globals->admissionStatus();
+			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+
+			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
+			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'id', 'student_education_details')->result();
+	
+			// var_dump($data['educations_details']);
+			// die();
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+
+			$this->load->library('fpdf'); // Load library
+			ini_set("session.auto_start", 0);
+			ini_set('memory_limit', '-1');
+			define('FPDF_FONTPATH', 'plugins/font');
+			$pdf = new FPDF('p', 'mm', 'A5');
+			$pdf->AddPage();
+
+			$pdf->Image('assets/img/mce_admission_letter.jpeg', 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHeight());
+
+
+			$row = 8;
+			$topGap = 20;
+
+			$pdf->SetY($topGap + 10);
+			$pdf->SetTextColor(33,33,33);
+			$pdf->setFont ('Arial','BU',12);
+            $pdf->SetXY(20, 25); 
+            $pdf->Cell(0,10,"Student Details".$currentAcademicYear,0,0,'C', false);
+
+			$pdf->SetY($topGap + 15);
+			$pdf->SetTextColor(33,33,33);
+			$pdf->setFont ('Arial','BU',12);
+            $pdf->SetXY(5, 30); 
+            $pdf->Cell(0,10,"Admissions Details",0,0,'C', false);
+			// $y = $pdf->getY();
+            // $pdf->setFont ('Arial','B',10);
+            // $pdf->SetXY(5, $y+10); 
+            // $pdf->Cell(0,10,"Student Name: ".$data['admissionDetails']->student_name,0,0,'L', false);
+            // $pdf->SetXY(50, $y+10); 
+            // $pdf->Cell(0,10, "Mobile: ".$data['admissionDetails']->mobile,0,0,'L', false);
+			// $pdf->SetXY(95, $y+10); 
+            // $pdf->Cell(0,10, "Email ID: ".$data['admissionDetails']->email,0,0,'L', false);
+			
+			// $y = $pdf->getY();
+            // $pdf->setFont ('Arial','B',10);
+            // $pdf->SetXY(5, $y+10); 
+            // $pdf->Cell(0,10,"Aadhar Number: ".$data['admissionDetails']->aadhaar,0,0,'L', false);
+            // $pdf->SetXY(65, $y+10); 
+            // $pdf->Cell(0,10, "Department: ".$data['admissionDetails']->dept_id,0,0,'L', false);
+
+			// $y = $pdf->getY();
+            // $pdf->setFont ('Arial','B',10);
+            // $pdf->SetXY(5, $y+10); 
+            // $pdf->Cell(0,10,"College Code: ".$data['admissionDetails']->college_code,0,0,'L', false);
+            // $pdf->SetXY(50, $y+10); 
+            // $pdf->Cell(0,10, "Category Allotted: ".$data['admissionDetails']->category_allotted,0,0,'L', false);
+			// $pdf->SetXY(95, $y+10); 
+            // $pdf->Cell(0,10, "Category Claimed: ".$data['admissionDetails']->category_claimed,0,0,'L', false);
+
+			// $y = $pdf->getY();
+            // $pdf->setFont ('Arial','B',10);
+			// $pdf->SetXY(5, $y+10); 
+            // $pdf->Cell(0,10, "Quota: ".$data['admissionDetails']->quota,0,0,'L', false);
+			// $pdf->SetXY(25, $y+10); 
+            // $pdf->Cell(0,10,"Sub Quota: ".$data['admissionDetails']->sub_quota,0,0,'L', false);
+
+			// $pdf->SetY($topGap + 110);
+			// $pdf->SetTextColor(33,33,33);
+			// $pdf->setFont ('Arial','BU',12);
+            // $pdf->SetXY(120, 5); 
+            // $pdf->Cell(0,10,"Student Details".$currentAcademicYear,0,0,'C', false);
+            
+            $y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Name of the Student",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->student_name,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Mobile Number",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->mobile,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Email ID",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->email,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Aadhar Number",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->aadhaar,1,0,'L', false); 
+        
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Department",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->dept_id,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Quota",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->quota,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Sub Quota",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->sub_quota,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Category Allocated",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->category_allotted,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Category Claimed",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->category_claimed,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"College Code",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->college_code,1,0,'L', false); 
+
+
+			$pdf->SetY($topGap + 15);
+			$pdf->SetTextColor(33,33,33);
+			$pdf->setFont ('Arial','BU',12);
+            $pdf->SetXY(5, 120); 
+            $pdf->Cell(0,10,"Entrance Exam Details",0,0,'C', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Entrance Type",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->entrance_type,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Entrance Register Number",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->entrance_reg_no,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Entrance Rank",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->entrance_rank,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Admission Order Number",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->admission_order_no,1,0,'L', false); 
+        
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Admission Order Date",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->admission_order_date,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Fees Paid",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->fees_paid,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Fees Receipt Number",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->fees_receipt_no,1,0,'L', false); 
+
+			// $pdf->SetY($topGap + 180);
+			// $pdf->SetY($topGap + 10);
+			// $pdf->SetTextColor(33,33,33);
+			// $pdf->setFont ('Arial','BU',12);
+            // $pdf->SetXY(60, 60); 
+            // $pdf->Cell(0,10,"Student Details".$currentAcademicYear,0,0,'C', false);
+
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Fees Receipt Date",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+			$pdf->SetXY(50, 10); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->fees_receipt_date,1,0,'L', false); 
+
+			$pdf->SetY($topGap + 18);
+			$pdf->SetTextColor(33,33,33);
+			$pdf->setFont ('Arial','BU',12);
+            $pdf->SetXY(5, 18); 
+            $pdf->Cell(0,10,"Personal Details",0,0,'C', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Date of Birth",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->date_of_birth,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Gender",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->gender,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Sports",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->sports,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Blood Group",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->blood_group,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Place of Birth",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->place_of_birth,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Country of Birth",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->country_of_birth,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Nationality",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->nationality,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Religion",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->religion,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Mother Tongue",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->mother_tongue,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Caste",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->caste,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Disability",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->disability,1,0,'L', false); 
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Type of Disability",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->type_of_disability,1,0,'L', false); 
+			
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Econimically Backward",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->economically_backward,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Domicile of State",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->domicile_of_state,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Hobbies",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->hobbies,1,0,'L', false);
+
+			$y = $pdf->getY();
+			$pdf->SetTextColor(55,55,55);
+            $pdf->setFont ('Arial','B',12);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Current Address",1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Current Address",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->current_address,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Current City",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->current_city,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Current District",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->current_district,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Current State",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->current_state,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Current Country",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, 10); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->current_country,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Current Pincode",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->current_pincode,1,0,'L', false);
+
+			$y = $pdf->getY();
+			$pdf->SetTextColor(55,55,55);
+            $pdf->setFont ('Arial','B',12);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Permanent Address",1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Permanent Address",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->present_address,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Permanent City",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->present_city,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Permanent District",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->present_district,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Permanent State",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->present_state,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Permanent Country",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->present_country,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Permanent Pincode",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->present_pincode,1,0,'L', false);
+
+			$pdf->SetY($topGap + 18);
+			$pdf->SetTextColor(33,33,33);
+			$pdf->setFont ('Arial','BU',12);
+            $pdf->SetXY(5, 90); 
+            $pdf->Cell(0,10,"Parent's Details",0,0,'C', false);
+
+			$y = $pdf->getY();
+			$pdf->SetTextColor(55,55,55);
+            $pdf->setFont ('Arial','B',12);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Father Details",1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Name",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->father_name,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Mobile",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->father_mobile,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Email",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->father_email,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Occupation",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->father_occupation,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Annual Income",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->father_annual_income,1,0,'L', false);
+
+			$y = $pdf->getY();
+			$pdf->SetTextColor(55,55,55);
+            $pdf->setFont ('Arial','B',12);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Mother Details",1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Name",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->mother_name,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Mobile",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->mother_mobile,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Email",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->mother_email,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Occupation",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->mother_occupation,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Annual Income",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, 10); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->mother_annual_income,1,0,'L', false);
+
+			$y = $pdf->getY();
+			$pdf->SetTextColor(55,55,55);
+            $pdf->setFont ('Arial','B',12);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Guardian Details",1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Name",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->guardian_name,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Mobile",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->guardian_mobile,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Email",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->guardian_email,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Occupation",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->guardian_occupation,1,0,'L', false);
+
+			$y = $pdf->getY();
+            $pdf->setFont ('Arial','B',9);
+            $pdf->SetXY(10, $y+$row); 
+            $pdf->Cell(0,$row,"Annual Income",1,0,'L', false);
+            $pdf->setFont ('Arial','',9);
+            $pdf->SetXY(50, $y+$row); 
+            $pdf->Cell(0,$row,$data['admissionDetails']->guardian_annual_income,1,0,'L', false);
+
+			// $pdf->SetY($topGap + 18);
+			// $pdf->SetTextColor(33,33,33);
+			// $pdf->setFont ('Arial','BU',12);
+            // $pdf->SetXY(5, 90); 
+            // $pdf->Cell(0,10,"Education Details",0,0,'C', false);
+
+			// $y = $pdf->getY();
+            // $pdf->setFont ('Arial','B',9);
+            // $pdf->SetXY(10, $y+$row); 
+            // $pdf->Cell(0,$row,"Level",1,0,'L', false);
+            // $pdf->setFont ('Arial','',9);
+            // $pdf->SetXY(50, $y+$row); 
+            // $pdf->Cell(0,$row,$data['educations_details']->education_level,1,0,'L', false);
+
+			$fileName = $data['admissionDetails']->student_name . '-Admission Details.pdf';
 			$pdf->output($fileName, 'D');
 		} else {
 			redirect('admin/timeout');
