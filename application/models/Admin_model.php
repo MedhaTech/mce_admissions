@@ -475,5 +475,26 @@ function getAdmissions_category($academic_year,$category_claimed)
     $this->db->order_by('admit_date', 'DESC');
     return $this->db->get('admissions');
   }
+
+
+  function paidfee($id1, $value1, $id2, $value2, $tableName)
+  {
+   
+    
+
+    $this->db->select_sum('amount'); // Replace 'field_name' with the actual name of the field you want to sum
+    $this->db->where($id1, $value1);
+    $this->db->where($id2, $value2);
+    $query = $this->db->get($tableName); // Replace 'your_table_name' with the name of your table
+
+    if ($query->num_rows() > 0) {
+        $result = $query->row();
+        $sum = $result->amount; // Replace 'field_name' with the actual name of the field you want to sum
+      return $sum;
+    } else {
+        return 0;
+    }
+
+  }
 }
  
