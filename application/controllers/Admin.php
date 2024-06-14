@@ -1467,7 +1467,6 @@ class Admin extends CI_Controller
 			$data['parentDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
 			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'student_id', 'student_education_details')->result();
-			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 
 
 			$upload_path = "./assets/students/$id/";
@@ -1864,13 +1863,15 @@ class Admin extends CI_Controller
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $student_id)->row();
 			
 			$data['transactionDetails'] = $this->admin_model->getDetailsbyfield($student_id,'admissions_id','transactions' )->result();
-			// Var_dump($data['transactionDetails']);
+			$data['paid_amount'] = $this->admin_model->paidfee('admissions_id',$student_id,'transaction_status','1','transactions' );
+
+		
 			// die();
 			// var_dump($this->db->last_query());
 			// die();
 			// $data['transactionDetails'] = $this->admin_model->getDetailsbyfield( $admissions_id,'admissions_id','transactions')->row();
 			// $data['admissionDetails'] = $this->admin_model->getDetails('admissions', $student_id)->row();
-			$data['fees'] = $this->admin_model->getDetailsbyfield($data['id'], 'student_id', 'fee_master')->row();
+			$data['fees'] = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'fee_master')->row();
 
 			$this->form_validation->set_rules('mode_of_payment', 'Mode of Payment', 'required');
 			if ($this->form_validation->run() === FALSE) {
@@ -3759,5 +3760,658 @@ With good wishes";
 			redirect('admin/timeout');
 		}
 	}
+
+	function updateadmissiondetails($encryptId)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			$data['page_title'] = "ADMISSION DETAILS";
+			$data['menu'] = "admissiondetails";
+
+			$data['academicYear'] = $this->globals->academicYear();
+			$data['course_options'] = array(" " => "Select Branch") + $this->courses();
+			$data['type_options'] = array(" " => "Select") + $this->globals->category();
+
+			$id = base64_decode($encryptId);
+
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+
+
+			$this->load->library('form_validation');
+
+			$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+			// $data['admissions'] = $this->admin_model->get_details_by_id($id, 'id', 'admissions');
+
+			$this->form_validation->set_rules('student_name', 'Student Name', 'required');
+			$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]');
+			$this->form_validation->set_rules('email', 'Email', 'trim|valid_email');
+			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]');
+			$this->form_validation->set_rules('dept_id', 'Department Id', 'required');
+			$this->form_validation->set_rules('quota', 'Quota', 'required');
+			$this->form_validation->set_rules('sub_quota', 'sub_quota', 'required');
+			$this->form_validation->set_rules('category_allotted', 'Category Allocated', 'required');
+			$this->form_validation->set_rules('category_claimed', 'Category Claimed', 'required');
+			$this->form_validation->set_rules('college_code', 'College Code', 'required');
+			$this->form_validation->set_rules('sports', 'Sports', 'required');
+
+			if ($this->form_validation->run() === FALSE) {
+
+				$data['action'] = 'admin/updateadmissiondetails/' . $encryptId;
+
+				$admissionDetails = $this->admin_model->getDetails('admissions', $id)->row();
+
+				$data['student_name'] =  $admissionDetails->student_name;
+				$data['mobile'] = $admissionDetails->mobile;
+				$data['email'] = $admissionDetails->email;
+				$data['aadhaar'] = $admissionDetails->aadhaar;
+				$data['dept_id'] = $admissionDetails->dept_id;
+				$data['quota'] = $admissionDetails->quota;
+				$data['sub_quota'] = $admissionDetails->sub_quota;
+				$data['category_allotted'] = $admissionDetails->category_allotted;
+				$data['category_claimed'] = $admissionDetails->category_claimed;
+				$data['college_code'] = $admissionDetails->college_code;
+				$data['sports'] = $admissionDetails->sports;
+				$this->admin_template->show('admin/updateadmissiondetails', $data);
+			} else {
+				$updateDetails = array(
+					'student_name' => strtoupper($this->input->post('student_name')),
+					'mobile' => $this->input->post('mobile'),
+					'email' => strtolower($this->input->post('email')),
+					'aadhaar' => $this->input->post('aadhaar'),
+					'dept_id' => $this->input->post('dept_id'),
+					'quota' => $this->input->post('quota'),
+					'sub_quota' => $this->input->post('sub_quota'),
+					'category_allotted' => $this->input->post('category_allotted'),
+					'category_claimed' => $this->input->post('category_claimed'),
+					'college_code' => $this->input->post('college_code'),
+					'sports' => $this->input->post('sports'),
+				);
+				// print_r($updateDetails);
+				// die();
+				$result = $this->admin_model->updateDetails($id, $updateDetails, 'admissions');
+
+				// var_dump($this->db->last_query());
+				// die();
+				if ($result) {
+					$this->session->set_flashdata('message', 'Admission Details updated successfully...!');
+					$this->session->set_flashdata('status', 'alert-success');
+				} else {
+					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				}
+
+				redirect('admin/updateadmissiondetails/' .$encryptId, 'refresh');
+			}
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+
+	function updateentranceexamdetails($encryptId)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id']; 
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Entrance Exam Details';
+			$data['menu'] = 'Entranceexamdetails';
+			$data['userTypes'] = $this->globals->userTypes();
+
+			$id = base64_decode($encryptId);
+			// var_dump($id); die();
+			
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+			// var_dump($data['admissionDetails']); die();
+
+			$data['academicYear'] = $this->globals->academicYear();
+			$data['type_options'] = array(" " => "Select") + $this->globals->category();
+			
+
+			$this->load->library('form_validation');
+
+			$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+			// $data['admissions'] = $this->admin_model->get_details_by_id($id, 'id', 'admissions');
+
+			$this->form_validation->set_rules('entrance_type', 'Entrance Type', 'required');
+			$this->form_validation->set_rules('entrance_reg_no', 'Entrance Registration Number', 'required');
+			$this->form_validation->set_rules('entrance_rank', 'Entrance Exam Rank', 'required');
+			$this->form_validation->set_rules('admission_order_no', 'Admission Order Number', 'required');
+			$this->form_validation->set_rules('admission_order_date', 'Admission Order Date', 'required');
+			$this->form_validation->set_rules('fees_paid', 'Fees Paid', 'required');
+			$this->form_validation->set_rules('fees_receipt_no', 'Fees Receipt Number', 'required');
+			$this->form_validation->set_rules('fees_receipt_date', 'Fees Receipt Date', 'required');
+
+			if ($this->form_validation->run() === FALSE) {
+
+				$data['action'] = 'admin/updateentranceexamdetails/' . $encryptId;
+
+				$entranceDetails = $this->admin_model->getDetails('admissions', $id)->row();
+
+				$data['entrance_type'] = $entranceDetails->entrance_type;
+				$data['entrance_reg_no'] = $entranceDetails->entrance_reg_no;
+				$data['entrance_rank'] = $entranceDetails->entrance_rank;
+				$data['admission_order_no'] = $entranceDetails->admission_order_no;
+				$data['admission_order_date'] = $entranceDetails->admission_order_date;
+				$data['fees_paid'] = $entranceDetails->fees_paid;
+				$data['fees_receipt_no'] = $entranceDetails->fees_receipt_no;
+				$data['fees_receipt_date'] = $entranceDetails->fees_receipt_date;
+				$this->admin_template->show('admin/updateentranceexamdetails', $data);
+			} else {
+				$updateDetails = array(
+					'entrance_type' => $this->input->post('entrance_type'),
+					'entrance_reg_no' => $this->input->post('entrance_reg_no'),
+					'entrance_rank' => $this->input->post('entrance_rank'),
+					'admission_order_no' => $this->input->post('admission_order_no'),
+					'admission_order_date' => $this->input->post('admission_order_date'),
+					'fees_paid' => $this->input->post('fees_paid'),
+					'fees_receipt_no' => $this->input->post('fees_receipt_no'),
+					'fees_receipt_date' => $this->input->post('fees_receipt_date'),
+				);
+				// print_r($updateDetails);
+				// die();
+				$result = $this->admin_model->updateDetails($id, $updateDetails, 'admissions');
+
+				// var_dump($this->db->last_query());
+				// die();
+				if ($result) {
+					$this->session->set_flashdata('message', 'Entrance Exam Details updated successfully...!');
+					$this->session->set_flashdata('status', 'alert-success');
+				} else {
+					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				}
+
+				redirect('admin/updateentranceexamdetails/'. $encryptId, 'refresh');
+			}
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+	function updatepersonaldetails($encryptId)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id']; 
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Personal Details';
+			$data['menu'] = 'personaldetails';
+			$data['userTypes'] = $this->globals->userTypes();
+			$id = base64_decode($encryptId);
+
+			$data['states'] = array(" " => "Select State") + $this->globals->states();
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+			// var_dump($data['admissionDetails']); die();
+
+			$data['academicYear'] = $this->globals->academicYear();
+			$data['type_options'] = array(" " => "Select") + $this->globals->category();
+
+			$this->load->library('form_validation');
+
+			$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+			// $data['admissions'] = $this->admin_model->get_details_by_id($id, 'id', 'admissions');
+
+			$this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
+			$this->form_validation->set_rules('sports', 'Sports', 'required');
+			$this->form_validation->set_rules('blood_group', 'Blood Group', 'required');
+			$this->form_validation->set_rules('place_of_birth', 'Place of Birth', 'required');
+			$this->form_validation->set_rules('country_of_birth', '	Country of Birth', 'required');
+			$this->form_validation->set_rules('nationality', 'Nationality', 'required');
+			$this->form_validation->set_rules('religion', 'Religion', 'required');
+			$this->form_validation->set_rules('caste', 'Caste', 'required');
+			$this->form_validation->set_rules('mother_tongue', 'Mother Tongue', 'required');
+			$this->form_validation->set_rules('disability', 'Disability', 'required');
+			$this->form_validation->set_rules('type_of_disability', 'Type of Disability');
+			$this->form_validation->set_rules('economically_backward', 'Economically Backward', 'required');
+			$this->form_validation->set_rules('domicile_of_state', 'Domicile of State', 'required');
+			$this->form_validation->set_rules('hobbies', 'Hobbies', 'required');
+			$this->form_validation->set_rules('current_address', 'Current Address', 'required');
+			$this->form_validation->set_rules('current_city', 'Current City', 'required');
+			$this->form_validation->set_rules('current_district', 'Current District', 'required');
+			$this->form_validation->set_rules('current_state', 'Current State', 'required');
+			$this->form_validation->set_rules('current_country', 'Current Country', 'required');
+			$this->form_validation->set_rules('current_pincode', 'Current Pincode', 'required');
+			$this->form_validation->set_rules('present_address', 'Present Address', 'required');
+			$this->form_validation->set_rules('present_city', 'Present City', 'required');
+			$this->form_validation->set_rules('present_district', 'Present District', 'required');
+			$this->form_validation->set_rules('present_state', 'Present State', 'required');
+			$this->form_validation->set_rules('present_country', 'Present Country', 'required');
+			$this->form_validation->set_rules('present_pincode', 'Present Pincode', 'required');
+
+			if ($this->form_validation->run() === FALSE) {
+
+				$data['action'] = 'admin/updatepersonaldetails/' . $encryptId;
+
+				$personalDetails = $this->admin_model->getDetails('admissions', $id)->row();
+				// var_dump($personalDetails);
+				// die();
+
+				$data['date_of_birth'] = $personalDetails->date_of_birth;
+				$data['gender'] = $personalDetails->gender;
+				$data['sports'] = $personalDetails->sports;
+				$data['blood_group'] = $personalDetails->blood_group;
+				$data['place_of_birth'] = $personalDetails->place_of_birth;
+				$data['country_of_birth'] = $personalDetails->country_of_birth;
+				$data['nationality'] = $personalDetails->nationality;
+				$data['religion'] = $personalDetails->religion;
+				$data['caste'] = $personalDetails->caste;
+				$data['mother_tongue'] = $personalDetails->mother_tongue;
+				$data['disability'] = $personalDetails->disability;
+				$data['type_of_disability'] = $personalDetails->type_of_disability;
+				$data['economically_backward'] = $personalDetails->economically_backward;
+				$data['domicile_of_state'] = $personalDetails->domicile_of_state;
+				$data['hobbies'] = $personalDetails->hobbies;
+				$data['current_address'] = $personalDetails->current_address;
+				$data['current_city'] = $personalDetails->current_city;
+				$data['current_district'] = $personalDetails->current_district;
+				$data['current_state'] = $personalDetails->current_state;
+				$data['current_country'] = $personalDetails->current_country;
+				$data['current_pincode'] = $personalDetails->current_pincode;
+				$data['present_address'] = $personalDetails->present_address;
+				$data['present_city'] = $personalDetails->present_city;
+				$data['present_district'] = $personalDetails->present_district;
+				$data['present_state'] = $personalDetails->present_state;
+				$data['present_country'] = $personalDetails->present_country;
+				$data['present_pincode'] = $personalDetails->present_pincode;
+				$this->admin_template->show('admin/updatepersonaldetails', $data);
+			} else {
+				$updateDetails = array(
+					'date_of_birth' => $this->input->post('date_of_birth'),
+					'gender' => $this->input->post('gender'),
+					'sports' => $this->input->post('sports'),
+					'blood_group' => $this->input->post('blood_group'),
+					'place_of_birth' => $this->input->post('place_of_birth'),
+					'country_of_birth' => $this->input->post('country_of_birth'),
+					'nationality' => $this->input->post('nationality'),
+					'religion' => $this->input->post('religion'),
+					'caste' => $this->input->post('caste'),
+					'mother_tongue' => $this->input->post('mother_tongue'),
+					'disability' => $this->input->post('disability'),
+					'type_of_disability' => $this->input->post('type_of_disability'),
+					'economically_backward' => $this->input->post('economically_backward'),
+					'domicile_of_state' => $this->input->post('domicile_of_state'),
+					'hobbies' => $this->input->post('hobbies'),
+					'current_address' => $this->input->post('current_address'),
+					'current_city' => $this->input->post('current_city'),
+					'current_district' => $this->input->post('current_district'),
+					'current_state' => $this->input->post('current_state'),
+					'current_country' => $this->input->post('current_country'),
+					'current_pincode' => $this->input->post('current_pincode'),
+					'present_address' => $this->input->post('present_address'),
+					'present_city' => $this->input->post('present_city'),
+					'present_district' => $this->input->post('present_district'),
+					'present_state' => $this->input->post('present_state'),
+					'present_country' => $this->input->post('present_country'),
+					'present_pincode' => $this->input->post('present_pincode'),
+				);
+				// print_r($updateDetails);
+				// die();
+				$result = $this->admin_model->updateDetails($id, $updateDetails, 'admissions');
+
+				// var_dump($result); die();
+
+				// var_dump($this->db->last_query());
+				// die();
+				if ($result) {
+					$this->session->set_flashdata('message', 'Personal Details updated successfully...!');
+					$this->session->set_flashdata('status', 'alert-success');
+				} else {
+					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				}
+
+				redirect('admin/updatepersonaldetails/' . $encryptId, 'refresh');
+			}
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+	function updateparentsdetails($encryptId)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id']; 
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Parent Details';
+			$data['menu'] = 'parentdetails';
+			$data['userTypes'] = $this->globals->userTypes();
+			$id = base64_decode($encryptId);
+
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+
+
+			$this->load->library('form_validation');
+
+			$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+			// $data['admissions'] = $this->admin_model->get_details_by_id($id, 'id', 'admissions');
+
+			$this->form_validation->set_rules('father_name', 'Father Name', 'required');
+			$this->form_validation->set_rules('father_mobile', 'Father Mobile', 'required|regex_match[/^[0-9]{10}$/]');
+			$this->form_validation->set_rules('father_email', 'Father Email', 'required|trim|valid_email');
+			$this->form_validation->set_rules('father_occupation', 'Father Occupation', 'required');
+			$this->form_validation->set_rules('father_annual_income', 'Father Annual Income', 'required');
+			$this->form_validation->set_rules('mother_name', 'Mother Name', 'required');
+			$this->form_validation->set_rules('mother_mobile', 'Mother Mobile', 'required|regex_match[/^[0-9]{10}$/]');
+			$this->form_validation->set_rules('mother_email', 'Mother Email', 'trim|valid_email');
+			$this->form_validation->set_rules('mother_occupation', 'Mother Occupation');
+			$this->form_validation->set_rules('mother_annual_income', 'Mother Annual Income');
+			$this->form_validation->set_rules('guardian_name', 'Guardian Name', 'required');
+			$this->form_validation->set_rules('guardian_mobile', 'Guardian Mobile', 'required|regex_match[/^[0-9]{10}$/]');
+			$this->form_validation->set_rules('guardian_email', 'Guardian Email', 'trim|valid_email');
+			$this->form_validation->set_rules('guardian_occupation', 'Guardian Occupation');
+			$this->form_validation->set_rules('guardian_annual_income', 'Guardian Annual Income');
+
+			if ($this->form_validation->run() === FALSE) {
+
+				$data['action'] = 'admin/updateparentsdetails/' . $encryptId;
+
+				$parentDetails = $this->admin_model->getDetails('admissions', $id)->row();
+
+				$data['father_name'] = $parentDetails->father_name;
+				$data['father_mobile'] = $parentDetails->father_mobile;
+				$data['father_email'] = $parentDetails->father_email;
+				$data['father_occupation'] = $parentDetails->father_occupation;
+				$data['father_annual_income'] = $parentDetails->father_annual_income;
+				$data['mother_name'] = $parentDetails->mother_name;
+				$data['mother_mobile'] = $parentDetails->mother_mobile;
+				$data['mother_email'] = $parentDetails->mother_email;
+				$data['mother_occupation'] = $parentDetails->mother_occupation;
+				$data['mother_annual_income'] = $parentDetails->mother_annual_income;
+				$data['guardian_name'] = $parentDetails->guardian_name;
+				$data['guardian_mobile'] = $parentDetails->guardian_mobile;
+				$data['guardian_email'] = $parentDetails->guardian_email;
+				$data['guardian_occupation'] = $parentDetails->guardian_occupation;
+				$data['guardian_annual_income'] = $parentDetails->guardian_annual_income;
+				$this->admin_template->show('admin/updateparentsdetails', $data);
+			} else {
+				$updateDetails = array(
+					'father_name' => $this->input->post('father_name'),
+					'father_mobile' => $this->input->post('father_mobile'),
+					'father_email' => $this->input->post('father_email'),
+					'father_occupation' => $this->input->post('father_occupation'),
+					'father_annual_income' => $this->input->post('father_annual_income'),
+					'mother_name' => $this->input->post('mother_name'),
+					'mother_mobile' => $this->input->post('mother_mobile'),
+					'mother_email' => $this->input->post('mother_email'),
+					'mother_occupation' => $this->input->post('mother_occupation'),
+					'mother_annual_income' => $this->input->post('mother_annual_income'),
+					'guardian_name' => $this->input->post('guardian_name'),
+					'guardian_mobile' => $this->input->post('guardian_mobile'),
+					'guardian_email' => $this->input->post('guardian_email'),
+					'guardian_occupation' => $this->input->post('guardian_occupation'),
+					'guardian_annual_income' => $this->input->post('guardian_annual_income'),
+				);
+				// print_r($updateDetails);
+				// die();
+				$result = $this->admin_model->updateDetails($id, $updateDetails, 'admissions');
+
+				// var_dump($this->db->last_query());
+				// die();
+				if ($result) {
+					$this->session->set_flashdata('message', 'Parent Details updated successfully...!');
+					$this->session->set_flashdata('status', 'alert-success');
+				} else {
+					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				}
+
+				redirect('admin/updateparentsdetails/' .$encryptId, 'refresh');
+			}
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+	function educationdetails($encryptId)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			$data['page_title'] = "EDUCATION DETAILS";
+			$data['menu'] = "educationdetails";
+
+			$id = base64_decode($encryptId);
+
+			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'student_id', 'student_education_details')->result();
+		
+			$this->form_validation->set_rules('education_level', 'Education Level', 'required');
+			$this->form_validation->set_rules('inst_type', 'Institution Type', 'required');
+			$this->form_validation->set_rules('inst_board', 'Board / University', 'required');
+			$this->form_validation->set_rules('inst_name', 'Institution Name', 'required');
+			$this->form_validation->set_rules('inst_address', 'Institution Address', 'required');
+			$this->form_validation->set_rules('inst_city', 'Institution City', 'required');
+			$this->form_validation->set_rules('inst_state', 'Institution State', 'required');
+			$this->form_validation->set_rules('inst_country', 'Institution Country', 'required');
+			$this->form_validation->set_rules('medium_of_instruction', 'Medium of Instruction', 'required');
+			$this->form_validation->set_rules('register_number', 'Register Number', 'required');
+			$this->form_validation->set_rules('year_of_passing', 'Year of Passing', 'required');
+
+			if ($this->form_validation->run() === FALSE) {
+				$data = array(
+					'education_level' => $this->input->post('education_level'),
+					'inst_type' => $this->input->post('inst_type'),
+					'inst_board' => $this->input->post('inst_board'),
+					'inst_name' => $this->input->post('inst_name'),
+					'inst_address' => $this->input->post('inst_address'),
+					'inst_city' => $this->input->post('inst_city'),
+					'inst_state' => $this->input->post('inst_state'),
+					'inst_country' => $this->input->post('inst_country'),
+					'medium_of_instruction' => $this->input->post('medium_of_instruction'),
+					'register_number' => $this->input->post('register_number'),
+					'year_of_passing' => $this->input->post('year_of_passing')
+				);
+
+				// Insert subject fields
+				for ($i = 1; $i <= 6; $i++) {
+					$subject_name = $this->input->post('subject_' . $i . '_name');
+					$min_marks = $this->input->post('subject_' . $i . '_min_marks');
+					$max_marks = $this->input->post('subject_' . $i . '_max_marks');
+					$obtained_marks = $this->input->post('subject_' . $i . '_obtained_marks');
+
+					// Only add subject if name is not empty
+					if (!empty($subject_name)) {
+						$data['subject_' . $i . '_name'] = $subject_name;
+						$data['subject_' . $i . '_min_marks'] = $min_marks;
+						$data['subject_' . $i . '_max_marks'] = $max_marks;
+						$data['subject_' . $i . '_obtained_marks'] = $obtained_marks;
+					}
+				}
+				$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'student_id', 'student_education_details')->result();
+				$data['action'] = 'admin/educationdetails/'.$encryptId;
+				$data['username'] = $session_data['username'];
+				$data['full_name'] = $session_data['full_name'];
+				$data['role'] = $session_data['role'];
+				$data['page_title'] = "EDUCATION DETAILS";
+				$data['menu'] = "educationdetails";
+
+				$this->admin_template->show('admin/educationdetails', $data);
+			} else {
+
+				$insertDetails = array(
+					'student_id' => $student_id,
+					'education_level' => $this->input->post('education_level'),
+					'inst_type' => $this->input->post('inst_type'),
+					'inst_board' => $this->input->post('inst_board'),
+					'inst_name' => $this->input->post('inst_name'),
+					'inst_address' => $this->input->post('inst_address'),
+					'inst_city' => $this->input->post('inst_city'),
+					'inst_state' => $this->input->post('inst_state'),
+					'inst_country' => $this->input->post('inst_country'),
+					'medium_of_instruction' => $this->input->post('medium_of_instruction'),
+					'register_number' => $this->input->post('register_number'),
+					'year_of_passing' => $this->input->post('year_of_passing'),
+					'aggregate' => $this->input->post('aggregate'),
+					'updated_on' => date('Y-m-d h:i:s'),
+					'updated_by' => $data['student_name']
+				);
+
+				// Insert subject fields
+				for ($i = 1; $i <= 6; $i++) {
+					$subject_name = $this->input->post('subject_' . $i . '_name');
+					$min_marks = $this->input->post('subject_' . $i . '_min_marks');
+					$max_marks = $this->input->post('subject_' . $i . '_max_marks');
+					$obtained_marks = $this->input->post('subject_' . $i . '_obtained_marks');
+
+					// Only add subject if name is not empty
+					if (!empty($subject_name)) {
+						$insertDetails['subject_' . $i . '_name'] = $subject_name;
+						$insertDetails['subject_' . $i . '_min_marks'] = $min_marks;
+						$insertDetails['subject_' . $i . '_max_marks'] = $max_marks;
+						$insertDetails['subject_' . $i . '_obtained_marks'] = $obtained_marks;
+					}
+				}
+				$result = $this->admin_model->insertDetails('student_education_details', $insertDetails);
+
+				if ($result) {
+					$this->session->set_flashdata('message', 'Education Details added successfully...!');
+					$this->session->set_flashdata('status', 'alert-success');
+				} else {
+					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				}
+
+				redirect('admin/educationdetails/' .$encryptId, 'refresh');
+			}
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+
+	function updateeducationdetails($edu_id)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			$data['page_title'] = 'Update Education Details';
+			$data['menu'] = 'educationdetails';
+
+			$this->form_validation->set_rules('education_level', 'Education Level', 'required');
+			$this->form_validation->set_rules('inst_type', 'Institution Type', 'required');
+			$this->form_validation->set_rules('inst_board', 'Board / University', 'required');
+			$this->form_validation->set_rules('inst_name', 'Institution Name', 'required');
+			$this->form_validation->set_rules('inst_address', 'Institution Address', 'required');
+			$this->form_validation->set_rules('inst_city', 'Institution City', 'required');
+			$this->form_validation->set_rules('inst_state', 'Institution State', 'required');
+			$this->form_validation->set_rules('inst_country', 'Institution Country', 'required');
+			$this->form_validation->set_rules('medium_of_instruction', 'Medium of Instruction', 'required');
+			$this->form_validation->set_rules('register_number', 'Register Number', 'required');
+			$this->form_validation->set_rules('year_of_passing', 'Year of Passing', 'required');
+
+			if ($this->form_validation->run() === FALSE) {
+				$eduDetails = $this->admin_model->getDetails('student_education_details', $edu_id)->row();
+				$data = array(
+					'education_level' => $eduDetails->education_level,
+					'inst_type' => $eduDetails->inst_type,
+					'inst_board' => $eduDetails->inst_board,
+					'inst_name' => $eduDetails->inst_name,
+					'inst_address' => $eduDetails->inst_address,
+					'inst_city' => $eduDetails->inst_city,
+					'inst_state' => $eduDetails->inst_state,
+					'inst_country' => $eduDetails->inst_country,
+					'medium_of_instruction' => $eduDetails->medium_of_instruction,
+					'register_number' => $eduDetails->register_number,
+					'year_of_passing' => $eduDetails->year_of_passing,
+					'aggregate' => $eduDetails->aggregate
+				);
+
+				// Insert subject fields
+				for ($i = 1; $i <= 6; $i++) {
+					$subject_name = $eduDetails->{"subject_" . $i . "_name"};
+					$min_marks = $eduDetails->{"subject_" . $i . "_min_marks"};
+					$max_marks = $eduDetails->{"subject_" . $i . "_max_marks"};
+					$obtained_marks = $eduDetails->{"subject_" . $i . "_obtained_marks"};
+
+					// Only add subject if name is not empty
+					// if (!empty($subject_name)) {
+					$data['subject_' . $i . '_name'] = $subject_name;
+					$data['subject_' . $i . '_min_marks'] = $min_marks;
+					$data['subject_' . $i . '_max_marks'] = $max_marks;
+					$data['subject_' . $i . '_obtained_marks'] = $obtained_marks;
+					// }
+				}
+				$data['action'] = 'admin/updateeducationdetails/' . $edu_id;
+				$data['username'] = $session_data['username'];
+				$data['full_name'] = $session_data['full_name'];
+				$data['role'] = $session_data['role'];
+				$data['id'] = $student_session['id'];
+				$data['page_title'] = 'Update Education Details';
+				$data['menu'] = 'educationdetails';
+
+				$this->admin_template->show('admin/updateeducationdetails', $data);
+			} else {
+
+				$updateDetails = array(
+					'education_level' => $this->input->post('education_level'),
+					'inst_type' => $this->input->post('inst_type'),
+					'inst_board' => $this->input->post('inst_board'),
+					'inst_name' => $this->input->post('inst_name'),
+					'inst_address' => $this->input->post('inst_address'),
+					'inst_city' => $this->input->post('inst_city'),
+					'inst_state' => $this->input->post('inst_state'),
+					'inst_country' => $this->input->post('inst_country'),
+					'medium_of_instruction' => $this->input->post('medium_of_instruction'),
+					'register_number' => $this->input->post('register_number'),
+					'year_of_passing' => $this->input->post('year_of_passing'),
+					'aggregate' => $this->input->post('aggregate'),
+					'updated_on' => date('Y-m-d h:i:s'),
+					'updated_by' => $data['student_name']
+				);
+
+				// Insert subject fields
+				for ($i = 1; $i <= 6; $i++) {
+					$subject_name = $this->input->post('subject_' . $i . '_name');
+					$min_marks = $this->input->post('subject_' . $i . '_min_marks');
+					$max_marks = $this->input->post('subject_' . $i . '_max_marks');
+					$obtained_marks = $this->input->post('subject_' . $i . '_obtained_marks');
+
+					// Only add subject if name is not empty
+					if (!empty($subject_name)) {
+						$updateDetails['subject_' . $i . '_name'] = $subject_name;
+						$updateDetails['subject_' . $i . '_min_marks'] = $min_marks;
+						$updateDetails['subject_' . $i . '_max_marks'] = $max_marks;
+						$updateDetails['subject_' . $i . '_obtained_marks'] = $obtained_marks;
+					}
+				}
+				$result = $this->admin_model->updateDetails($edu_id, $updateDetails, 'student_education_details');
+
+			
+				// var_dump($this->db->last_query());
+
+				if ($result) {
+					$this->session->set_flashdata('message', 'Education Details Updated successfully...!');
+					$this->session->set_flashdata('status', 'alert-success');
+				} else {
+					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				}
+
+				redirect('admin/updateeducationdetails/' .$edu_id, 'refresh');
+			}
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
 
 }

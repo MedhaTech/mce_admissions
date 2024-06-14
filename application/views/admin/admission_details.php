@@ -13,6 +13,10 @@
                                 <?php $encryptId = base64_encode($admissionDetails->id);
                                 echo anchor('admin/admissionsdetails/'.$encryptId, '<i class="fas fa-download fa-sm fa-fw"></i> Download ', 'class="btn btn-danger btn-sm"'); ?>
                             </li> -->
+                            <!-- <li class="nav-item">
+                                <?php $encryptId = base64_encode($admissionDetails->id);
+                                echo anchor('admin/updateadmissiondetails/'.$encryptId, '<i class="fas fa-edit fa-sm fa-fw"></i> Edit ', 'class="btn btn-dark btn-sm"'); ?>
+                            </li> -->
                             <li class="nav-item">
                                 <?php $encryptId = base64_encode($admissionDetails->id);
                                 echo anchor('admin/admissionsletter/'.$encryptId, '<i class="fas fa-download fa-sm fa-fw"></i> Admit Letter ', 'class="btn btn-danger btn-sm"'); ?>
@@ -175,6 +179,23 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Sports</label><br>
+                                <?php
+                                if($admissionDetails->sports != NULL)
+                                    {
+                                        echo $admissionDetails->sports;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -185,7 +206,10 @@
                     </h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
-
+                            <li class="nav-item">
+                            <?php $encryptId = base64_encode($admissionDetails->id);
+                            echo anchor('admin/updateentranceexamdetails/'.$encryptId, '<i class="fas fa-edit"></i> Edit ', 'class="btn btn-dark btn-sm"'); ?>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -319,7 +343,8 @@
                     </h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
-
+                        <?php $encryptId = base64_encode($admissionDetails->id);
+                            echo anchor('admin/updatepersonaldetails/'.$encryptId, '<i class="fas fa-edit"></i> Edit ', 'class="btn btn-dark btn-sm"'); ?>
                         </ul>
                     </div>
                 </div>
@@ -708,7 +733,8 @@
                     </h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
-
+                        <?php $encryptId = base64_encode($admissionDetails->id);
+                            echo anchor('admin/updateparentsdetails/'.$encryptId, '<i class="fas fa-edit"></i> Edit ', 'class="btn btn-dark btn-sm"'); ?>
                         </ul>
                     </div>
                 </div>
@@ -914,7 +940,8 @@
                     </h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
-
+                         <?php $encryptId = base64_encode($admissionDetails->id);
+                            echo anchor('admin/educationdetails/'.$encryptId, '<i class="fas fa-edit"></i> Edit ', 'class="btn btn-dark btn-sm"'); ?>
                         </ul>
                     </div>
                 </div>
