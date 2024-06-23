@@ -14,7 +14,7 @@ class Student extends CI_Controller
 
 	protected function setUp(): void
 	{
-		$this->client = new BillDeskJWEHS256Client("https://pguat.billdesk.io", "cnbmlndtrt", "k2ieff4ugn8Ehv31tUhXTRoHK2MEBrdJ");
+		$this->client = new BillDeskJWEHS256Client("https://pguat.billdesk.io", "cnbmlndegc", "WHjXW5WHk27mr50KetSh75vyapmO14IT");
 		$logger = new Logger("default");
 		$logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
 		$this->client->setLogger($logger);
@@ -161,6 +161,7 @@ class Student extends CI_Controller
 			$data['menu'] = "admissiondetails";
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
+			// $data['feesDetails'] = $this->admin_model->getDetails('fee', $data['id'])->row();
 
 			$data['academicYear'] = $this->globals->academicYear();
 			$data['type_options'] = array(" " => "Select") + $this->globals->category();
@@ -322,6 +323,7 @@ class Student extends CI_Controller
 			$data['id'] = $student_session['id'];
 			$data['menu'] = "personaldetails";
 			$data['userTypes'] = $this->globals->userTypes();
+			$data['states'] = array(" " => "Select State") + $this->globals->states();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 
 
@@ -341,7 +343,7 @@ class Student extends CI_Controller
 			$this->form_validation->set_rules('caste', 'Caste', 'required');
 			$this->form_validation->set_rules('mother_tongue', 'Mother Tongue', 'required');
 			$this->form_validation->set_rules('disability', 'Disability', 'required');
-			$this->form_validation->set_rules('type_of_disability', 'Type of Disability', 'required');
+			$this->form_validation->set_rules('type_of_disability', 'Type of Disability');
 			$this->form_validation->set_rules('economically_backward', 'Economically Backward', 'required');
 			$this->form_validation->set_rules('domicile_of_state', 'Domicile of State', 'required');
 			$this->form_validation->set_rules('hobbies', 'Hobbies', 'required');
@@ -467,14 +469,14 @@ class Student extends CI_Controller
 			$this->form_validation->set_rules('father_annual_income', 'Father Annual Income', 'required');
 			$this->form_validation->set_rules('mother_name', 'Mother Name', 'required');
 			$this->form_validation->set_rules('mother_mobile', 'Mother Mobile', 'required|regex_match[/^[0-9]{10}$/]');
-			$this->form_validation->set_rules('mother_email', 'Mother Email', 'required|trim|valid_email');
-			$this->form_validation->set_rules('mother_occupation', 'Mother Occupation', 'required');
-			$this->form_validation->set_rules('mother_annual_income', 'Mother Annual Income', 'required');
+			$this->form_validation->set_rules('mother_email', 'Mother Email', 'trim|valid_email');
+			$this->form_validation->set_rules('mother_occupation', 'Mother Occupation');
+			$this->form_validation->set_rules('mother_annual_income', 'Mother Annual Income');
 			$this->form_validation->set_rules('guardian_name', 'Guardian Name', 'required');
 			$this->form_validation->set_rules('guardian_mobile', 'Guardian Mobile', 'required|regex_match[/^[0-9]{10}$/]');
-			$this->form_validation->set_rules('guardian_email', 'Guardian Email', 'required|trim|valid_email');
-			$this->form_validation->set_rules('guardian_occupation', 'Guardian Occupation', 'required');
-			$this->form_validation->set_rules('guardian_annual_income', 'Guardian Annual Income', 'required');
+			$this->form_validation->set_rules('guardian_email', 'Guardian Email', 'trim|valid_email');
+			$this->form_validation->set_rules('guardian_occupation', 'Guardian Occupation');
+			$this->form_validation->set_rules('guardian_annual_income', 'Guardian Annual Income');
 
 			if ($this->form_validation->run() === FALSE) {
 
@@ -676,6 +678,7 @@ class Student extends CI_Controller
 			$data['student'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 			$data['fees'] = $this->admin_model->getDetailsbyfield($data['id'], 'student_id', 'fee_master')->row();
 			$data['transactionDetails'] = $this->admin_model->getDetailsbyfield($student_id,'admissions_id','transactions' )->result();
+			$data['paid_amount'] = $this->admin_model->paidfee('admissions_id',$student_id,'transaction_status','1','transactions' );
 
 			// $this->student_template->show('student/fee_details', $data);
 
@@ -1249,7 +1252,7 @@ class Student extends CI_Controller
 		$this->load->library('logger');
 		$headers = array(
 			"alg" => "HS256",
-			"clientid" => "cnbmlndtrt",
+			"clientid" => "cnbmlndegc",
 			"kid" => "HMAC"
 		);
 		$order_id = rand();
@@ -1261,7 +1264,7 @@ class Student extends CI_Controller
 
 
 		$payload['orderid']             = "MALbe" . $order_id;
-		$payload['mercid']              = "CNBMLNDTRT";
+		$payload['mercid']              = "CNBMLNDEGC";
 		$payload['order_date']          = date("c");
 		$payload['amount']              = "10.00";
 		$payload['currency']            = '356';
@@ -1289,7 +1292,7 @@ class Student extends CI_Controller
 		/*****************************************/
 		// Encode payload
 		/*****************************************/
-		$curl_payload = JWT::encode($payload, "k2ieff4ugn8Ehv31tUhXTRoHK2MEBrdJ", "HS256", $headers);
+		$curl_payload = JWT::encode($payload, "WHjXW5WHk27mr50KetSh75vyapmO14IT", "HS256", $headers);
 
 
 
@@ -1319,7 +1322,7 @@ class Student extends CI_Controller
 		$message2 = "Billdesk create order response - " . $response;
 		$this->logger->write('billdesk', 'debug', $message2);
 		curl_close($response);
-		$result_decoded = JWT::decode($response, "k2ieff4ugn8Ehv31tUhXTRoHK2MEBrdJ", 'HS256');
+		$result_decoded = JWT::decode($response, "WHjXW5WHk27mr50KetSh75vyapmO14IT", 'HS256');
 		$result_array = (array) $result_decoded;
 		$message = "Billdesk create order response decoded - " . json_encode($result_array);
 		$this->logger->write('billdesk', 'debug', $message);
@@ -1355,7 +1358,7 @@ class Student extends CI_Controller
 
 
 			if (!empty($tx)) {
-				$response_decoded = JWT::decode($tx, "k2ieff4ugn8Ehv31tUhXTRoHK2MEBrdJ", 'HS256');
+				$response_decoded = JWT::decode($tx, "WHjXW5WHk27mr50KetSh75vyapmO14IT", 'HS256');
 				$response_array = (array) $response_decoded;
 				$response_json =  json_encode($response_array);
 				$message = "BillDesk callback Response decode - " . $response_json . "\n";
@@ -1450,12 +1453,12 @@ class Student extends CI_Controller
 		$billdesk_URL_retrive = "https://api.billdesk.com/payments/ve1_2/transactions/get";
 		$trace_id = rand(1000000000,9999999999);
 		$servertime = time();
-		$headers = array("alg" => "HS256", "clientid" => "cnbmlndtrt", "kid" => "HMAC");
+		$headers = array("alg" => "HS256", "clientid" => "cnbmlndegc", "kid" => "HMAC");
 		$payload = array(
-			"mercid" => 'CNBMLNDTRT',
+			"mercid" => 'CNBMLNDEGC',
 			"orderid" => $order_id,
 		);
-		$curl_payload = JWT::encode($payload, 'k2ieff4ugn8Ehv31tUhXTRoHK2MEBrdJ', 'HS256', $headers);
+		$curl_payload = JWT::encode($payload, 'WHjXW5WHk27mr50KetSh75vyapmO14IT', 'HS256', $headers);
 		$message = "BillDesk retrieve payload - " . $curl_payload . "\n";
 		$this->logger->write('billdesk', 'debug', $message);
 		$ch = curl_init($billdesk_URL_retrive);
@@ -1477,7 +1480,7 @@ class Student extends CI_Controller
 		$message = "Billdesk retrieve order response - " . $response;
 		$this->logger->write('billdesk', 'debug', $message);
 		curl_close($ch);
-		$result_decoded = JWT::decode($response, 'k2ieff4ugn8Ehv31tUhXTRoHK2MEBrdJ', 'HS256');
+		$result_decoded = JWT::decode($response, 'WHjXW5WHk27mr50KetSh75vyapmO14IT', 'HS256');
 		$response_array = (array) $result_decoded;
 		$message = "Billdesk retrieve order response decoded - " . json_encode($response_array);
 		$this->logger->write('billdesk', 'debug', $message);
@@ -1516,8 +1519,8 @@ class Student extends CI_Controller
 			require_once APPPATH . 'libraries/Jwt.php';
 			$this->load->library('logger');
 			$insert = array(
-				// 'amount' => number_format((float)$this->input->post('amount'), 2, '.', ''),
-				'amount' => '10.00',
+				'amount' => number_format((float)$this->input->post('amount'), 2, '.', ''),
+				// 'amount' => '10.00',
 				'reg_no' => $this->input->post('usn'),
 				// 'email' => $this->input->post('email'),
 				'mobile' => $this->input->post('mobile'),
@@ -1534,7 +1537,7 @@ class Student extends CI_Controller
 
 			$headers = array(
 				"alg" => "HS256",
-				"clientid" => "cnbmlndtrt",
+				"clientid" => "cnbmlndegc",
 				"kid" => "HMAC"
 			);
 			$order_id = rand();
@@ -1546,7 +1549,7 @@ class Student extends CI_Controller
 
 
 			$payload['orderid']             = $insert['reference_no'];
-			$payload['mercid']              = "CNBMLNDTRT";
+			$payload['mercid']              = "CNBMLNDEGC";
 			$payload['order_date']          = date("c");
 			$payload['amount']              = $insert['amount'];
 			$payload['currency']            = '356';
@@ -1575,7 +1578,7 @@ class Student extends CI_Controller
 			/*****************************************/
 			// Encode payload
 			/*****************************************/
-			$curl_payload = JWT::encode($payload, "k2ieff4ugn8Ehv31tUhXTRoHK2MEBrdJ", "HS256", $headers);
+			$curl_payload = JWT::encode($payload, "WHjXW5WHk27mr50KetSh75vyapmO14IT", "HS256", $headers);
 
 
 
@@ -1605,7 +1608,7 @@ class Student extends CI_Controller
 			$message2 = "Billdesk create order response - " . $response . "\n";
 			$this->logger->write('billdesk', 'debug', $message2);
 			curl_close($response);
-			$result_decoded = JWT::decode($response, "k2ieff4ugn8Ehv31tUhXTRoHK2MEBrdJ", 'HS256');
+			$result_decoded = JWT::decode($response, "WHjXW5WHk27mr50KetSh75vyapmO14IT", 'HS256');
 			$result_array = (array) $result_decoded;
 			$message = "Billdesk create order response decoded - " . json_encode($result_array) . "\n";
 			$this->logger->write('billdesk', 'debug', $message);

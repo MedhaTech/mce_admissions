@@ -303,7 +303,6 @@ class Admin_model extends CI_Model
     $this->db->order_by('reg_date', 'DESC');
     return $this->db->get('enquiries');
   }
- 
 
   function getDepartments(){
     $this->db->select('departments.department_id, departments.stream_id, streams.stream_name, streams.stream_short_name, departments.department_name, departments.department_short_name, departments.aided_intake, departments.aided_mgmt_intake, departments.aided_comed_k_intake, departments.aided_kea_intake, departments.aided_snq_intake, departments.unaided_intake, departments.unaided_mgmt_intake, departments.unaided_comed_k_intake, departments.unaided_kea_intake, departments.unaided_snq_intake');
@@ -408,6 +407,94 @@ class Admin_model extends CI_Model
       $this->db->where('receipt_no != ""');
       $this->db->where('transaction_status','1');
       return $this->db->get('transactions');    
+  }
+
+  function DCBReport($currentAcademicYear){
+    $this->db->select('id, app_no, adm_no, admit_date, dept_id, student_name, mobile, fees_paid, status,remarks');
+    $this->db->where('academic_year',$currentAcademicYear);
+    $this->db->where('status != "7"');
+    return $this->db->get('admissions');   
+  }
+
+  function dayBookReport($from_date, $to_date){
+    $this->db->select('transactions.id as transaction_id, transactions.admissions_id, admissions.id, admissions.academic_year,admissions.app_no, admissions.adm_no, admissions.course, admissions.dsc_1, admissions.dsc_2, admissions.student_name, admissions.mobile, admissions.aided_unaided, admissions.category, admissions.status, admissions.proposed_amount, admissions.additional_amount, admissions.concession_type, admissions.concession_fee, admissions.final_amount, transactions.mobile, transactions.aided_unaided, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.paid_amount, transactions.amount, transactions.balance_amount, transactions.remarks, transactions.transaction_status, created_by, created_on');
+    $this->db->join('admissions','admissions.id=transactions.admissions_id');
+    $this->db->where('transactions.transaction_date >= "'.$from_date.'"');
+    $this->db->where('transactions.transaction_date <= "'.$to_date.'"');
+    $this->db->where('transactions.transaction_status','1');
+    $this->db->where('admissions.status != "7"');
+    return $this->db->get('transactions');   
+  }
+
+  function feeStructure($course, $combination, $category, $aided_unaided){
+    $this->db->where('course',$course);
+    if($combination){
+      $this->db->where('combination',$combination);    
+    }
+    $this->db->where('category',$category);
+    $this->db->where('aided_unaided',$aided_unaided);
+    return $this->db->get('fee_structure');   
+  }
+
+  function studentReportDownload($select, $dept_id, $admission_status){
+    $this->db->select($select);
+    
+    if($dept_id != "all"){
+        $this->db->where('dept_id', $dept_id);
+    }
+    
+    if($admission_status != "all"){
+        $this->db->where('status', $admission_status);
+    }
+    
+    return $this->db->get('admissions');
+}
+
+function transactions($transaction_status){
+  $this->db->select('admissions.id, admissions.app_no, admissions.adm_no, admissions.student_name, admissions.mobile,  admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.amount, transactions.remarks, transactions.transaction_status');
+  if($transaction_status != null)
+    $this->db->where('transactions.transaction_status',$transaction_status);
+  $this->db->join('admissions','admissions.id=transactions.admissions_id');
+  $this->db->order_by('transactions.transaction_date','ASC');
+  return $this->db->get('transactions');
+}
+
+function getAdmissions_category($academic_year,$category_claimed)
+  {
+    $this->db->where('academic_year', $academic_year);
+    $this->db->where('category_claimed', $category_claimed);
+    $this->db->order_by('admit_date', 'DESC');
+    return $this->db->get('admissions');
+  }
+
+  function getAdmissions_course($academic_year,$course,$status)
+  {
+    $this->db->where('academic_year', $academic_year);
+    $this->db->where('dept_id', $course);
+    $this->db->where('status', $status);
+    $this->db->order_by('admit_date', 'DESC');
+    return $this->db->get('admissions');
+  }
+
+
+  function paidfee($id1, $value1, $id2, $value2, $tableName)
+  {
+   
+    
+
+    $this->db->select_sum('amount'); // Replace 'field_name' with the actual name of the field you want to sum
+    $this->db->where($id1, $value1);
+    $this->db->where($id2, $value2);
+    $query = $this->db->get($tableName); // Replace 'your_table_name' with the name of your table
+
+    if ($query->num_rows() > 0) {
+        $result = $query->row();
+        $sum = $result->amount; // Replace 'field_name' with the actual name of the field you want to sum
+      return $sum;
+    } else {
+        return 0;
+    }
+
   }
 }
  

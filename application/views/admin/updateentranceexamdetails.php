@@ -11,7 +11,7 @@
                       <div class="card-tools">
                           <ul class="nav nav-pills ml-auto">
                               <li class="nav-item">
-                                  <?php echo anchor('student/dashboard', '<i class="fas fa-tachometer-alt"></i> Dashboard ', 'class="btn btn-dark btn-sm"'); ?>
+                                  <?php echo anchor('admin/admissions', '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Back ', 'class="btn btn-dark btn-sm"'); ?>
                               </li>
                           </ul>
                       </div>
@@ -103,12 +103,11 @@
                   <div class="card-footer">
                       <div class="row">
                           <div class="col-md-6">
-                              <?php echo anchor('student/admissiondetails', 'BACK', 'class="btn btn-danger btn-square" '); ?>
+                             
                           </div>
                           <div class="col-md-6 text-right">
                               <button type="submit"  class="btn btn-info btn-square" name="Update" id="Update"> SAVE 
                               </button>
-                              <?php echo anchor('student/personaldetails', 'NEXT', 'class="btn btn-danger btn-square float-right" '); ?>
                           </div>
                       </div>
                   </div>
@@ -117,61 +116,3 @@
           </div>
       </section>
   </div>
-
-  <!-- <script>
-    function changefield()
-    {
-        var submit = document.getElementById("entrance_type");
-        if(submit.value == "MANAGMENT")
-        {
-            document.getElementById("admission_order_date").style.visibility="hidden";
-            document.getElementById("fees_paid").style.visibility="hidden";
-            document.getElementById("fees_receipt_no").style.visibility="hidden";
-            document.getElementById("fees_receipt_date").style.visibility="hidden";
-        }
-        else
-        {
-            document.getElementById("admission_order_date").style.visibility="visible";
-            document.getElementById("fees_paid").style.visibility="visible";
-            document.getElementById("fees_receipt_no").style.visibility="visible";
-            document.getElementById("fees_receipt_date").style.visibility="visible";
-        }
-    }
-</script> -->
-
-<script>
-   $(document).ready(function() {
-    var base_url = '<?php echo base_url(); ?>';
-
-        $(".entyp").hide();
-        $("#entrance_type").change(function () {
-            if($("#entrance_type").val() == "MANAGMENT") {
-                $(".entyp").hide();
-            }
-        })
-
-        $("#entrance_type").change(function () {
-            if($("#entrance_type").val() == "CET") {
-                $(".entyp").show();
-            }
-        })
-
-        $("#entrance_type").change(function () {
-            if($("#entrance_type").val() == "COMED-K") {
-                $(".entyp").show();
-            }
-        })
-
-        $("#entrance_type").change(function () {
-            if($("#entrance_type").val() == "GOI") {
-                $(".entyp").show();
-            }
-        })
-
-        $("#entrance_type").change(function () {
-            if($("#entrance_type").val() == "J&K") {
-                $(".entyp").show();
-            }
-        })
-    })
-</script>

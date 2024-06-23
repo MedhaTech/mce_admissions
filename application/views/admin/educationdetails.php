@@ -16,7 +16,7 @@
                       <div class="card-tools">
                           <ul class="nav nav-pills ml-auto">
                               <li class="nav-item">
-                                  <?php echo anchor('student/dashboard', '<i class="fas fa-tachometer-alt"></i> Dashboard ', 'class="btn btn-dark btn-sm"'); ?>
+                                  <?php echo anchor('admin/admissions', '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Back ', 'class="btn btn-dark btn-sm"'); ?>
                               </li>
                           </ul>
                       </div>
@@ -47,7 +47,7 @@
                                         $edu->medium_of_instruction,
                                         $edu->register_number,
                                         $edu->year_of_passing,
-                                        anchor('student/updateeducationdetails/' . $edu->id, '<span class="icon"><i class="fas fa-edit"></i></span> <span class="text">Edit</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"')
+                                        anchor('admin/updateeducationdetails/' . $edu->id, '<span class="icon"><i class="fas fa-edit"></i></span> <span class="text">Edit</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"')
 
                                     );
                                     $this->table->add_row($result_array);
@@ -314,12 +314,12 @@
                   <div class="card-footer">
                       <div class="row">
                           <div class="col-md-6">
-                              <?php echo anchor('student/parentdetails', 'BACK', 'class="btn btn-danger btn-square" '); ?>
+                            
                           </div>
                           <div class="col-md-6 text-right">
                               <button type="submit" class="btn btn-info btn-square" name="Update" id="Update"> SAVE 
                               </button>
-                              <?php echo anchor('student/documents', 'NEXT', 'class="btn btn-danger btn-square float-right" '); ?>
+                            
                           </div>
                       </div>
                   </div>
