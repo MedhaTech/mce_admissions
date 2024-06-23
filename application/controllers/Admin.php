@@ -1067,7 +1067,7 @@ class Admin extends CI_Controller
 				if (count($enquiries)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'SSLC Grade', 'PUC-I Grade','PUC-II Grade', 'Status', 'Reg. Date');
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Branch Preference-I', 'Branch Preference-II', 'Branch Preference-III', 'Aadhaar Number', 'SSLC Grade', 'PUC-I Grade','PUC-II Grade', 'Status', 'Reg. Date');
 					$this->table->set_heading($print_fields);
 
 					$i = 1;
@@ -1078,6 +1078,8 @@ class Admin extends CI_Controller
 							$enquiries1->student_name,
 							$enquiries1->mobile,
 							$enquiries1->course,
+							$enquiries1->course1,
+							$enquiries1->course2,
 							$enquiries1->aadhaar,
 							$enquiries1->sslc_grade,
 							$enquiries1->puc1_grade,
