@@ -1297,13 +1297,13 @@ class Admin extends CI_Controller
 				$this->admin_template->show('admin/report_department', $data);
 			} else {
 				$data['course'] = $this->input->post('course');
-
-				$enquiries = $this->admin_model->getEnquiries_course($data['currentAcademicYear'], $data['course'])->result();
+				$course_name=$this->admin_model->get_dept_by_id($data['course'])["department_name"];
+				$enquiries = $this->admin_model->getEnquiries_course_new($data['currentAcademicYear'], $data['course'],$course_name)->result();
 
 				if (count($enquiries)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'SSLC Grade', 'PUC-I Grade', 'Status', 'Reg. Date');
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Branch Prefernce I','Branch Prefernce II', 'Branch Prefernce III','Aadhaar Number', 'SSLC Grade', 'PUC-I Grade', 'Status', 'Reg. Date');
 					$this->table->set_heading($print_fields);
 
 					$i = 1;
@@ -1314,6 +1314,8 @@ class Admin extends CI_Controller
 							$enquiries1->student_name,
 							$enquiries1->mobile,
 							$enquiries1->course,
+							$enquiries1->course1,
+							$enquiries1->course2,
 							$enquiries1->aadhaar,
 							$enquiries1->sslc_grade,
 							$enquiries1->puc1_grade,

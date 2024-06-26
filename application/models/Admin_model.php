@@ -275,6 +275,18 @@ class Admin_model extends CI_Model
     $this->db->order_by('reg_date', 'DESC');
     return $this->db->get('enquiries');
   }
+
+  function getEnquiries_course_new($academic_year,$course,$course_name)
+  {
+    $this->db->where('academic_year', $academic_year);
+    $this->db->where('course_id', $course);
+    $this->db->or_where('course1', 'B.E - '.$course_name);
+    $this->db->or_where('course2', 'B.E - '.$course_name);
+
+    $this->db->order_by('reg_date', 'DESC');
+    return $this->db->get('enquiries');
+  }
+
   function getEnquiries_filter($academic_year,$sslc='',$puc1='',$puc2='',$state='',$course='')
   {
     $this->db->where('academic_year', $academic_year);
