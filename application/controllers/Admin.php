@@ -4417,5 +4417,134 @@ With good wishes";
 		}
 	}
 
+	public function payments()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+
+
+			$data['page_title'] = 'New Payment';
+			$data['menu'] = 'newpayment';
+			// $data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
+
+			$this->form_validation->set_rules('mobile', 'Mobile', 'required');
+			if ($this->form_validation->run() === FALSE) {
+				$data['action'] = 'admin/payments/' . $data['id'];
+				$this->admin_template->show('admin/payments', $data);
+			} else {
+
+				$mobile = $this->input->post('mobile');
+				$details = $this->admin_model->getDetailsbyfield($mobile, 'mobile', 'admissions')->row();
+				if ($details) {
+					$student_id = $details->id;
+					$encryptId = base64_encode($student_id);
+					redirect('admin/paymentDetail/' . $encryptId, 'refresh');
+				} else {
+					redirect('admin/payments', 'refresh');
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function paymentDetail($encryptId)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Collect Fee';
+			$data['menu'] = 'collectfee';
+			$data['encryptId'] = $encryptId;
+			$student_id=base64_decode($encryptId);
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $student_id)->row();
+			$data['paymentDetail'] = $this->admin_model->getDetailsbyfield($student_id, 'admission_id', 'payment_structure')->result();
+			$data['transactionDetails'] = $this->admin_model->getDetailsbyfield($student_id,'admissions_id','transactions' )->result();
+			$data['paid_amount'] = $this->admin_model->paidfee('admissions_id',$student_id,'transaction_status','1','transactions' );
+
+		
+		
+			$data['fees'] = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'fee_master')->row();
+
+				$this->admin_template->show('admin/paymentDetail', $data);
+			
+				
+			
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	function new_payment($encryptId)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			$data['page_title'] = "Edit Fee Structure";
+			$data['menu'] = "feestructure";
+			$id=base64_decode($encryptId);
+			$data['fee_structure'] = $this->admin_model->get_details_by_id($id, 'id', 'fee_structure');
+			$data['stud_id']=$id;
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+			$this->form_validation->set_rules('final_fee', 'Total Amount', 'numeric|required');
+		
+
+			if ($this->form_validation->run() === FALSE) {
+				$data['action'] = 'admin/new_payment/' . $encryptId;
+				$this->admin_template->show('admin/new_payment', $data);
+			} else {
+
+
+				$selectedFees = $this->input->post('selected_fees');
+
+				$finalFee = $this->input->post('final_fee');
+				$selectedFeesArray = json_decode($selectedFees, true);
+		
+				// Debugging - Output selected fees array (adjust as needed)
+				
+				foreach($selectedFeesArray as $selected)
+				{
+					$field=$newName = preg_replace('/_checkbox$/', '', $selected['name']);
+
+					$updateDetails[$field]=$selected['value'];
+				}
+				
+				$updateDetails['admission_id'] = $id;
+				$updateDetails['mobile'] = $updateDetails['admission_id'] = $id;;
+				$updateDetails['final_fee'] =$this->input->post('final_fee');
+				$updateDetails['requested_by'] = $data['full_name'];
+				$updateDetails['requested_on'] = date('Y-m-d h:i:s');
+
+				$result = $this->admin_model->insertDetails('payment_structure', $updateDetails);
+				
+
+				if ($result) {
+					$this->session->set_flashdata('message', 'New Payment Details are added successfully...!');
+					$this->session->set_flashdata('status', 'alert-success');
+				} else {
+					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				}
+
+				redirect('admin/paymentDetail/'.$encryptId, 'refresh');
+			}
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
 
 }
