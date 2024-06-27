@@ -140,7 +140,19 @@ class Admin extends CI_Controller
 
 			$data['page_title'] = "Dashboard";
 			$data['menu'] = "dashboard";
-			$data['departments'] = $this->admin_model->getActiveDepartments()->result();
+			$details = $this->admin_model->getActiveDepartments()->result();
+			$aided = array();
+			$unaided = array();
+			foreach ($details as $details1) {
+				if ($details1->aided_intake) {
+					array_push($aided, $details1);
+				}
+				if ($details1->unaided_intake) {
+					array_push($unaided, $details1);
+				}
+			}
+			$data['aided'] = $aided;
+			$data['unaided'] = $unaided;
 			$this->admin_template->show('admin/Dashboard1', $data);
 		} else {
 			redirect('admin', 'refresh');
@@ -977,18 +989,28 @@ class Admin extends CI_Controller
 			$data['role'] = $session_data['role'];
 
 			$quota = $this->input->post('quota');
-			$dept = $this->input->post('dept');
-
-
-			$details = $this->admin_model->getsubquota($quota, $dept)->result();
+			$dept = $this->input->post('course');
+			
+			$code_options = array(" " => "Select") + $this->globals->college_codes();
 
 			$result = array();
-
 			$result[] = '<option value=" ">Select</option>';
-
-			foreach ($details as $details1) {
-				$result[] = '<option value="' . $details1->sub_quota . '">' . $details1->sub_quota . '</option>';
-			}
+				
+			if($quota == "COMED-K"){
+				$result[] = '<option value="UnAided">' . $code_options['COMED-K']. '</option>';
+			} else {
+				if($quota != "MGMT"){
+					$dept = 0;
+				}else{
+					$dept = $dept;
+				}
+	
+				
+				$details = $this->admin_model->getsubquota($quota, $dept)->result();
+				foreach ($details as $details1) {
+					$result[] = '<option value="' . $details1->sub_quota . '">' . $code_options[$details1->sub_quota]. '</option>';
+				}
+			} 
 
 			print_r($result);
 		} else {
@@ -1515,6 +1537,8 @@ class Admin extends CI_Controller
 			$data['course_options'] = array(" " => "Select") + $this->courses();
 			$data['code_options'] = array(" " => "Select") + $this->globals->college_code();
 			$data['quota_options'] = array(" " => "Select") + $this->globals->quota();
+			unset($data['quota_options']['MGMT']);
+
 			$data['subquota_options'] = array(" " => "Select") + $this->globals->sub_quota();
 			$data['type_options'] = array(" " => "Select") + $this->globals->category();
 			$data['category_options'] = array(" " => "Select") + $this->globals->category_claimed();

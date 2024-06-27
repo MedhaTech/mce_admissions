@@ -112,6 +112,15 @@ class Globals
         );
     }
 
+    public function college_codes()
+    {
+        return array(
+            "Aided" => "EO24-AIDED",
+            "UnAided" => "EO47-UNAIDED",
+            "COMED-K" => "E079-COMED-K"
+        );
+    }
+
     public function category()
     {
         return array(
