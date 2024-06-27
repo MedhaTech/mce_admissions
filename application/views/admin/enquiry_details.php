@@ -530,7 +530,7 @@ $(document).ready(function() {
                     'url': base_url + 'admin/subquotaDropdown',
                     'data': {
                         'quota': quota,
-                        'dept': course,
+                        'course': course,
                         'flag': 'S'
                     },
                     'dataType': 'text',
@@ -568,7 +568,7 @@ $(document).ready(function() {
                 'url': base_url + 'admin/subquotaDropdown',
                 'data': {
                     'quota': quota,
-                    'dept': course,
+                    'course': course,
                     'flag': 'S'
                 },
                 'dataType': 'text',
@@ -598,6 +598,7 @@ $(document).ready(function() {
         } else {
             var quota = $("#quota1").val();
             // alert(quota);
+            // quota = 'KEA-CET(GOVT)';
             if (quota == ' ' || course == ' ') {
                 // alert("Enable Quota");
                 $('select[name="quota1"]').removeAttr("disabled");
@@ -609,12 +610,13 @@ $(document).ready(function() {
                     'url': base_url + 'admin/subquotaDropdown',
                     'data': {
                         'quota': quota,
-                        'dept': course,
+                        'course': course,
                         'flag': 'S'
                     },
                     'dataType': 'text',
                     'cache': false,
                     'success': function(data) {
+                        console.log(data);
                         $('select[name="subquota1"]').empty();
                         $('select[name="subquota1"]').append(data);
                         $('select[name="subquota1"]').removeAttr("disabled");
@@ -642,7 +644,7 @@ $(document).ready(function() {
                 'url': base_url + 'admin/subquotaDropdown',
                 'data': {
                     'quota': quota,
-                    'dept': course,
+                    'course': course,
                     'flag': 'S'
                 },
                 'dataType': 'text',

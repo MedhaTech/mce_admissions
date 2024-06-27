@@ -7474,6 +7474,10 @@ button.bg-secondary:focus {
   background-color: #28a745 !important;
 }
 
+.bg-success-light {
+  background-color: #f1f7eb !important;
+}
+
 a.bg-success:hover,
 a.bg-success:focus,
 button.bg-success:hover,
@@ -7496,6 +7500,10 @@ button.bg-info:focus {
   background-color: #ffc107 !important;
 }
 
+.bg-warning-light {
+  background-color: #fffde8 !important;
+}
+
 a.bg-warning:hover,
 a.bg-warning:focus,
 button.bg-warning:hover,
@@ -7505,6 +7513,10 @@ button.bg-warning:focus {
 
 .bg-danger {
   background-color: #dc3545 !important;
+}
+
+.bg-danger-light {
+  background-color: #fef4f2 !important;
 }
 
 a.bg-danger:hover,
