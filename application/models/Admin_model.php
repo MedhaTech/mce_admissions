@@ -511,5 +511,23 @@ function getAdmissions_category($academic_year,$category_claimed)
     }
 
   }
+
+  public function checkFieldGreaterThanZero($field, $admission_id) {
+    $this->db->select($field);
+    $this->db->where('admission_id', $admission_id);
+    $this->db->where("$field > ", 0); // Condition to check if field value is greater than 0
+    $this->db->where('status', 1);
+    $query = $this->db->get('payment_structure');
+
+    if ($query->num_rows() > 0) {
+        // If there are rows, return true
+        return 1;
+    } else {
+        // If no rows found or value not greater than 0, return false
+        return 0;
+    }
+}
+
+
 }
  
