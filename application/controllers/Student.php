@@ -677,76 +677,78 @@ class Student extends CI_Controller
 			$data['action'] = "student/pay_now";
 			$data['student'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 			$data['fees'] = $this->admin_model->getDetailsbyfield($data['id'], 'student_id', 'fee_master')->row();
-			$data['transactionDetails'] = $this->admin_model->getDetailsbyfield($student_id,'admissions_id','transactions' )->result();
-			$data['paid_amount'] = $this->admin_model->paidfee('admissions_id',$student_id,'transaction_status','1','transactions' );
-
+			$data['transactionDetails'] = $this->admin_model->getDetailsbyfield($student_id, 'admissions_id', 'transactions')->result();
+			$data['paid_amount'] = $this->admin_model->paidfee('admissions_id', $student_id, 'transaction_status', '1', 'transactions');
+			$data['paymentDetail'] = $this->admin_model->getDetailsbyfield($student_id, 'admission_id', 'payment_structure')->result();
 			// $this->student_template->show('student/fee_details', $data);
 
 			$this->form_validation->set_rules('mode_of_payment', 'Mode of Payment', 'required');
-	        if($this->form_validation->run() === FALSE){
-	            
-	            // $data['action'] = 'student/fee_details';
-	            $this->student_template->show('student/fee_details',$data);
-	        }else{
-	            
-	            $mode_of_payment = $this->input->post('mode_of_payment');
-	            
-	            if($mode_of_payment == "Cash"){
-	                $transactionDetails = array('admissions_id' => $data['id'],
-	                                       'mobile' => $data['mobile'],
-	                                       'receipt_no' => '',
-	                                       'transaciton_date' => '',
-	                                       'transaction_type' => '1',
-	                                       'bank_name' => '',
-	                                       'reference_no' => '',
-	                                       'reference_date' => date('Y-m-d', strtotime($this->input->post('cash_date'))),
-	                                       'amount' => $this->input->post('cash_amount'),
-	                                       'remarks' => '',
-	                                       'transaction_status' => '0',
-	                                       'created_by' => $data['name'],
-	                                       'created_on' => date('Y-m-d h:i:s')
-	                                    );    
-	            }
-	            if($mode_of_payment == "ChequeDD"){
-	                $transactionDetails = array('admissions_id' => $data['id'],
-	                                       'mobile' => $data['mobile'],
-	                                       'receipt_no' => '',
-	                                       'transaciton_date' => '',
-	                                       'transaction_type' => '2',
-	                                       'bank_name' => $this->input->post('cheque_dd_bank'),
-	                                       'reference_no' => $this->input->post('cheque_dd_number'),
-	                                       'reference_date' => date('Y-m-d', strtotime($this->input->post('cheque_dd_date'))),
-	                                       'amount' => $this->input->post('cheque_dd_amount'),
-	                                       'remarks' => '',
-	                                       'transaction_status' => '0',
-	                                       'created_by' => $data['name'],
-	                                       'created_on' => date('Y-m-d h:i:s')
-	                                    );    
-	            }
-	            if($mode_of_payment == "OnlinePayment"){
-	                $transactionDetails = array('admissions_id' => $data['id'],
-	                                       'mobile' => $data['mobile'],
-	                                       'receipt_no' => '',
-	                                       'transaciton_date' => '',
-	                                       'transaction_type' => '3',
-	                                       'bank_name' => '',
-	                                       'reference_no' => $this->input->post('transaction_id'),
-	                                       'reference_date' => date('Y-m-d', strtotime($this->input->post('transaction_date'))),
-	                                       'amount' => $this->input->post('transaction_amount'),
-	                                       'remarks' => '',
-	                                       'transaction_status' => '0',
-	                                       'created_by' => $data['name'],
-	                                       'created_on' => date('Y-m-d h:i:s')
-	                                    );    
-	            }
-	            
-	            
-	            $result = $this->admin_model->insertDetails('transactions', $transactionDetails);
-	             
-	            if(!$data['studentDetails']->flow){
-        	        $updateDetails['flow'] = '1';
-        	        $result1 = $this->admin_model->updateDetails('admissions', $data['id'], $updateDetails);
+			if ($this->form_validation->run() === FALSE) {
 
+				// $data['action'] = 'student/fee_details';
+				$this->student_template->show('student/fee_details', $data);
+			} else {
+
+				$mode_of_payment = $this->input->post('mode_of_payment');
+
+				if ($mode_of_payment == "Cash") {
+					$transactionDetails = array(
+						'admissions_id' => $data['id'],
+						'mobile' => $data['mobile'],
+						'receipt_no' => '',
+						'transaciton_date' => '',
+						'transaction_type' => '1',
+						'bank_name' => '',
+						'reference_no' => '',
+						'reference_date' => date('Y-m-d', strtotime($this->input->post('cash_date'))),
+						'amount' => $this->input->post('cash_amount'),
+						'remarks' => '',
+						'transaction_status' => '0',
+						'created_by' => $data['name'],
+						'created_on' => date('Y-m-d h:i:s')
+					);
+				}
+				if ($mode_of_payment == "ChequeDD") {
+					$transactionDetails = array(
+						'admissions_id' => $data['id'],
+						'mobile' => $data['mobile'],
+						'receipt_no' => '',
+						'transaciton_date' => '',
+						'transaction_type' => '2',
+						'bank_name' => $this->input->post('cheque_dd_bank'),
+						'reference_no' => $this->input->post('cheque_dd_number'),
+						'reference_date' => date('Y-m-d', strtotime($this->input->post('cheque_dd_date'))),
+						'amount' => $this->input->post('cheque_dd_amount'),
+						'remarks' => '',
+						'transaction_status' => '0',
+						'created_by' => $data['name'],
+						'created_on' => date('Y-m-d h:i:s')
+					);
+				}
+				if ($mode_of_payment == "OnlinePayment") {
+					$transactionDetails = array(
+						'admissions_id' => $data['id'],
+						'mobile' => $data['mobile'],
+						'receipt_no' => '',
+						'transaciton_date' => '',
+						'transaction_type' => '3',
+						'bank_name' => '',
+						'reference_no' => $this->input->post('transaction_id'),
+						'reference_date' => date('Y-m-d', strtotime($this->input->post('transaction_date'))),
+						'amount' => $this->input->post('transaction_amount'),
+						'remarks' => '',
+						'transaction_status' => '0',
+						'created_by' => $data['name'],
+						'created_on' => date('Y-m-d h:i:s')
+					);
+				}
+
+
+				$result = $this->admin_model->insertDetails('transactions', $transactionDetails);
+
+				if (!$data['studentDetails']->flow) {
+					$updateDetails['flow'] = '1';
+					$result1 = $this->admin_model->updateDetails('admissions', $data['id'], $updateDetails);
 				}
 			}
 		} else {
@@ -754,244 +756,240 @@ class Student extends CI_Controller
 		}
 	}
 
-	function downloadReceipt($admission_id , $transaction_id)
+	function downloadReceipt($admission_id, $transaction_id)
 	{
-	    if ($this->session->userdata('student_in')){
+		if ($this->session->userdata('student_in')) {
 			$sess = $this->session->userdata('student_logs');
 			$data['id'] = $session_data['id'];
 			$data['name'] = $sess['name'];
 			// $data['mobile'] = $sess['mobile'];
-			
+
 			$data['page_title'] = 'Download Receipt';
 			$data['menu'] = 'studnet';
-			
+
 			// var_dump($transactionDetails);
 			$currentAcademicYear = $this->globals->currentAcademicYear();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $admission_id)->row();
 			$transactionDetails = $this->admin_model->getDetails('transactions', $transaction_id)->row();
-			
+
 			// var_dump($transactionDetails);
-			
+
 			$this->load->library('fpdf'); // Load library
 			ini_set("session.auto_start", 0);
 			ini_set('memory_limit', '-1');
-// 			define('FPDF_FONTPATH','plugins/font');
-    	    $pdf = new FPDF('p','mm','A5');
-            $pdf->enableheader = 0;
-            $pdf->enablefooter = 0;
-    	    $pdf->AddPage();
-    	    $pdf->Image(base_url().'assets/img/transaction.jpg', 0, 0, 148);
-    	    $pdf->setDisplayMode('fullpage');
-			
-			$row = 8;
-			
-			$pdf->SetTextColor(33,33,33);
-			$pdf->setFont ('Arial','BU',12);
-            $pdf->SetXY(20, 25); 
-            $pdf->Cell(0,10,"FEE RECEIPT ".$currentAcademicYear,0,0,'C', false);
-            
-            $y = $pdf->getY();
-            $pdf->setFont ('Arial','B',10);
-            $pdf->SetXY(10, $y+10); 
-            $pdf->Cell(0,10,"Receipt No: ".$transactionDetails->receipt_no,0,0,'L', false);
-            $pdf->SetXY(100, $y+10); 
-            $pdf->Cell(0,10, "Date: ".date('d-m-Y', strtotime($transactionDetails->transaction_date)),0,0,'L', false); 
-            
-            $y = $pdf->getY();
-            $pdf->setFont ('Arial','B',9);
-            $pdf->SetXY(10, $y+$row); 
-            $pdf->Cell(0,$row,"Application No",1,0,'L', false);
-            $pdf->setFont ('Arial','',9);
-            $pdf->SetXY(50, $y+$row); 
-            $pdf->Cell(0,$row,$data['admissionDetails']->app_no,1,0,'L', false); 
-            
-            $y = $pdf->getY();
-            $pdf->setFont ('Arial','B',9);
-            $pdf->SetXY(10, $y+$row); 
-            $pdf->Cell(0,$row,"Name of the Student",1,0,'L', false);
-            $pdf->setFont ('Arial','',9);
-            $pdf->SetXY(50, $y+$row); 
-            $pdf->Cell(0,$row,$data['admissionDetails']->student_name,1,0,'L', false); 
-            
-            if($admissionDetails->dsc_1 == $admissionDetails->dsc_2){
-                $combination = $admissionDetails->dsc_1;
-            }else{
-                $combination = $admissionDetails->dsc_1.' - '.$admissionDetails->dsc_2;
-            }
+			// 			define('FPDF_FONTPATH','plugins/font');
+			$pdf = new FPDF('p', 'mm', 'A5');
+			$pdf->enableheader = 0;
+			$pdf->enablefooter = 0;
+			$pdf->AddPage();
+			$pdf->Image(base_url() . 'assets/img/transaction.jpg', 0, 0, 148);
+			$pdf->setDisplayMode('fullpage');
 
-            $y = $pdf->getY();
-            $pdf->setFont ('Arial','B',9);
-            $pdf->SetXY(10, $y+$row); 
-            $pdf->Cell(0,$row,"Course & Combination",1,0,'L', false);
-            $pdf->setFont ('Arial','',9);
-            $pdf->SetXY(50, $y+$row); 
-            $pdf->Cell(0,$row,$this->romanYears[$data['admissionDetails']->year].' Year - '.$data['admissionDetails']->course.' ['.$combination.']',1,0,'L', false); 
-            
-            $y = $pdf->getY();
-            $pdf->setFont ('Arial','B',9);
-            $pdf->SetXY(10, $y+$row); 
-            $pdf->Cell(0,$row,"Category",1,0,'L', false);
-            $pdf->setFont ('Arial','',9);
-            $pdf->SetXY(50, $y+$row); 
-            $pdf->Cell(0,$row,$data['admissionDetails']->category,1,0,'L', false); 
-            
-            $y = $pdf->getY();
-            $pdf->setFont ('Arial','B',9);
-            $pdf->SetXY(10, $y+$row); 
-            $pdf->Cell(0,$row,"Mobile",1,0,'L', false);
-            $pdf->setFont ('Arial','',9);
-            $pdf->SetXY(50, $y+$row); 
-            $pdf->Cell(0,$row,$transactionDetails->mobile,1,0,'L', false); 
-            
-            $y = $pdf->getY();
-            $pdf->setFont ('Arial','B',9);
-            $pdf->SetXY(10, $y+$row); 
-            $pdf->Cell(0,$row,"Fee Category",1,0,'L', false);
-            $pdf->setFont ('Arial','',9);
-            $pdf->SetXY(50, $y+$row); 
-            $feeCategory = array("Aided" => "College Fee (A)", "UnAided"=>"College Fee (UA)", "Mgt"=>"Managemnt Fee(A)");
-            $pdf->Cell(0,$row,$feeCategory[$transactionDetails->aided_unaided],1,0,'L', false); 
-            
-            $y = $pdf->getY();
-            $pdf->setFont ('Arial','B',9);
-            $pdf->SetXY(10, $y+$row); 
-            $pdf->Cell(0,$row,"Mode of Payment",1,0,'L', false);
-            $pdf->setFont ('Arial','',9);
-            $pdf->SetXY(50, $y+$row); 
-            $transactionTypes = array("1" => "Cash", "2"=>"Cheque/DD", "3"=>"Online Payment");
-            $pdf->Cell(0,$row,$transactionTypes[$transactionDetails->transaction_type],1,0,'L', false); 
-            
-            $final_amount = $admissionDetails->final_amount;
-            $paid_amount = $transactionDetails->amount;
-            $balance = $transactionDetails->balance_amount;
-            // $final_amount - $paid_amount;
-            
-            if($transactionDetails->transaction_type == 1){
-                
-                $y = $pdf->getY();
-                $pdf->setFont ('Arial','B',9);
-                $pdf->SetXY(10, $y+$row); 
-                $pdf->Cell(0,$row,"Amount",1,0,'L', false);
-                $pdf->setFont ('Arial','',9);
-                $pdf->SetXY(50, $y+$row); 
-                $pdf->Cell(0,$row,"Rs.".number_format($transactionDetails->amount,0)."/-",1,0,'L', false); 
-                
-                $y = $pdf->getY();
-                $pdf->setFont ('Arial','B',9);
-                $pdf->SetXY(10, $y+$row); 
-                $pdf->Cell(0,$row,"Rupees (in words)",1,0,'L', false);
-                $pdf->setFont ('Arial','',8);
-                $pdf->SetXY(50, $y+$row); 
-                $pdf->Cell(0,$row,"Rs.".number_format($paid_amount,0)."/-",1,0,'L', false); 
-                
-            }
-            
-            if($transactionDetails->transaction_type == 2){
-                
-                $y = $pdf->getY();
-                $pdf->setFont ('Arial','B',9);
-                $pdf->SetXY(10, $y+$row); 
-                $pdf->Cell(0,$row,"Cheque/DD No & Date",1,0,'L', false);
-                $pdf->setFont ('Arial','',9);
-                $pdf->SetXY(50, $y+$row); 
-                $pdf->Cell(0,$row, $transactionDetails->reference_no.' Dt:'.date('d-m-Y', strtotime($transactionDetails->reference_date)),1,0,'L', false); 
-                
-                $y = $pdf->getY();
-                $pdf->setFont ('Arial','B',9);
-                $pdf->SetXY(10, $y+$row); 
-                $pdf->Cell(0,$row,"Name of the Bank",1,0,'L', false);
-                $pdf->setFont ('Arial','',9);
-                $pdf->SetXY(50, $y+$row); 
-                $pdf->Cell(0,$row, $transactionDetails->bank_name,1,0,'L', false); 
-                
-                $y = $pdf->getY();
-                $pdf->setFont ('Arial','B',9);
-                $pdf->SetXY(10, $y+$row); 
-                $pdf->Cell(0,$row,"Amount",1,0,'L', false);
-                $pdf->setFont ('Arial','',9);
-                $pdf->SetXY(50, $y+$row); 
-                $pdf->Cell(0,$row,"Rs.".number_format($transactionDetails->amount,0)."/-",1,0,'L', false); 
-                
-                $y = $pdf->getY();
-                $pdf->setFont ('Arial','B',9);
-                $pdf->SetXY(10, $y+$row); 
-                $pdf->Cell(0,$row,"Rupees (in words)",1,0,'L', false);
-                $pdf->setFont ('Arial','',8);
-                $pdf->SetXY(50, $y+$row); 
-                $pdf->Cell(0,$row,"Rs.".number_format($paid_amount,0)."/-",1,0,'L', false); 
-                
-            }
-            
-            if($transactionDetails->transaction_type == 3){
-                
-                $y = $pdf->getY();
-                $pdf->setFont ('Arial','B',9);
-                $pdf->SetXY(10, $y+$row); 
-                $pdf->Cell(0,$row,"Reference No & Date",1,0,'L', false);
-                $pdf->setFont ('Arial','',9);
-                $pdf->SetXY(50, $y+$row); 
-                $pdf->Cell(0,$row, $transactionDetails->reference_no.' Dt:'.date('d-m-Y', strtotime($transactionDetails->reference_date)),1,0,'L', false);
-                $y = $pdf->getY();
-                $pdf->setFont ('Arial','B',9);
-                $pdf->SetXY(10, $y+$row); 
-                $pdf->Cell(0,$row,"Amount",1,0,'L', false);
-                $pdf->setFont ('Arial','',9);
-                $pdf->SetXY(50, $y+$row); 
-                $pdf->Cell(0,$row,"Rs.".number_format($transactionDetails->amount,0)."/-",1,0,'L', false); 
-                
-                $y = $pdf->getY();
-                $pdf->setFont ('Arial','B',9);
-                $pdf->SetXY(10, $y+$row); 
-                $pdf->Cell(0,$row,"Rupees (in words)",1,0,'L', false);
-                $pdf->setFont ('Arial','',8);
-                $pdf->SetXY(50, $y+$row); 
-                $pdf->Cell(0,$row,"Rs.".number_format($paid_amount,0)."/-",1,0,'L', false); 
-                
-            }
-            
-            if($transactionDetails->aided_unaided != "Aided"){
-                $y = $pdf->getY();
-                $pdf->setFont ('Arial','B',9);
-                $pdf->SetXY(10, $y+$row); 
-                $pdf->Cell(0,$row,"Balance Amount",1,0,'L', false);
-                $pdf->setFont ('Arial','',9);
-                $pdf->SetXY(50, $y+$row); 
-                $pdf->Cell(0,$row,"Rs.".number_format($balance,0)."/-",1,0,'L', false); 
-            }
-            
-            $y = $pdf->getY();
-            $pdf->setFont ('Arial','B',9);
-            $pdf->SetXY(10, $y+$row); 
-            $pdf->Cell(0,$row,"Remarks",1,0,'L', false);
-            $pdf->setFont ('Arial','',9);
-            $pdf->SetXY(50, $y+$row); 
-            $pdf->Cell(0,$row,$transactionDetails->remarks,1,0,'L', false); 
-            
-            if($transactionDetails->transaction_status == 2){
-                $y = $pdf->getY();
-                $pdf->setFont ('Arial','B',14);
-                $pdf->SetXY(20, $y+20); 
-                $pdf->SetTextColor(255,40,0);
-                $pdf->Cell(0,$row,"RECEIPT CANCELLED",0,0,'L', false);
-            }else{
-                $y = $pdf->getY();
-                $pdf->setFont ('Arial','B',10);
-                $pdf->SetXY(20, $y+20); 
-                $pdf->Cell(0,$row,"Clerk",0,0,'L', false);
-                $pdf->setFont ('Arial','B',10);
-                $pdf->SetXY(100, $y+20); 
-                $pdf->Cell(0,$row,"Principal",0,0,'L', false);    
-            }
-            
+			$row = 8;
+
+			$pdf->SetTextColor(33, 33, 33);
+			$pdf->setFont('Arial', 'BU', 12);
+			$pdf->SetXY(20, 25);
+			$pdf->Cell(0, 10, "FEE RECEIPT " . $currentAcademicYear, 0, 0, 'C', false);
+
+			$y = $pdf->getY();
+			$pdf->setFont('Arial', 'B', 10);
+			$pdf->SetXY(10, $y + 10);
+			$pdf->Cell(0, 10, "Receipt No: " . $transactionDetails->receipt_no, 0, 0, 'L', false);
+			$pdf->SetXY(100, $y + 10);
+			$pdf->Cell(0, 10, "Date: " . date('d-m-Y', strtotime($transactionDetails->transaction_date)), 0, 0, 'L', false);
+
+			$y = $pdf->getY();
+			$pdf->setFont('Arial', 'B', 9);
+			$pdf->SetXY(10, $y + $row);
+			$pdf->Cell(0, $row, "Application No", 1, 0, 'L', false);
+			$pdf->setFont('Arial', '', 9);
+			$pdf->SetXY(50, $y + $row);
+			$pdf->Cell(0, $row, $data['admissionDetails']->app_no, 1, 0, 'L', false);
+
+			$y = $pdf->getY();
+			$pdf->setFont('Arial', 'B', 9);
+			$pdf->SetXY(10, $y + $row);
+			$pdf->Cell(0, $row, "Name of the Student", 1, 0, 'L', false);
+			$pdf->setFont('Arial', '', 9);
+			$pdf->SetXY(50, $y + $row);
+			$pdf->Cell(0, $row, $data['admissionDetails']->student_name, 1, 0, 'L', false);
+
+			if ($admissionDetails->dsc_1 == $admissionDetails->dsc_2) {
+				$combination = $admissionDetails->dsc_1;
+			} else {
+				$combination = $admissionDetails->dsc_1 . ' - ' . $admissionDetails->dsc_2;
+			}
+
+			$y = $pdf->getY();
+			$pdf->setFont('Arial', 'B', 9);
+			$pdf->SetXY(10, $y + $row);
+			$pdf->Cell(0, $row, "Course & Combination", 1, 0, 'L', false);
+			$pdf->setFont('Arial', '', 9);
+			$pdf->SetXY(50, $y + $row);
+			$pdf->Cell(0, $row, $this->romanYears[$data['admissionDetails']->year] . ' Year - ' . $data['admissionDetails']->course . ' [' . $combination . ']', 1, 0, 'L', false);
+
+			$y = $pdf->getY();
+			$pdf->setFont('Arial', 'B', 9);
+			$pdf->SetXY(10, $y + $row);
+			$pdf->Cell(0, $row, "Category", 1, 0, 'L', false);
+			$pdf->setFont('Arial', '', 9);
+			$pdf->SetXY(50, $y + $row);
+			$pdf->Cell(0, $row, $data['admissionDetails']->category, 1, 0, 'L', false);
+
+			$y = $pdf->getY();
+			$pdf->setFont('Arial', 'B', 9);
+			$pdf->SetXY(10, $y + $row);
+			$pdf->Cell(0, $row, "Mobile", 1, 0, 'L', false);
+			$pdf->setFont('Arial', '', 9);
+			$pdf->SetXY(50, $y + $row);
+			$pdf->Cell(0, $row, $transactionDetails->mobile, 1, 0, 'L', false);
+
+			$y = $pdf->getY();
+			$pdf->setFont('Arial', 'B', 9);
+			$pdf->SetXY(10, $y + $row);
+			$pdf->Cell(0, $row, "Fee Category", 1, 0, 'L', false);
+			$pdf->setFont('Arial', '', 9);
+			$pdf->SetXY(50, $y + $row);
+			$feeCategory = array("Aided" => "College Fee (A)", "UnAided" => "College Fee (UA)", "Mgt" => "Managemnt Fee(A)");
+			$pdf->Cell(0, $row, $feeCategory[$transactionDetails->aided_unaided], 1, 0, 'L', false);
+
+			$y = $pdf->getY();
+			$pdf->setFont('Arial', 'B', 9);
+			$pdf->SetXY(10, $y + $row);
+			$pdf->Cell(0, $row, "Mode of Payment", 1, 0, 'L', false);
+			$pdf->setFont('Arial', '', 9);
+			$pdf->SetXY(50, $y + $row);
+			$transactionTypes = array("1" => "Cash", "2" => "Cheque/DD", "3" => "Online Payment");
+			$pdf->Cell(0, $row, $transactionTypes[$transactionDetails->transaction_type], 1, 0, 'L', false);
+
+			$final_amount = $admissionDetails->final_amount;
+			$paid_amount = $transactionDetails->amount;
+			$balance = $transactionDetails->balance_amount;
+			// $final_amount - $paid_amount;
+
+			if ($transactionDetails->transaction_type == 1) {
+
+				$y = $pdf->getY();
+				$pdf->setFont('Arial', 'B', 9);
+				$pdf->SetXY(10, $y + $row);
+				$pdf->Cell(0, $row, "Amount", 1, 0, 'L', false);
+				$pdf->setFont('Arial', '', 9);
+				$pdf->SetXY(50, $y + $row);
+				$pdf->Cell(0, $row, "Rs." . number_format($transactionDetails->amount, 0) . "/-", 1, 0, 'L', false);
+
+				$y = $pdf->getY();
+				$pdf->setFont('Arial', 'B', 9);
+				$pdf->SetXY(10, $y + $row);
+				$pdf->Cell(0, $row, "Rupees (in words)", 1, 0, 'L', false);
+				$pdf->setFont('Arial', '', 8);
+				$pdf->SetXY(50, $y + $row);
+				$pdf->Cell(0, $row, "Rs." . number_format($paid_amount, 0) . "/-", 1, 0, 'L', false);
+			}
+
+			if ($transactionDetails->transaction_type == 2) {
+
+				$y = $pdf->getY();
+				$pdf->setFont('Arial', 'B', 9);
+				$pdf->SetXY(10, $y + $row);
+				$pdf->Cell(0, $row, "Cheque/DD No & Date", 1, 0, 'L', false);
+				$pdf->setFont('Arial', '', 9);
+				$pdf->SetXY(50, $y + $row);
+				$pdf->Cell(0, $row, $transactionDetails->reference_no . ' Dt:' . date('d-m-Y', strtotime($transactionDetails->reference_date)), 1, 0, 'L', false);
+
+				$y = $pdf->getY();
+				$pdf->setFont('Arial', 'B', 9);
+				$pdf->SetXY(10, $y + $row);
+				$pdf->Cell(0, $row, "Name of the Bank", 1, 0, 'L', false);
+				$pdf->setFont('Arial', '', 9);
+				$pdf->SetXY(50, $y + $row);
+				$pdf->Cell(0, $row, $transactionDetails->bank_name, 1, 0, 'L', false);
+
+				$y = $pdf->getY();
+				$pdf->setFont('Arial', 'B', 9);
+				$pdf->SetXY(10, $y + $row);
+				$pdf->Cell(0, $row, "Amount", 1, 0, 'L', false);
+				$pdf->setFont('Arial', '', 9);
+				$pdf->SetXY(50, $y + $row);
+				$pdf->Cell(0, $row, "Rs." . number_format($transactionDetails->amount, 0) . "/-", 1, 0, 'L', false);
+
+				$y = $pdf->getY();
+				$pdf->setFont('Arial', 'B', 9);
+				$pdf->SetXY(10, $y + $row);
+				$pdf->Cell(0, $row, "Rupees (in words)", 1, 0, 'L', false);
+				$pdf->setFont('Arial', '', 8);
+				$pdf->SetXY(50, $y + $row);
+				$pdf->Cell(0, $row, "Rs." . number_format($paid_amount, 0) . "/-", 1, 0, 'L', false);
+			}
+
+			if ($transactionDetails->transaction_type == 3) {
+
+				$y = $pdf->getY();
+				$pdf->setFont('Arial', 'B', 9);
+				$pdf->SetXY(10, $y + $row);
+				$pdf->Cell(0, $row, "Reference No & Date", 1, 0, 'L', false);
+				$pdf->setFont('Arial', '', 9);
+				$pdf->SetXY(50, $y + $row);
+				$pdf->Cell(0, $row, $transactionDetails->reference_no . ' Dt:' . date('d-m-Y', strtotime($transactionDetails->reference_date)), 1, 0, 'L', false);
+				$y = $pdf->getY();
+				$pdf->setFont('Arial', 'B', 9);
+				$pdf->SetXY(10, $y + $row);
+				$pdf->Cell(0, $row, "Amount", 1, 0, 'L', false);
+				$pdf->setFont('Arial', '', 9);
+				$pdf->SetXY(50, $y + $row);
+				$pdf->Cell(0, $row, "Rs." . number_format($transactionDetails->amount, 0) . "/-", 1, 0, 'L', false);
+
+				$y = $pdf->getY();
+				$pdf->setFont('Arial', 'B', 9);
+				$pdf->SetXY(10, $y + $row);
+				$pdf->Cell(0, $row, "Rupees (in words)", 1, 0, 'L', false);
+				$pdf->setFont('Arial', '', 8);
+				$pdf->SetXY(50, $y + $row);
+				$pdf->Cell(0, $row, "Rs." . number_format($paid_amount, 0) . "/-", 1, 0, 'L', false);
+			}
+
+			if ($transactionDetails->aided_unaided != "Aided") {
+				$y = $pdf->getY();
+				$pdf->setFont('Arial', 'B', 9);
+				$pdf->SetXY(10, $y + $row);
+				$pdf->Cell(0, $row, "Balance Amount", 1, 0, 'L', false);
+				$pdf->setFont('Arial', '', 9);
+				$pdf->SetXY(50, $y + $row);
+				$pdf->Cell(0, $row, "Rs." . number_format($balance, 0) . "/-", 1, 0, 'L', false);
+			}
+
+			$y = $pdf->getY();
+			$pdf->setFont('Arial', 'B', 9);
+			$pdf->SetXY(10, $y + $row);
+			$pdf->Cell(0, $row, "Remarks", 1, 0, 'L', false);
+			$pdf->setFont('Arial', '', 9);
+			$pdf->SetXY(50, $y + $row);
+			$pdf->Cell(0, $row, $transactionDetails->remarks, 1, 0, 'L', false);
+
+			if ($transactionDetails->transaction_status == 2) {
+				$y = $pdf->getY();
+				$pdf->setFont('Arial', 'B', 14);
+				$pdf->SetXY(20, $y + 20);
+				$pdf->SetTextColor(255, 40, 0);
+				$pdf->Cell(0, $row, "RECEIPT CANCELLED", 0, 0, 'L', false);
+			} else {
+				$y = $pdf->getY();
+				$pdf->setFont('Arial', 'B', 10);
+				$pdf->SetXY(20, $y + 20);
+				$pdf->Cell(0, $row, "Clerk", 0, 0, 'L', false);
+				$pdf->setFont('Arial', 'B', 10);
+				$pdf->SetXY(100, $y + 20);
+				$pdf->Cell(0, $row, "Principal", 0, 0, 'L', false);
+			}
+
 			// Var_dump( $pdf->output());
 			// die();
-            $fileName = $transactionDetails->receipt_no.'.pdf';
+			$fileName = $transactionDetails->receipt_no . '.pdf';
 			// var_dump($transactionDetails);
-		    $pdf->output($fileName,'D'); 
-			
-	    }else{
-	      redirect('student', 'refresh');
-	    }
+			$pdf->output($fileName, 'D');
+		} else {
+			redirect('student', 'refresh');
+		}
 	}
 
 	function admissionfee()
@@ -1256,7 +1254,7 @@ class Student extends CI_Controller
 			"kid" => "HMAC"
 		);
 		$order_id = rand();
-		$trace_id = rand(1000000000,9999999999);
+		$trace_id = rand(1000000000, 9999999999);
 		$servertime = time();
 		//    $config                         = $this->CI->config->item('billdesk');
 		$api_url                        = "https://uat1.billdesk.com/u2/payments/ve1_2/orders/create";
@@ -1363,7 +1361,7 @@ class Student extends CI_Controller
 				$response_json =  json_encode($response_array);
 				$message = "BillDesk callback Response decode - " . $response_json . "\n";
 				$this->logger->write('billdesk', 'debug', $message);
-	
+
 				if ($response_array['auth_status'] == '0300') {
 					$status = 'pass';
 				} else if ($response_array['auth_status'] == '0002') {
@@ -1371,20 +1369,20 @@ class Student extends CI_Controller
 				} else {
 					$status = 'fail';
 				}
-	
-	
-	
+
+
+
 				$return['amount']	    = (int)$response_array['amount'];
 				$return['order_id']	    = $response_array['orderid'];
 				$return['status']		= $status;
 				$return['pgresponse']	= $response_json;
 				$return['pgid']	        = $response_array['transactionid'];
-	
+
 				$updateDetails = array(
 					'transaction_date' => $response_array['transaction_date'],
 					'transaction_id' => $response_array['transactionid'],
 					'txn_response' => $response_json,
-	
+
 				);
 				if ($response_array['transaction_error_type'] == 'success') {
 					$cnt_number = $this->getReceiptNo();
@@ -1396,33 +1394,96 @@ class Student extends CI_Controller
 				} else {
 					$updateDetails['transaction_status'] = '0';
 				}
-	
-				$this->set_session($response_array['additional_info']->additional_info3, $response_array['additional_info']->additional_info4);
-	
-				$result = $this->admin_model->updateDetailsbyfield('reference_no', $response_array['orderid'], $updateDetails, 'transactions');
-				
-						$payment = ['orderid' => $response_array['orderid']];
-    			$this->session->set_userdata('payment', $payment);
-				
-				redirect('student/payment_status', 'refresh');
 
+				$this->set_session($response_array['additional_info']->additional_info3, $response_array['additional_info']->additional_info4);
+
+				$result = $this->admin_model->updateDetailsbyfield('reference_no', $response_array['orderid'], $updateDetails, 'transactions');
+
+				$payment = ['orderid' => $response_array['orderid']];
+				$this->session->set_userdata('payment', $payment);
+
+				redirect('student/payment_status', 'refresh');
 			} else {
 				$status = 'fail';
 				$return['status']		= $status;
 				redirect('student', 'refresh');
 			}
-		}
-		else
-		{
+		} else {
 			redirect('student', 'refresh');
 		}
-
-
-		
-
 	}
 
+	public function callbackcorpus()
+	{
+		require_once APPPATH . 'libraries/Jwt.php';
+		$this->load->library('logger');
+		$message = "BillDesk Response - " . json_encode($_POST) . "\n";
+		$this->logger->write('billdesk', 'debug', $message);
+		$tx = "";
+		if (!empty($_POST)) {
+			$tx_array = $_POST;
+			if (isset($tx_array['transaction_response'])) {
+				$tx = $tx_array['transaction_response'];
+			}
 
+
+			if (!empty($tx)) {
+				$response_decoded = JWT::decode($tx, "k2ieff4ugn8Ehv31tUhXTRoHK2MEBrdJ", 'HS256');
+				$response_array = (array) $response_decoded;
+				$response_json =  json_encode($response_array);
+				$message = "BillDesk callback Response decode - " . $response_json . "\n";
+				$this->logger->write('billdesk', 'debug', $message);
+
+				if ($response_array['auth_status'] == '0300') {
+					$status = 'pass';
+				} else if ($response_array['auth_status'] == '0002') {
+					$status = 'unknown';
+				} else {
+					$status = 'fail';
+				}
+
+
+
+				$return['amount']	    = (int)$response_array['amount'];
+				$return['order_id']	    = $response_array['orderid'];
+				$return['status']		= $status;
+				$return['pgresponse']	= $response_json;
+				$return['pgid']	        = $response_array['transactionid'];
+
+				$updateDetails = array(
+					'transaction_date' => $response_array['transaction_date'],
+					'transaction_id' => $response_array['transactionid'],
+					'txn_response' => $response_json,
+
+				);
+				if ($response_array['transaction_error_type'] == 'success') {
+					$cnt_number = $this->getReceiptNo();
+					$receipt_no = $cnt_number;
+					$updateDetails['receipt_no'] = $receipt_no;
+					$updateDetails['transaction_status'] = '1';
+				} else if ($response_array['transaction_error_type'] == 'payment_processing_error') {
+					$updateDetails['transaction_status'] = '2';
+				} else {
+					$updateDetails['transaction_status'] = '0';
+				}
+
+				$this->set_session($response_array['additional_info']->additional_info3, $response_array['additional_info']->additional_info4);
+
+				$result = $this->admin_model->updateDetailsbyfield('reference_no', $response_array['orderid'], $updateDetails, 'transactions');
+
+				$payment = ['orderid' => $response_array['orderid']];
+				$this->session->set_userdata('payment', $payment);
+
+				redirect('student/payment_status', 'refresh');
+			} else {
+				$status = 'fail';
+				$return['status']		= $status;
+				redirect('student', 'refresh');
+			}
+		} else {
+			redirect('student', 'refresh');
+		}
+	}
 	function payment_status()
 	{
 		if ($this->session->userdata('student_in')) {
@@ -1432,12 +1493,11 @@ class Student extends CI_Controller
 			$data['page_title'] = "Payment Status";
 			$data['menu'] = "payment";
 			$payment_session = $this->session->userdata('payment');
-			
+
 			$orderid = $payment_session['orderid'];
 			$data['orderdetails'] = $this->admin_model->getDetailsbyfield($orderid, 'reference_no', 'transactions')->row();
-			
+
 			$this->student_template->show('student/payment_status', $data);
-			
 		} else {
 			redirect('student', 'refresh');
 		}
@@ -1451,7 +1511,7 @@ class Student extends CI_Controller
 
 
 		$billdesk_URL_retrive = "https://api.billdesk.com/payments/ve1_2/transactions/get";
-		$trace_id = rand(1000000000,9999999999);
+		$trace_id = rand(1000000000, 9999999999);
 		$servertime = time();
 		$headers = array("alg" => "HS256", "clientid" => "cnbmlndegc", "kid" => "HMAC");
 		$payload = array(
@@ -1504,8 +1564,7 @@ class Student extends CI_Controller
 			$res['amount'] = (int)$response_array['amount'];
 		}
 
-		var_dump($res);
-		exit;
+		
 		return $res;
 	}
 
@@ -1517,6 +1576,23 @@ class Student extends CI_Controller
 			$data['student_name'] = $student_session['student_name'];
 			$data['id'] = $student_session['id'];
 			require_once APPPATH . 'libraries/Jwt.php';
+			$acc_type=$this->input->post('type');
+			if($acc_type==0)
+			{
+				$mid="CNBMLNDEGC";
+				$clientid="cnbmlndegc";
+				$midkey="WHjXW5WHk27mr50KetSh75vyapmO14IT";	
+				$returnurl= base_url() . 'student/callback';
+
+			}
+			else
+			{
+				$mid="CNBMLNDTRT";
+				$clientid="cnbmlndtrt";
+				$midkey="k2ieff4ugn8Ehv31tUhXTRoHK2MEBrdJ";
+				$returnurl= base_url() . 'student/callbackcorpus';
+			}
+
 			$this->load->library('logger');
 			$insert = array(
 				'amount' => number_format((float)$this->input->post('amount'), 2, '.', ''),
@@ -1537,11 +1613,11 @@ class Student extends CI_Controller
 
 			$headers = array(
 				"alg" => "HS256",
-				"clientid" => "cnbmlndegc",
+				"clientid" => $clientid,
 				"kid" => "HMAC"
 			);
 			$order_id = rand();
-			$trace_id = rand(1000000000,9999999999);
+			$trace_id = rand(1000000000, 9999999999);
 			$servertime = time();
 			//    $config                         = $this->CI->config->item('billdesk');
 			$api_url                        = "https://api.billdesk.com/payments/ve1_2/orders/create";
@@ -1549,12 +1625,12 @@ class Student extends CI_Controller
 
 
 			$payload['orderid']             = $insert['reference_no'];
-			$payload['mercid']              = "CNBMLNDEGC";
+			$payload['mercid']              = $mid;
 			$payload['order_date']          = date("c");
 			$payload['amount']              = $insert['amount'];
 			$payload['currency']            = '356';
 
-			$payload['ru'] 	           =  base_url() . 'student/callback'; // Return URL
+			$payload['ru'] 	           =  $returnurl; // Return URL
 
 			$payload['additional_info']    =  array(
 				"additional_info1" => $insert['reg_no'],
@@ -1562,7 +1638,7 @@ class Student extends CI_Controller
 				"additional_info3" => $this->input->post('email'),
 				"additional_info4" => $insert['mobile'],
 				"additional_info5" => "Fee Payment",
-				"additional_info6" => "NA",
+				"additional_info6" => $this->input->post('type'),
 				"additional_info7" => "NA"
 			);
 			$payload['itemcode']           = 'DIRECT';
@@ -1572,13 +1648,12 @@ class Student extends CI_Controller
 				"user_agent"    => $_SERVER['HTTP_USER_AGENT'],
 				"accept_header" => "text/html",
 			);
-			// var_dump($payload);
-			// die();
+		
 
 			/*****************************************/
 			// Encode payload
 			/*****************************************/
-			$curl_payload = JWT::encode($payload, "WHjXW5WHk27mr50KetSh75vyapmO14IT", "HS256", $headers);
+			$curl_payload = JWT::encode($payload, $midkey, "HS256", $headers);
 
 
 
@@ -1608,7 +1683,7 @@ class Student extends CI_Controller
 			$message2 = "Billdesk create order response - " . $response . "\n";
 			$this->logger->write('billdesk', 'debug', $message2);
 			curl_close($response);
-			$result_decoded = JWT::decode($response, "WHjXW5WHk27mr50KetSh75vyapmO14IT", 'HS256');
+			$result_decoded = JWT::decode($response, $midkey, 'HS256');
 			$result_array = (array) $result_decoded;
 			$message = "Billdesk create order response decoded - " . json_encode($result_array) . "\n";
 			$this->logger->write('billdesk', 'debug', $message);
@@ -1653,7 +1728,7 @@ class Student extends CI_Controller
 			}
 			return TRUE;
 		} else {
-			
+
 			return false;
 		}
 	}
@@ -1673,5 +1748,4 @@ class Student extends CI_Controller
 		}
 		return $cnt_number;
 	}
-
 }

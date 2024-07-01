@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Mcehook extends CI_Controller
+class Corpushook extends CI_Controller
 {
 
     function __construct()
@@ -34,7 +34,7 @@ class Mcehook extends CI_Controller
             // If data is present
             if ($tx != '') {
                 // Add the raw data to the $_POST array
-                $response_decoded = JWT::decode($tx, "WHjXW5WHk27mr50KetSh75vyapmO14IT", 'HS256');
+                $response_decoded = JWT::decode($tx, "k2ieff4ugn8Ehv31tUhXTRoHK2MEBrdJ", 'HS256');
 				$response_array = (array) $response_decoded;
 				$response_json =  json_encode($response_array);
 				$message = "BillDesk webhook Response decode - " . $response_json . "\n";
