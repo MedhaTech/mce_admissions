@@ -1583,6 +1583,7 @@ class Student extends CI_Controller
 				$clientid="cnbmlndegc";
 				$midkey="WHjXW5WHk27mr50KetSh75vyapmO14IT";	
 				$returnurl= base_url() . 'student/callback';
+				$page='student/payment';
 
 			}
 			else
@@ -1591,6 +1592,7 @@ class Student extends CI_Controller
 				$clientid="cnbmlndtrt";
 				$midkey="k2ieff4ugn8Ehv31tUhXTRoHK2MEBrdJ";
 				$returnurl= base_url() . 'student/callbackcorpus';
+				$page='student/payment_corpus';
 			}
 
 			$this->load->library('logger');
@@ -1695,7 +1697,7 @@ class Student extends CI_Controller
 				$requestParams['transactionid'] = $transactionid;
 				$requestParams['authtoken'] = $authtoken;
 				// return $requestParams;
-				$this->load->view('student/payment', $requestParams);
+				$this->load->view($page, $requestParams);
 			} else {
 				$status = isset($result_decoded->status) ? $result_decoded->status : "Status not available";
 				$message = "Billdesk create order status - " . $status;
