@@ -3262,7 +3262,7 @@ With good wishes";
 			$data['page_title'] = 'Day Book Report';
 			$data['menu'] = 'dayBookReport';
 		
-			$data['feeTypes'] = $this->globals->feeTypes();
+			// $data['feeTypes'] = $this->globals->feeTypes();
 			$data['feeTypesMgt'] = $this->globals->feeTypesMgt();
 			$courseCombination = $this->globals->courseCombination();
 			
@@ -3630,8 +3630,8 @@ With good wishes";
 				} else {
 					$details = 'No student details found';
 				}
-
-				Var_dump($this->db->last_query()); 
+				$data['selected_values']=$selectedValues;
+				// Var_dump($this->db->last_query()); 
 				if ($download == 1) {
 					$response =  array(
 						'op' => 'ok',
