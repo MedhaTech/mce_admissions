@@ -24,7 +24,7 @@
                                               <th width="15%">TOTAL <br /> INTAKE</th>
                                               <th width="15%">MGMT <br /> INTAKE</th>
                                               <th width="15%">COMED-K <br /> INTAKE</th>
-                                              <th width="15%">KEA <br /> INTAKE</th>
+                                              <th width="15%">KEA-CET <br /> INTAKE</th>
                                               <th width="15%">SNQ <br /> INTAKE</th>
                                           </tr>
                                       </thead>

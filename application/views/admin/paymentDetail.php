@@ -74,12 +74,7 @@
                                 <?= $admissionDetails->category_claimed; ?>
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label class="form-label">College Code</label><br>
-                                <?= $admissionDetails->college_code; ?>
-                            </div>
-                        </div>
+
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label class="form-label">Sports</label><br>
@@ -92,15 +87,16 @@
                                 <?= $admissionDetails->entrance_type; ?>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label class="form-label">Entrance Register Number</label><br>
                                 <?= $admissionDetails->entrance_reg_no; ?>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="row">
+
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label class="form-label">Entrance Exam Rank</label><br>
@@ -131,9 +127,6 @@
                                 <?= $admissionDetails->fees_receipt_no; ?>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label class="form-label">Fees Receipt Date</label><br>
@@ -141,6 +134,8 @@
                             </div>
                         </div>
                     </div>
+
+
 
 
                 </div>
@@ -227,6 +222,60 @@
 
             <div class="card m-2 shadow card-info">
                 <div class="card-header">
+                    <h3 class="card-title">Payment Amount Details</h3>
+                    <div class="card-tools">
+                        <ul class="nav nav-pills ml-auto">
+                            <li class="nav-item">
+                                <?php echo anchor('admin/new_payment/' . $encryptId, '<i class="fas fa-plus fa-sm fa-fw"></i> Create New Payment ', 'class="btn btn-dark btn-sm"'); ?>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                </div>
+                <?php $rec = 0;   // to update Admisison Date
+
+                if ($paymentDetail) {
+                    $rec = 0;
+                    $table_setup = array('table_open' => '<table class="table table-hover font14">');
+                    $this->table->set_template($table_setup);
+                    $print_fields = array('S.No', 'Amount', 'Date',  'Status');
+                    $this->table->set_heading($print_fields);
+
+                    $statusTypes = array("0" => "Not Paid", "1" => "Paid", "2" => "Failed", "3" => "Processing");
+
+                    $i = 1;
+                    $total = 0;
+                    foreach ($paymentDetail as $paymentDetails1) {
+
+
+
+
+
+                        $result_array = array(
+                            $i++,
+                            $paymentDetails1->final_fee,
+                            $paymentDetails1->requested_on,
+                            $statusTypes[$paymentDetails1->status]
+
+
+
+                        );
+                        $this->table->add_row($result_array);
+                    }
+
+                    echo $this->table->generate();
+                } else {
+                    $rec = 1;
+                    echo "<h6 class='text-left'> No payment details found..! </h6>";
+                }
+                ?>
+
+            </div>
+
+            <div class="card m-2 shadow card-info">
+                <div class="card-header">
                     <h3 class="card-title">Transaction Amount Details</h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
@@ -265,14 +314,7 @@
                             $trans = $transactionTypes[$transactionDetails1->transaction_type] . "<br> No:" . $transactionDetails1->reference_no . '<br> Dt:' . date('d-m-Y', strtotime($transactionDetails1->reference_date));
                         }
 
-                        // if($transactionDetails1->transaction_status == 1){
-                        //     $transaction_status = "<span class='text-success'>Verified</span>";
-                        // }else if($transactionDetails1->transaction_status == 2){
-                        //     $transaction_status = "<span class='text-danger'>Cancelled</span><br><span class='text-dark'>".nl2br($transactionDetails1->remarks)."</span>";
-                        // }else{
 
-                        //     $transaction_status = "<span class='text-warning'>Processing</span> <br>".anchor('admin/approvePayment/'.$transactionDetails1->id,'Approve','class="btn btn-info btn-sm"').' '.anchor('admin/deletePayment/'.$transactionDetails1->id.'/'.$transactionDetails1->admissions_id,'Delete','class="btn btn-danger btn-sm"');
-                        // }
 
                         $result_array = array(
                             $i++,

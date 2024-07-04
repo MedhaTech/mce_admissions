@@ -6,7 +6,7 @@ class Globals
 
     public function userTypes()
     {
-        return array("1" => "Super Admin", "2" => "Chairman", "3" => "Principal/Director", '4' => "Dean SA", '5' => "Admission Staff", '6' => "Accounts Admin", '7' => "Accounts Staff");
+        return array("1" => "Super Admin", "2" => "Chairman", "3" => "Principal/Director", '4' => "Dean SA", '5' => "Admission Staff", '6' => "Accounts Admin", '7' => "Accounts Staff", '8'=>"COE");
     }
 
     public function enquiryStatus()
@@ -109,6 +109,15 @@ class Globals
             "EO24-AIDED" => "EO24-AIDED",
             "EO47-UNAIDED" => "EO47-UNAIDED",
             "E079-COMED-K" => "E079-COMED-K"
+        );
+    }
+
+    public function college_codes()
+    {
+        return array(
+            "Aided" => "EO24-AIDED",
+            "UnAided" => "EO47-UNAIDED",
+            "COMED-K" => "E079-COMED-K"
         );
     }
 

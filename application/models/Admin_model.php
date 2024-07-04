@@ -340,20 +340,31 @@ class Admin_model extends CI_Model
     return $this->db->get('admissions');
   }
 
-  function getAdmissionStats($department_id){
-    $this->db->select('quota, COUNT(*) as cnt');
+  function getAdmissionOverallStats($department_id){
+    $this->db->select('quota, sub_quota, COUNT(*) as cnt');
     $this->db->where('dept_id', $department_id);
-    $this->db->group_by('quota');
+    $this->db->group_by('quota, sub_quota');
     return $this->db->get('admissions');
   }
 
-  function getBlockedStats($department_id){
+  function getAdmissionStats($department_id, $quota, $sub_quota){
     $this->db->select('COUNT(*) as cnt');
-    $this->db->where('course_id', $department_id);
+    $this->db->where('dept_id', $department_id);
+    $this->db->where('quota', $quota);
+    $this->db->where('sub_quota', $sub_quota);
+    return $this->db->get('admissions');
+  }
+
+  function getBlockedStats($department_id, $quota, $sub_quota){
+    $this->db->select('COUNT(*) as cnt');
+    $this->db->where('dept_id', $department_id);
+    $this->db->where('quota', $quota);
+    $this->db->where('sub_quota', $sub_quota);
     $this->db->where('status', '7');
     return $this->db->get('enquiries');
   }
 
+  
   function getActiveDepartments(){
     $this->db->select('departments.department_id, departments.stream_id, streams.stream_name, streams.stream_short_name, departments.department_name, departments.department_short_name, departments.aided_intake, departments.aided_mgmt_intake, departments.aided_comed_k_intake, departments.aided_kea_intake, departments.aided_snq_intake, departments.unaided_intake, departments.unaided_mgmt_intake, departments.unaided_comed_k_intake, departments.unaided_kea_intake, departments.unaided_snq_intake');
     $this->db->join('streams','streams.stream_id = departments.stream_id');
@@ -508,5 +519,23 @@ function getAdmissions_category($academic_year,$category_claimed)
     }
 
   }
+
+  public function checkFieldGreaterThanZero($field, $admission_id) {
+    $this->db->select($field);
+    $this->db->where('admission_id', $admission_id);
+    $this->db->where("$field > ", 0); // Condition to check if field value is greater than 0
+    $this->db->where('status', 1);
+    $query = $this->db->get('payment_structure');
+
+    if ($query->num_rows() > 0) {
+        // If there are rows, return true
+        return 1;
+    } else {
+        // If no rows found or value not greater than 0, return false
+        return 0;
+    }
+}
+
+
 }
  
