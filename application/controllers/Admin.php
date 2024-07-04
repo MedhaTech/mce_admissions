@@ -736,7 +736,7 @@ class Admin extends CI_Controller
 				$message = $this->load->view('email/registration', $email);
 				$ci = &get_instance();
 				$message = $ci->load->view('email/registration', $email, true);
-				$this->aws_sdk->triggerEmail($enquiryDetails->email, 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!', $message);
+				// $this->aws_sdk->triggerEmail($enquiryDetails->email, 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!', $message);
 				$this->aws_sdk->triggerEmail('admission@mcehassan.ac.in', 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!', $message);
 			} else {
 				echo "0";
