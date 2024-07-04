@@ -6,6 +6,7 @@
           <div class="content">
               <div class="container-fluid">
                   <div class="row">
+                      <?php if((in_array($role, array(1,2,3)))){ ?>
                       <div class="col-lg-6">
                           <div class="card">
                               <div class="card-header">
@@ -30,7 +31,7 @@
                           </div>
 
                       </div>
-                      
+                      <?php } ?>
                       <div class="col-lg-6">
                           <div class="card">
                               <div class="card-header">
