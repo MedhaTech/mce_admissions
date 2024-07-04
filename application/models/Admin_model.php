@@ -340,6 +340,13 @@ class Admin_model extends CI_Model
     return $this->db->get('admissions');
   }
 
+  function getAdmissionOverallStats($department_id){
+    $this->db->select('quota, sub_quota, COUNT(*) as cnt');
+    $this->db->where('dept_id', $department_id);
+    $this->db->group_by('quota, sub_quota');
+    return $this->db->get('admissions');
+  }
+
   function getAdmissionStats($department_id, $quota, $sub_quota){
     $this->db->select('COUNT(*) as cnt');
     $this->db->where('dept_id', $department_id);
@@ -357,6 +364,7 @@ class Admin_model extends CI_Model
     return $this->db->get('enquiries');
   }
 
+  
   function getActiveDepartments(){
     $this->db->select('departments.department_id, departments.stream_id, streams.stream_name, streams.stream_short_name, departments.department_name, departments.department_short_name, departments.aided_intake, departments.aided_mgmt_intake, departments.aided_comed_k_intake, departments.aided_kea_intake, departments.aided_snq_intake, departments.unaided_intake, departments.unaided_mgmt_intake, departments.unaided_comed_k_intake, departments.unaided_kea_intake, departments.unaided_snq_intake');
     $this->db->join('streams','streams.stream_id = departments.stream_id');

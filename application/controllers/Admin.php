@@ -122,7 +122,20 @@ class Admin extends CI_Controller
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
-			$data['departments'] = $this->admin_model->getActiveDepartments()->result();
+			$departments = $this->admin_model->getActiveDepartments()->result();
+			$aided = array();
+			$unaided = array();
+			foreach ($departments as $departments1) {
+				if ($departments1->aided_intake) {
+					array_push($aided, $departments1);
+				}
+				if ($departments1->unaided_intake) {
+					array_push($unaided, $departments1);
+				}
+			}
+			$data['aided'] = $aided;
+			$data['unaided'] = $unaided;
+
 			$this->admin_template->show('admin/Dashboard', $data);
 		} else {
 			redirect('admin', 'refresh');
@@ -766,7 +779,7 @@ class Admin extends CI_Controller
 			$data['page_title'] = "Departments";
 			$data['menu'] = "departments";
 
-			$data['details'] = $this->admin_model->getDepartments()->result();
+			$data['details'] = $this->admin_model->getActiveDepartments()->result();
 			// echo "<pre>"; print_r($data['details']); die;
 
 			$this->admin_template->show('admin/departments', $data);
@@ -787,7 +800,7 @@ class Admin extends CI_Controller
 			$data['page_title'] = "Intake Capacity";
 			$data['menu'] = "intake";
 
-			$details = $this->admin_model->getDepartments()->result();
+			$details = $this->admin_model->getActiveDepartments()->result();
 			$aided = array();
 			$unaided = array();
 			foreach ($details as $details1) {
