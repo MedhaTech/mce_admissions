@@ -4750,7 +4750,9 @@ With good wishes";
 			$data['page_title'] = "New Payment Request";
 			$data['menu'] = "payments";
 			$id=base64_decode($encryptId);
-			$data['fee_structure'] = $this->admin_model->get_details_by_id($id, 'id', 'fee_structure');
+			$admissionSingle=$this->admin_model->getDetails('admissions', $id)->row();
+			
+			$data['fee_structure'] = $this->admin_model->getFee($admissionSingle->dept_id, $admissionSingle->quota, $admissionSingle->sub_quota)->row();
 			$data['stud_id']=$id;
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$this->form_validation->set_rules('final_fee', 'Total Amount', 'numeric|required');
