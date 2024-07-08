@@ -1389,16 +1389,19 @@ class Student extends CI_Controller
 					$receipt_no = $cnt_number;
 					$updateDetails['receipt_no'] = $receipt_no;
 					$updateDetails['transaction_status'] = '1';
+					$updateDetails1['status'] = '1';
 				} else if ($response_array['transaction_error_type'] == 'payment_processing_error') {
 					$updateDetails['transaction_status'] = '2';
+					$updateDetails1['status'] = '2';
 				} else {
 					$updateDetails['transaction_status'] = '0';
+					$updateDetails1['status'] = '0';
 				}
 
 				$this->set_session($response_array['additional_info']->additional_info3, $response_array['additional_info']->additional_info4);
 
 				$result = $this->admin_model->updateDetailsbyfield('reference_no', $response_array['orderid'], $updateDetails, 'transactions');
-
+				$result1 = $this->admin_model->updateDetailsbyfield('id', $response_array['additional_info']->additional_info7, $updateDetails1, 'payment_structure');
 				$payment = ['orderid' => $response_array['orderid']];
 				$this->session->set_userdata('payment', $payment);
 
@@ -1461,16 +1464,20 @@ class Student extends CI_Controller
 					$receipt_no = $cnt_number;
 					$updateDetails['receipt_no'] = $receipt_no;
 					$updateDetails['transaction_status'] = '1';
+					$updateDetails1['status'] = '1';
 				} else if ($response_array['transaction_error_type'] == 'payment_processing_error') {
 					$updateDetails['transaction_status'] = '2';
+					$updateDetails1['status'] = '2';
 				} else {
 					$updateDetails['transaction_status'] = '0';
+					$updateDetails1['status'] = '0';
 				}
 
 				$this->set_session($response_array['additional_info']->additional_info3, $response_array['additional_info']->additional_info4);
 
 				$result = $this->admin_model->updateDetailsbyfield('reference_no', $response_array['orderid'], $updateDetails, 'transactions');
-
+				$result1 = $this->admin_model->updateDetailsbyfield('id', $response_array['additional_info']->additional_info7, $updateDetails1, 'payment_structure');
+				
 				$payment = ['orderid' => $response_array['orderid']];
 				$this->session->set_userdata('payment', $payment);
 
@@ -1641,7 +1648,7 @@ class Student extends CI_Controller
 				"additional_info4" => $insert['mobile'],
 				"additional_info5" => "Fee Payment",
 				"additional_info6" => $this->input->post('type'),
-				"additional_info7" => "NA"
+				"additional_info7" => $this->input->post('pay_id')
 			);
 			$payload['itemcode']           = 'DIRECT';
 			$payload['device']             =  array(

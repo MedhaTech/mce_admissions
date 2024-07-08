@@ -77,7 +77,7 @@
     
                   $.ajax({
                       'type': 'POST',
-                      'url': base_url + 'admin/daybook_report/1',
+                      'url': base_url + 'admin/dayBookReportDownload/',
                       'data': {
                           'admissions': admissions
                       },

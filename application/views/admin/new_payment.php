@@ -28,7 +28,7 @@
                                               Learning
                                               Fee</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="e_learning_fee" id="e_learning_fee" class="form-control" value="<?php echo (set_value('e_learning_fee')) ? set_value('e_learning_fee') : $fee_structure['e_learning_fee']; ?>">
+                                              <input type="text" readonly name="e_learning_fee" id="e_learning_fee" class="form-control" value="<?php echo (set_value('e_learning_fee')) ? set_value('e_learning_fee') : $fee_structure->e_learning_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('e_learning_fee', $stud_id);
@@ -41,7 +41,7 @@
 
                                             ?>
                                           <div class="col-md-1">
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="e_learning_fee_checkbox" value="<?php echo (set_value('e_learning_fee')) ? set_value('e_learning_fee') : $fee_structure['e_learning_fee']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="e_learning_fee_checkbox" value="<?php echo (set_value('e_learning_fee')) ? set_value('e_learning_fee') : $fee_structure->e_learning_fee; ?>">
                                           </div>
                                       </div>
 
@@ -49,7 +49,7 @@
                                           <label for="staticEmail" class="col-md-5 col-form-label text-right">Eligibility
                                               Fee</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="eligibility_fee" id="eligibility_fee" class="form-control" value="<?php echo (set_value('eligibility_fee')) ? set_value('eligibility_fee') : $fee_structure['eligibility_fee']; ?>">
+                                              <input type="text" readonly name="eligibility_fee" id="eligibility_fee" class="form-control" value="<?php echo (set_value('eligibility_fee')) ? set_value('eligibility_fee') : $fee_structure->eligibility_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
@@ -62,7 +62,7 @@
                                                 }
 
                                                 ?>
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="eligibility_fee_checkbox" value="<?php echo (set_value('eligibility_fee')) ? set_value('eligibility_fee') : $fee_structure['eligibility_fee']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="eligibility_fee_checkbox" value="<?php echo (set_value('eligibility_fee')) ? set_value('eligibility_fee') : $fee_structure->eligibility_fee; ?>">
                                           </div>
                                       </div>
 
@@ -71,7 +71,7 @@
                                               Consortium
                                               Fee</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="e_consortium_fee" id="e_consortium_fee" class="form-control" value="<?php echo (set_value('e_consortium_fee')) ? set_value('e_consortium_fee') : $fee_structure['e_consortium_fee']; ?>">
+                                              <input type="text" readonly name="e_consortium_fee" id="e_consortium_fee" class="form-control" value="<?php echo (set_value('e_consortium_fee')) ? set_value('e_consortium_fee') : $fee_structure->e_consortium_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
@@ -84,14 +84,14 @@
                                                 }
 
                                                 ?>
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="e_consortium_fee_checkbox" value="<?php echo (set_value('e_consortium_fee')) ? set_value('e_consortium_fee') : $fee_structure['e_consortium_fee']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="e_consortium_fee_checkbox" value="<?php echo (set_value('e_consortium_fee')) ? set_value('e_consortium_fee') : $fee_structure->e_consortium_fee; ?>">
                                           </div>
                                       </div>
                                       <div class="form-group row">
                                           <label for="staticEmail" class="col-md-5 col-form-label text-right">Sport
                                               Fee</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="sport_fee" id="sport_fee" class="form-control" value="<?php echo (set_value('sport_fee')) ? set_value('sport_fee') : $fee_structure['sport_fee']; ?>">
+                                              <input type="text" readonly name="sport_fee" id="sport_fee" class="form-control" value="<?php echo (set_value('sport_fee')) ? set_value('sport_fee') : $fee_structure->sport_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
@@ -104,7 +104,7 @@
                                             }
 
                                             ?>
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="sport_fee_checkbox" value="<?php echo (set_value('sport_fee')) ? set_value('sport_fee') : $fee_structure['sport_fee']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="sport_fee_checkbox" value="<?php echo (set_value('sport_fee')) ? set_value('sport_fee') : $fee_structure->sport_fee; ?>">
                                           </div>
                                       </div>
                                       <div class="form-group row">
@@ -112,7 +112,7 @@
                                               Development
                                               fee</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="sports_development_fee" id="sports_development_fee" class="form-control" value="<?php echo (set_value('sports_development_fee')) ? set_value('sports_development_fee') : $fee_structure['sports_development_fee']; ?>">
+                                              <input type="text" readonly name="sports_development_fee" id="sports_development_fee" class="form-control" value="<?php echo (set_value('sports_development_fee')) ? set_value('sports_development_fee') : $fee_structure->sports_development_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
@@ -125,7 +125,7 @@
                                             }
 
                                             ?>
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="sports_development_fee_checkbox" value="<?php echo (set_value('sports_development_fee')) ? set_value('sports_development_fee') : $fee_structure['sports_development_fee']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="sports_development_fee_checkbox" value="<?php echo (set_value('sports_development_fee')) ? set_value('sports_development_fee') : $fee_structure->sports_development_fee; ?>">
                                           </div>
                                       </div>
                                       <div class="form-group row">
@@ -133,7 +133,7 @@
                                               Guidance &
                                               Counseling fee</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="career_guidance_counseling_fee" id="career_guidance_counseling_fee" class="form-control" value="<?php echo (set_value('career_guidance_counseling_fee')) ? set_value('career_guidance_counseling_fee') : $fee_structure['career_guidance_counseling_fee']; ?>">
+                                              <input type="text" readonly name="career_guidance_counseling_fee" id="career_guidance_counseling_fee" class="form-control" value="<?php echo (set_value('career_guidance_counseling_fee')) ? set_value('career_guidance_counseling_fee') : $fee_structure->career_guidance_counseling_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
@@ -146,7 +146,7 @@
                                                 }
 
                                                 ?>
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="career_guidance_counseling_fee_checkbox" value="<?php echo (set_value('career_guidance_counseling_fee')) ? set_value('career_guidance_counseling_fee') : $fee_structure['career_guidance_counseling_fee']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="career_guidance_counseling_fee_checkbox" value="<?php echo (set_value('career_guidance_counseling_fee')) ? set_value('career_guidance_counseling_fee') : $fee_structure->career_guidance_counseling_fee; ?>">
                                           </div>
                                       </div>
                                       <div class="form-group row">
@@ -154,7 +154,7 @@
                                               Development
                                               fund</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="university_development_fund" id="university_development_fund" class="form-control" value="<?php echo (set_value('university_development_fund')) ? set_value('university_development_fund') : $fee_structure['university_development_fund']; ?>">
+                                              <input type="text" readonly name="university_development_fund" id="university_development_fund" class="form-control" value="<?php echo (set_value('university_development_fund')) ? set_value('university_development_fund') : $fee_structure->university_development_fund; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
@@ -167,7 +167,7 @@
                                             }
 
                                             ?>
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="university_development_fund_checkbox" value="<?php echo (set_value('university_development_fund')) ? set_value('university_development_fund') : $fee_structure['university_development_fund']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="university_development_fund_checkbox" value="<?php echo (set_value('university_development_fund')) ? set_value('university_development_fund') : $fee_structure->university_development_fund; ?>">
                                           </div>
                                       </div>
                                       <div class="form-group row">
@@ -175,7 +175,7 @@
                                               of indian
                                               Cultural Activities Fee</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="promotion_of_indian_cultural_activities_fee" id="promotion_of_indian_cultural_activities_fee" class="form-control" value="<?php echo (set_value('promotion_of_indian_cultural_activities_fee')) ? set_value('promotion_of_indian_cultural_activities_fee') : $fee_structure['promotion_of_indian_cultural_activities_fee']; ?>">
+                                              <input type="text" readonly name="promotion_of_indian_cultural_activities_fee" id="promotion_of_indian_cultural_activities_fee" class="form-control" value="<?php echo (set_value('promotion_of_indian_cultural_activities_fee')) ? set_value('promotion_of_indian_cultural_activities_fee') : $fee_structure->promotion_of_indian_cultural_activities_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
@@ -188,7 +188,7 @@
                                                 }
 
                                                 ?>
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="promotion_of_indian_cultural_activities_fee_checkbox" value="<?php echo (set_value('promotion_of_indian_cultural_activities_fee')) ? set_value('promotion_of_indian_cultural_activities_fee') : $fee_structure['promotion_of_indian_cultural_activities_fee']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="promotion_of_indian_cultural_activities_fee_checkbox" value="<?php echo (set_value('promotion_of_indian_cultural_activities_fee')) ? set_value('promotion_of_indian_cultural_activities_fee') : $fee_structure->promotion_of_indian_cultural_activities_fee; ?>">
                                           </div>
                                       </div>
                                       <div class="form-group row">
@@ -196,7 +196,7 @@
                                               Development
                                               Fee</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="teachers_development_fee" id="teachers_development_fee" class="form-control" value="<?php echo (set_value('teachers_development_fee')) ? set_value('teachers_development_fee') : $fee_structure['teachers_development_fee']; ?>">
+                                              <input type="text" readonly name="teachers_development_fee" id="teachers_development_fee" class="form-control" value="<?php echo (set_value('teachers_development_fee')) ? set_value('teachers_development_fee') : $fee_structure->teachers_development_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
@@ -209,7 +209,7 @@
                                                 }
 
                                                 ?>
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="teachers_development_fee_checkbox" value="<?php echo (set_value('teachers_development_fee')) ? set_value('teachers_development_fee') : $fee_structure['teachers_development_fee']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="teachers_development_fee_checkbox" value="<?php echo (set_value('teachers_development_fee')) ? set_value('teachers_development_fee') : $fee_structure->teachers_development_fee; ?>">
                                           </div>
                                       </div>
                                       <div class="form-group row">
@@ -217,7 +217,7 @@
                                               Development
                                               Fee</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="student_development_fee" id="student_development_fee" class="form-control" value="<?php echo (set_value('student_development_fee')) ? set_value('student_development_fee') : $fee_structure['student_development_fee']; ?>">
+                                              <input type="text" readonly name="student_development_fee" id="student_development_fee" class="form-control" value="<?php echo (set_value('student_development_fee')) ? set_value('student_development_fee') : $fee_structure->student_development_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
@@ -230,7 +230,7 @@
                                                 }
 
                                                 ?>
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="student_development_fee_checkbox" value="<?php echo (set_value('student_development_fee')) ? set_value('student_development_fee') : $fee_structure['student_development_fee']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="student_development_fee_checkbox" value="<?php echo (set_value('student_development_fee')) ? set_value('student_development_fee') : $fee_structure->student_development_fee; ?>">
                                           </div>
                                       </div>
                                       <div class="form-group row">
@@ -238,7 +238,7 @@
                                               Red Cross
                                               Membership Fee</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="indian_red_cross_membership_fee" id="indian_red_cross_membership_fee" class="form-control" value="<?php echo (set_value('indian_red_cross_membership_fee')) ? set_value('indian_red_cross_membership_fee') : $fee_structure['indian_red_cross_membership_fee']; ?>">
+                                              <input type="text" readonly name="indian_red_cross_membership_fee" id="indian_red_cross_membership_fee" class="form-control" value="<?php echo (set_value('indian_red_cross_membership_fee')) ? set_value('indian_red_cross_membership_fee') : $fee_structure->indian_red_cross_membership_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
@@ -251,7 +251,7 @@
                                                 }
 
                                                 ?>
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="indian_red_cross_membership_fee_checkbox" value="<?php echo (set_value('indian_red_cross_membership_fee')) ? set_value('indian_red_cross_membership_fee') : $fee_structure['indian_red_cross_membership_fee']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="indian_red_cross_membership_fee_checkbox" value="<?php echo (set_value('indian_red_cross_membership_fee')) ? set_value('indian_red_cross_membership_fee') : $fee_structure->indian_red_cross_membership_fee; ?>">
                                           </div>
                                       </div>
                                       <div class="form-group row">
@@ -259,7 +259,7 @@
                                               Cell
                                               Fee</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="women_cell_fee" id="women_cell_fee" class="form-control" value="<?php echo (set_value('women_cell_fee')) ? set_value('women_cell_fee') : $fee_structure['women_cell_fee']; ?>">
+                                              <input type="text" readonly name="women_cell_fee" id="women_cell_fee" class="form-control" value="<?php echo (set_value('women_cell_fee')) ? set_value('women_cell_fee') : $fee_structure->women_cell_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
@@ -272,14 +272,14 @@
                                                 }
 
                                                 ?>
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="women_cell_fee_checkbox" value="<?php echo (set_value('women_cell_fee')) ? set_value('women_cell_fee') : $fee_structure['women_cell_fee']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="women_cell_fee_checkbox" value="<?php echo (set_value('women_cell_fee')) ? set_value('women_cell_fee') : $fee_structure->women_cell_fee; ?>">
                                           </div>
                                       </div>
                                       <div class="form-group row">
                                           <label for="staticEmail" class="col-md-5 col-form-label text-right">NSS
                                               Fee</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="nss_fee" id="nss_fee" class="form-control" value="<?php echo (set_value('nss_fee')) ? set_value('nss_fee') : $fee_structure['nss_fee']; ?>">
+                                              <input type="text" readonly name="nss_fee" id="nss_fee" class="form-control" value="<?php echo (set_value('nss_fee')) ? set_value('nss_fee') : $fee_structure->nss_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
@@ -292,7 +292,7 @@
                                             }
 
                                             ?>
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="nss_fee_checkbox" value="<?php echo (set_value('nss_fee')) ? set_value('nss_fee') : $fee_structure['nss_fee']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="nss_fee_checkbox" value="<?php echo (set_value('nss_fee')) ? set_value('nss_fee') : $fee_structure->nss_fee; ?>">
                                           </div>
                                       </div>
                                       <div class="form-group row">
@@ -300,7 +300,7 @@
                                               Registration
                                               Fee</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="university_registration_fee" id="university_registration_fee" class="form-control" value="<?php echo (set_value('university_registration_fee')) ? set_value('university_registration_fee') : $fee_structure['university_registration_fee']; ?>">
+                                              <input type="text" readonly name="university_registration_fee" id="university_registration_fee" class="form-control" value="<?php echo (set_value('university_registration_fee')) ? set_value('university_registration_fee') : $fee_structure->university_registration_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
@@ -313,7 +313,7 @@
                                             }
 
                                             ?>
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="university_registration_fee_checkbox" value="<?php echo (set_value('university_registration_fee')) ? set_value('university_registration_fee') : $fee_structure['university_registration_fee']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="university_registration_fee_checkbox" value="<?php echo (set_value('university_registration_fee')) ? set_value('university_registration_fee') : $fee_structure->university_registration_fee; ?>">
                                           </div>
                                       </div>
 
@@ -327,7 +327,7 @@
                                           <label for="staticEmail" class="col-md-5 col-form-label text-right">Admission
                                               fee</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="admission_fee" id="admission_fee" class="form-control" value="<?php echo (set_value('admission_fee')) ? set_value('admission_fee') : $fee_structure['admission_fee']; ?>">
+                                              <input type="text" readonly name="admission_fee" id="admission_fee" class="form-control" value="<?php echo (set_value('admission_fee')) ? set_value('admission_fee') : $fee_structure->admission_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
@@ -340,7 +340,7 @@
                                             }
 
                                             ?>
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="admission_fee_checkbox" value="<?php echo (set_value('admission_fee')) ? set_value('admission_fee') : $fee_structure['admission_fee']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="admission_fee_checkbox" value="<?php echo (set_value('admission_fee')) ? set_value('admission_fee') : $fee_structure->admission_fee; ?>">
                                           </div>
                                       </div>
                                       <div class="form-group row">
@@ -349,7 +349,7 @@
                                               at
                                               KEA</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="processing_fee_paid_at_kea" id="processing_fee_paid_at_kea" class="form-control" value="<?php echo (set_value('processing_fee_paid_at_kea')) ? set_value('processing_fee_paid_at_kea') : $fee_structure['processing_fee_paid_at_kea']; ?>">
+                                              <input type="text" readonly name="processing_fee_paid_at_kea" id="processing_fee_paid_at_kea" class="form-control" value="<?php echo (set_value('processing_fee_paid_at_kea')) ? set_value('processing_fee_paid_at_kea') : $fee_structure->processing_fee_paid_at_kea; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
@@ -362,14 +362,14 @@
                                             }
 
                                             ?>
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="processing_fee_paid_at_kea_checkbox" value="<?php echo (set_value('processing_fee_paid_at_kea')) ? set_value('processing_fee_paid_at_kea') : $fee_structure['processing_fee_paid_at_kea']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="processing_fee_paid_at_kea_checkbox" value="<?php echo (set_value('processing_fee_paid_at_kea')) ? set_value('processing_fee_paid_at_kea') : $fee_structure->processing_fee_paid_at_kea; ?>">
                                           </div>
                                       </div>
                                       <div class="form-group row">
                                           <label for="staticEmail" class="col-md-5 col-form-label text-right">Tution
                                               Fee</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="tution_fee" id="tution_fee" class="form-control" value="<?php echo (set_value('tution_fee')) ? set_value('tution_fee') : $fee_structure['tution_fee']; ?>">
+                                              <input type="text" readonly name="tution_fee" id="tution_fee" class="form-control" value="<?php echo (set_value('tution_fee')) ? set_value('tution_fee') : $fee_structure->tution_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
@@ -382,14 +382,14 @@
                                                 }
 
                                                 ?>
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="tution_fee_checkbox" value="<?php echo (set_value('tution_fee')) ? set_value('tution_fee') : $fee_structure['tution_fee']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="tution_fee_checkbox" value="<?php echo (set_value('tution_fee')) ? set_value('tution_fee') : $fee_structure->tution_fee; ?>">
                                           </div>
                                       </div>
                                       <div class="form-group row">
                                           <label for="staticEmail" class="col-md-5 col-form-label text-right">College
                                               Other Fee</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="college_other_fee" id="college_other_fee" class="form-control" value="<?php echo (set_value('college_other_fee')) ? set_value('college_other_fee') : $fee_structure['college_other_fee']; ?>">
+                                              <input type="text" readonly name="college_other_fee" id="college_other_fee" class="form-control" value="<?php echo (set_value('college_other_fee')) ? set_value('college_other_fee') : $fee_structure->college_other_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
@@ -402,14 +402,14 @@
                                                 }
 
                                                 ?>
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="college_other_fee_checkbox" value="<?php echo (set_value('college_other_fee')) ? set_value('college_other_fee') : $fee_structure['college_other_fee']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="college_other_fee_checkbox" value="<?php echo (set_value('college_other_fee')) ? set_value('college_other_fee') : $fee_structure->college_other_fee; ?>">
                                           </div>
                                       </div>
                                       <div class="form-group row">
                                           <label for="staticEmail" class="col-md-5 col-form-label text-right font-weight-bold">Skill
                                               Development Fee</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="skill_development_fee" id="skill_development_fee" class="form-control" value="<?php echo (set_value('skill_development_fee')) ? set_value('skill_development_fee') : $fee_structure['skill_development_fee']; ?>">
+                                              <input type="text" readonly name="skill_development_fee" id="skill_development_fee" class="form-control" value="<?php echo (set_value('skill_development_fee')) ? set_value('skill_development_fee') : $fee_structure->skill_development_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
@@ -422,7 +422,7 @@
                                             }
 
                                             ?>
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="skill_development_fee_checkbox" value="<?php echo (set_value('skill_development_fee')) ? set_value('skill_development_fee') : $fee_structure['skill_development_fee']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="skill_development_fee_checkbox" value="<?php echo (set_value('skill_development_fee')) ? set_value('skill_development_fee') : $fee_structure->skill_development_fee; ?>">
                                           </div>
                                       </div>
 
@@ -431,7 +431,7 @@
                                           <label for="staticEmail" class="col-md-5 col-form-label text-right font-weight-bold">CORPUS
                                               FUND</label>
                                           <div class="col-md-6">
-                                              <input type="text" readonly name="corpus_fund" id="corpus_fund" class="form-control" value="<?php echo (set_value('corpus_fund')) ? set_value('corpus_fund') : $fee_structure['corpus_fund']; ?>">
+                                              <input type="text" readonly name="corpus_fund" id="corpus_fund" class="form-control" value="<?php echo (set_value('corpus_fund')) ? set_value('corpus_fund') : $fee_structure->corpus_fund; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
@@ -444,7 +444,7 @@
                                             }
 
                                             ?>
-                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="corpus_fund_checkbox" value="<?php echo (set_value('corpus_fund')) ? set_value('corpus_fund') : $fee_structure['corpus_fund']; ?>">
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="corpus_fund_checkbox" value="<?php echo (set_value('corpus_fund')) ? set_value('corpus_fund') : $fee_structure->corpus_fund; ?>">
                                           </div>
                                       </div>
                                       <hr />

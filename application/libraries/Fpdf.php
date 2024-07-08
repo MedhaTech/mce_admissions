@@ -2296,6 +2296,33 @@ function Sector($xc, $yc, $r, $a, $b, $style='FD', $cw=true, $o=90)
         if($this->GetY()+$h>$this->PageBreakTrigger)
             $this->AddPage($this->CurOrientation);
     }
+    function AddTable($header, $data)
+    {
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(55, 6, $header[0], 1); // First column with more width
+        for ($i = 1; $i < count($header); $i++) {
+            $this->Cell(25, 6, $header[$i], 1); // Remaining columns
+        }
+        $this->Ln();
+
+        $this->SetFont('Arial', '', 8);
+        foreach ($data as $row) {
+            $this->Cell(55, 6, $row[0], 1); // First column with more width
+            for ($i = 1; $i < count($row); $i++) {
+                $this->Cell(25, 6, $row[$i], 1); // Remaining columns
+            }
+            $this->Ln();
+        }
+    }
+	function AddNameDetailsTable($details)
+    {
+        $this->SetFont('Arial', 'B', 9);
+       
+        $this->Cell(0, 6, 'Mr./Ms '.$details['name'], 1, 1);
+        
+        $this->Cell(0, 6, 'S/O D/O '.$details['parent'], 1, 1);
+        $this->Ln(3);
+    }
     
     function NbLines($w,$txt)
     {

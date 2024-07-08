@@ -133,6 +133,7 @@
         <input type="hidden" name="mobile" id="mobile" value="' . htmlspecialchars($student->mobile) . '">
         <input type="hidden" name="amount" id="amount" value="' . htmlspecialchars($paymentDetails1->final_fee) . '">
           <input type="hidden" name="type" id="type" value="' . htmlspecialchars($paymentDetails1->type) . '">
+          <input type="hidden" name="pay_id" id="pay_id" value="' . htmlspecialchars($paymentDetails1->id) . '">
         <button type="submit" class="btn btn-danger btn-sm" name="Update" id="Update">Pay Now</button>
     </form>';
 
