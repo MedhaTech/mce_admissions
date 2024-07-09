@@ -2329,7 +2329,7 @@ function Sector($xc, $yc, $r, $a, $b, $style='FD', $cw=true, $o=90)
        
         $this->Cell(0, 6, 'Mr. '.$details['name'], 1, 1);
         
-        $this->Cell(0, 6, 'S/O '.$details['parent'], 1, 1);
+        $this->Cell(0, 6, 'S/O. '.$details['parent'], 1, 1);
         $this->Ln(3);
     }
 	function AddNameDetailsTableF($details)
@@ -2338,7 +2338,7 @@ function Sector($xc, $yc, $r, $a, $b, $style='FD', $cw=true, $o=90)
        
         $this->Cell(0, 6, 'Ms. '.$details['name'], 1, 1);
         
-        $this->Cell(0, 6, 'D/O '.$details['parent'], 1, 1);
+        $this->Cell(0, 6, 'D/O. '.$details['parent'], 1, 1);
         $this->Ln(3);
     }
     

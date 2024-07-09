@@ -21,7 +21,7 @@
                       <div class="form-row">
                           <div class="form-group col-md-4 col-sm-12">
                               <label class="label">Entrance Type<span class="text-danger">*</span></label>
-                              <?php $entrance_options = array(" "=>"Select Entrance type","CET"=>"CET","COMED-K"=>"COMED-K","GOI"=>"GOI","J&K"=>"J&K","MANAGMENT"=>"MANAGMENT"); 
+                              <?php $entrance_options = array(" "=>"Select Entrance type","CET"=>"CET","COMED-K"=>"COMED-K","GOI"=>"GOI","J&K"=>"J&K","OTHERS"=>"OTHERS"); 
                                     echo form_dropdown('entrance_type', $entrance_options, (set_value('entrance_type')) ? set_value('entrance_type') : $entrance_type , 'class="form-control" id="entrance_type"'); 
                               ?>
                               <span class="text-danger"><?php echo form_error('entrance_type'); ?></span>
