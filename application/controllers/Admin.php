@@ -4839,8 +4839,8 @@ With good wishes";
 			$topGap = 30;
 
 			$pdf->SetY($topGap + 5);
-			$pdf->SetFont('Arial', '', 7);
-			$pdf->Cell(0, 3, "No.MCE/" . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"] . "/" . $data['admissionDetails']->adm_no . "/" . $data['admissionDetails']->academic_year, 0, 1, 'L');
+			$pdf->SetFont('Arial', 'BU', 7);
+			$pdf->Cell(0, 3, "No.MCE/" . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"] . "/" . $data['admissionDetails']->adm_no , 0, 1, 'L');
 			$pdf->SetFont('Arial', 'B', 7);
 			$pdf->Cell(0, 3, 'Ashok Haranahalli', 0, 1, 'L');
 			$pdf->SetFont('Arial', '', 7);
@@ -4862,14 +4862,22 @@ With good wishes";
 				'name' => $data['admissionDetails']->student_name,
 				'parent' => $data['admissionDetails']->father_name
 			);
-			$pdf->AddNameDetailsTable($details);
+			if($data['admissionDetails']->gender=="Male")
+			{
+				$pdf->AddNameDetailsTableM($details);
+			}
+			else
+			{
+				$pdf->AddNameDetailsTableF($details);
+			}
+			
 
 			$pdf->SetFont('Arial', '', 10);
-			$pdf->Cell(0, 5, 'Is provisionally admitted to 1st year B.E. ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ' course of FOUR years in this college', 0, 1);
+			$pdf->Cell(0, 5, 'is provisionally admitted to 1st year B.E. ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ' course of FOUR years in this college', 0, 1);
 			$pdf->Cell(0, 5, 'during the academic year 2024-25. Admission will be confirmed subject to:', 0, 1);
 			$pdf->Ln(3);
 
-			$pdf->MultiCell(0, 5, "1) a) The conditions of satisfying the eligibility requirements of Visvesvaraya Technological University\nb) Payment of 1st year Tuition Fees in full.\n\n2) Submission of following original documents before the commencement of classes\na) 10th & 12th Mark sheets or equivalent\nb) Transfer Certificate\nc) Migration Certificate (for Non Karnataka students only).\nd) Entrance exam score card (CET, Comedk, AIEEE) if any\n\n3) Submission of Tuition Fees paid Receipt.");
+			$pdf->MultiCell(0, 5, "1) a) The conditions of satisfying the eligibility requirements of Visvesvaraya Technological University\n \t\t\tb) Payment of 1st year Tuition Fees in full.\n\n2) Submission of following original documents before the commencement of classes\na) 10th & 12th Mark sheets or equivalent\nb) Transfer Certificate\nc) Migration Certificate (for Non Karnataka students only).\nd) Entrance exam score card (CET, Comedk, AIEEE) if any\n\n3) Submission of Tuition Fees paid Receipt.");
 			$pdf->Ln(3);
 
 			$header = array('Branch', '1st Year', '2nd Year', '3rd Year', '4th Year');
@@ -4931,15 +4939,14 @@ With good wishes";
 			$pdf->AddTable($header, $data1);
 			$pdf->Ln(3);
 
-			$pdf->MultiCell(0, 5, "Additional amount of Rs. ____ To be remitted towards eligibility fees for Non-Karnataka students.\n\nNote:\n1. Original documents & 1 year Tuition Fee paid receipt copy to be submitted before the commencement of classes.\n2. DD should be in favour of Principal, Malnad College of Engineering, Hassan payable at Hassan");
-			$pdf->Ln(5);
+			
 
 			// $pdf->Cell(0, 5, 'Chairman - Admissions', 0, 1, 'L');
 			// $pdf->Cell(0, 5, 'Hon. Secretary', 0, 1, 'R');
 
 			$additionalDataY = $pdf->GetY() + 5;
 
-			// Additional data after content
+			
 			$pdf->SetFont('Arial', 'B', 9);
 			$pdf->SetY($additionalDataY);
 			$pdf->Cell(0, 5, "Admissions Portal Login Details,", 0, 1, 'L');
@@ -4948,10 +4955,11 @@ With good wishes";
 			$pdf->Cell(0, 4, "Email : " . $data['admissionDetails']->email, 0, 1, 'L');
 			$pdf->Cell(0, 4, "Password : " . $data['admissionDetails']->mobile, 0, 1, 'L');
 			$pdf->Cell(0, 4, "Login URL : https://admissions.mcehassan.ac.in/student", 0, 1, 'L');
-	
+			$pdf->Ln(5);
+			$pdf->MultiCell(0, 5, "Additional amount of Rs. ____ To be remitted towards eligibility fees for Non-Karnataka students.\n\nNote:\n1. Original documents & 1 year Tuition Fee paid receipt copy to be submitted before the commencement of classes.\n2. DD should be in favour of Principal, Malnad College of Engineering, Hassan payable at Hassan");
+			$pdf->Ln(5);
 
-
-			$fileName = $data['admissionDetails']->student_name . '-:PROVISIONAL_ADMISSION_LETTER.pdf';
+			$fileName = $data['admissionDetails']->student_name . '-Admit_Letter.pdf';
 			$pdf->output($fileName, 'D');
 		} else {
 			redirect('admin/timeout');
