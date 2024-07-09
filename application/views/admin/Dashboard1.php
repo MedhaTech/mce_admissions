@@ -94,7 +94,7 @@
 
                                                 $MGMT_UNAIDED = $this->admin_model->getAdmissionStats($department_id,'MGMT','UnAided')->row()->cnt; 
                                                 $UNAIDED_INTAKE = $unaided1->unaided_mgmt_intake;
-                                                $MGMT_UNAIDED = $MGMT_UNAIDED+10;
+                                                $MGMT_UNAIDED = $MGMT_UNAIDED;
                                                 $UNAIDED_AVAILABLE = $UNAIDED_INTAKE - $MGMT_UNAIDED;
 
                                                 if($UNAIDED_INTAKE){

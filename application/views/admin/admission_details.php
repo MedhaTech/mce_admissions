@@ -41,7 +41,7 @@
                                 else{
                                         echo "--" ;
                                 }
-                                ?>  
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -58,7 +58,8 @@
                                 else{
                                         echo "--" ;
                                 }
-                                ?>&nbsp;<button class="cursor: pointer; p-0 m-0"><i onclick="copyContent()" class="fas fa-copy fa-sm fa-fw"></i></button>
+                                ?>&nbsp;<span style="cursor: pointer; "><i onclick="copyContent()"
+                                        class="far fa-copy fa-sm fa-fw"></i></span>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -73,7 +74,8 @@
                                 else{
                                         echo "--" ;
                                 }
-                                ?>&nbsp;<button class="cursor: pointer; p-0 m-0"><i onclick="copyContent1()" class="fas fa-copy fa-sm fa-fw"></i></button>
+                                ?>&nbsp;<span style="cursor: pointer;"><i onclick="copyContent1()"
+                                        class="far fa-copy fa-sm fa-fw"></i></span>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -88,7 +90,8 @@
                                 else{
                                         echo "--" ;
                                 }
-                                ?>&nbsp;<button class="cursor: pointer; p-0 m-0"><i onclick="copyContent2()" class="fas fa-copy fa-sm fa-fw"></i></button>
+                                ?>&nbsp;<span style="cursor: pointer;"><i onclick="copyContent2()"
+                                        class="far fa-copy fa-sm fa-fw"></i></span>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -207,7 +210,7 @@
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
                             <li class="nav-item">
-                            <?php $encryptId = base64_encode($admissionDetails->id);
+                                <?php $encryptId = base64_encode($admissionDetails->id);
                             echo anchor('admin/updateentranceexamdetails/'.$encryptId, '<i class="fas fa-edit"></i> Edit ', 'class="btn btn-dark btn-sm"'); ?>
                             </li>
                         </ul>
@@ -343,7 +346,7 @@
                     </h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
-                        <?php $encryptId = base64_encode($admissionDetails->id);
+                            <?php $encryptId = base64_encode($admissionDetails->id);
                             echo anchor('admin/updatepersonaldetails/'.$encryptId, '<i class="fas fa-edit"></i> Edit ', 'class="btn btn-dark btn-sm"'); ?>
                         </ul>
                     </div>
@@ -733,7 +736,7 @@
                     </h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
-                        <?php $encryptId = base64_encode($admissionDetails->id);
+                            <?php $encryptId = base64_encode($admissionDetails->id);
                             echo anchor('admin/updateparentsdetails/'.$encryptId, '<i class="fas fa-edit"></i> Edit ', 'class="btn btn-dark btn-sm"'); ?>
                         </ul>
                     </div>
@@ -940,7 +943,7 @@
                     </h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
-                         <?php $encryptId = base64_encode($admissionDetails->id);
+                            <?php $encryptId = base64_encode($admissionDetails->id);
                             echo anchor('admin/educationdetails/'.$encryptId, '<i class="fas fa-edit"></i> Edit ', 'class="btn btn-dark btn-sm"'); ?>
                         </ul>
                     </div>
@@ -1216,7 +1219,7 @@
             </div>
         </div>
 
-        
+
 
 
 
@@ -1227,32 +1230,32 @@
 
 <script>
 let text = document.getElementById('myText').innerHTML;
-  const copyContent = async () => {
+const copyContent = async () => {
     try {
-      await navigator.clipboard.writeText(text);
-      console.log('Content copied to clipboard');
+        await navigator.clipboard.writeText(text.trim());
+        console.log('Content copied to clipboard');
     } catch (err) {
-      console.error('Failed to copy: ', err);
+        console.error('Failed to copy: ', err);
     }
-  }
+}
 
-  let text1 = document.getElementById('myEmail').innerHTML;
-  const copyContent1 = async () => {
+let text1 = document.getElementById('myEmail').innerHTML;
+const copyContent1 = async () => {
     try {
-      await navigator.clipboard.writeText(text1);
-      console.log('Content copied to clipboard');
+        await navigator.clipboard.writeText(text1.trim());
+        console.log('Content copied to clipboard');
     } catch (err) {
-      console.error('Failed to copy: ', err);
+        console.error('Failed to copy: ', err);
     }
-  }
+}
 
-  let text2 = document.getElementById('myAadhaar').innerHTML;
-  const copyContent2 = async () => {
+let text2 = document.getElementById('myAadhaar').innerHTML;
+const copyContent2 = async () => {
     try {
-      await navigator.clipboard.writeText(text2);
-      console.log('Content copied to clipboard');
+        await navigator.clipboard.writeText(text2.trim());
+        console.log('Content copied to clipboard');
     } catch (err) {
-      console.error('Failed to copy: ', err);
+        console.error('Failed to copy: ', err);
     }
-  }
+}
 </script>
