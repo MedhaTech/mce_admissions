@@ -17,12 +17,13 @@
                                 <?php $encryptId = base64_encode($admissionDetails->id);
                                 echo anchor('admin/updateadmissiondetails/'.$encryptId, '<i class="fas fa-edit fa-sm fa-fw"></i> Edit ', 'class="btn btn-dark btn-sm"'); ?>
                             </li> -->
-                            <?php if((in_array($role, array(1)))){ ?>
+                            <?php if((in_array($role, array(1)))){ 
+                                if($admissionDetails->quota == "MGMT") {?>
                             <li class="nav-item">
                                 <?php $encryptId = base64_encode($admissionDetails->id);
                                 echo anchor('admin/admissionsletter/'.$encryptId, '<i class="fas fa-download fa-sm fa-fw"></i> Admit Letter ', 'class="btn btn-danger btn-sm"'); ?>
                             </li>
-                            <?php } ?>
+                            <?php } } ?>
                             <li class="nav-item">
                                 <?php echo anchor('admin/admissions', '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Back ', 'class="btn btn-dark btn-sm"'); ?>
                             </li>
