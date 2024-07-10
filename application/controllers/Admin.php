@@ -4966,7 +4966,10 @@ With good wishes";
 			$masked_phone = str_repeat('*', strlen($data['admissionDetails']->mobile) - 4) . substr($data['admissionDetails']->mobile, -4);
 			$pdf->AddPage();
 			$pdf->Image('assets/img/qr.png', 80, 20, 50); // Adjust x, y, and size as needed
-			$pdf->SetY(70);
+			$pdf->SetY(68);
+			$pdf->SetFont('Arial', '', 12); // Bold font
+			$pdf->Cell(0, 10, 'bi8.in/202425', 0, 1, 'C');
+			$pdf->Ln(3);
 
 			$pdf->SetFont('Arial', 'B', 16); // Bold font
 			$pdf->Cell(0, 10, 'SCAN TO ENROLL ADMISSION', 0, 1, 'C');
