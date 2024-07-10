@@ -4867,8 +4867,10 @@ With good wishes";
 				'parent' => $data['admissionDetails']->father_name
 			);
 			if ($data['admissionDetails']->gender == "Male") {
+				$salut="S/O. ";
 				$pdf->AddNameDetailsTableM($details);
 			} else {
+				$salut="D/O. ";
 				$pdf->AddNameDetailsTableF($details);
 			}
 
@@ -4961,10 +4963,13 @@ With good wishes";
 			$masked_email = $masked_username . '@' . $domain;
 
 			// Mask phone number
-			$masked_phone = str_repeat('*', strlen($data['admissionDetails']->mobile) - 2) . substr($data['admissionDetails']->mobile, -2);
+			$masked_phone = str_repeat('*', strlen($data['admissionDetails']->mobile) - 4) . substr($data['admissionDetails']->mobile, -4);
 			$pdf->AddPage();
 			$pdf->Image('assets/img/qr.png', 80, 20, 50); // Adjust x, y, and size as needed
-			$pdf->SetY(70);
+			$pdf->SetY(68);
+			$pdf->SetFont('Arial', '', 12); // Bold font
+			$pdf->Cell(0, 10, 'bi8.in/202425', 0, 1, 'C');
+			$pdf->Ln(3);
 
 			$pdf->SetFont('Arial', 'B', 16); // Bold font
 			$pdf->Cell(0, 10, 'SCAN TO ENROLL ADMISSION', 0, 1, 'C');
@@ -4973,7 +4978,7 @@ With good wishes";
 			$pdf->Cell(0, 5, "No.MCE/" . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"] . "/" . $data['admissionDetails']->adm_no, 0, 1, 'L');
 			$pdf->Ln(3);
 			$pdf->SetFont('Arial', 'B', 10);
-			$pdf->Cell(0, 5, $data['admissionDetails']->student_name." ".$data['admissionDetails']->father_name, 0, 1, 'L');
+			$pdf->Cell(0, 5, $data['admissionDetails']->student_name.", ".$salut." ".$data['admissionDetails']->father_name, 0, 1, 'L');
 			$pdf->Ln(3);
 			// $pdf->SetFont('Arial', 'B', 10);
 			// $pdf->Cell(0, 5, "Portal Login Credentials,", 0, 1, 'L');
@@ -4999,7 +5004,7 @@ With good wishes";
 			$pdf->SetFont('Arial', 'B', 10); // Bold font
 			$pdf->Cell($passwordWidth, 4, "Temporary Password :\t", 0, 0, 'L'); // Bold text "Temporary Password : "
 			$pdf->SetFont('Arial', '', 10); // Normal font
-			$pdf->Cell(0, 4, "\t".$masked_phone, 0, 1, 'L'); // Normal text "masked_phone" on a new line
+			$pdf->Cell(0, 4, "\t\t".$masked_phone, 0, 1, 'L'); // Normal text "masked_phone" on a new line
 
 			$pdf->Ln(5); // Line break
 			$pdf->SetFont('Arial', '', 10);
@@ -5008,6 +5013,7 @@ With good wishes";
 			$pdf->Ln(5);
 
 			$fileName = $data['admissionDetails']->student_name . '-Admit_Letter.pdf';
+			// $pdf->output();
 			$pdf->output($fileName, 'D');
 		} else {
 			redirect('admin/timeout');
