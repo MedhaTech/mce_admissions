@@ -637,18 +637,6 @@
                                         <div class="icon"> <i class="fa fa-edit"></i> </div>
                                         <div class="content">
                                             <h3 class="title">STEP 2</h3>
-                                            <p>Selection /Interveiw Process</p>
-                                        </div>
-                                    </div>
-                                </a></div>
-                        </div>
-                        <div
-                            class="service-item mt--30 col-lg-3 col-md-3 col-sm-6 col-12 elementor-repeater-item-ce062f3">
-                            <div class="single-service service__style--2 bg-color-gray "> <a href="#">
-                                    <div class="service">
-                                        <div class="icon"> <i class="fa fa-edit"></i> </div>
-                                        <div class="content">
-                                            <h3 class="title">STEP 3</h3>
                                             <p>Programme Registration</p>
                                         </div>
                                     </div>
@@ -660,7 +648,7 @@
                                     <div class="service">
                                         <div class="icon"> <i class="fa fa-edit"></i> </div>
                                         <div class="content">
-                                            <h3 class="title">STEP 4</h3>
+                                            <h3 class="title">STEP 3</h3>
                                             <p>Finish Admission Process</p>
                                         </div>
                                     </div>
