@@ -619,7 +619,7 @@
                     </div>
                     <div class="row">
                         <div
-                            class="service-item mt--30 col-lg-3 col-md-3 col-sm-6 col-12 elementor-repeater-item-ce062f3">
+                            class="service-item mt--30 col-lg-4 col-md-4 col-sm-6 col-12 elementor-repeater-item-ce062f3">
                             <div class="single-service service__style--2 bg-color-gray "> <a href="#">
                                     <div class="service">
                                         <div class="icon"> <i class="fa fa-edit"></i> </div>
@@ -631,7 +631,7 @@
                                 </a></div>
                         </div>
                         <div
-                            class="service-item mt--30 col-lg-3 col-md-3 col-sm-6 col-12 elementor-repeater-item-ce062f3">
+                            class="service-item mt--30 col-lg-4 col-md-4 col-sm-6 col-12 elementor-repeater-item-ce062f3">
                             <div class="single-service service__style--2 bg-color-gray "> <a href="#">
                                     <div class="service">
                                         <div class="icon"> <i class="fa fa-edit"></i> </div>
@@ -643,7 +643,7 @@
                                 </a></div>
                         </div>
                         <div
-                            class="service-item mt--30 col-lg-3 col-md-3 col-sm-6 col-12 elementor-repeater-item-ce062f3">
+                            class="service-item mt--30 col-lg-4 col-md-4 col-sm-6 col-12 elementor-repeater-item-ce062f3">
                             <div class="single-service service__style--2 bg-color-gray "> <a href="#">
                                     <div class="service">
                                         <div class="icon"> <i class="fa fa-edit"></i> </div>
