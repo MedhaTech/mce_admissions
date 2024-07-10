@@ -93,17 +93,6 @@
                                     <span class="text-danger"><?php echo form_error('sub_quota'); ?></span>
                                 </div>
                             </div>
-
-                            <div class="col-md-4 col-sm-12">
-                                <div class="form-group">
-                                    <label class="label">Category Allocated<span class="text-danger">*</span></label>
-                                    <input type="text" name="category_allotted" id="category_allotted"
-                                        value="<?php echo (set_value('category_allotted')) ? set_value('category_allotted') : $category_allotted; ?>"
-                                        class="form-control" placeholder="Enter Category Allocatted" readonly>
-                                    <span class="text-danger"><?php echo form_error('category_allotted'); ?></span>
-                                </div>
-                            </div>
-
                             <div class="col-md-4 col-sm-12">
                                 <div class="form-group">
                                     <label class="label">Category Claimed<span class="text-danger">*</span></label>
@@ -114,6 +103,17 @@
                                     <span class="text-danger"><?php echo form_error('category_claimed'); ?></span>
                                 </div>
                             </div>
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label class="label">Category Allocated<span class="text-danger">*</span></label>
+                                    <input type="text" name="category_allotted" id="category_allotted"
+                                        value="<?php echo (set_value('category_allotted')) ? set_value('category_allotted') : $category_allotted; ?>"
+                                        class="form-control" placeholder="Enter Category Allocatted" readonly>
+                                    <span class="text-danger"><?php echo form_error('category_allotted'); ?></span>
+                                </div>
+                            </div>
+
+                            
 
                         </div>
                         <div class="form-row">

@@ -86,7 +86,10 @@ echo "<div class='text-center'><img src='" . base_url() . "assets/img/no_data.jp
     <option value="Diploma_Marks_cards">Diploma Marks cards</option>
     <option value="Conduct_Certificate">Conduct certificate</option>
     <option value="Transfer_certificate">Transfer certificate</option>
-    <option value="payment_recipt">Payment recipt</option>
+     <option value="payment_recipt">Payment recipt</option>
+     <option value="rural">Rural certificate</option>
+     <option value="kannada">Kannada medium</option>
+     <option value="371J">371J Hyderabad karnataka</option>
   </select>
 
   <span class="text-danger"><?php echo form_error('documents'); ?></span>
@@ -107,6 +110,9 @@ echo "<div class='text-center'><img src='" . base_url() . "assets/img/no_data.jp
 <ul>
   <li>Upload the file formate in jpg/png/pdf</li>
   <li>Make sure the file should be less than 10MB</li>
+  <li>Need to update 7 years student study certificate.</li>
+  <li>If students are allocated under rural certificate / Hyderabad Karnataka/ kannada medium they must update documents here.</li>
+
 </ul>
 </form>
 
