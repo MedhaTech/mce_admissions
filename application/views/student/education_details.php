@@ -72,7 +72,7 @@
                           <div class="col-md-3 col-sm-6">
                               <div class="form-group">
                                   <label class="label">Level</label>
-                                  <?php $level_options = array(" " => "Select Level", "SSLC" => "SSLC", "PUC" => "PUC", "Diploma" => "Diploma", "Degree" => "Degree");
+                                  <?php $level_options = array(" " => "Select Level", "SSLC" => "SSLC", "PUC" => "PUC", "Diploma" => "Diploma", "Ug" => "Ug", "Pg" => "Pg");
                                     echo form_dropdown('education_level', $level_options, (set_value('education_level')) ? set_value('education_level') : 'education_level', 'class="form-control " id="education_level"');
                                     ?>
                                   <span class="text-danger"><?php echo form_error('education_level'); ?></span>

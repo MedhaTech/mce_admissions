@@ -4831,28 +4831,32 @@ With good wishes";
 			ini_set('memory_limit', '-1');
 			define('FPDF_FONTPATH', 'plugins/font');
 			$pdf = new FPDF();
-			$pdf->AddPage();
+			$pdf->AddPage('P', 'A4'); // 'P' for portrait orientation, 'A4' for A4 size (210x297 mm)
 
-			$pdf->Image('assets/img/mce_admit_letter.jpg', 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHeight());
+			// Set left, top, and right margins (20 mm)
+			$pdf->SetMargins(20, 20, 20);
+
+			$pdf->Image('assets/img/mce_pro_letter1.jpg', 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHeight());
 
 
 			$topGap = 30;
 
 			$pdf->SetY($topGap + 5);
 			$pdf->SetFont('Arial', 'BU', 7);
-			$pdf->Cell(0, 3, "No.MCE/" . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"] . "/" . $data['admissionDetails']->adm_no , 0, 1, 'L');
+			$pdf->Cell(0, 3, "No.MCE/" . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"] . "/" . $data['admissionDetails']->adm_no, 0, 1, 'L');
 			$pdf->SetFont('Arial', 'B', 7);
 			$pdf->Cell(0, 3, 'Ashok Haranahalli', 0, 1, 'L');
 			$pdf->SetFont('Arial', '', 7);
 			$pdf->Cell(0, 3, 'Chairman, Governing Council', 0, 1, 'L');
 			$pdf->Cell(0, 3, 'of M.C.E. Hassan.', 0, 1, 'L');
 
+			$pdf->SetFont('Arial', '', 9);
 			$pdf->SetXY(-30, $topGap + 5);
 			$pdf->Cell(0, 10, 'Date:' . date('d-m-Y'), 0, 1, 'R');
 
 			$pdf->SetFont('Arial', 'BU', 12);
 			$pdf->SetY($topGap + 20);
-			$pdf->Cell(0, 10, ': PROVISIONAL ADMISSION LETTER :', 0, 1, 'C');
+			$pdf->Cell(0, 10, ' PROVISIONAL ADMISSION LETTER ', 0, 1, 'C');
 
 
 			$pdf->SetFont('Arial', '', 9);
@@ -4862,22 +4866,19 @@ With good wishes";
 				'name' => $data['admissionDetails']->student_name,
 				'parent' => $data['admissionDetails']->father_name
 			);
-			if($data['admissionDetails']->gender=="Male")
-			{
+			if ($data['admissionDetails']->gender == "Male") {
 				$pdf->AddNameDetailsTableM($details);
-			}
-			else
-			{
+			} else {
 				$pdf->AddNameDetailsTableF($details);
 			}
-			
+
 
 			$pdf->SetFont('Arial', '', 10);
-			$pdf->Cell(0, 5, 'is provisionally admitted to 1st year B.E. ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ' course of FOUR years in this college', 0, 1);
-			$pdf->Cell(0, 5, 'during the academic year 2024-25. Admission will be confirmed subject to:', 0, 1);
+			$pdf->Cell(0, 5, 'is provisionally admitted to 1st year B.E. ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ' course of FOUR years', 0, 1);
+			$pdf->Cell(0, 5, 'in this college during the academic year 2024-25. Admission will be confirmed subject to:', 0, 1);
 			$pdf->Ln(3);
 
-			$pdf->MultiCell(0, 5, "1) a) The conditions of satisfying the eligibility requirements of Visvesvaraya Technological University\n \t\t\tb) Payment of 1st year Tuition Fees in full.\n\n2) Submission of following original documents before the commencement of classes\na) 10th & 12th Mark sheets or equivalent\nb) Transfer Certificate\nc) Migration Certificate (for Non Karnataka students only).\nd) Entrance exam score card (CET, Comedk, AIEEE) if any\n\n3) Submission of Tuition Fees paid Receipt.");
+			$pdf->MultiCell(0, 5, "1) a) The conditions of satisfying the eligibility requirements of Visvesvaraya Technological University\n \t\t\tb) Payment of 1st year Tuition Fees in full.\n\n2) Submission of following original documents before the commencement of classes\n\t\t\t\ta) 10th & 12th Mark sheets or equivalent\n\t\t\t\tb) Transfer Certificate\n\t\t\t\tc) Migration Certificate (for Non Karnataka students only).\n\t\t\t\td) Entrance exam score card (CET, Comedk, AIEEE) if any\n\n3) Submission of Tuition Fees paid Receipt.");
 			$pdf->Ln(3);
 
 			$header = array('Branch', '1st Year', '2nd Year', '3rd Year', '4th Year');
@@ -4890,7 +4891,7 @@ With good wishes";
 			if ($data['admissionDetails']->dept_id == '7') {
 				$data1 = array(
 
-					array('Artificial Intelligence & Machine Learning', '200000', '200000', '200000', '200000')
+					array('Computer Science & Engineering (AI&ML)', '200000', '200000', '200000', '200000')
 				);
 			}
 			if ($data['admissionDetails']->dept_id == '8') {
@@ -4939,24 +4940,71 @@ With good wishes";
 			$pdf->AddTable($header, $data1);
 			$pdf->Ln(3);
 
-			
+
 
 			// $pdf->Cell(0, 5, 'Chairman - Admissions', 0, 1, 'L');
 			// $pdf->Cell(0, 5, 'Hon. Secretary', 0, 1, 'R');
 
 			$additionalDataY = $pdf->GetY() + 5;
 
-			
-			$pdf->SetFont('Arial', 'B', 9);
+
+			$pdf->SetFont('Arial', '', 9);
 			$pdf->SetY($additionalDataY);
-			$pdf->Cell(0, 5, "Admissions Portal Login Details,", 0, 1, 'L');
-			$pdf->Ln(3);
-			$pdf->SetFont('Arial', '', 8);
-			$pdf->Cell(0, 4, "Email : " . $data['admissionDetails']->email, 0, 1, 'L');
-			$pdf->Cell(0, 4, "Password : " . $data['admissionDetails']->mobile, 0, 1, 'L');
-			$pdf->Cell(0, 4, "Login URL : https://admissions.mcehassan.ac.in/student", 0, 1, 'L');
+
+			$pdf->MultiCell(0, 5, "Additional amount of Rs. __________________ To be remitted towards eligibility fees for Non-Karnataka students.\n\nNote:\n1. Original documents & 1 year Tuition Fee paid receipt copy to be submitted before the commencement of classes.\n2. DD should be in favour of Principal, Malnad College of Engineering, Hassan payable at Hassan");
 			$pdf->Ln(5);
-			$pdf->MultiCell(0, 5, "Additional amount of Rs. ____ To be remitted towards eligibility fees for Non-Karnataka students.\n\nNote:\n1. Original documents & 1 year Tuition Fee paid receipt copy to be submitted before the commencement of classes.\n2. DD should be in favour of Principal, Malnad College of Engineering, Hassan payable at Hassan");
+			$email_parts = explode('@', $data['admissionDetails']->email);
+			$username = $email_parts[0];
+			$domain = $email_parts[1];
+
+			$masked_username = substr($username, 0, -2) . str_repeat('*', strlen($username) - 2);
+			$masked_email = $masked_username . '@' . $domain;
+
+			// Mask phone number
+			$masked_phone = str_repeat('*', strlen($data['admissionDetails']->mobile) - 2) . substr($data['admissionDetails']->mobile, -2);
+			$pdf->AddPage();
+			$pdf->Image('assets/img/qr.png', 80, 20, 50); // Adjust x, y, and size as needed
+			$pdf->SetY(70);
+
+			$pdf->SetFont('Arial', 'B', 16); // Bold font
+			$pdf->Cell(0, 10, 'SCAN TO ENROLL ADMISSION', 0, 1, 'C');
+			$pdf->Ln(15);
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(0, 5, "No.MCE/" . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"] . "/" . $data['admissionDetails']->adm_no, 0, 1, 'L');
+			$pdf->Ln(3);
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(0, 5, $data['admissionDetails']->student_name." ".$data['admissionDetails']->father_name, 0, 1, 'L');
+			$pdf->Ln(3);
+			// $pdf->SetFont('Arial', 'B', 10);
+			// $pdf->Cell(0, 5, "Portal Login Credentials,", 0, 1, 'L');
+			// $pdf->Ln(3);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->MultiCell(0, 5, "To complete your enrolment, please log in to our student portal using the credentials provided below. Here, you will be able to update your profile, access important information.");
+			$pdf->Ln(5);
+			$usernameWidth = $pdf->GetStringWidth("Username :\t");
+			$passwordWidth = $pdf->GetStringWidth("Temporary Password :\t");
+
+			// Calculate total width for the first line
+			$totalWidth = $usernameWidth + $pdf->GetStringWidth($masked_email);
+
+			// Determine x position for "Temporary Password"
+			$xPosition = $pdf->GetX() + $usernameWidth;
+
+			// Add content
+			$pdf->SetFont('Arial', 'B', 10); // Bold font
+			$pdf->Cell($usernameWidth, 4, "Username :\t", 0, 0, 'L'); // Bold text "Username : "
+			$pdf->SetFont('Arial', '', 10); // Normal font
+			$pdf->Cell(0, 4, "\t".$masked_email, 0, 1, 'L'); // Normal text "masked_email" on a new line
+
+			$pdf->SetFont('Arial', 'B', 10); // Bold font
+			$pdf->Cell($passwordWidth, 4, "Temporary Password :\t", 0, 0, 'L'); // Bold text "Temporary Password : "
+			$pdf->SetFont('Arial', '', 10); // Normal font
+			$pdf->Cell(0, 4, "\t".$masked_phone, 0, 1, 'L'); // Normal text "masked_phone" on a new line
+
+			$pdf->Ln(5); // Line break
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->MultiCell(0, 5, "Please log in at your earliest convenience and change your password for security. Follow the instructions on the portal to update your personal and academic details.");
+
 			$pdf->Ln(5);
 
 			$fileName = $data['admissionDetails']->student_name . '-Admit_Letter.pdf';
