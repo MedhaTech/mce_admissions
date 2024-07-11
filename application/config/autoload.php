@@ -90,7 +90,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url','json_output','file');
+$autoload['helper'] = array('url','json_output','file','custom_helper');
 
 /*
 | -------------------------------------------------------------------
