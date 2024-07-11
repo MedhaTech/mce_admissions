@@ -69,7 +69,7 @@
                                   <span class="text-danger"><?php echo form_error('mother_name'); ?></span>
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
-                                  <label class="form-label">Mobile<span class="text-danger">*</span></label>
+                                  <label class="form-label">Mobile<span class="text-danger"></span></label>
                                   <input type="number" class="form-control" placeholder="Enter Mobile" id="mother_mobile"
                                       value="<?php echo (set_value('mother_mobile')) ? set_value('mother_mobile') : $mother_mobile; ?>"
                                       name="mother_mobile">
@@ -109,7 +109,7 @@
                                   <span class="text-danger"><?php echo form_error('guardian_name'); ?></span>
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
-                                  <label class="form-label">Mobile<span class="text-danger">*</span></label>
+                                  <label class="form-label">Mobile<span class="text-danger"></span></label>
                                   <input type="number" class="form-control" placeholder="Enter Mobile"
                                       id="guardian_mobile"
                                       value="<?php echo (set_value('guardian_mobile')) ? set_value('guardian_mobile') : $guardian_mobile; ?>"

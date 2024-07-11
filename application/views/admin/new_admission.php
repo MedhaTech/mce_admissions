@@ -8,6 +8,7 @@
                       <h6 class="m-0"><?= $page_title; ?></h6>
                   </div>
                   <div class="card-body">
+                  
                       <?php echo form_open_multipart($action, 'class="user"'); ?>
 
                       <div class="form-row">
@@ -111,6 +112,16 @@
                                     echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : $sports, 'class="form-control input-xs" id="sports"');
                                     ?>
                                   <span class="text-danger"><?php echo form_error('sports'); ?></span>
+                              </div>
+                          </div>
+                          <div class="col-md-3 col-sm-12">
+                              <div class="form-group">
+                                  <label class="label">Activity Name<span
+                                          class="text-danger"></span></label>
+                                          <input type="text" name="sports_activity" id="sports_activity" class="form-control"
+                                      value="<?php echo (set_value('sports_activity')) ? set_value('sports_activity') : $sports_activity; ?>"
+                                      placeholder="Enter Sports Activity">
+                                  <span class="text-danger"><?php echo form_error('sports_activity'); ?></span>
                               </div>
                           </div>
                       </div>
@@ -233,23 +244,28 @@
 
                       <div class="form-row">
 
-                          <div class="col">
+                          <!-- <div class="col">
                               <div class="form-group">
                                   <label class="form-label">Concession Type</label>
                                   <?php $concession_type_options = array("" => "Select", "Sports Quota" => "Sports Quota", "Management Quota" => "Management Quota");
                                     echo form_dropdown('concession_type', $concession_type_options, (set_value('concession_type')) ? set_value('concession_type') : $concession_type, 'class="form-control input-xs" id="concession_type"'); ?>
 
                               </div>
-                          </div>
-                          <div class="col">
+                          </div> -->
+                          <!-- <div class="col">
                               <div class="form-group">
-                                  <label class="form-label">Concession Amount (if any)</label>
-                                  <input type="text" class="form-control" id="concession_fee" name="concession_fee"
+                                  <label class="form-label">Concession Amount (if any)</label> -->
+                                  <input type="hidden" class="form-control" id="concession_fee" name="concession_fee"
                                       placeholder="Enter Concession Fee"
                                       value="<?php echo (set_value('concession_fee')) ? set_value('concession_fee') : $concession_fee; ?>">
-                              </div>
-                          </div>
-                          <div class="col">
+                              <!-- </div>
+                          </div> -->
+                       
+
+                      </div>
+
+                      <div class="form-row">
+                      <div class="col">
                               <div class="form-group">
                                   <label class="form-label">College Fee</label>
                                   <input type="text" class="form-control" id="total_college_fee"
@@ -258,11 +274,6 @@
                                       readonly>
                               </div>
                           </div>
-
-                      </div>
-
-                      <div class="form-row">
-
 
                           <div class="col">
                               <div class="form-group">

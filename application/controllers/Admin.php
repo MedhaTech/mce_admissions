@@ -1566,10 +1566,10 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[admissions.aadhaar]');
 			$this->form_validation->set_rules('course', 'Department', 'required');
 			$this->form_validation->set_rules('quota', 'Quota', 'required');
-			$this->form_validation->set_rules('subquota', 'sub quota', 'required');
+			$this->form_validation->set_rules('subquota', 'College quota', 'required');
 			$this->form_validation->set_rules('category_allotted', 'Category Allocated', 'required');
 			$this->form_validation->set_rules('category_claimed', 'Category Claimed', 'required');
-			$this->form_validation->set_rules('college_code', 'College Code', 'required');
+			// $this->form_validation->set_rules('college_code', 'College Code', 'required');
 			$this->form_validation->set_rules('sports', 'Sports', 'required');
 			$this->form_validation->set_rules('entrance_type', 'Entrance Type', 'required');
 			$this->form_validation->set_rules('entrance_reg_no', 'Entrance Registration Number', 'required');
@@ -1596,6 +1596,7 @@ class Admin extends CI_Controller
 				$data['category_claimed'] = $this->input->post('category_claimed');
 				$data['college_code'] = $this->input->post('college_code');
 				$data['sports'] = $this->input->post('sports');
+				$data['sports_activity'] = $this->input->post('sports_activity');
 				$data['corpus'] = $this->input->post('corpus');
 
 				$data['total_tution_fee'] = $this->input->post('total_tution_fee');
@@ -1667,8 +1668,9 @@ class Admin extends CI_Controller
 					'sub_quota' => $this->input->post('subquota'),
 					'category_allotted' => $this->input->post('category_allotted'),
 					'category_claimed' => $this->input->post('category_claimed'),
-					'college_code' => $this->input->post('college_code'),
+					'college_code' => "NA",
 					'sports' => $this->input->post('sports'),
+					'sports_activity' => $this->input->post('sports_activity'),
 					'password' => md5($this->input->post('mobile')),
 					'entrance_type' => $this->input->post('entrance_type'),
 					'entrance_reg_no' => $this->input->post('entrance_reg_no'),
@@ -1715,7 +1717,7 @@ class Admin extends CI_Controller
 					$message = $this->load->view('email/registration', $email);
 					$ci = &get_instance();
 					$message = $ci->load->view('email/registration', $email, true);
-					$this->aws_sdk->triggerEmail($sender, 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!', $message);
+					// $this->aws_sdk->triggerEmail($sender, 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!', $message);
 					$this->aws_sdk->triggerEmail('admission@mcehassan.ac.in', 'MCE Online Admission Portal Registration Successful - Complete Your Application Now!', $message);
 				}
 
@@ -2910,8 +2912,14 @@ With good wishes";
 			$currentAcademicYear = $this->globals->currentAcademicYear();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $admission_id)->row();
 			$transactionDetails = $this->admin_model->getDetails('transactions', $transaction_id)->row();
+			$admissionDetails = $this->admin_model->getDetails('admissions', $admission_id)->row();
+			$paid_amount = $this->admin_model->paidfee('admissions_id', $admission_id, 'transaction_status', '1', 'transactions');
 
 
+
+			$fees= $this->admin_model->getDetailsbyfield($admission_id, 'student_id', 'fee_master')->row();
+			 $balance_amount = $fees->final_fee - $paid_amount;
+                                     
 			$currentAcademicYear = $this->globals->currentAcademicYear();
 
 			$this->load->library('fpdf'); // Load library
@@ -2922,7 +2930,7 @@ With good wishes";
 			$pdf->enableheader = 0;
 			$pdf->enablefooter = 0;
 			$pdf->AddPage();
-			$pdf->Image(base_url() . 'assets/img/transaction.jpg', 0, 0, 148);
+			$pdf->Image(base_url() . 'assets/img/transaction1.jpg', 0, 0, 148);
 			$pdf->setDisplayMode('fullpage');
 
 			$row = 8;
@@ -2967,15 +2975,23 @@ With good wishes";
 			$pdf->Cell(0, $row, "Course & Combination", 1, 0, 'L', false);
 			$pdf->setFont('Arial', '', 9);
 			$pdf->SetXY(50, $y + $row);
-			$pdf->Cell(0, $row, $this->romanYears[$data['admissionDetails']->year] . ' Year - ' . $data['admissionDetails']->course . ' [' . $combination . ']', 1, 0, 'L', false);
+			$pdf->Cell(0, $row, 'I Year - B.E ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] , 1, 0, 'L', false);
 
 			$y = $pdf->getY();
 			$pdf->setFont('Arial', 'B', 9);
 			$pdf->SetXY(10, $y + $row);
-			$pdf->Cell(0, $row, "Category", 1, 0, 'L', false);
+			$pdf->Cell(0, $row, "Quota", 1, 0, 'L', false);
 			$pdf->setFont('Arial', '', 9);
 			$pdf->SetXY(50, $y + $row);
-			$pdf->Cell(0, $row, $data['admissionDetails']->category, 1, 0, 'L', false);
+			$pdf->Cell(0, $row, $admissionDetails->quota, 1, 0, 'L', false);
+			$y = $pdf->getY();
+
+			$pdf->setFont('Arial', 'B', 9);
+			$pdf->SetXY(10, $y + $row);
+			$pdf->Cell(0, $row, "College Code", 1, 0, 'L', false);
+			$pdf->setFont('Arial', '', 9);
+			$pdf->SetXY(50, $y + $row);
+			$pdf->Cell(0, $row, $admissionDetails->sub_quota, 1, 0, 'L', false);
 
 			$y = $pdf->getY();
 			$pdf->setFont('Arial', 'B', 9);
@@ -3024,7 +3040,7 @@ With good wishes";
 				$pdf->Cell(0, $row, "Rupees (in words)", 1, 0, 'L', false);
 				$pdf->setFont('Arial', '', 8);
 				$pdf->SetXY(50, $y + $row);
-				$pdf->Cell(0, $row, "Rs." . number_format($paid_amount, 0) . "/-", 1, 0, 'L', false);
+				$pdf->Cell(0, $row, "Rs." . convert_number_to_words($paid_amount) . "/-", 1, 0, 'L', false);
 			}
 
 			if ($transactionDetails->transaction_type == 2) {
@@ -3059,7 +3075,7 @@ With good wishes";
 				$pdf->Cell(0, $row, "Rupees (in words)", 1, 0, 'L', false);
 				$pdf->setFont('Arial', '', 8);
 				$pdf->SetXY(50, $y + $row);
-				$pdf->Cell(0, $row, "Rs." . number_format($paid_amount, 0) . "/-", 1, 0, 'L', false);
+				$pdf->Cell(0, $row, "Rs." . convert_number_to_words($paid_amount) . "/-", 1, 0, 'L', false);
 			}
 
 			if ($transactionDetails->transaction_type == 3) {
@@ -3085,7 +3101,7 @@ With good wishes";
 				$pdf->Cell(0, $row, "Rupees (in words)", 1, 0, 'L', false);
 				$pdf->setFont('Arial', '', 8);
 				$pdf->SetXY(50, $y + $row);
-				$pdf->Cell(0, $row, "Rs." . number_format($paid_amount, 0) . "/-", 1, 0, 'L', false);
+				$pdf->Cell(0, $row, "Rs." . convert_number_to_words($paid_amount) . "/-", 1, 0, 'L', false);
 			}
 
 			if ($transactionDetails->aided_unaided != "Aided") {
@@ -3095,7 +3111,7 @@ With good wishes";
 				$pdf->Cell(0, $row, "Balance Amount", 1, 0, 'L', false);
 				$pdf->setFont('Arial', '', 9);
 				$pdf->SetXY(50, $y + $row);
-				$pdf->Cell(0, $row, "Rs." . number_format($balance, 0) . "/-", 1, 0, 'L', false);
+				$pdf->Cell(0, $row, "Rs." . number_format($balance_amount, 2) . "/-", 1, 0, 'L', false);
 			}
 
 			$y = $pdf->getY();
@@ -3113,19 +3129,20 @@ With good wishes";
 				$pdf->SetTextColor(255, 40, 0);
 				$pdf->Cell(0, $row, "RECEIPT CANCELLED", 0, 0, 'L', false);
 			} else {
-				$y = $pdf->getY();
-				$pdf->setFont('Arial', 'B', 10);
-				$pdf->SetXY(20, $y + 20);
-				$pdf->Cell(0, $row, "Clerk", 0, 0, 'L', false);
-				$pdf->setFont('Arial', 'B', 10);
-				$pdf->SetXY(100, $y + 20);
-				$pdf->Cell(0, $row, "Principal", 0, 0, 'L', false);
+				// $y = $pdf->getY();
+				// $pdf->setFont('Arial', 'B', 10);
+				// $pdf->SetXY(20, $y + 20);
+				// $pdf->Cell(0, $row, "Clerk", 0, 0, 'L', false);
+				// $pdf->setFont('Arial', 'B', 10);
+				// $pdf->SetXY(100, $y + 20);
+				// $pdf->Cell(0, $row, "Principal", 0, 0, 'L', false);
 			}
 
 			// Var_dump( $pdf->output());
 			// die();
 			$fileName = $transactionDetails->receipt_no . '.pdf';
 			// var_dump($transactionDetails);
+			// $pdf->output();
 			$pdf->output($fileName, 'D');
 		} else {
 			redirect('admin/timeout');
@@ -4546,7 +4563,7 @@ With good wishes";
 				if ($mode_of_payment == "ChequeDD") {
 					$paying_amount = $this->input->post('cheque_dd_amount');
 					$academic_year = "2024-2025";
-					$receipt_no = 0;
+					$receipt_no = 1;
 					$transaction_date = "";
 					$transaction_type = '2';
 					$bank_name = $this->input->post('cheque_dd_bank');
@@ -4554,7 +4571,7 @@ With good wishes";
 					$reference_date = date('Y-m-d', strtotime($this->input->post('cheque_dd_date')));
 					$paid_amount = "0";
 					$remarks = '';
-					$transaction_status = '0';
+					$transaction_status = '1';
 				}
 				if ($mode_of_payment == "OnlinePayment") {
 					$paying_amount = $this->input->post('transaction_amount');
@@ -5019,4 +5036,8 @@ With good wishes";
 			redirect('admin/timeout');
 		}
 	}
+
+
+	
+
 }

@@ -50,7 +50,7 @@
                       <div class="form-row">
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
-                                  <label class="label">Admission Order No<span class="text-danger">*</span></label>
+                                  <label class="label">Admission Order No<span class="text-danger"></span></label>
                                   <input type="text" name="admission_order_no" id="admission_order_no"
                                       class="form-control"
                                       value="<?php echo (set_value('admission_order_no')) ? set_value('admission_order_no') : $admission_order_no; ?>"
@@ -60,7 +60,7 @@
                           </div>
                           <div class="col-md-2 col-sm-12">
                               <div class="form-group">
-                                  <label class="label entyp">Admission Order Date<span class="text-danger">*</span></label>
+                                  <label class="label entyp">Admission Order Date<span class="text-danger"></span></label>
 
                                   <input type="date" name="admission_order_date" id="admission_order_date"
                                       class="form-control entyp"
@@ -71,7 +71,7 @@
                           </div>
                           <div class="col-md-2 col-sm-12">
                               <div class="form-group">
-                                  <label class="label entyp">Fees Paid<span class="text-danger">*</span></label>
+                                  <label class="label entyp">Fees Paid<span class="text-danger"></span></label>
                                   <input type="number" name="fees_paid" id="fees_paid" class="form-control entyp"
                                       value="<?php echo (set_value('fees_paid')) ? set_value('fees_paid') : $fees_paid; ?>"
                                       placeholder="Enter Fees Paid">
@@ -80,7 +80,7 @@
                           </div>
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
-                                  <label class="label entyp">Fees Receipt No<span class="text-danger">*</span></label>
+                                  <label class="label entyp">Fees Receipt No<span class="text-danger"></span></label>
                                   <input type="text" name="fees_receipt_no" id="fees_receipt_no" class="form-control entyp"
                                       value="<?php echo (set_value('fees_receipt_no')) ? set_value('fees_receipt_no') : $fees_receipt_no; ?>"
                                       placeholder="Enter Fees Receipt No">
@@ -89,7 +89,7 @@
                           </div>
                           <div class="col-md-2 col-sm-12">
                               <div class="form-group">
-                                  <label class="label entyp">Fees Receipt Date<span class="text-danger">*</span></label>
+                                  <label class="label entyp">Fees Receipt Date<span class="text-danger"></span></label>
                                   <input type="date" name="fees_receipt_date" id="fees_receipt_date"
                                       class="form-control entyp"
                                       value="<?php echo (set_value('fees_receipt_date')) ? set_value('fees_receipt_date') : $fees_receipt_date; ?>"
@@ -143,9 +143,9 @@
    $(document).ready(function() {
     var base_url = '<?php echo base_url(); ?>';
 
-        $(".entyp").hide();
+        $(".entyp").show();
         $("#entrance_type").change(function () {
-            if($("#entrance_type").val() == "MANAGMENT") {
+            if($("#entrance_type").val() == "OTHERS") {
                 $(".entyp").hide();
             }
         })

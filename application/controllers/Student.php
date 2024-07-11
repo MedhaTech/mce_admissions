@@ -258,11 +258,11 @@ class Student extends CI_Controller
 			$this->form_validation->set_rules('entrance_type', 'Entrance Type', 'required');
 			$this->form_validation->set_rules('entrance_reg_no', 'Entrance Registration Number', 'required');
 			$this->form_validation->set_rules('entrance_rank', 'Entrance Exam Rank', 'required');
-			$this->form_validation->set_rules('admission_order_no', 'Admission Order Number', 'required');
-			$this->form_validation->set_rules('admission_order_date', 'Admission Order Date', 'required');
-			$this->form_validation->set_rules('fees_paid', 'Fees Paid', 'required');
-			$this->form_validation->set_rules('fees_receipt_no', 'Fees Receipt Number', 'required');
-			$this->form_validation->set_rules('fees_receipt_date', 'Fees Receipt Date', 'required');
+			$this->form_validation->set_rules('admission_order_no', 'Admission Order Number', '');
+			$this->form_validation->set_rules('admission_order_date', 'Admission Order Date', '');
+			$this->form_validation->set_rules('fees_paid', 'Fees Paid', '');
+			$this->form_validation->set_rules('fees_receipt_no', 'Fees Receipt Number', '');
+			$this->form_validation->set_rules('fees_receipt_date', 'Fees Receipt Date', '');
 
 			if ($this->form_validation->run() === FALSE) {
 
@@ -468,12 +468,12 @@ class Student extends CI_Controller
 			$this->form_validation->set_rules('father_occupation', 'Father Occupation', 'required');
 			$this->form_validation->set_rules('father_annual_income', 'Father Annual Income', 'required');
 			$this->form_validation->set_rules('mother_name', 'Mother Name', 'required');
-			$this->form_validation->set_rules('mother_mobile', 'Mother Mobile', 'required|regex_match[/^[0-9]{10}$/]');
+			$this->form_validation->set_rules('mother_mobile', 'Mother Mobile', 'regex_match[/^[0-9]{10}$/]');
 			$this->form_validation->set_rules('mother_email', 'Mother Email', 'trim|valid_email');
 			$this->form_validation->set_rules('mother_occupation', 'Mother Occupation');
 			$this->form_validation->set_rules('mother_annual_income', 'Mother Annual Income');
 			$this->form_validation->set_rules('guardian_name', 'Guardian Name', 'required');
-			$this->form_validation->set_rules('guardian_mobile', 'Guardian Mobile', 'required|regex_match[/^[0-9]{10}$/]');
+			$this->form_validation->set_rules('guardian_mobile', 'Guardian Mobile', 'regex_match[/^[0-9]{10}$/]');
 			$this->form_validation->set_rules('guardian_email', 'Guardian Email', 'trim|valid_email');
 			$this->form_validation->set_rules('guardian_occupation', 'Guardian Occupation');
 			$this->form_validation->set_rules('guardian_annual_income', 'Guardian Annual Income');
@@ -773,6 +773,15 @@ class Student extends CI_Controller
 			$transactionDetails = $this->admin_model->getDetails('transactions', $transaction_id)->row();
 
 			// var_dump($transactionDetails);
+			$admissionDetails = $this->admin_model->getDetails('admissions', $admission_id)->row();
+			$paid_amount = $this->admin_model->paidfee('admissions_id', $admission_id, 'transaction_status', '1', 'transactions');
+
+
+
+			$fees= $this->admin_model->getDetailsbyfield($admission_id, 'student_id', 'fee_master')->row();
+			 $balance_amount = $fees->final_fee - $paid_amount;
+                                     
+			$currentAcademicYear = $this->globals->currentAcademicYear();
 
 			$this->load->library('fpdf'); // Load library
 			ini_set("session.auto_start", 0);
@@ -782,7 +791,7 @@ class Student extends CI_Controller
 			$pdf->enableheader = 0;
 			$pdf->enablefooter = 0;
 			$pdf->AddPage();
-			$pdf->Image(base_url() . 'assets/img/transaction.jpg', 0, 0, 148);
+			$pdf->Image(base_url() . 'assets/img/transaction1.jpg', 0, 0, 148);
 			$pdf->setDisplayMode('fullpage');
 
 			$row = 8;
@@ -827,15 +836,23 @@ class Student extends CI_Controller
 			$pdf->Cell(0, $row, "Course & Combination", 1, 0, 'L', false);
 			$pdf->setFont('Arial', '', 9);
 			$pdf->SetXY(50, $y + $row);
-			$pdf->Cell(0, $row, $this->romanYears[$data['admissionDetails']->year] . ' Year - ' . $data['admissionDetails']->course . ' [' . $combination . ']', 1, 0, 'L', false);
+			$pdf->Cell(0, $row, 'I Year - B.E ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] , 1, 0, 'L', false);
 
 			$y = $pdf->getY();
 			$pdf->setFont('Arial', 'B', 9);
 			$pdf->SetXY(10, $y + $row);
-			$pdf->Cell(0, $row, "Category", 1, 0, 'L', false);
+			$pdf->Cell(0, $row, "Quota", 1, 0, 'L', false);
 			$pdf->setFont('Arial', '', 9);
 			$pdf->SetXY(50, $y + $row);
-			$pdf->Cell(0, $row, $data['admissionDetails']->category, 1, 0, 'L', false);
+			$pdf->Cell(0, $row, $admissionDetails->quota, 1, 0, 'L', false);
+			$y = $pdf->getY();
+
+			$pdf->setFont('Arial', 'B', 9);
+			$pdf->SetXY(10, $y + $row);
+			$pdf->Cell(0, $row, "College Code", 1, 0, 'L', false);
+			$pdf->setFont('Arial', '', 9);
+			$pdf->SetXY(50, $y + $row);
+			$pdf->Cell(0, $row, $admissionDetails->sub_quota, 1, 0, 'L', false);
 
 			$y = $pdf->getY();
 			$pdf->setFont('Arial', 'B', 9);
@@ -884,7 +901,7 @@ class Student extends CI_Controller
 				$pdf->Cell(0, $row, "Rupees (in words)", 1, 0, 'L', false);
 				$pdf->setFont('Arial', '', 8);
 				$pdf->SetXY(50, $y + $row);
-				$pdf->Cell(0, $row, "Rs." . number_format($paid_amount, 0) . "/-", 1, 0, 'L', false);
+				$pdf->Cell(0, $row, "Rs." . convert_number_to_words($paid_amount) . "/-", 1, 0, 'L', false);
 			}
 
 			if ($transactionDetails->transaction_type == 2) {
@@ -919,7 +936,7 @@ class Student extends CI_Controller
 				$pdf->Cell(0, $row, "Rupees (in words)", 1, 0, 'L', false);
 				$pdf->setFont('Arial', '', 8);
 				$pdf->SetXY(50, $y + $row);
-				$pdf->Cell(0, $row, "Rs." . number_format($paid_amount, 0) . "/-", 1, 0, 'L', false);
+				$pdf->Cell(0, $row, "Rs." . convert_number_to_words($paid_amount) . "/-", 1, 0, 'L', false);
 			}
 
 			if ($transactionDetails->transaction_type == 3) {
@@ -945,7 +962,7 @@ class Student extends CI_Controller
 				$pdf->Cell(0, $row, "Rupees (in words)", 1, 0, 'L', false);
 				$pdf->setFont('Arial', '', 8);
 				$pdf->SetXY(50, $y + $row);
-				$pdf->Cell(0, $row, "Rs." . number_format($paid_amount, 0) . "/-", 1, 0, 'L', false);
+				$pdf->Cell(0, $row, "Rs." . convert_number_to_words($paid_amount) . "/-", 1, 0, 'L', false);
 			}
 
 			if ($transactionDetails->aided_unaided != "Aided") {
@@ -955,7 +972,7 @@ class Student extends CI_Controller
 				$pdf->Cell(0, $row, "Balance Amount", 1, 0, 'L', false);
 				$pdf->setFont('Arial', '', 9);
 				$pdf->SetXY(50, $y + $row);
-				$pdf->Cell(0, $row, "Rs." . number_format($balance, 0) . "/-", 1, 0, 'L', false);
+				$pdf->Cell(0, $row, "Rs." . number_format($balance_amount, 2) . "/-", 1, 0, 'L', false);
 			}
 
 			$y = $pdf->getY();
@@ -973,18 +990,20 @@ class Student extends CI_Controller
 				$pdf->SetTextColor(255, 40, 0);
 				$pdf->Cell(0, $row, "RECEIPT CANCELLED", 0, 0, 'L', false);
 			} else {
-				$y = $pdf->getY();
-				$pdf->setFont('Arial', 'B', 10);
-				$pdf->SetXY(20, $y + 20);
-				$pdf->Cell(0, $row, "Clerk", 0, 0, 'L', false);
-				$pdf->setFont('Arial', 'B', 10);
-				$pdf->SetXY(100, $y + 20);
-				$pdf->Cell(0, $row, "Principal", 0, 0, 'L', false);
+				// $y = $pdf->getY();
+				// $pdf->setFont('Arial', 'B', 10);
+				// $pdf->SetXY(20, $y + 20);
+				// $pdf->Cell(0, $row, "Clerk", 0, 0, 'L', false);
+				// $pdf->setFont('Arial', 'B', 10);
+				// $pdf->SetXY(100, $y + 20);
+				// $pdf->Cell(0, $row, "Principal", 0, 0, 'L', false);
 			}
 
 			// Var_dump( $pdf->output());
 			// die();
 			$fileName = $transactionDetails->receipt_no . '.pdf';
+			// var_dump($transactionDetails);
+			// $pdf->output();
 			// var_dump($transactionDetails);
 			$pdf->output($fileName, 'D');
 		} else {
