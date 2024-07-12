@@ -2917,9 +2917,9 @@ With good wishes";
 
 
 
-			$fees= $this->admin_model->getDetailsbyfield($admission_id, 'student_id', 'fee_master')->row();
-			 $balance_amount = $fees->final_fee - $paid_amount;
-                                     
+			$fees = $this->admin_model->getDetailsbyfield($admission_id, 'student_id', 'fee_master')->row();
+			$balance_amount = $fees->final_fee - $paid_amount;
+
 			$currentAcademicYear = $this->globals->currentAcademicYear();
 
 			$this->load->library('fpdf'); // Load library
@@ -2975,7 +2975,7 @@ With good wishes";
 			$pdf->Cell(0, $row, "Course & Combination", 1, 0, 'L', false);
 			$pdf->setFont('Arial', '', 9);
 			$pdf->SetXY(50, $y + $row);
-			$pdf->Cell(0, $row, 'I Year - B.E ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] , 1, 0, 'L', false);
+			$pdf->Cell(0, $row, 'I Year - B.E ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"], 1, 0, 'L', false);
 
 			$y = $pdf->getY();
 			$pdf->setFont('Arial', 'B', 9);
@@ -3181,7 +3181,7 @@ With good wishes";
 			// $table_setup = array ('table_open'=> '<table class="table table-bordered font14" border="1" id="dataTable" >');
 			// $this->table->set_template($table_setup);
 
-			$print_fields = array('S.No', 'Course', 'Student Name', 'Mobile', 'Admit. Date', 'Total Fee', 'Fees Paid', 'Balance amount', 'Next Due Date', 'Remarks');
+			$print_fields = array('S.No', 'Course', 'Student Name', 'Mobile', 'Admit. Date', 'Total Fee', 'Fees Paid', 'Balance amount',  'Remarks');
 
 			$this->table->set_heading($print_fields);
 
@@ -3197,7 +3197,8 @@ With good wishes";
 				// }else{
 				//     $combination = $admissions1->dsc_1.' - '.$admissions1->dsc_2;
 				// }
-
+				$fees_data= $this->admin_model->getDetailsbyfield($admissions1->id, 'student_id', 'fee_master')->row();
+				$balance_amount_data = $fees_data->final_fee - $feeDetails[$admissions1->id];
 				$paid_amount = (array_key_exists($admissions1->id, $feeDetails)) ? $feeDetails[$admissions1->id] : '0';
 				$balance_amount = $admissions1->final_fee - $paid_amount;
 				$result_array = array(
@@ -3208,10 +3209,10 @@ With good wishes";
 					$admissions1->student_name,
 					$admissions1->mobile,
 					($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
-					number_format($admissions1->final_fee, 0),
-					number_format($fees_paid, 0),
-					number_format($balance_amount, 0),
-					($admissions1->next_due_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->next_due_date)) : '',
+					number_format($fees_data->final_fee, 0),
+					number_format($feeDetails[$admissions1->id], 0),
+					number_format($balance_amount_data,0),
+					// ($admissions1->next_due_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->next_due_date)) : '',
 					$admissions1->remarks
 				);
 				// var_dump($result_array);
@@ -3683,9 +3684,9 @@ With good wishes";
 
 			// 			print_r($transactions); 
 			if ($download) {
-				$table = "<table class='table table-bordered' border='1' id='dataTable' >";
+				$table = "<table class='table table-bordered' border='1'  id='example2' >";
 			} else {
-				$table = "<table class='table table-bordered font14' border='1' id='dataTable' >";
+				$table = "<table class='table table-bordered font14' border='1' id='example2' >";
 			}
 			$table .= '<thead>';
 			if ($download) {
@@ -3693,13 +3694,15 @@ With good wishes";
 			}
 			$table .= '<tr><th>S.No</th>
 			               <th> Student Name </th>
+						    <th> Department Name </th>
 			               <th> Receipt No. </th>
-			               <th> Date </th>
+			              
 			               <th> Mode of Payment </th>
 			               <th> Reference No. </th>
 			               <th> Reference Date </th>
 			               <th> Bank Name </th>
 			               <th> Amount </th>
+						    <th> Date </th>
 			          </tr>';
 
 			$table .= '</thead>';
@@ -3712,18 +3715,21 @@ With good wishes";
 				// }else{
 				//     $combination = $transactions1->dsc_1.' - '.$transactions1->dsc_2;
 				// }
+				
 				$table .= '<tr>';
 				$table .= '<td>' . $i++ . '</td>';
 				$table .= '<td>' . $transactions1->student_name . '</td>';
+				$table .= '<td>' . $this->admin_model->get_dept_by_id($transactions1->dept_id)["department_name"] . '</td>';
 				//  $table .= '<td>'.$transactions1->course.'</td>';   
 				//  $table .= '<td>'.$combination.'</td>';   
 				$table .= '<td>' . $transactions1->receipt_no . '</td>';
-				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->transaction_date)) . '</td>';
+				
 				$table .= '<td>' . $transactionTypes[$transactions1->transaction_type] . '</td>';
 				$table .= '<td>' . $transactions1->reference_no . '</td>';
 				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->reference_date)) . '</td>';
 				$table .= '<td>' . $transactions1->bank_name . '</td>';
 				$table .= '<td>' . number_format($transactions1->amount, 0) . '</td>';
+				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->transaction_date)) . '</td>';
 				$table .= '</tr>';
 			}
 			$table .= '</tbody>';
@@ -3938,11 +3944,11 @@ With good wishes";
 			$this->form_validation->set_rules('entrance_type', 'Entrance Type', 'required');
 			$this->form_validation->set_rules('entrance_reg_no', 'Entrance Registration Number', 'required');
 			$this->form_validation->set_rules('entrance_rank', 'Entrance Exam Rank', 'required');
-			$this->form_validation->set_rules('admission_order_no', 'Admission Order Number', 'required');
-			$this->form_validation->set_rules('admission_order_date', 'Admission Order Date', 'required');
-			$this->form_validation->set_rules('fees_paid', 'Fees Paid', 'required');
-			$this->form_validation->set_rules('fees_receipt_no', 'Fees Receipt Number', 'required');
-			$this->form_validation->set_rules('fees_receipt_date', 'Fees Receipt Date', 'required');
+			$this->form_validation->set_rules('admission_order_no', 'Admission Order Number', '');
+			$this->form_validation->set_rules('admission_order_date', 'Admission Order Date', '');
+			$this->form_validation->set_rules('fees_paid', 'Fees Paid', '');
+			$this->form_validation->set_rules('fees_receipt_no', 'Fees Receipt Number', '');
+			$this->form_validation->set_rules('fees_receipt_date', 'Fees Receipt Date', '');
 
 			if ($this->form_validation->run() === FALSE) {
 
@@ -4884,10 +4890,10 @@ With good wishes";
 				'parent' => $data['admissionDetails']->father_name
 			);
 			if ($data['admissionDetails']->gender == "Male") {
-				$salut="S/O. ";
+				$salut = "S/O. ";
 				$pdf->AddNameDetailsTableM($details);
 			} else {
-				$salut="D/O. ";
+				$salut = "D/O. ";
 				$pdf->AddNameDetailsTableF($details);
 			}
 
@@ -4995,7 +5001,7 @@ With good wishes";
 			$pdf->Cell(0, 5, "No.MCE/" . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"] . "/" . $data['admissionDetails']->adm_no, 0, 1, 'L');
 			$pdf->Ln(3);
 			$pdf->SetFont('Arial', 'B', 10);
-			$pdf->Cell(0, 5, $data['admissionDetails']->student_name.", ".$salut." ".$data['admissionDetails']->father_name, 0, 1, 'L');
+			$pdf->Cell(0, 5, $data['admissionDetails']->student_name . ", " . $salut . " " . $data['admissionDetails']->father_name, 0, 1, 'L');
 			$pdf->Ln(3);
 			// $pdf->SetFont('Arial', 'B', 10);
 			// $pdf->Cell(0, 5, "Portal Login Credentials,", 0, 1, 'L');
@@ -5016,12 +5022,12 @@ With good wishes";
 			$pdf->SetFont('Arial', 'B', 10); // Bold font
 			$pdf->Cell($usernameWidth, 4, "Username :\t", 0, 0, 'L'); // Bold text "Username : "
 			$pdf->SetFont('Arial', '', 10); // Normal font
-			$pdf->Cell(0, 4, "\t".$masked_email, 0, 1, 'L'); // Normal text "masked_email" on a new line
+			$pdf->Cell(0, 4, "\t" . $masked_email, 0, 1, 'L'); // Normal text "masked_email" on a new line
 
 			$pdf->SetFont('Arial', 'B', 10); // Bold font
 			$pdf->Cell($passwordWidth, 4, "Temporary Password :\t", 0, 0, 'L'); // Bold text "Temporary Password : "
 			$pdf->SetFont('Arial', '', 10); // Normal font
-			$pdf->Cell(0, 4, "\t\t".$masked_phone, 0, 1, 'L'); // Normal text "masked_phone" on a new line
+			$pdf->Cell(0, 4, "\t\t" . $masked_phone, 0, 1, 'L'); // Normal text "masked_phone" on a new line
 
 			$pdf->Ln(5); // Line break
 			$pdf->SetFont('Arial', '', 10);
@@ -5036,8 +5042,228 @@ With good wishes";
 			redirect('admin/timeout');
 		}
 	}
+	public function admissionsletternew($dept)
+	{
+
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['page_title'] = 'Admission Details';
+			$data['menu'] = 'admissions';
+
+			// $id = $this->encrypt->decode(base64_decode($encryptId));
+			$admissions= $this->admin_model->getAdmissions_course($data['currentAcademicYear'], $dept, 1)->result();
+
+			if (count($admissions)) {
+				
+				foreach ($admissions as $admissions1) {
+					
+					$data['admissionStatus'] = $this->globals->admissionStatus();
+					$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
+
+					$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $admissions1->id)->row();
+
+					$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $admissions1->id)->row();
+					$data['educations_details'] = $this->admin_model->getDetailsbyfield($admissions1->id, 'student_id', 'student_education_details')->result();
 
 
-	
+					$this->load->library('fpdf'); // Load library
+					ini_set("session.auto_start", 0);
+					ini_set('memory_limit', '-1');
+					define('FPDF_FONTPATH', 'plugins/font');
+					$pdf = new FPDF();
+					$pdf->AddPage('P', 'A4'); // 'P' for portrait orientation, 'A4' for A4 size (210x297 mm)
 
+					// Set left, top, and right margins (20 mm)
+					$pdf->SetMargins(20, 20, 20);
+
+					$pdf->Image('assets/img/mce_pro_letter3.jpg', 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHeight());
+
+
+					$topGap = 30;
+
+					$pdf->SetY($topGap + 5);
+					$pdf->SetFont('Arial', 'BU', 7);
+					$pdf->Cell(0, 3, "No.MCE/" . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"] . "/" . $data['admissionDetails']->adm_no, 0, 1, 'L');
+					$pdf->SetFont('Arial', 'B', 7);
+					$pdf->Cell(0, 3, 'Ashok Haranahalli', 0, 1, 'L');
+					$pdf->SetFont('Arial', '', 7);
+					$pdf->Cell(0, 3, 'Chairman, Governing Council', 0, 1, 'L');
+					$pdf->Cell(0, 3, 'of M.C.E. Hassan.', 0, 1, 'L');
+
+					$pdf->SetFont('Arial', '', 9);
+					$pdf->SetXY(-30, $topGap + 5);
+					$pdf->Cell(0, 10, 'Date:' . date('d-m-Y'), 0, 1, 'R');
+
+					$pdf->SetFont('Arial', 'BU', 12);
+					$pdf->SetY($topGap + 20);
+					$pdf->Cell(0, 10, ' PROVISIONAL ADMISSION LETTER ', 0, 1, 'C');
+
+
+					$pdf->SetFont('Arial', '', 9);
+					$pdf->Cell(0, 10, 'This is to certify that,', 0, 1);
+					$pdf->Ln(3);
+					$details = array(
+						'name' => $data['admissionDetails']->student_name,
+						'parent' => $data['admissionDetails']->father_name
+					);
+					if ($data['admissionDetails']->gender == "Male") {
+						$salut = "S/O. ";
+						$pdf->AddNameDetailsTableM($details);
+					} else {
+						$salut = "D/O. ";
+						$pdf->AddNameDetailsTableF($details);
+					}
+
+
+					$pdf->SetFont('Arial', '', 10);
+					$pdf->Cell(0, 5, 'is provisionally admitted to 1st year B.E. ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ' course of FOUR years', 0, 1);
+					$pdf->Cell(0, 5, 'in this college during the academic year 2024-25. Admission will be confirmed subject to:', 0, 1);
+					$pdf->Ln(3);
+
+					$pdf->MultiCell(0, 5, "1) a) The conditions of satisfying the eligibility requirements of Visvesvaraya Technological University\n \t\t\tb) Payment of 1st year Tuition Fees in full.\n\n2) Submission of following original documents before the commencement of classes\n\t\t\t\ta) 10th & 12th Mark sheets or equivalent\n\t\t\t\tb) Transfer Certificate\n\t\t\t\tc) Migration Certificate (for Non Karnataka students only).\n\t\t\t\td) Entrance exam score card (CET, Comedk, AIEEE) if any\n\n3) Submission of Tuition Fees paid Receipt.");
+					$pdf->Ln(3);
+
+					$header = array('Branch', '1st Year', '2nd Year', '3rd Year', '4th Year');
+					if ($data['admissionDetails']->dept_id == '5') {
+
+						$data1 = array(
+							array('Computer Science & Engineering', '250000', '250000', '250000', '250000')
+						);
+					}
+					if ($data['admissionDetails']->dept_id == '7') {
+						$data1 = array(
+
+							array('Computer Science & Engineering (AI&ML)', '200000', '200000', '200000', '200000')
+						);
+					}
+					if ($data['admissionDetails']->dept_id == '8') {
+
+						$data1 = array(
+
+							array('Computer Science & Business System', '200000', '200000', '200000', '200000')
+						);
+					}
+					if ($data['admissionDetails']->dept_id == '6') {
+
+						$data1 = array(
+
+							array('Information Science & Engineering', '200000', '200000', '200000', '200000')
+						);
+					}
+					if ($data['admissionDetails']->dept_id == '4') {
+
+						$data1 = array(
+
+							array('Electronics & Communication Engineering', '175000', '175000', '175000', '175000')
+						);
+					}
+					if ($data['admissionDetails']->dept_id == '3') {
+
+						$data1 = array(
+
+							array('Electrical & Electronics Engineering', '100000', '100000', '100000', '100000')
+						);
+					}
+					if ($data['admissionDetails']->dept_id == '2') {
+
+						$data1 = array(
+
+							array('Mechanical Engineering', '100000', '100000', '100000', '100000')
+						);
+					}
+					if ($data['admissionDetails']->dept_id == '1') {
+
+						$data1 = array(
+
+							array('Civil Engineering', '100000', '100000', '100000', '100000')
+						);
+					}
+
+					$pdf->AddTable($header, $data1);
+					$pdf->Ln(3);
+
+
+
+					// $pdf->Cell(0, 5, 'Chairman - Admissions', 0, 1, 'L');
+					// $pdf->Cell(0, 5, 'Hon. Secretary', 0, 1, 'R');
+
+					$additionalDataY = $pdf->GetY() + 5;
+
+
+					$pdf->SetFont('Arial', '', 9);
+					$pdf->SetY($additionalDataY);
+
+					$pdf->MultiCell(0, 5, "Additional amount of Rs. __________________ To be remitted towards eligibility fees for Non-Karnataka students.\n\nNote:\n1. Original documents & 1 year Tuition Fee paid receipt copy to be submitted before the commencement of classes.\n2. DD should be in favour of Principal, Malnad College of Engineering, Hassan payable at Hassan");
+					$pdf->Ln(5);
+					$email_parts = explode('@', $data['admissionDetails']->email);
+					$username = $email_parts[0];
+					$domain = $email_parts[1];
+
+					$masked_username = substr($username, 0, -2) . str_repeat('*', strlen($username) - 2);
+					$masked_email = $masked_username . '@' . $domain;
+
+					// Mask phone number
+					$masked_phone = str_repeat('*', strlen($data['admissionDetails']->mobile) - 4) . substr($data['admissionDetails']->mobile, -4);
+					$pdf->AddPage();
+					$pdf->Image('assets/img/qr.png', 80, 20, 50); // Adjust x, y, and size as needed
+					$pdf->SetY(68);
+					$pdf->SetFont('Arial', '', 12); // Bold font
+					$pdf->Cell(0, 10, 'bi8.in/202425', 0, 1, 'C');
+					$pdf->Ln(3);
+
+					$pdf->SetFont('Arial', 'B', 16); // Bold font
+					$pdf->Cell(0, 10, 'SCAN TO ENROLL ADMISSION', 0, 1, 'C');
+					$pdf->Ln(15);
+					$pdf->SetFont('Arial', 'B', 10);
+					$pdf->Cell(0, 5, "No.MCE/" . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"] . "/" . $data['admissionDetails']->adm_no, 0, 1, 'L');
+					$pdf->Ln(3);
+					$pdf->SetFont('Arial', 'B', 10);
+					$pdf->Cell(0, 5, $data['admissionDetails']->student_name . ", " . $salut . " " . $data['admissionDetails']->father_name, 0, 1, 'L');
+					$pdf->Ln(3);
+					// $pdf->SetFont('Arial', 'B', 10);
+					// $pdf->Cell(0, 5, "Portal Login Credentials,", 0, 1, 'L');
+					// $pdf->Ln(3);
+					$pdf->SetFont('Arial', '', 10);
+					$pdf->MultiCell(0, 5, "To complete your enrolment, please log in to our student portal using the credentials provided below. Here, you will be able to update your profile, access important information.");
+					$pdf->Ln(5);
+					$usernameWidth = $pdf->GetStringWidth("Username :\t");
+					$passwordWidth = $pdf->GetStringWidth("Temporary Password :\t");
+
+					// Calculate total width for the first line
+					$totalWidth = $usernameWidth + $pdf->GetStringWidth($masked_email);
+
+					// Determine x position for "Temporary Password"
+					$xPosition = $pdf->GetX() + $usernameWidth;
+
+					// Add content
+					$pdf->SetFont('Arial', 'B', 10); // Bold font
+					$pdf->Cell($usernameWidth, 4, "Username :\t", 0, 0, 'L'); // Bold text "Username : "
+					$pdf->SetFont('Arial', '', 10); // Normal font
+					$pdf->Cell(0, 4, "\t" . $masked_email, 0, 1, 'L'); // Normal text "masked_email" on a new line
+
+					$pdf->SetFont('Arial', 'B', 10); // Bold font
+					$pdf->Cell($passwordWidth, 4, "Temporary Password :\t", 0, 0, 'L'); // Bold text "Temporary Password : "
+					$pdf->SetFont('Arial', '', 10); // Normal font
+					$pdf->Cell(0, 4, "\t\t" . $masked_phone, 0, 1, 'L'); // Normal text "masked_phone" on a new line
+
+					$pdf->Ln(5); // Line break
+					$pdf->SetFont('Arial', '', 10);
+					$pdf->MultiCell(0, 5, "Please log in at your earliest convenience and change your password for security. Follow the instructions on the portal to update your personal and academic details.");
+
+					$pdf->Ln(5);
+
+					$fileName = $data['admissionDetails']->student_name . '-Admit_Letter.pdf';
+					// $pdf->output();
+					$pdf->output($fileName, 'D');
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
 }

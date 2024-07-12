@@ -44,7 +44,7 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label class="form-label">Department</label><br>
-                                <?= $admissionDetails->dept_name; ?>
+                                <?=   $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_name"]; ?>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -58,7 +58,7 @@
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label">Sub Quota</label><br>
+                                <label class="form-label">College Code</label><br>
                                 <?= $admissionDetails->sub_quota; ?>
                             </div>
                         </div>
@@ -123,7 +123,7 @@
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="form-label">Fees Receip Number</label><br>
+                                <label class="form-label">Fees Receipt Number</label><br>
                                 <?= $admissionDetails->fees_receipt_no; ?>
                             </div>
                         </div>
@@ -159,28 +159,28 @@
                         <!-- <div class="col-2">
                               <div class="form-group">
                                   <label class="form-label">Total College Fee + Corpus Fund - Concession Fee (Rs.)</label>
-                                  <h4><?php echo number_format($fees->total_college_fee, 0) . ' + ' . number_format($fees->corpus_fund, 0) . ' - ' . number_format($studentDetails->concession_fee, 0); ?>
+                                  <h4><?php echo number_format($fees->total_college_fee, 2) . ' + ' . number_format($fees->corpus_fund, 2) . ' - ' . number_format($studentDetails->concession_fee, 2); ?>
                                   </h4>
                               </div>
                           </div> -->
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
                                 <label class="form-label">College Fee</label>
-                                <h4><?php echo number_format($fees->total_college_fee, 0); ?>
+                                <h4><?php echo number_format($fees->total_college_fee, 2); ?>
                                 </h4>
                             </div>
                         </div>
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
                                 <label class="form-label">Corpus Fund</label>
-                                <h4><?php echo number_format($fees->corpus_fund, 0); ?>
+                                <h4><?php echo number_format($fees->corpus_fund, 2); ?>
                                 </h4>
                             </div>
                         </div>
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
                                 <label class="form-label">Concession Fee</label>
-                                <h4><?php echo number_format($fees->concession_fee, 0); ?>
+                                <h4><?php echo number_format($fees->concession_fee, 2); ?>
                                 </h4>
                             </div>
                         </div>
@@ -255,7 +255,7 @@
 
                         $result_array = array(
                             $i++,
-                            $paymentDetails1->final_fee,
+                            number_format($paymentDetails1->final_fee, 2),
                             $paymentDetails1->requested_on,
                             $statusTypes[$paymentDetails1->status]
 
@@ -321,7 +321,7 @@
                             ($transactionDetails1->receipt_no) ? anchor('admin/downloadReceipt/' . $admissionDetails->id . '/' . $transactionDetails1->id, $transactionDetails1->receipt_no) : "-",
                             ($transactionDetails1->transaction_date != "") ? date('d-m-Y', strtotime($transactionDetails1->transaction_date)) : "-",
                             $trans,
-                            number_format($transactionDetails1->amount, 0),
+                            number_format($transactionDetails1->amount, 2),
                             $transaction_status
                         );
                         $this->table->add_row($result_array);
@@ -367,7 +367,7 @@
                                 <input type="radio" name="mode_of_payment" id="mode_of_payment" value="Cash"> Cash
                             </label>
                             <label class="radio-inline mr-3">
-                                <input type="radio" name="mode_of_payment" id="mode_of_payment" value="ChequeDD"> Cheque/DD
+                                <input type="radio" name="mode_of_payment" id="mode_of_payment" value="ChequeDD"> DD
                             </label>
                             <label class="radio-inline mr-3">
                                 <input type="radio" name="mode_of_payment" id="mode_of_payment" value="OnlinePayment"> Online Payment
@@ -390,12 +390,12 @@
                         </div>
                         <div id="cheque_dd_details">
                             <div class="form-group col-md-6 col-sm-12">
-                                <label class="form-label">Cheque/DD Date:</label>
+                                <label class="form-label">DD Date:</label>
                                 <input type="date" class="form-control" placeholder="Enter Date" id="cheque_dd_date" name="cheque_dd_date" value="">
                                 <span class="text-danger"><?php echo form_error('cheque_dd_date'); ?></span>
                             </div>
                             <div class="form-group col-md-6 col-sm-12">
-                                <label class="form-label">Cheque/DD Number:</label>
+                                <label class="form-label">DD Number:</label>
                                 <input type="text" class="form-control" placeholder="Enter number" id="cheque_dd_number" name="cheque_dd_number" value="">
                                 <span class="text-danger"><?php echo form_error('cheque_dd_number'); ?></span>
                             </div>

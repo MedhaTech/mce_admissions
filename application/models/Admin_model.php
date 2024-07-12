@@ -474,7 +474,7 @@ class Admin_model extends CI_Model
 }
 
 function transactions($transaction_status){
-  $this->db->select('admissions.id, admissions.app_no, admissions.adm_no, admissions.student_name, admissions.mobile,  admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.amount, transactions.remarks, transactions.transaction_status');
+  $this->db->select('admissions.id, admissions.app_no,admissions.dept_id, admissions.adm_no, admissions.student_name, admissions.mobile,  admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.amount, transactions.remarks, transactions.transaction_status');
   if($transaction_status != null)
     $this->db->where('transactions.transaction_status',$transaction_status);
   $this->db->join('admissions','admissions.id=transactions.admissions_id');
@@ -534,6 +534,21 @@ function getAdmissions_category($academic_year,$category_claimed)
         // If no rows found or value not greater than 0, return false
         return 0;
     }
+}
+
+public function get_department_name($admission_id) {
+  // Select department_name from departments based on dept_id in admissions table
+  $this->db->select('d.department_name');
+  $this->db->from('admissions AS a');
+  $this->db->join('departments AS d', 'a.dept_id = d.department_id', 'left');
+  $this->db->where('a.id', $admission_id);
+  $query = $this->db->get();
+
+  if ($query->num_rows() > 0) {
+      return $query->row()->department_name;
+  } else {
+      return false;
+  }
 }
 
 
