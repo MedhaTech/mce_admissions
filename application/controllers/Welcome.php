@@ -128,11 +128,11 @@ class Welcome extends CI_Controller {
 						$ci = &get_instance();
 						$message = $ci->load->view('email/enquiry_success', $email, true);
 
-						$this->aws_sdk->triggerEmail($student_email, 'Course Registration Application Submitted', $message);
+						$this->aws_sdk->triggerEmail($student_email, 'Course Registration Enquiry Submitted', $message);
 						if($parent_email){
-							$this->aws_sdk->triggerEmail($parent_email, 'Course Registration Application Submitted', $message);
+							$this->aws_sdk->triggerEmail($parent_email, 'Course Registration Enquiry Submitted', $message);
 						}
-						$this->aws_sdk->triggerEmail('admission@mcehassan.ac.in', 'Course Registration Application Submitted', $message);
+						$this->aws_sdk->triggerEmail('admission@mcehassan.ac.in', 'Course Registration Enquiry Submitted', $message);
 
 						$this->session->set_flashdata('message', "<h6>Thanks you! We've received your enquiry details. <br/> For any further inquiries, please contact admission@mcehassan.ac.in</h6>");
 						$this->session->set_flashdata('status', 'alert-success');
