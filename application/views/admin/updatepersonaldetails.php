@@ -32,7 +32,7 @@
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Gender<span class="text-danger">*</span></label>
-                                  <input type="text" class="form-control" placeholder="Enter Sports" id="gender"
+                                  <input type="text" class="form-control" placeholder="Enter Gender" id="gender"
                                       value="<?php echo (set_value('gender')) ? set_value('gender') : $gender; ?>"
                                       name="gender">
                                   <span class="text-danger"><?php echo form_error('gender'); ?></span>
