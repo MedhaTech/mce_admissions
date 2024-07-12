@@ -472,7 +472,7 @@ class Student extends CI_Controller
 			$this->form_validation->set_rules('mother_email', 'Mother Email', 'trim|valid_email');
 			$this->form_validation->set_rules('mother_occupation', 'Mother Occupation');
 			$this->form_validation->set_rules('mother_annual_income', 'Mother Annual Income');
-			$this->form_validation->set_rules('guardian_name', 'Guardian Name', 'required');
+			$this->form_validation->set_rules('guardian_name', 'Guardian Name', '');
 			$this->form_validation->set_rules('guardian_mobile', 'Guardian Mobile', 'regex_match[/^[0-9]{10}$/]');
 			$this->form_validation->set_rules('guardian_email', 'Guardian Email', 'trim|valid_email');
 			$this->form_validation->set_rules('guardian_occupation', 'Guardian Occupation');

@@ -108,7 +108,7 @@
                           <div class="col-md-6 text-right">
                               <button type="submit"  class="btn btn-info btn-square" name="Update" id="Update"> SAVE 
                               </button>
-                              <?php echo anchor('student/personaldetails', 'NEXT', 'class="btn btn-danger btn-square float-right" '); ?>
+                              <?php   echo anchor('student/personaldetails', 'NEXT', 'class="btn btn-danger btn-square float-right" '); ?>
                           </div>
                       </div>
                   </div>
