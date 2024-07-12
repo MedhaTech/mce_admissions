@@ -274,8 +274,7 @@
                                                 <div class="form-group col-4">
                                                     <button class="rn-button-style--2 btn_solid btn-size-sm"
                                                         type="submit" value="submit" name="submit" id="submit"
-                                                        disabled="true">Apply
-                                                        Now</button>
+                                                        disabled="true">Submit</button>
 
                                                 </div>
                                             </div>
@@ -625,7 +624,7 @@
                                         <div class="icon"> <i class="fa fa-edit"></i> </div>
                                         <div class="content">
                                             <h3 class="title">STEP 1</h3>
-                                            <p>Complete Online Application</p>
+                                            <p>Complete Online Enquiry</p>
                                         </div>
                                     </div>
                                 </a></div>

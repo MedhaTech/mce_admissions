@@ -13,9 +13,9 @@
 
     <p>Greetings from Malnad College of Engineering !</p>
 
-    <p>This is to confirm that we have received your application for course registration. </p>
+    <p>This is to confirm that we have received your enquiry for course registration. </p>
 
-    <p>This Email confirms our receipt of your online application form with the necessary details. Please make a note of
+    <p>This Email confirms our receipt of your online enquiry form with the necessary details. Please make a note of
         your mobile number <strong><?=$mobile;?></strong> as a reference for any further reference.</p>
 
     <p>Please visit the management office for further discussion. Please stay tuned. </p>
