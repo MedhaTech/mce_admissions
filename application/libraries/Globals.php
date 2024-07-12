@@ -31,7 +31,7 @@ class Globals
 
     public function transactionTypes()
     {
-        return array("1" => "Cash", "2"=>"Cheque/DD", "3"=>"Online Payment");
+        return array("1" => "Cash", "2"=>"DD", "3"=>"Online Payment");
     }
 
     public function currentAcademicYear()
