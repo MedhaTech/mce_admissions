@@ -3197,7 +3197,7 @@ With good wishes";
 				// }else{
 				//     $combination = $admissions1->dsc_1.' - '.$admissions1->dsc_2;
 				// }
-				$fees_data= $this->admin_model->getDetailsbyfield($admissions1->id, 'student_id', 'fee_master')->row();
+				$fees_data = $this->admin_model->getDetailsbyfield($admissions1->id, 'student_id', 'fee_master')->row();
 				$balance_amount_data = $fees_data->final_fee - $feeDetails[$admissions1->id];
 				$paid_amount = (array_key_exists($admissions1->id, $feeDetails)) ? $feeDetails[$admissions1->id] : '0';
 				$balance_amount = $admissions1->final_fee - $paid_amount;
@@ -3211,7 +3211,7 @@ With good wishes";
 					($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
 					number_format($fees_data->final_fee, 0),
 					number_format($feeDetails[$admissions1->id], 0),
-					number_format($balance_amount_data,0),
+					number_format($balance_amount_data, 0),
 					// ($admissions1->next_due_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->next_due_date)) : '',
 					$admissions1->remarks
 				);
@@ -3715,7 +3715,7 @@ With good wishes";
 				// }else{
 				//     $combination = $transactions1->dsc_1.' - '.$transactions1->dsc_2;
 				// }
-				
+
 				$table .= '<tr>';
 				$table .= '<td>' . $i++ . '</td>';
 				$table .= '<td>' . $transactions1->student_name . '</td>';
@@ -3723,7 +3723,7 @@ With good wishes";
 				//  $table .= '<td>'.$transactions1->course.'</td>';   
 				//  $table .= '<td>'.$combination.'</td>';   
 				$table .= '<td>' . $transactions1->receipt_no . '</td>';
-				
+
 				$table .= '<td>' . $transactionTypes[$transactions1->transaction_type] . '</td>';
 				$table .= '<td>' . $transactions1->reference_no . '</td>';
 				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->reference_date)) . '</td>';
@@ -5056,12 +5056,12 @@ With good wishes";
 			$data['menu'] = 'admissions';
 
 			// $id = $this->encrypt->decode(base64_decode($encryptId));
-			$admissions= $this->admin_model->getAdmissions_course($data['currentAcademicYear'], $dept, 1)->result();
+			$admissions = $this->admin_model->getAdmissions_course($data['currentAcademicYear'], $dept, 1)->result();
 
 			if (count($admissions)) {
-				
+
 				foreach ($admissions as $admissions1) {
-					
+
 					$data['admissionStatus'] = $this->globals->admissionStatus();
 					$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
 
@@ -5262,6 +5262,81 @@ With good wishes";
 					$pdf->output($fileName, 'D');
 				}
 			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+
+	public function enquiriesEmail()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Enquiries List';
+			$data['menu'] = 'enquiries';
+			$data['action'] = 'admin/enquiries';
+			$data['enquiryStatus'] = $this->globals->enquiryStatus();
+			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$enquiries = $this->admin_model->getEnquiries($data['currentAcademicYear'])->result();
+			$i=0;
+			foreach ($enquiries as $enq) {
+				$i++;
+				$email['name'] = strtoupper($enq->student_name);
+				$email['mobile'] = strtoupper($enq->mobile);
+				$email['student_email'] = strtolower($enq->email);
+				
+				$student_email= strtolower($enq->email);
+				$ci = &get_instance();
+				$message = $ci->load->view('email/enquiry_success', $email, true);
+
+				$this->aws_sdk->triggerEmail($student_email, 'Course Registration Enquiry Submitted', $message);
+				
+				// $this->aws_sdk->triggerEmail('admission@mcehassan.ac.in', 'Course Registration Enquiry Submitted', $message);
+			}
+			echo $i;
+
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+	public function enquiriesEmailError()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Enquiries List';
+			$data['menu'] = 'enquiries';
+			$data['action'] = 'admin/enquiries';
+			$data['enquiryStatus'] = $this->globals->enquiryStatus();
+			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$enquiries = $this->admin_model->getEnquiries($data['currentAcademicYear'])->result();
+			$i=0;
+			foreach ($enquiries as $enq) {
+				$i++;
+				$email['name'] = strtoupper($enq->student_name);
+				$email['mobile'] = strtoupper($enq->mobile);
+				$email['student_email'] = strtolower($enq->email);
+				
+				$student_email= strtolower($enq->email);
+				$ci = &get_instance();
+				$message = $ci->load->view('email/enquiry_error', $email, true);
+
+				$this->aws_sdk->triggerEmail($student_email, 'Error info', $message);
+				
+				// $this->aws_sdk->triggerEmail('admission@mcehassan.ac.in', 'Course Registration Enquiry Submitted', $message);
+			}
+			echo $i;
 		} else {
 			redirect('admin/timeout');
 		}
