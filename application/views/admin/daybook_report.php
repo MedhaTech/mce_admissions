@@ -65,7 +65,8 @@
               event.preventDefault();
 
 
-              var admissions = $("#admissions").val();
+              var to_date = $("#to_date").val();
+              var from_date = $("#from_date").val();
 
               $("#get_details").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Downloading...');
               $("#get_details").prop('disabled', true);
@@ -79,12 +80,13 @@
                       'type': 'POST',
                       'url': base_url + 'admin/dayBookReportDownload/',
                       'data': {
-                          'admissions': admissions
+                          'to_date': to_date,
+                          'from_date': from_date
                       },
                       'dataType': 'json',
                       'cache': false,
                       'success': function(data) {
-                          var filename = "Dcb Report.xls";
+                          var filename = "Day Book Report.xls";
                           var $a = $("<a>");
                           $a.attr("href", data.file);
                           $("body").append($a);
