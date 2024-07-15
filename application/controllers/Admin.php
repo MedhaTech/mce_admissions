@@ -3278,142 +3278,68 @@ With good wishes";
 			$data['page_title'] = 'Day Book Report';
 			$data['menu'] = 'dayBookReport';
 
-			// $data['feeTypes'] = $this->globals->feeTypes();
-			$data['feeTypesMgt'] = $this->globals->feeTypesMgt();
-			$courseCombination = $this->globals->courseCombination();
+			$to = $this->input->post('to_date');
+			$from = $this->input->post('from_date');
 
-			// var_dump($data['feeStructure']);
-			$table_headings = array('S.No', 'Date', 'Student Name', 'Mobile', 'Class', 'Aided/Un-Aided', 'Category', 'Receipt No.', 'Bank Name', 'DD / Cheque / Challan No. & Date', 'Paid (Rs.)', 'Balance (Rs.)');
+			$transactions = $this->admin_model->transactionsdatewise($from,$to)->result();
+			$transactionTypes = $this->globals->transactionTypes();
 
-			array_splice($table_headings, count($table_headings), 0, $data['transaction_type']);
 
-			array_splice($table_headings, count($table_headings), 0, $data['feeTypesMgt']);
+			$table = "<table class='table table-bordered' border='1'  id='example2' >";
 
-			$from_date = $this->input->post('from_date');
-			$to_date = $this->input->post('to_date');
+			$table .= '<thead>';
 
-			$details = $this->admin_model->dayBookReport($from_date, $to_date)->result();
+			$table .= '<tr><th colspan="11" class="font20">' . $currentAcademicYear . ' Day Book Report</th></tr>';
 
-			$table_setup = array('table_open' => '<table class="table table-bordered font14" border="1">');
-			$this->table->set_template($table_setup);
-			$this->table->set_heading($table_headings);
+			$table .= '<tr><th>S.No</th>
+			               <th> Student Name </th>
+						    <th> Department Name </th>
+			               <th> Receipt No. </th>
+			              
+			               <th> Mode of Payment </th>
+			               <th> Reference No. </th>
+			               <th> Reference Date </th>
+			               <th> Bank Name </th>
+			               <th> Amount </th>
+						    <th> Date </th>
+			          </tr>';
 
+			$table .= '</thead>';
+			$table .= '<tbody>';
 			$i = 1;
-			foreach ($details as $details1) {
-
-				if ($details1->category == "GM" || $details1->category == "2A" || $details1->category == "2B" || $details1->category == "3A" || $details1->category == "3B") {
-					$category = "1";
-				} else {
-					$category = "2";
-				}
-				// $combination = null;
-				// if (array_key_exists($details1->course,$courseCombination)){
-				//     if (array_key_exists($details1->dsc_1,$courseCombination[$details1->course])){
-				//         $combination = $details1->dsc_1;    
-				//     }
-				// }
-
-				// $fee = $this->admin_model->feeStructure($details1->course, $combination, $category, $details1->aided_unaided)->row();
-
-				// if($details1->dsc_1 == $details1->dsc_2){
-				//     $combination = $details1->dsc_1;
+			foreach ($transactions as $transactions1) {
+				//  print_r($transactions1); 
+				// if($transactions1->dsc_1 == $transactions1->dsc_2){
+				//     $combination = $transactions1->dsc_1;
 				// }else{
-				//     $combination = $details1->dsc_1.' - '.$details1->dsc_2;
+				//     $combination = $transactions1->dsc_1.' - '.$transactions1->dsc_2;
 				// }
 
-				$result_array = array(
-					$i++,
-					date('d-m-Y', strtotime($details1->transaction_date)),
-					$details1->student_name,
-					$details1->mobile,
-					$details1->course . ' [' . $combination . ']',
-					$details1->aided_unaided,
-					$details1->category . ' ' . $category,
-					$details1->receipt_no,
-					$details1->bank_name,
-					$details1->reference_no . ' ' . $details1->reference_date,
-					//  $details1->final_amount,
-					//  $details1->paid_amount,
-					$details1->amount,
-					$details1->balance_amount
-				);
-				$already_paid = $details1->paid_amount;
-				$paid_amount = $details1->amount;
-				if ($fee) {
-					$balance_amount = 0;
-					$test = 0;
-					$balance_amount1 = 0;
-					for ($f = 1; $f <= 28; $f++) {
-						$field = "field_" . $f;
-						// PREVISOULY PAID AMOUNT - LESS
-						if ($already_paid > 0) {
-							$fee_amount = $fee->$field;
-							// $balance_amount = 0;
-							$balance_amount = $already_paid - $fee->$field;
-							if ($balance_amount > 0) {
-								$display_amount = 0;
-							} else {
-								$feeField = - ($balance_amount);
+				$table .= '<tr>';
+				$table .= '<td>' . $i++ . '</td>';
+				$table .= '<td>' . $transactions1->student_name . '</td>';
+				$table .= '<td>' . $this->admin_model->get_dept_by_id($transactions1->dept_id)["department_name"] . '</td>';
+				//  $table .= '<td>'.$transactions1->course.'</td>';   
+				//  $table .= '<td>'.$combination.'</td>';   
+				$table .= '<td>' . $transactions1->receipt_no . '</td>';
 
-								// PAID AMT
-								if ($paid_amount < 0) {
-									$display_amount = 0;
-								} else {
-									$balance_amount1 = $paid_amount - $feeField;
-									if ($balance_amount1 < 0) {
-										$display_amount = $paid_amount;
-									} else {
-										$display_amount = $feeField;
-									}
-									$paid_amount = $balance_amount1;
-								}
-								// PAID AMT
-
-							}
-							$already_paid = $balance_amount;
-
-							// PREVISOULY PAID AMOUNT - LESS
-						} else {
-							// NOW PAID AMOUNT - ADD
-							if ($paid_amount < 0) {
-								//   $fee_amount = "0<br>".$fee->$field."<br>".$balance_amount;    
-								$display_amount = 0;
-							} else {
-								$balance_amount = $paid_amount - $fee->$field;
-								// $fee_amount = $fee->$field;
-								// $fee_amount = $paid_amount."<br>".$fee->$field."<br>".$balance_amount;
-								if ($balance_amount < 0) {
-									$display_amount = $paid_amount;
-								} else {
-									$display_amount = $fee->$field;
-								}
-								$paid_amount = $balance_amount;
-							}
-							// NOW PAID AMOUNT
-						}
-
-						$fee_amount = $fee->$field . '<br>' . $display_amount . "<br>" . $balance_amount;
-						$fee_amount = $display_amount;
-						$test = $test + $display_amount;
-						array_push($result_array, $fee_amount);
-					}
-					// array_push($result_array, $test);
-				}
-				$this->table->add_row($result_array);
+				$table .= '<td>' . $transactionTypes[$transactions1->transaction_type] . '</td>';
+				$table .= '<td>' . $transactions1->reference_no . '</td>';
+				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->reference_date)) . '</td>';
+				$table .= '<td>' . $transactions1->bank_name . '</td>';
+				$table .= '<td>' . number_format($transactions1->amount, 0) . '</td>';
+				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->transaction_date)) . '</td>';
+				$table .= '</tr>';
 			}
+			$table .= '</tbody>';
+			$table .= '</table>';
+			$data['table'] = $table;
 
-			$detailsTable = $this->table->generate();
-
-			if ($download == 1) {
-				$response =  array(
-					'op' => 'ok',
-					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($detailsTable)
-				);
-				die(json_encode($response));
-			} else {
-				$data['admissions'] = $details;
-				$this->admin_template->show('admin/daybook_report', $data);
-			}
+			$response =  array(
+				'op' => 'ok',
+				'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+			);
+			die(json_encode($response));
 		} else {
 			redirect('admin/timeout');
 		}
@@ -5284,23 +5210,22 @@ With good wishes";
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$enquiries = $this->admin_model->getEnquiries($data['currentAcademicYear'])->result();
-			$i=0;
+			$i = 0;
 			foreach ($enquiries as $enq) {
 				$i++;
 				$email['name'] = strtoupper($enq->student_name);
 				$email['mobile'] = strtoupper($enq->mobile);
 				$email['student_email'] = strtolower($enq->email);
-				
-				$student_email= strtolower($enq->email);
+
+				$student_email = strtolower($enq->email);
 				$ci = &get_instance();
 				$message = $ci->load->view('email/enquiry_success', $email, true);
 
 				$this->aws_sdk->triggerEmail($student_email, 'Course Registration Enquiry Submitted', $message);
-				
+
 				// $this->aws_sdk->triggerEmail('admission@mcehassan.ac.in', 'Course Registration Enquiry Submitted', $message);
 			}
 			echo $i;
-
 		} else {
 			redirect('admin/timeout');
 		}
@@ -5321,22 +5246,181 @@ With good wishes";
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$enquiries = $this->admin_model->getEnquiries($data['currentAcademicYear'])->result();
-			$i=0;
+			$i = 0;
 			foreach ($enquiries as $enq) {
 				$i++;
 				$email['name'] = strtoupper($enq->student_name);
 				$email['mobile'] = strtoupper($enq->mobile);
 				$email['student_email'] = strtolower($enq->email);
-				
-				$student_email= strtolower($enq->email);
+
+				$student_email = strtolower($enq->email);
 				$ci = &get_instance();
 				$message = $ci->load->view('email/enquiry_error', $email, true);
 
 				$this->aws_sdk->triggerEmail($student_email, 'Error info', $message);
-				
+
 				// $this->aws_sdk->triggerEmail('admission@mcehassan.ac.in', 'Course Registration Enquiry Submitted', $message);
 			}
 			echo $i;
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+	public function CoursewiseStudentAdmittedCount($download = '')
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Course wise Student Admitted Count';
+			$data['menu'] = 'reports';
+			$data['report_type'] = $report;
+			$admissionStatus = $this->globals->admissionStatus();
+			$admissionStatusColor = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissionStatus'] = array(" " => "Select Admission Status") + $this->globals->admissionStatus();
+			$data['course_options'] = array(" " => "Select") + $this->courses();
+			$data['action'] = 'admin/CoursewiseStudentAdmittedCount';
+			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			if ($this->form_validation->run() === FALSE) {
+
+				$this->admin_template->show('admin/CoursewiseStudentAdmittedCount', $data);
+			} else {
+				$data['course'] = $this->input->post('course');
+				$data['status'] = $this->input->post('admission_status');
+
+
+
+				$admissions = $this->admin_model->getAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+
+				if (count($admissions)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'College Code', 'Status', 'Admit. Date');
+
+
+
+					$this->table->set_heading($table_headings);
+
+					$i = 1;
+					foreach ($admissions as $admissions1) {
+						$dmp = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$admissions1->student_name,
+							$admissions1->mobile,
+							$dmp,
+							$admissions1->aadhaar,
+							$admissions1->quota,
+							$admissions1->sub_quota,
+							'<strong class="text-' . $admissionStatusColor[$admissions1->status] . '">' . $admissionStatus[$admissions1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($admissions1->admit_date))
+						);
+
+
+						$this->table->add_row($result_array);
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+				$data['selected_values'] = $selectedValues;
+				// Var_dump($this->db->last_query()); 
+				if ($download == 1) {
+					$response =  array(
+						'op' => 'ok',
+						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
+					);
+					die(json_encode($response));
+				} else {
+					$data['admissions'] = $details;
+					$this->admin_template->show('admin/CoursewiseStudentAdmittedCount', $data);
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function admissionsyearbook($download = null)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			$status = null;
+			$data['admissionStatus'] = $this->globals->admissionStatus();
+			$admissionStatus = $this->globals->admissionStatus();
+			$data['page_title'] =  'Admission Year Book';
+			$data['menu'] = 'admissions';
+
+			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
+			$admissionStatusColor = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissions'] = $this->admin_model->fetchDetails2('id, app_no, adm_no,quota,dept_id,sub_quota, student_name, mobile,usn,status', 'status', $status, 'academic_year', $data['currentAcademicYear'], 'admissions')->result();
+
+			$admissions = $data['admissions'];
+			if ($download == 1) {
+				if (count($admissions)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$print_fields = array('S.NO', 'App No', 'Applicant Name', 'Mobile', 'Course', 'Quota', 'Sub Quota', 'Status');
+					$this->table->set_heading($print_fields);
+
+					$i = 1;
+					foreach ($admissions as $admissions1) {
+
+						// $encryptId = base64_encode($this->encrypt->encode($admissions1->id));
+						$encryptId = base64_encode($admissions1->id);
+
+						$result_array = array(
+							$i++,
+							//   $admissions1->app_no,
+							$admissions1->app_no,
+							$admissions1->student_name,
+							$admissions1->mobile,
+
+							$this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"],
+							$admissions1->quota,
+							$admissions1->sub_quota,
+							// $admissions1->category_allotted,
+
+							// $admissions1->category_claimed,
+							'<strong class="text-' . $admissionStatusColor[$admissions1->status] . '">' . $admissionStatus[$admissions1->status] . '</strong>'
+						);
+						$this->table->add_row($result_array);
+					}
+					$table = $this->table->generate();
+				} else {
+					$table = "<div class='text-center'><img src='" . base_url() . "assets/img/no_data.jpg' class='nodata'></div>";
+				}
+
+				$base64_excel_data = "data:application/vnd.ms-excel;base64," . base64_encode($table);
+
+				// Remove the prefix to get only the base64 encoded data
+				$base64_data = str_replace('data:application/vnd.ms-excel;base64,', '', $base64_excel_data);
+
+				// Decode the base64 data to get the raw Excel content
+				$excel_data = base64_decode($base64_data);
+
+				// Set the headers to prompt a file download
+				header('Content-Type: application/vnd.ms-excel');
+				header('Content-Disposition: attachment; filename="downloaded_file.xls"');
+				header('Content-Length: ' . strlen($excel_data));
+
+				// Output the Excel content
+				echo $excel_data;
+
+				// End the script to ensure no additional output is sent
+				exit();
+			}
+			$this->admin_template->show('admin/admissionsyearbook', $data);
 		} else {
 			redirect('admin/timeout');
 		}
