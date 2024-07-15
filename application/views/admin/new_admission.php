@@ -138,7 +138,7 @@
                               <div class="form-group">
                                   <label class="label">Entrance Registration Number<span
                                           class="text-danger">*</span></label>
-                                  <input type="number" name="entrance_reg_no" id="entrance_reg_no" class="form-control"
+                                  <input type="text" name="entrance_reg_no" id="entrance_reg_no" class="form-control"
                                       value="<?php echo (set_value('entrance_reg_no')) ? set_value('entrance_reg_no') : $entrance_reg_no; ?>"
                                       placeholder="Enter Entrance Registration Number">
                                   <span class="text-danger"><?php echo form_error('entrance_reg_no'); ?></span>
