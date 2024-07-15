@@ -155,9 +155,9 @@
                               <?php echo anchor('student/personaldetails', 'BACK', 'class="btn btn-danger btn-square" '); ?>
                           </div>
                           <div class="col-md-6 text-right">
-                              <button type="submit" class="btn btn-info btn-square" name="Update" id="Update"> SAVE 
+                              <button type="submit" class="btn btn-info btn-square" name="Update" id="Update"> SAVE & NEXT 
                               </button>
-                              <?php echo anchor('student/educationdetails', 'NEXT', 'class="btn btn-danger btn-square float-right" '); ?>
+                              <?php // echo anchor('student/educationdetails', 'NEXT', 'class="btn btn-danger btn-square float-right" '); ?>
                           </div>
                       </div>
                   </div>

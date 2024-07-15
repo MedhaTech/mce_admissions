@@ -5425,4 +5425,357 @@ With good wishes";
 			redirect('admin/timeout');
 		}
 	}
+	public function vouchers()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+
+
+			$data['page_title'] = 'New vouchers';
+			$data['menu'] = 'vouchers';
+			// $data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
+
+			$this->form_validation->set_rules('mobile', 'Mobile', 'required');
+			if ($this->form_validation->run() === FALSE) {
+				$data['action'] = 'admin/vouchers';
+				$this->admin_template->show('admin/vouchers', $data);
+			} else {
+
+				$mobile = $this->input->post('mobile');
+				$details = $this->admin_model->getDetailsbyfield($mobile, 'mobile', 'admissions')->row();
+				if ($details) {
+					$student_id = $details->id;
+					$encryptId = base64_encode($student_id);
+					redirect('admin/voucherDetail/' . $encryptId, 'refresh');
+				} else {
+					redirect('admin/vouchers', 'refresh');
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function voucherDetail($encryptId)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Collect Fee';
+			$data['menu'] = 'payments';
+			$data['encryptId'] = $encryptId;
+			$student_id = base64_decode($encryptId);
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $student_id)->row();
+			$data['paymentDetail'] = $this->admin_model->getDetailsbyfield($student_id, 'admission_id', 'payment_structure')->result();
+			$data['transactionDetails'] = $this->admin_model->getDetailsbyfield($student_id, 'admissions_id', 'transactions')->result();
+			$data['paid_amount'] = $this->admin_model->paidfee('admissions_id', $student_id, 'transaction_status', '1', 'transactions');
+
+
+
+			$data['fees'] = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'fee_master')->row();
+
+
+
+			$this->form_validation->set_rules('mode_of_payment', 'Mode of Payment', 'required');
+			if ($this->form_validation->run() === FALSE) {
+				$data['action'] = 'admin/voucherDetail/' . $encryptId;
+				$this->admin_template->show('admin/voucherDetail', $data);
+			} else {
+
+				$rec = $this->input->post('rec');
+				$mode_of_payment = $this->input->post('mode_of_payment');
+				$paid_amount = $this->input->post('paid_amount');
+
+				$final_fee = $data['studentDetails']->final_fee;
+				$total_college_fee = $data['studentDetails']->total_college_fee;
+				$total_university_fee = $data['studentDetails']->total_university_fee;
+
+				$current_balance_amount = $data['studentDetails']->final_amount - $data['paid_amount'];
+
+				$paying_amount = 0;
+
+				if ($mode_of_payment == "Cash") {
+					$paying_amount = $this->input->post('cash_amount');
+					$academic_year = "2024-2025";
+					$receipt_no = 1;
+					$transaction_date = date('Y-m-d');
+					$transaction_type = '1';
+					$bank_name = "";
+					$reference_no = "";
+					$reference_date = date('Y-m-d', strtotime($this->input->post('cash_date')));
+					$paid_amount = "0";
+					$remarks = '';
+					$transaction_status = '1';
+				}
+				if ($mode_of_payment == "ChequeDD") {
+					$paying_amount = $this->input->post('cheque_dd_amount');
+					$academic_year = "2024-2025";
+					$receipt_no = 1;
+					$transaction_date = "";
+					$transaction_type = '2';
+					$bank_name = $this->input->post('cheque_dd_bank');
+					$reference_no = $this->input->post('cheque_dd_number');
+					$reference_date = date('Y-m-d', strtotime($this->input->post('cheque_dd_date')));
+					$paid_amount = "0";
+					$remarks = '';
+					$transaction_status = '1';
+				}
+				if ($mode_of_payment == "OnlinePayment") {
+					$paying_amount = $this->input->post('transaction_amount');
+					$academic_year = "2024-2025";
+					$receipt_no = 1;
+					$transaction_date = date('Y-m-d');
+					$transaction_type = '3';
+					$bank_name = "";
+					$reference_no = $this->input->post('transaction_id');
+					$reference_date = date('Y-m-d', strtotime($this->input->post('transaction_date')));
+					$paid_amount = "0";
+					$remarks = '';
+					$transaction_status = '1';
+				}
+
+				//    echo $data['studentDetails']->aided_unaided;
+				//    echo "<br>";
+				//    echo "Cur Balance:".$current_balance_amount;
+				//    echo "<br>";
+				//    echo "Paying:".$paying_amount;
+				//    echo "<br>";
+
+				$aided_fee = 0;
+				$mgt_fee = 0;
+				$unaided_fee = 0;
+
+				if ($data['studentDetails']->aided_unaided === "Aided") {
+					if ($final_amount == $current_balance_amount) {
+						if ($paying_amount >= $total_college_fee) {
+							$second_payment = $paying_amount - $total_college_fee;
+							if ($second_payment == 0) {
+								$aided_fee = $total_college_fee;
+								$mgt_fee = 0;
+							}
+							if ($second_payment) {
+								$aided_fee = $total_college_fee;
+								$mgt_fee = $second_payment;
+							}
+						}
+					} else {
+						$aided_fee = 0;
+						$mgt_fee = $paying_amount;
+					}
+				} else {
+					$unaided_fee = $paying_amount;
+				}
+
+				//echo "<br>";
+				//echo "Aided:".$aided_fee;
+				//echo "<br>";
+				//echo "Mgt:".$mgt_fee;
+				//echo "<br>";
+				//echo "UnAided:".$unaided_fee;
+
+				//die;
+				if ($aided_fee) {
+					$adm_type = "Aided";
+					if ($receipt_no) {
+						$tag = $this->receiptPre[$adm_type];
+						$receipt_no = null;
+						$cnt_number = $this->getReceiptNo($adm_type);
+						$receipt_no = $tag . $cnt_number;
+					} else {
+						$receipt_no = '';
+					}
+					// $balance_amount = $current_balance_amount - $aided_fee;    
+					$balance_amount = 0;
+					$transactionDetails = array(
+						'academic_year' => "2024-2025",
+						'admissions_id' => $data['admissionDetails']->id,
+						'mobile' => $data['admissionDetails']->mobile,
+						'aided_unaided' => $adm_type,
+						'receipt_no' => $receipt_no,
+						'year' => '1',
+						'transaction_date' => date('Y-m-d'),
+						'transaction_type' => $transaction_type,
+						'bank_name' => $bank_name,
+						'reference_no' => $reference_no,
+						'reference_date' => $reference_date,
+						'paid_amount' => $paid_amount,
+						'amount' => $aided_fee,
+						'balance_amount' => $balance_amount,
+						'remarks' => $remarks,
+						'transaction_status' => $transaction_status,
+						'created_by' => $data['name'],
+						'created_on' => date('Y-m-d h:i:s')
+					);
+					//print_r($transactionDetails);
+					$result = $this->admin_model->insertDetails('transactions', $transactionDetails);
+				}
+				if ($mgt_fee) {
+					$adm_type = "Mgt";
+					if ($receipt_no) {
+						$tag = $this->receiptPre[$adm_type];
+						$receipt_no = null;
+						$cnt_number = $this->getReceiptNo($adm_type);
+						$receipt_no = $tag . $cnt_number;
+					} else {
+						$receipt_no = '';
+					}
+					$balance_amount = ($current_balance_amount - ($mgt_fee + $aided_fee));
+					$transactionDetails = array(
+						'academic_year' => "2024-2025",
+						'admissions_id' => $data['admissionDetails']->id,
+						'mobile' => $data['admissionDetails']->mobile,
+						'aided_unaided' => $adm_type,
+						'receipt_no' => $receipt_no,
+						'year' => '1',
+						'transaction_date' => date('Y-m-d'),
+						'transaction_type' => $transaction_type,
+						'bank_name' => $bank_name,
+						'reference_no' => $reference_no,
+						'reference_date' => $reference_date,
+						'paid_amount' => $paid_amount,
+						'amount' => $mgt_fee,
+						'balance_amount' => $balance_amount,
+						'remarks' => $remarks,
+						'transaction_status' => $transaction_status,
+						'created_by' => $data['name'],
+						'created_on' => date('Y-m-d h:i:s')
+					);
+					//print_r($transactionDetails);
+					$result = $this->admin_model->insertDetails('transactions', $transactionDetails);
+				}
+				if ($unaided_fee) {
+					$adm_type = "UnAided";
+					if ($receipt_no) {
+						$tag = $this->receiptPre[$adm_type];
+						$receipt_no = null;
+						$cnt_number = $this->getReceiptNo($adm_type);
+						$receipt_no = $tag . $cnt_number;
+					} else {
+						$receipt_no = '';
+					}
+					$balance_amount = $current_balance_amount - $unaided_fee;
+					$transactionDetails = array(
+						'academic_year' => "2024-2025",
+						'admissions_id' => $data['admissionDetails']->id,
+						'mobile' => $data['admissionDetails']->mobile,
+						'aided_unaided' => $adm_type,
+						'receipt_no' => $receipt_no,
+						'year' => '1',
+						'transaction_date' => date('Y-m-d'),
+						'transaction_type' => $transaction_type,
+						'bank_name' => $bank_name,
+						'reference_no' => $reference_no,
+						'reference_date' => $reference_date,
+						'paid_amount' => $paid_amount,
+						'amount' => $unaided_fee,
+						'balance_amount' => $balance_amount,
+						'remarks' => $remarks,
+						'transaction_status' => $transaction_status,
+						'created_by' => $data['name'],
+						'created_on' => date('Y-m-d h:i:s')
+					);
+					//print_r($transactionDetails);
+					$result = $this->admin_model->insertDetails('transactions', $transactionDetails);
+				}
+
+				if ($rec) {
+					$updateDetails = array('adm_date' => date('Y-m-d'));
+					$res = $this->admin_model->updateDetails('admissions', $data['studentDetails']->id, $updateDetails);
+				}
+
+				if ($result) {
+					$this->session->set_flashdata('message', 'Fee Payment details udpated successfully...!');
+					$this->session->set_flashdata('status', 'alert-success');
+				} else {
+					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				}
+				redirect('admin/paymentDetail/' . $encryptId, 'refresh');
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	function new_voucher($encryptId)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			$data['page_title'] = "New Voucher Request";
+			$data['menu'] = "vouchers";
+			$id = base64_decode($encryptId);
+			$admissionSingle = $this->admin_model->getDetails('admissions', $id)->row();
+
+			$data['fee_structure'] = $this->admin_model->getFee($admissionSingle->dept_id, $admissionSingle->quota, $admissionSingle->sub_quota)->row();
+			$data['stud_id'] = $id;
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+			$this->form_validation->set_rules('final_fee', 'Total Amount', 'numeric|required');
+
+
+			if ($this->form_validation->run() === FALSE) {
+				$data['action'] = 'admin/new_voucher/' . $encryptId;
+				$this->admin_template->show('admin/new_voucher', $data);
+			} else {
+
+
+				$selectedFees = $this->input->post('selected_fees');
+
+				$finalFee = $this->input->post('final_fee');
+				$selectedFeesArray = json_decode($selectedFees, true);
+
+				// Debugging - Output selected fees array (adjust as needed)
+				$updateDetails['type'] = 0;
+				foreach ($selectedFeesArray as $selected) {
+					$field = $newName = preg_replace('/_checkbox$/', '', $selected['name']);
+
+					$updateDetails[$field] = $selected['value'];
+
+					if ($field == 'corpus_fund') {
+						$updateDetails['type'] = 1;
+					}
+				}
+
+				$updateDetails['admission_id'] = $id;
+				$updateDetails['mobile'] = $data['admissionDetails']->mobile;;
+				$updateDetails['final_fee'] = $this->input->post('final_fee');
+				$updateDetails['requested_by'] = $data['full_name'];
+				$updateDetails['requested_on'] = date('Y-m-d h:i:s');
+
+				// var_dump($updateDetails);
+
+				$result = $this->admin_model->insertDetails('payment_structure', $updateDetails);
+
+
+				if ($result) {
+					$this->session->set_flashdata('message', 'New Payment Details are added successfully...!');
+					$this->session->set_flashdata('status', 'alert-success');
+				} else {
+					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				}
+
+				redirect('admin/voucherDetail/' . $encryptId, 'refresh');
+			}
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+
+
+
 }
