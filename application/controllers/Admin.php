@@ -3321,10 +3321,10 @@ With good wishes";
 				$table .= '<td>' . $this->admin_model->get_dept_by_id($transactions1->dept_id)["department_name"] . '</td>';
 				//  $table .= '<td>'.$transactions1->course.'</td>';   
 				//  $table .= '<td>'.$combination.'</td>';   
-				$table .= '<td>' . $transactions1->receipt_no . '</td>';
-
+				// $table .= '<td>' . $transactions1->receipt_no . '</td>';
+				$table .= '<td>' . '"' . htmlspecialchars($transactions1->receipt_no) . '"' . '</td>';
 				$table .= '<td>' . $transactionTypes[$transactions1->transaction_type] . '</td>';
-				$table .= '<td>' . $transactions1->reference_no . '</td>';
+				$table .= '<td>' . '"' . htmlspecialchars($transactions1->reference_no) . '"' . '</td>';
 				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->reference_date)) . '</td>';
 				$table .= '<td>' . $transactions1->bank_name . '</td>';
 				$table .= '<td>' . number_format($transactions1->amount, 0) . '</td>';
