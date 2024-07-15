@@ -90,6 +90,7 @@ echo "<div class='text-center'><img src='" . base_url() . "assets/img/no_data.jp
      <option value="rural">Rural certificate</option>
      <option value="kannada">Kannada medium</option>
      <option value="371J">371J Hyderabad karnataka</option>
+     <option value="study_certificate">Study Certificate</option>
   </select>
 
   <span class="text-danger"><?php echo form_error('documents'); ?></span>
