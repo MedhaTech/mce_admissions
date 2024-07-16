@@ -326,6 +326,7 @@ class Student extends CI_Controller
 			$data['states'] = array(" " => "Select State") + $this->globals->states();
 			$data['religion_option'] = array(" " => "Select Religion") + $this->globals->religion();
 			$data['caste_option'] = array(" " => "Select Caste") + $this->globals->caste();
+			$data['countries'] = $this->admin_model->getCountries();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 
 			$this->load->library('form_validation');
