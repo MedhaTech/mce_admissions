@@ -304,7 +304,7 @@ class Student extends CI_Controller
 					$this->session->set_flashdata('status', 'alert-warning');
 				}
 
-				redirect('student/entranceexamdetails', 'refresh');
+				redirect('student/personaldetails', 'refresh');
 			}
 		} else {
 			redirect('student', 'refresh');
@@ -438,7 +438,7 @@ class Student extends CI_Controller
 					$this->session->set_flashdata('status', 'alert-warning');
 				}
 
-				redirect('student/personaldetails', 'refresh');
+				redirect('student/parentdetails', 'refresh');
 			}
 		} else {
 			redirect('student', 'refresh');
@@ -532,7 +532,7 @@ class Student extends CI_Controller
 					$this->session->set_flashdata('status', 'alert-warning');
 				}
 
-				redirect('student/parentdetails', 'refresh');
+				redirect('student/educationdetails', 'refresh');
 			}
 		} else {
 			redirect('student', 'refresh');
