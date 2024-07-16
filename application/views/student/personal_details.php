@@ -71,25 +71,31 @@
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="form-label">Country of Birth</label>
-                                  <select name="country_of_birth" id="country_of_birth" class="form-control input-lg select2" value="<?php echo (set_value('country_of_birth')) ? set_value('country_of_birth') : $country_of_birth; ?>">
-                                <option selected="">Select Country</option>
-                                <?php foreach ($countries as $country): ?>
-                                    <option data-id="<?= $country->id ?>" value="<?= $country->name ?>" ><?= $country->name ?></option>
-                                <?php endforeach; ?>
-                                </select>
-                                  <span class="text-danger"><?php echo form_error('country_of_birth'); ?></span>
+                                  <select name="country_of_birth" id="country_of_birth" class="form-control input-lg select2">
+                                        <option>Select Country</option>
+                                        <?php foreach ($countries as $country): ?>
+                                            <?php
+                                                $selected = ($country->name == $country_of_birth) ? 'selected' : '';
+                                            ?>
+                                            <option data-id="<?= $country->id ?>" value="<?= $country->name ?>" <?= $selected ?>><?= $country->name ?></option>
+                                        <?php endforeach; ?>
+                                 </select>
+                                    <span class="text-danger"><?php echo form_error('country_of_birth'); ?></span>
                               </div>
                           </div>
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="form-label">Nationality</label>
-                                  <select name="nationality" id="nationality" class="form-control input-lg select2" value="<?php echo (set_value('nationality')) ? set_value('nationality') : $nationality; ?>">
-                                <option selected="">Select Nationality</option>
-                                <?php foreach ($countries as $country): ?>
-                                    <option data-id="<?= $country->id ?>" value="<?= $country->name ?>" ><?= $country->name ?></option>
-                                <?php endforeach; ?>
-                                </select>
-                                  <span class="text-danger"><?php echo form_error('nationality'); ?></span>
+                                  <select name="nationality" id="nationality" class="form-control input-lg select2">
+                                        <option>Select Nationality</option>
+                                        <?php foreach ($countries as $country): ?>
+                                            <?php
+                                                $selected = ($country->name == $nationality) ? 'selected' : '';
+                                            ?>
+                                            <option data-id="<?= $country->id ?>" value="<?= $country->name ?>" <?= $selected ?>><?= $country->name ?></option>
+                                        <?php endforeach; ?>
+                                 </select>
+                                    <span class="text-danger"><?php echo form_error('nationality'); ?></span>
                               </div>
                           </div>
                           <div class="col-md-3 col-sm-12">
