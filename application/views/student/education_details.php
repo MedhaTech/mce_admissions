@@ -113,34 +113,54 @@
                           </div>
                           <div class="col-md-3 col-sm-6">
                               <div class="form-group">
-                                  <label class="label">Institution City</label>
-                                  <input type="text" name="inst_city" id="inst_city" value="<?php echo (set_value('inst_city')) ? set_value('inst_city') : $inst_city; ?>" class="form-control" placeholder="Enter Institution City">
-                                  <span class="text-danger"><?php echo form_error('inst_city'); ?></span>
+
+                                  <label class="label">Institution Country</label>
+    
+                                <select name="inst_country" id="inst_country" class="form-control input-lg select2">
+                                <option selected="">Select Country</option>
+                                <?php foreach ($countries as $country): ?>
+                                    <option data-id="<?= $country->id ?>" value="<?= $country->name ?>" ><?= $country->name ?></option>
+                                <?php endforeach; ?>
+                                </select>
+                                  <span class="text-danger"><?php echo form_error('inst_country'); ?></span>
+
                               </div>
                           </div>
                           <div class="col-md-3 col-sm-6">
                               <div class="form-group">
                                   <label class="label">Institution State</label>
-                                  <input type="text" name="inst_state" id="inst_state" value="<?php echo (set_value('inst_state')) ? set_value('inst_state') : $inst_state; ?>" class="form-control" placeholder="Enter Institution State">
+
+                                  <!-- <input type="text" name="inst_state" id="inst_state" class="form-control" placeholder="Enter Institution State"> -->
+                                  <select name="inst_state" id="inst_state" class="form-control input-lg select2">
+                                    <option value="">Select State</option>
+                                </select>
+
                                   <span class="text-danger"><?php echo form_error('inst_state'); ?></span>
                               </div>
                           </div>
                           <div class="col-md-3 col-sm-6">
                               <div class="form-group">
-                                  <label class="label">Institution Country</label>
-                                  <input type="text" name="inst_country" id="inst_country" value="<?php echo (set_value('inst_country')) ? set_value('inst_country') : $inst_country; ?>" class="form-control" placeholder="Enter Institution Country">
-                                  <span class="text-danger"><?php echo form_error('inst_country'); ?></span>
+
+                                  <label class="label">Institution City</label>
+                                  <select name="inst_city" id="inst_city" class="form-control input-lg select2">
+                                    <option value="">Select City</option>
+                                </select>
+                                  <span class="text-danger"><?php echo form_error('inst_city'); ?></span>
+
                               </div>
                           </div>
-
-
-
                       </div>
                       <div class="form-row">
                           <div class="col-md-3 col-sm-6">
                               <div class="form-group">
                                   <label class="label">Medium of Instruction</label>
-                                  <input type="text" name="medium_of_instruction" value="<?php echo (set_value('medium_of_instruction')) ? set_value('medium_of_instruction') : $medium_of_instruction; ?>" id="medium_of_instruction" class="form-control" placeholder="Enter Medium of Instruction">
+
+                                  <?php 
+                                  
+                                  	// $instruction_options= array(" " => "Select Medium of instruction") + $this->globals->medium_of_instruction();
+                                     echo form_dropdown('medium_of_instruction', $instruction_options, (set_value('medium_of_instruction')) ? set_value('medium_of_instruction') : $medium_of_instruction, 'class="form-control form-control" id="medium_of_instruction"'); 
+                                 ?>
+
                                   <span class="text-danger"><?php echo form_error('medium_of_instruction'); ?></span>
                               </div>
                           </div>
@@ -163,8 +183,8 @@
                           <thead>
                               <tr>
                                   <th>Subject Name</th>
-                                  <th>Min Marks</th>
                                   <th>Max Marks</th>
+                                  <th>Min Marks</th>
                                   <th>Obtained Marks</th>
                               </tr>
                           </thead>
@@ -287,8 +307,8 @@
                           <tfoot>
                               <tr>
                                   <th>Total</th>
-                                  <th> <input type="text" name="total_min_marks" id="total_min_marks" class="form-control" value="" readonly></th>
                                   <th><input type="text" name="total_max_marks" id="total_max_marks" class="form-control" value="" readonly></th>
+                                  <th> <input type="text" name="total_min_marks" id="total_min_marks" class="form-control" value="" readonly></th>
                                   <th><input type="text" name="total_obtained_marks" id="total_obtained_marks" class="form-control" value="" readonly></th>
                               </tr>
 
@@ -362,5 +382,56 @@
           // Calculate totals on input change
           $('input[type="number"]').on('input', calculateTotals);
 
-      });
+          $('#inst_country').change(function(){
+            var country_id =  $(this).find(':selected').data('id');
+            
+
+            // AJAX call to get states
+            $.ajax({
+                url: '<?php echo base_url('student/get_states'); ?>',
+                type: 'post',
+                data: {country_id: country_id},
+                dataType: 'json',
+                success:function(response){
+                    var len = response.length;
+                    $('#inst_state').empty();
+                    $('#inst_state').show();
+                    $('#inst_city').show(); // Hide city dropdown if visible
+                    $('#inst_city').empty(); // Clear city dropdown
+
+                    $('#inst_state').append("<option value=''>Select State</option>");
+                    for( var i = 0; i<len; i++){
+                        var id = response[i]['id'];
+                        var name = response[i]['name'];
+                        $('#inst_state').append("<option data-id='"+id+"' value='"+name+"'>"+name+"</option>");
+                    }
+                }
+            });
+        });
+
+        // AJAX request when a state is selected
+        $('#inst_state').change(function(){
+            var state_id =  $(this).find(':selected').data('id');
+
+            // AJAX call to get cities
+            $.ajax({
+                url: '<?php echo base_url('student/get_cities'); ?>',
+                type: 'post',
+                data: {state_id: state_id},
+                dataType: 'json',
+                success:function(response){
+                    var len = response.length;
+                    $('#inst_city').empty();
+                    $('#inst_city').show();
+
+                    $('#inst_city').append("<option value=''>Select City</option>");
+                    for( var i = 0; i<len; i++){
+                        var id = response[i]['id'];
+                        var name = response[i]['name'];
+                        $('#inst_city').append("<option value='"+name+"'>"+name+"</option>");
+                    }
+                }
+            });
+        });
+    });
   </script>
