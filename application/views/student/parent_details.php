@@ -102,7 +102,7 @@
                           <div class="col-md-4">
                               <label class="form-label text-primary">GUARDIAN DETAILS</label>
                               <div class="form-group col-md-12 col-sm-12">
-                                  <label class="form-label">Name<span class="text-danger">*</span></label>
+                                  <label class="form-label">Name</label>
                                   <input type="text" class="form-control" placeholder="Enter Name" id="guardian_name"
                                       value="<?php echo (set_value('guardian_name')) ? set_value('guardian_name') : $guardian_name; ?>"
                                       name="guardian_name">

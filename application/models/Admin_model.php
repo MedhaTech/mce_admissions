@@ -536,6 +536,33 @@ function getAdmissions_category($academic_year,$category_claimed)
     }
 }
 
+public function getCountries() {
+  $query = $this->db->get('countries');
+  return $query->result();
+}
+
+public function get_states() {
+  $query = $this->db->get('states');
+  return $query->result();
+}
+
+public function get_city() {
+  $query = $this->db->get('cities');
+  return $query->result();
+}
+
+public function getStates($country_id) {
+  $this->db->where('country_id', $country_id);
+  $query = $this->db->get('states');
+  return $query->result();
+}
+
+public function getCities($state_id) {
+  $this->db->where('state_id', $state_id);
+  $query = $this->db->get('cities');
+  return $query->result();
+}
+
 
 }
  

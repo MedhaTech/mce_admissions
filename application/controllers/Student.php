@@ -324,8 +324,9 @@ class Student extends CI_Controller
 			$data['menu'] = "personaldetails";
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['states'] = array(" " => "Select State") + $this->globals->states();
+			$data['religion_option'] = array(" " => "Select Religion") + $this->globals->religion();
+			$data['caste_option'] = array(" " => "Select Caste") + $this->globals->caste();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
-
 
 			$this->load->library('form_validation');
 
@@ -548,13 +549,13 @@ class Student extends CI_Controller
 			$student_id = $student_session['id'];
 			$data['page_title'] = "EDUCATION DETAILS";
 			$data['menu'] = "educationdetails";
-
+			
 			$this->form_validation->set_rules('education_level', 'Education Level', 'required');
 			$this->form_validation->set_rules('inst_type', 'Institution Type', 'required');
 			$this->form_validation->set_rules('inst_board', 'Board / University', 'required');
 			$this->form_validation->set_rules('inst_name', 'Institution Name', 'required');
 			$this->form_validation->set_rules('inst_address', 'Institution Address', 'required');
-			$this->form_validation->set_rules('inst_city', 'Institution City', 'required');
+			$this->form_validation->set_rules('inst_city', 'Institution City');
 			$this->form_validation->set_rules('inst_state', 'Institution State', 'required');
 			$this->form_validation->set_rules('inst_country', 'Institution Country', 'required');
 			$this->form_validation->set_rules('medium_of_instruction', 'Medium of Instruction', 'required');
@@ -598,7 +599,8 @@ class Student extends CI_Controller
 				$student_id = $student_session['id'];
 				$data['page_title'] = "EDUCATION DETAILS";
 				$data['menu'] = "educationdetails";
-
+				$data['instruction_options'] = array(" " => "Select Medium of instruction") + $this->globals->medium_of_instruction();
+				$data['countries'] = $this->admin_model->getCountries();
 				$this->student_template->show('student/education_details', $data);
 			} else {
 
@@ -755,6 +757,18 @@ class Student extends CI_Controller
 			redirect('student', 'refresh');
 		}
 	}
+
+	public function get_states() {
+        $country_id = $this->input->post('country_id');
+        $states = $this->admin_model->getStates($country_id);
+        echo json_encode($states);
+    }
+
+    public function get_cities() {
+        $state_id = $this->input->post('state_id');
+        $cities = $this->admin_model->getCities($state_id);
+        echo json_encode($cities);
+    }
 
 	function downloadReceipt($admission_id, $transaction_id)
 	{
@@ -1150,14 +1164,14 @@ class Student extends CI_Controller
 			$data['student_name'] = $student_session['student_name'];
 			$data['id'] = $student_session['id'];
 			$data['page_title'] = 'Update Education Details';
-			$data['menu'] = 'educationdetails';
+			$data['menu'] = 'educationdetails';		
 
 			$this->form_validation->set_rules('education_level', 'Education Level', 'required');
 			$this->form_validation->set_rules('inst_type', 'Institution Type', 'required');
 			$this->form_validation->set_rules('inst_board', 'Board / University', 'required');
 			$this->form_validation->set_rules('inst_name', 'Institution Name', 'required');
 			$this->form_validation->set_rules('inst_address', 'Institution Address', 'required');
-			$this->form_validation->set_rules('inst_city', 'Institution City', 'required');
+			$this->form_validation->set_rules('inst_city', 'Institution City');
 			$this->form_validation->set_rules('inst_state', 'Institution State', 'required');
 			$this->form_validation->set_rules('inst_country', 'Institution Country', 'required');
 			$this->form_validation->set_rules('medium_of_instruction', 'Medium of Instruction', 'required');
@@ -1201,7 +1215,10 @@ class Student extends CI_Controller
 				$data['id'] = $student_session['id'];
 				$data['page_title'] = 'Update Education Details';
 				$data['menu'] = 'educationdetails';
-
+				$data['instruction_options'] = array(" " => "Select Medium of instruction") + $this->globals->medium_of_instruction();
+				$data['countries'] = $this->admin_model->getCountries();
+				$data['states'] = $this->admin_model->get_states();
+				$data['cities'] = $this->admin_model->get_city();
 				$this->student_template->show('student/update_education_details', $data);
 			} else {
 
