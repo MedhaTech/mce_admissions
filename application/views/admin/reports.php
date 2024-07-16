@@ -67,11 +67,11 @@
                               <div class="card-body">
                                   <ul>
 
-                                      <li><?php echo anchor('', 'Course wise Student Admitted Count'); ?> </li>
+                                      <li><?php echo anchor('admin/CoursewiseStudentAdmittedCount', 'Course wise Student Admitted Count'); ?> </li>
                                       <li><?php echo anchor('admin/studentdetails_report', 'Students Details Report'); ?> </li>
                                       <li><?php echo anchor('admin/admissionscroll_report', 'Admission Scroll Report'); ?> </li>
                                       <li><?php echo anchor('admin/category_admissions_report', 'Category wise Admissions Report'); ?> </li>
-                                      <li><?php echo anchor('', 'Admission Year Book'); ?> </li>
+                                      <li><?php echo anchor('admin/admissionsyearbook', 'Admission Year Book'); ?> </li>
 
 
 

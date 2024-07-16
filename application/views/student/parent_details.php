@@ -102,7 +102,9 @@
                           <div class="col-md-4">
                               <label class="form-label text-primary">GUARDIAN DETAILS</label>
                               <div class="form-group col-md-12 col-sm-12">
+
                                   <label class="form-label">Name</label>
+
                                   <input type="text" class="form-control" placeholder="Enter Name" id="guardian_name"
                                       value="<?php echo (set_value('guardian_name')) ? set_value('guardian_name') : $guardian_name; ?>"
                                       name="guardian_name">
@@ -155,9 +157,9 @@
                               <?php echo anchor('student/personaldetails', 'BACK', 'class="btn btn-danger btn-square" '); ?>
                           </div>
                           <div class="col-md-6 text-right">
-                              <button type="submit" class="btn btn-info btn-square" name="Update" id="Update"> SAVE 
+                              <button type="submit" class="btn btn-info btn-square" name="Update" id="Update"> SAVE & NEXT 
                               </button>
-                              <?php echo anchor('student/educationdetails', 'NEXT', 'class="btn btn-danger btn-square float-right" '); ?>
+                              <?php // echo anchor('student/educationdetails', 'NEXT', 'class="btn btn-danger btn-square float-right" '); ?>
                           </div>
                       </div>
                   </div>

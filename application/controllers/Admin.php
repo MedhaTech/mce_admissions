@@ -2917,9 +2917,9 @@ With good wishes";
 
 
 
-			$fees= $this->admin_model->getDetailsbyfield($admission_id, 'student_id', 'fee_master')->row();
-			 $balance_amount = $fees->final_fee - $paid_amount;
-                                     
+			$fees = $this->admin_model->getDetailsbyfield($admission_id, 'student_id', 'fee_master')->row();
+			$balance_amount = $fees->final_fee - $paid_amount;
+
 			$currentAcademicYear = $this->globals->currentAcademicYear();
 
 			$this->load->library('fpdf'); // Load library
@@ -2975,7 +2975,7 @@ With good wishes";
 			$pdf->Cell(0, $row, "Course & Combination", 1, 0, 'L', false);
 			$pdf->setFont('Arial', '', 9);
 			$pdf->SetXY(50, $y + $row);
-			$pdf->Cell(0, $row, 'I Year - B.E ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] , 1, 0, 'L', false);
+			$pdf->Cell(0, $row, 'I Year - B.E ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"], 1, 0, 'L', false);
 
 			$y = $pdf->getY();
 			$pdf->setFont('Arial', 'B', 9);
@@ -3181,7 +3181,7 @@ With good wishes";
 			// $table_setup = array ('table_open'=> '<table class="table table-bordered font14" border="1" id="dataTable" >');
 			// $this->table->set_template($table_setup);
 
-			$print_fields = array('S.No', 'Course', 'Student Name', 'Mobile', 'Admit. Date', 'Total Fee', 'Fees Paid', 'Balance amount', 'Next Due Date', 'Remarks');
+			$print_fields = array('S.No', 'Course', 'Student Name', 'Mobile', 'Admit. Date', 'Total Fee', 'Fees Paid', 'Balance amount',  'Remarks');
 
 			$this->table->set_heading($print_fields);
 
@@ -3197,7 +3197,8 @@ With good wishes";
 				// }else{
 				//     $combination = $admissions1->dsc_1.' - '.$admissions1->dsc_2;
 				// }
-
+				$fees_data = $this->admin_model->getDetailsbyfield($admissions1->id, 'student_id', 'fee_master')->row();
+				$balance_amount_data = $fees_data->final_fee - $feeDetails[$admissions1->id];
 				$paid_amount = (array_key_exists($admissions1->id, $feeDetails)) ? $feeDetails[$admissions1->id] : '0';
 				$balance_amount = $admissions1->final_fee - $paid_amount;
 				$result_array = array(
@@ -3208,10 +3209,10 @@ With good wishes";
 					$admissions1->student_name,
 					$admissions1->mobile,
 					($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
-					number_format($admissions1->final_fee, 0),
-					number_format($fees_paid, 0),
-					number_format($balance_amount, 0),
-					($admissions1->next_due_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->next_due_date)) : '',
+					number_format($fees_data->final_fee, 0),
+					number_format($feeDetails[$admissions1->id], 0),
+					number_format($balance_amount_data, 0),
+					// ($admissions1->next_due_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->next_due_date)) : '',
 					$admissions1->remarks
 				);
 				// var_dump($result_array);
@@ -3277,142 +3278,68 @@ With good wishes";
 			$data['page_title'] = 'Day Book Report';
 			$data['menu'] = 'dayBookReport';
 
-			// $data['feeTypes'] = $this->globals->feeTypes();
-			$data['feeTypesMgt'] = $this->globals->feeTypesMgt();
-			$courseCombination = $this->globals->courseCombination();
+			$to = $this->input->post('to_date');
+			$from = $this->input->post('from_date');
 
-			// var_dump($data['feeStructure']);
-			$table_headings = array('S.No', 'Date', 'Student Name', 'Mobile', 'Class', 'Aided/Un-Aided', 'Category', 'Receipt No.', 'Bank Name', 'DD / Cheque / Challan No. & Date', 'Paid (Rs.)', 'Balance (Rs.)');
+			$transactions = $this->admin_model->transactionsdatewise($from,$to)->result();
+			$transactionTypes = $this->globals->transactionTypes();
 
-			array_splice($table_headings, count($table_headings), 0, $data['transaction_type']);
 
-			array_splice($table_headings, count($table_headings), 0, $data['feeTypesMgt']);
+			$table = "<table class='table table-bordered' border='1'  id='example2' >";
 
-			$from_date = $this->input->post('from_date');
-			$to_date = $this->input->post('to_date');
+			$table .= '<thead>';
 
-			$details = $this->admin_model->dayBookReport($from_date, $to_date)->result();
+			$table .= '<tr><th colspan="11" class="font20">' . $currentAcademicYear . ' Day Book Report</th></tr>';
 
-			$table_setup = array('table_open' => '<table class="table table-bordered font14" border="1">');
-			$this->table->set_template($table_setup);
-			$this->table->set_heading($table_headings);
+			$table .= '<tr><th>S.No</th>
+			               <th> Student Name </th>
+						    <th> Department Name </th>
+			               <th> Receipt No. </th>
+			              
+			               <th> Mode of Payment </th>
+			               <th> Reference No. </th>
+			               <th> Reference Date </th>
+			               <th> Bank Name </th>
+			               <th> Amount </th>
+						    <th> Date </th>
+			          </tr>';
 
+			$table .= '</thead>';
+			$table .= '<tbody>';
 			$i = 1;
-			foreach ($details as $details1) {
-
-				if ($details1->category == "GM" || $details1->category == "2A" || $details1->category == "2B" || $details1->category == "3A" || $details1->category == "3B") {
-					$category = "1";
-				} else {
-					$category = "2";
-				}
-				// $combination = null;
-				// if (array_key_exists($details1->course,$courseCombination)){
-				//     if (array_key_exists($details1->dsc_1,$courseCombination[$details1->course])){
-				//         $combination = $details1->dsc_1;    
-				//     }
-				// }
-
-				// $fee = $this->admin_model->feeStructure($details1->course, $combination, $category, $details1->aided_unaided)->row();
-
-				// if($details1->dsc_1 == $details1->dsc_2){
-				//     $combination = $details1->dsc_1;
+			foreach ($transactions as $transactions1) {
+				//  print_r($transactions1); 
+				// if($transactions1->dsc_1 == $transactions1->dsc_2){
+				//     $combination = $transactions1->dsc_1;
 				// }else{
-				//     $combination = $details1->dsc_1.' - '.$details1->dsc_2;
+				//     $combination = $transactions1->dsc_1.' - '.$transactions1->dsc_2;
 				// }
 
-				$result_array = array(
-					$i++,
-					date('d-m-Y', strtotime($details1->transaction_date)),
-					$details1->student_name,
-					$details1->mobile,
-					$details1->course . ' [' . $combination . ']',
-					$details1->aided_unaided,
-					$details1->category . ' ' . $category,
-					$details1->receipt_no,
-					$details1->bank_name,
-					$details1->reference_no . ' ' . $details1->reference_date,
-					//  $details1->final_amount,
-					//  $details1->paid_amount,
-					$details1->amount,
-					$details1->balance_amount
-				);
-				$already_paid = $details1->paid_amount;
-				$paid_amount = $details1->amount;
-				if ($fee) {
-					$balance_amount = 0;
-					$test = 0;
-					$balance_amount1 = 0;
-					for ($f = 1; $f <= 28; $f++) {
-						$field = "field_" . $f;
-						// PREVISOULY PAID AMOUNT - LESS
-						if ($already_paid > 0) {
-							$fee_amount = $fee->$field;
-							// $balance_amount = 0;
-							$balance_amount = $already_paid - $fee->$field;
-							if ($balance_amount > 0) {
-								$display_amount = 0;
-							} else {
-								$feeField = - ($balance_amount);
-
-								// PAID AMT
-								if ($paid_amount < 0) {
-									$display_amount = 0;
-								} else {
-									$balance_amount1 = $paid_amount - $feeField;
-									if ($balance_amount1 < 0) {
-										$display_amount = $paid_amount;
-									} else {
-										$display_amount = $feeField;
-									}
-									$paid_amount = $balance_amount1;
-								}
-								// PAID AMT
-
-							}
-							$already_paid = $balance_amount;
-
-							// PREVISOULY PAID AMOUNT - LESS
-						} else {
-							// NOW PAID AMOUNT - ADD
-							if ($paid_amount < 0) {
-								//   $fee_amount = "0<br>".$fee->$field."<br>".$balance_amount;    
-								$display_amount = 0;
-							} else {
-								$balance_amount = $paid_amount - $fee->$field;
-								// $fee_amount = $fee->$field;
-								// $fee_amount = $paid_amount."<br>".$fee->$field."<br>".$balance_amount;
-								if ($balance_amount < 0) {
-									$display_amount = $paid_amount;
-								} else {
-									$display_amount = $fee->$field;
-								}
-								$paid_amount = $balance_amount;
-							}
-							// NOW PAID AMOUNT
-						}
-
-						$fee_amount = $fee->$field . '<br>' . $display_amount . "<br>" . $balance_amount;
-						$fee_amount = $display_amount;
-						$test = $test + $display_amount;
-						array_push($result_array, $fee_amount);
-					}
-					// array_push($result_array, $test);
-				}
-				$this->table->add_row($result_array);
+				$table .= '<tr>';
+				$table .= '<td>' . $i++ . '</td>';
+				$table .= '<td>' . $transactions1->student_name . '</td>';
+				$table .= '<td>' . $this->admin_model->get_dept_by_id($transactions1->dept_id)["department_name"] . '</td>';
+				//  $table .= '<td>'.$transactions1->course.'</td>';   
+				//  $table .= '<td>'.$combination.'</td>';   
+				// $table .= '<td>' . $transactions1->receipt_no . '</td>';
+				$table .= '<td>' . '"' . htmlspecialchars($transactions1->receipt_no) . '"' . '</td>';
+				$table .= '<td>' . $transactionTypes[$transactions1->transaction_type] . '</td>';
+				$table .= '<td>' . '"' . htmlspecialchars($transactions1->reference_no) . '"' . '</td>';
+				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->reference_date)) . '</td>';
+				$table .= '<td>' . $transactions1->bank_name . '</td>';
+				$table .= '<td>' . number_format($transactions1->amount, 0) . '</td>';
+				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->transaction_date)) . '</td>';
+				$table .= '</tr>';
 			}
+			$table .= '</tbody>';
+			$table .= '</table>';
+			$data['table'] = $table;
 
-			$detailsTable = $this->table->generate();
-
-			if ($download == 1) {
-				$response =  array(
-					'op' => 'ok',
-					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($detailsTable)
-				);
-				die(json_encode($response));
-			} else {
-				$data['admissions'] = $details;
-				$this->admin_template->show('admin/daybook_report', $data);
-			}
+			$response =  array(
+				'op' => 'ok',
+				'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+			);
+			die(json_encode($response));
 		} else {
 			redirect('admin/timeout');
 		}
@@ -3683,9 +3610,9 @@ With good wishes";
 
 			// 			print_r($transactions); 
 			if ($download) {
-				$table = "<table class='table table-bordered' border='1' id='dataTable' >";
+				$table = "<table class='table table-bordered' border='1'  id='example2' >";
 			} else {
-				$table = "<table class='table table-bordered font14' border='1' id='dataTable' >";
+				$table = "<table class='table table-bordered font14' border='1' id='example2' >";
 			}
 			$table .= '<thead>';
 			if ($download) {
@@ -3693,13 +3620,15 @@ With good wishes";
 			}
 			$table .= '<tr><th>S.No</th>
 			               <th> Student Name </th>
+						    <th> Department Name </th>
 			               <th> Receipt No. </th>
-			               <th> Date </th>
+			              
 			               <th> Mode of Payment </th>
 			               <th> Reference No. </th>
 			               <th> Reference Date </th>
 			               <th> Bank Name </th>
 			               <th> Amount </th>
+						    <th> Date </th>
 			          </tr>';
 
 			$table .= '</thead>';
@@ -3712,18 +3641,21 @@ With good wishes";
 				// }else{
 				//     $combination = $transactions1->dsc_1.' - '.$transactions1->dsc_2;
 				// }
+
 				$table .= '<tr>';
 				$table .= '<td>' . $i++ . '</td>';
 				$table .= '<td>' . $transactions1->student_name . '</td>';
+				$table .= '<td>' . $this->admin_model->get_dept_by_id($transactions1->dept_id)["department_name"] . '</td>';
 				//  $table .= '<td>'.$transactions1->course.'</td>';   
 				//  $table .= '<td>'.$combination.'</td>';   
 				$table .= '<td>' . $transactions1->receipt_no . '</td>';
-				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->transaction_date)) . '</td>';
+
 				$table .= '<td>' . $transactionTypes[$transactions1->transaction_type] . '</td>';
 				$table .= '<td>' . $transactions1->reference_no . '</td>';
 				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->reference_date)) . '</td>';
 				$table .= '<td>' . $transactions1->bank_name . '</td>';
 				$table .= '<td>' . number_format($transactions1->amount, 0) . '</td>';
+				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->transaction_date)) . '</td>';
 				$table .= '</tr>';
 			}
 			$table .= '</tbody>';
@@ -3938,11 +3870,11 @@ With good wishes";
 			$this->form_validation->set_rules('entrance_type', 'Entrance Type', 'required');
 			$this->form_validation->set_rules('entrance_reg_no', 'Entrance Registration Number', 'required');
 			$this->form_validation->set_rules('entrance_rank', 'Entrance Exam Rank', 'required');
-			$this->form_validation->set_rules('admission_order_no', 'Admission Order Number', 'required');
-			$this->form_validation->set_rules('admission_order_date', 'Admission Order Date', 'required');
-			$this->form_validation->set_rules('fees_paid', 'Fees Paid', 'required');
-			$this->form_validation->set_rules('fees_receipt_no', 'Fees Receipt Number', 'required');
-			$this->form_validation->set_rules('fees_receipt_date', 'Fees Receipt Date', 'required');
+			$this->form_validation->set_rules('admission_order_no', 'Admission Order Number', '');
+			$this->form_validation->set_rules('admission_order_date', 'Admission Order Date', '');
+			$this->form_validation->set_rules('fees_paid', 'Fees Paid', '');
+			$this->form_validation->set_rules('fees_receipt_no', 'Fees Receipt Number', '');
+			$this->form_validation->set_rules('fees_receipt_date', 'Fees Receipt Date', '');
 
 			if ($this->form_validation->run() === FALSE) {
 
@@ -4863,7 +4795,7 @@ With good wishes";
 			// Set left, top, and right margins (20 mm)
 			$pdf->SetMargins(20, 20, 20);
 
-			$pdf->Image('assets/img/mce_pro_letter2.jpg', 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHeight());
+			$pdf->Image('assets/img/mce_pro_letter3.jpg', 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHeight());
 
 
 			$topGap = 30;
@@ -4894,10 +4826,10 @@ With good wishes";
 				'parent' => $data['admissionDetails']->father_name
 			);
 			if ($data['admissionDetails']->gender == "Male") {
-				$salut="S/O. ";
+				$salut = "S/O. ";
 				$pdf->AddNameDetailsTableM($details);
 			} else {
-				$salut="D/O. ";
+				$salut = "D/O. ";
 				$pdf->AddNameDetailsTableF($details);
 			}
 
@@ -5005,7 +4937,7 @@ With good wishes";
 			$pdf->Cell(0, 5, "No.MCE/" . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"] . "/" . $data['admissionDetails']->adm_no, 0, 1, 'L');
 			$pdf->Ln(3);
 			$pdf->SetFont('Arial', 'B', 10);
-			$pdf->Cell(0, 5, $data['admissionDetails']->student_name.", ".$salut." ".$data['admissionDetails']->father_name, 0, 1, 'L');
+			$pdf->Cell(0, 5, $data['admissionDetails']->student_name . ", " . $salut . " " . $data['admissionDetails']->father_name, 0, 1, 'L');
 			$pdf->Ln(3);
 			// $pdf->SetFont('Arial', 'B', 10);
 			// $pdf->Cell(0, 5, "Portal Login Credentials,", 0, 1, 'L');
@@ -5026,12 +4958,12 @@ With good wishes";
 			$pdf->SetFont('Arial', 'B', 10); // Bold font
 			$pdf->Cell($usernameWidth, 4, "Username :\t", 0, 0, 'L'); // Bold text "Username : "
 			$pdf->SetFont('Arial', '', 10); // Normal font
-			$pdf->Cell(0, 4, "\t".$masked_email, 0, 1, 'L'); // Normal text "masked_email" on a new line
+			$pdf->Cell(0, 4, "\t" . $masked_email, 0, 1, 'L'); // Normal text "masked_email" on a new line
 
 			$pdf->SetFont('Arial', 'B', 10); // Bold font
 			$pdf->Cell($passwordWidth, 4, "Temporary Password :\t", 0, 0, 'L'); // Bold text "Temporary Password : "
 			$pdf->SetFont('Arial', '', 10); // Normal font
-			$pdf->Cell(0, 4, "\t\t".$masked_phone, 0, 1, 'L'); // Normal text "masked_phone" on a new line
+			$pdf->Cell(0, 4, "\t\t" . $masked_phone, 0, 1, 'L'); // Normal text "masked_phone" on a new line
 
 			$pdf->Ln(5); // Line break
 			$pdf->SetFont('Arial', '', 10);
@@ -5044,6 +4976,812 @@ With good wishes";
 			$pdf->output($fileName, 'D');
 		} else {
 			redirect('admin/timeout');
+		}
+	}
+	public function admissionsletternew($dept)
+	{
+
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['page_title'] = 'Admission Details';
+			$data['menu'] = 'admissions';
+
+			// $id = $this->encrypt->decode(base64_decode($encryptId));
+			$admissions = $this->admin_model->getAdmissions_course($data['currentAcademicYear'], $dept, 1)->result();
+
+			if (count($admissions)) {
+
+				foreach ($admissions as $admissions1) {
+
+					$data['admissionStatus'] = $this->globals->admissionStatus();
+					$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
+
+					$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $admissions1->id)->row();
+
+					$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $admissions1->id)->row();
+					$data['educations_details'] = $this->admin_model->getDetailsbyfield($admissions1->id, 'student_id', 'student_education_details')->result();
+
+
+					$this->load->library('fpdf'); // Load library
+					ini_set("session.auto_start", 0);
+					ini_set('memory_limit', '-1');
+					define('FPDF_FONTPATH', 'plugins/font');
+					$pdf = new FPDF();
+					$pdf->AddPage('P', 'A4'); // 'P' for portrait orientation, 'A4' for A4 size (210x297 mm)
+
+					// Set left, top, and right margins (20 mm)
+					$pdf->SetMargins(20, 20, 20);
+
+					$pdf->Image('assets/img/mce_pro_letter3.jpg', 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHeight());
+
+
+					$topGap = 30;
+
+					$pdf->SetY($topGap + 5);
+					$pdf->SetFont('Arial', 'BU', 7);
+					$pdf->Cell(0, 3, "No.MCE/" . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"] . "/" . $data['admissionDetails']->adm_no, 0, 1, 'L');
+					$pdf->SetFont('Arial', 'B', 7);
+					$pdf->Cell(0, 3, 'Ashok Haranahalli', 0, 1, 'L');
+					$pdf->SetFont('Arial', '', 7);
+					$pdf->Cell(0, 3, 'Chairman, Governing Council', 0, 1, 'L');
+					$pdf->Cell(0, 3, 'of M.C.E. Hassan.', 0, 1, 'L');
+
+					$pdf->SetFont('Arial', '', 9);
+					$pdf->SetXY(-30, $topGap + 5);
+					$pdf->Cell(0, 10, 'Date:' . date('d-m-Y'), 0, 1, 'R');
+
+					$pdf->SetFont('Arial', 'BU', 12);
+					$pdf->SetY($topGap + 20);
+					$pdf->Cell(0, 10, ' PROVISIONAL ADMISSION LETTER ', 0, 1, 'C');
+
+
+					$pdf->SetFont('Arial', '', 9);
+					$pdf->Cell(0, 10, 'This is to certify that,', 0, 1);
+					$pdf->Ln(3);
+					$details = array(
+						'name' => $data['admissionDetails']->student_name,
+						'parent' => $data['admissionDetails']->father_name
+					);
+					if ($data['admissionDetails']->gender == "Male") {
+						$salut = "S/O. ";
+						$pdf->AddNameDetailsTableM($details);
+					} else {
+						$salut = "D/O. ";
+						$pdf->AddNameDetailsTableF($details);
+					}
+
+
+					$pdf->SetFont('Arial', '', 10);
+					$pdf->Cell(0, 5, 'is provisionally admitted to 1st year B.E. ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ' course of FOUR years', 0, 1);
+					$pdf->Cell(0, 5, 'in this college during the academic year 2024-25. Admission will be confirmed subject to:', 0, 1);
+					$pdf->Ln(3);
+
+					$pdf->MultiCell(0, 5, "1) a) The conditions of satisfying the eligibility requirements of Visvesvaraya Technological University\n \t\t\tb) Payment of 1st year Tuition Fees in full.\n\n2) Submission of following original documents before the commencement of classes\n\t\t\t\ta) 10th & 12th Mark sheets or equivalent\n\t\t\t\tb) Transfer Certificate\n\t\t\t\tc) Migration Certificate (for Non Karnataka students only).\n\t\t\t\td) Entrance exam score card (CET, Comedk, AIEEE) if any\n\n3) Submission of Tuition Fees paid Receipt.");
+					$pdf->Ln(3);
+
+					$header = array('Branch', '1st Year', '2nd Year', '3rd Year', '4th Year');
+					if ($data['admissionDetails']->dept_id == '5') {
+
+						$data1 = array(
+							array('Computer Science & Engineering', '250000', '250000', '250000', '250000')
+						);
+					}
+					if ($data['admissionDetails']->dept_id == '7') {
+						$data1 = array(
+
+							array('Computer Science & Engineering (AI&ML)', '200000', '200000', '200000', '200000')
+						);
+					}
+					if ($data['admissionDetails']->dept_id == '8') {
+
+						$data1 = array(
+
+							array('Computer Science & Business System', '200000', '200000', '200000', '200000')
+						);
+					}
+					if ($data['admissionDetails']->dept_id == '6') {
+
+						$data1 = array(
+
+							array('Information Science & Engineering', '200000', '200000', '200000', '200000')
+						);
+					}
+					if ($data['admissionDetails']->dept_id == '4') {
+
+						$data1 = array(
+
+							array('Electronics & Communication Engineering', '175000', '175000', '175000', '175000')
+						);
+					}
+					if ($data['admissionDetails']->dept_id == '3') {
+
+						$data1 = array(
+
+							array('Electrical & Electronics Engineering', '100000', '100000', '100000', '100000')
+						);
+					}
+					if ($data['admissionDetails']->dept_id == '2') {
+
+						$data1 = array(
+
+							array('Mechanical Engineering', '100000', '100000', '100000', '100000')
+						);
+					}
+					if ($data['admissionDetails']->dept_id == '1') {
+
+						$data1 = array(
+
+							array('Civil Engineering', '100000', '100000', '100000', '100000')
+						);
+					}
+
+					$pdf->AddTable($header, $data1);
+					$pdf->Ln(3);
+
+
+
+					// $pdf->Cell(0, 5, 'Chairman - Admissions', 0, 1, 'L');
+					// $pdf->Cell(0, 5, 'Hon. Secretary', 0, 1, 'R');
+
+					$additionalDataY = $pdf->GetY() + 5;
+
+
+					$pdf->SetFont('Arial', '', 9);
+					$pdf->SetY($additionalDataY);
+
+					$pdf->MultiCell(0, 5, "Additional amount of Rs. __________________ To be remitted towards eligibility fees for Non-Karnataka students.\n\nNote:\n1. Original documents & 1 year Tuition Fee paid receipt copy to be submitted before the commencement of classes.\n2. DD should be in favour of Principal, Malnad College of Engineering, Hassan payable at Hassan");
+					$pdf->Ln(5);
+					$email_parts = explode('@', $data['admissionDetails']->email);
+					$username = $email_parts[0];
+					$domain = $email_parts[1];
+
+					$masked_username = substr($username, 0, -2) . str_repeat('*', strlen($username) - 2);
+					$masked_email = $masked_username . '@' . $domain;
+
+					// Mask phone number
+					$masked_phone = str_repeat('*', strlen($data['admissionDetails']->mobile) - 4) . substr($data['admissionDetails']->mobile, -4);
+					$pdf->AddPage();
+					$pdf->Image('assets/img/qr.png', 80, 20, 50); // Adjust x, y, and size as needed
+					$pdf->SetY(68);
+					$pdf->SetFont('Arial', '', 12); // Bold font
+					$pdf->Cell(0, 10, 'bi8.in/202425', 0, 1, 'C');
+					$pdf->Ln(3);
+
+					$pdf->SetFont('Arial', 'B', 16); // Bold font
+					$pdf->Cell(0, 10, 'SCAN TO ENROLL ADMISSION', 0, 1, 'C');
+					$pdf->Ln(15);
+					$pdf->SetFont('Arial', 'B', 10);
+					$pdf->Cell(0, 5, "No.MCE/" . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"] . "/" . $data['admissionDetails']->adm_no, 0, 1, 'L');
+					$pdf->Ln(3);
+					$pdf->SetFont('Arial', 'B', 10);
+					$pdf->Cell(0, 5, $data['admissionDetails']->student_name . ", " . $salut . " " . $data['admissionDetails']->father_name, 0, 1, 'L');
+					$pdf->Ln(3);
+					// $pdf->SetFont('Arial', 'B', 10);
+					// $pdf->Cell(0, 5, "Portal Login Credentials,", 0, 1, 'L');
+					// $pdf->Ln(3);
+					$pdf->SetFont('Arial', '', 10);
+					$pdf->MultiCell(0, 5, "To complete your enrolment, please log in to our student portal using the credentials provided below. Here, you will be able to update your profile, access important information.");
+					$pdf->Ln(5);
+					$usernameWidth = $pdf->GetStringWidth("Username :\t");
+					$passwordWidth = $pdf->GetStringWidth("Temporary Password :\t");
+
+					// Calculate total width for the first line
+					$totalWidth = $usernameWidth + $pdf->GetStringWidth($masked_email);
+
+					// Determine x position for "Temporary Password"
+					$xPosition = $pdf->GetX() + $usernameWidth;
+
+					// Add content
+					$pdf->SetFont('Arial', 'B', 10); // Bold font
+					$pdf->Cell($usernameWidth, 4, "Username :\t", 0, 0, 'L'); // Bold text "Username : "
+					$pdf->SetFont('Arial', '', 10); // Normal font
+					$pdf->Cell(0, 4, "\t" . $masked_email, 0, 1, 'L'); // Normal text "masked_email" on a new line
+
+					$pdf->SetFont('Arial', 'B', 10); // Bold font
+					$pdf->Cell($passwordWidth, 4, "Temporary Password :\t", 0, 0, 'L'); // Bold text "Temporary Password : "
+					$pdf->SetFont('Arial', '', 10); // Normal font
+					$pdf->Cell(0, 4, "\t\t" . $masked_phone, 0, 1, 'L'); // Normal text "masked_phone" on a new line
+
+					$pdf->Ln(5); // Line break
+					$pdf->SetFont('Arial', '', 10);
+					$pdf->MultiCell(0, 5, "Please log in at your earliest convenience and change your password for security. Follow the instructions on the portal to update your personal and academic details.");
+
+					$pdf->Ln(5);
+
+					$fileName = $data['admissionDetails']->student_name . '-Admit_Letter.pdf';
+					// $pdf->output();
+					$pdf->output($fileName, 'D');
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+
+	public function enquiriesEmail()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Enquiries List';
+			$data['menu'] = 'enquiries';
+			$data['action'] = 'admin/enquiries';
+			$data['enquiryStatus'] = $this->globals->enquiryStatus();
+			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$enquiries = $this->admin_model->getEnquiries($data['currentAcademicYear'])->result();
+			$i = 0;
+			foreach ($enquiries as $enq) {
+				$i++;
+				$email['name'] = strtoupper($enq->student_name);
+				$email['mobile'] = strtoupper($enq->mobile);
+				$email['student_email'] = strtolower($enq->email);
+
+				$student_email = strtolower($enq->email);
+				$ci = &get_instance();
+				$message = $ci->load->view('email/enquiry_success', $email, true);
+
+				$this->aws_sdk->triggerEmail($student_email, 'Course Registration Enquiry Submitted', $message);
+
+				// $this->aws_sdk->triggerEmail('admission@mcehassan.ac.in', 'Course Registration Enquiry Submitted', $message);
+			}
+			echo $i;
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+	public function enquiriesEmailError()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Enquiries List';
+			$data['menu'] = 'enquiries';
+			$data['action'] = 'admin/enquiries';
+			$data['enquiryStatus'] = $this->globals->enquiryStatus();
+			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$enquiries = $this->admin_model->getEnquiries($data['currentAcademicYear'])->result();
+			$i = 0;
+			foreach ($enquiries as $enq) {
+				$i++;
+				$email['name'] = strtoupper($enq->student_name);
+				$email['mobile'] = strtoupper($enq->mobile);
+				$email['student_email'] = strtolower($enq->email);
+
+				$student_email = strtolower($enq->email);
+				$ci = &get_instance();
+				$message = $ci->load->view('email/enquiry_error', $email, true);
+
+				$this->aws_sdk->triggerEmail($student_email, 'Error info', $message);
+
+				// $this->aws_sdk->triggerEmail('admission@mcehassan.ac.in', 'Course Registration Enquiry Submitted', $message);
+			}
+			echo $i;
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+	public function CoursewiseStudentAdmittedCount($download = '')
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Course wise Student Admitted Count';
+			$data['menu'] = 'reports';
+			$data['report_type'] = $report;
+			$admissionStatus = $this->globals->admissionStatus();
+			$admissionStatusColor = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissionStatus'] = array(" " => "Select Admission Status") + $this->globals->admissionStatus();
+			$data['course_options'] = array(" " => "Select") + $this->courses();
+			$data['action'] = 'admin/CoursewiseStudentAdmittedCount';
+			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			if ($this->form_validation->run() === FALSE) {
+
+				$this->admin_template->show('admin/CoursewiseStudentAdmittedCount', $data);
+			} else {
+				$data['course'] = $this->input->post('course');
+				$data['status'] = $this->input->post('admission_status');
+
+
+
+				$admissions = $this->admin_model->getAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+
+				if (count($admissions)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'College Code', 'Status', 'Admit. Date');
+
+
+
+					$this->table->set_heading($table_headings);
+
+					$i = 1;
+					foreach ($admissions as $admissions1) {
+						$dmp = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$admissions1->student_name,
+							$admissions1->mobile,
+							$dmp,
+							$admissions1->aadhaar,
+							$admissions1->quota,
+							$admissions1->sub_quota,
+							'<strong class="text-' . $admissionStatusColor[$admissions1->status] . '">' . $admissionStatus[$admissions1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($admissions1->admit_date))
+						);
+
+
+						$this->table->add_row($result_array);
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+				$data['selected_values'] = $selectedValues;
+				// Var_dump($this->db->last_query()); 
+				if ($download == 1) {
+					$response =  array(
+						'op' => 'ok',
+						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
+					);
+					die(json_encode($response));
+				} else {
+					$data['admissions'] = $details;
+					$this->admin_template->show('admin/CoursewiseStudentAdmittedCount', $data);
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function admissionsyearbook($download = null)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			$status = null;
+			$data['admissionStatus'] = $this->globals->admissionStatus();
+			$admissionStatus = $this->globals->admissionStatus();
+			$data['page_title'] =  'Admission Year Book';
+			$data['menu'] = 'admissions';
+
+			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
+			$admissionStatusColor = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissions'] = $this->admin_model->fetchDetails2('id, app_no, adm_no,quota,dept_id,sub_quota, student_name, mobile,usn,status', 'status', $status, 'academic_year', $data['currentAcademicYear'], 'admissions')->result();
+
+			$admissions = $data['admissions'];
+			if ($download == 1) {
+				if (count($admissions)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$print_fields = array('S.NO', 'App No', 'Applicant Name', 'Mobile', 'Course', 'Quota', 'Sub Quota', 'Status');
+					$this->table->set_heading($print_fields);
+
+					$i = 1;
+					foreach ($admissions as $admissions1) {
+
+						// $encryptId = base64_encode($this->encrypt->encode($admissions1->id));
+						$encryptId = base64_encode($admissions1->id);
+
+						$result_array = array(
+							$i++,
+							//   $admissions1->app_no,
+							$admissions1->app_no,
+							$admissions1->student_name,
+							$admissions1->mobile,
+
+							$this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"],
+							$admissions1->quota,
+							$admissions1->sub_quota,
+							// $admissions1->category_allotted,
+
+							// $admissions1->category_claimed,
+							'<strong class="text-' . $admissionStatusColor[$admissions1->status] . '">' . $admissionStatus[$admissions1->status] . '</strong>'
+						);
+						$this->table->add_row($result_array);
+					}
+					$table = $this->table->generate();
+				} else {
+					$table = "<div class='text-center'><img src='" . base_url() . "assets/img/no_data.jpg' class='nodata'></div>";
+				}
+
+				$base64_excel_data = "data:application/vnd.ms-excel;base64," . base64_encode($table);
+
+				// Remove the prefix to get only the base64 encoded data
+				$base64_data = str_replace('data:application/vnd.ms-excel;base64,', '', $base64_excel_data);
+
+				// Decode the base64 data to get the raw Excel content
+				$excel_data = base64_decode($base64_data);
+
+				// Set the headers to prompt a file download
+				header('Content-Type: application/vnd.ms-excel');
+				header('Content-Disposition: attachment; filename="downloaded_file.xls"');
+				header('Content-Length: ' . strlen($excel_data));
+
+				// Output the Excel content
+				echo $excel_data;
+
+				// End the script to ensure no additional output is sent
+				exit();
+			}
+			$this->admin_template->show('admin/admissionsyearbook', $data);
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+	public function vouchers()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+
+
+			$data['page_title'] = 'New vouchers';
+			$data['menu'] = 'vouchers';
+			// $data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
+
+			$this->form_validation->set_rules('mobile', 'Mobile', 'required');
+			if ($this->form_validation->run() === FALSE) {
+				$data['action'] = 'admin/vouchers';
+				$this->admin_template->show('admin/vouchers', $data);
+			} else {
+
+				$mobile = $this->input->post('mobile');
+				$details = $this->admin_model->getDetailsbyfield($mobile, 'mobile', 'admissions')->row();
+				if ($details) {
+					$student_id = $details->id;
+					$encryptId = base64_encode($student_id);
+					redirect('admin/voucherDetail/' . $encryptId, 'refresh');
+				} else {
+					redirect('admin/vouchers', 'refresh');
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function voucherDetail($encryptId)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Collect Fee';
+			$data['menu'] = 'payments';
+			$data['encryptId'] = $encryptId;
+			$student_id = base64_decode($encryptId);
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $student_id)->row();
+			$data['paymentDetail'] = $this->admin_model->getDetailsbyfield($student_id, 'admission_id', 'payment_structure')->result();
+			$data['transactionDetails'] = $this->admin_model->getDetailsbyfield($student_id, 'admissions_id', 'transactions')->result();
+			$data['paid_amount'] = $this->admin_model->paidfee('admissions_id', $student_id, 'transaction_status', '1', 'transactions');
+
+
+
+			$data['fees'] = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'fee_master')->row();
+
+
+
+			$this->form_validation->set_rules('mode_of_payment', 'Mode of Payment', 'required');
+			if ($this->form_validation->run() === FALSE) {
+				$data['action'] = 'admin/voucherDetail/' . $encryptId;
+				$this->admin_template->show('admin/voucherDetail', $data);
+			} else {
+
+				$rec = $this->input->post('rec');
+				$mode_of_payment = $this->input->post('mode_of_payment');
+				$paid_amount = $this->input->post('paid_amount');
+
+				$final_fee = $data['studentDetails']->final_fee;
+				$total_college_fee = $data['studentDetails']->total_college_fee;
+				$total_university_fee = $data['studentDetails']->total_university_fee;
+
+				$current_balance_amount = $data['studentDetails']->final_amount - $data['paid_amount'];
+
+				$paying_amount = 0;
+
+				if ($mode_of_payment == "Cash") {
+					$paying_amount = $this->input->post('cash_amount');
+					$academic_year = "2024-2025";
+					$receipt_no = 1;
+					$transaction_date = date('Y-m-d');
+					$transaction_type = '1';
+					$bank_name = "";
+					$reference_no = "";
+					$reference_date = date('Y-m-d', strtotime($this->input->post('cash_date')));
+					$paid_amount = "0";
+					$remarks = '';
+					$transaction_status = '1';
+				}
+				if ($mode_of_payment == "ChequeDD") {
+					$paying_amount = $this->input->post('cheque_dd_amount');
+					$academic_year = "2024-2025";
+					$receipt_no = 1;
+					$transaction_date = "";
+					$transaction_type = '2';
+					$bank_name = $this->input->post('cheque_dd_bank');
+					$reference_no = $this->input->post('cheque_dd_number');
+					$reference_date = date('Y-m-d', strtotime($this->input->post('cheque_dd_date')));
+					$paid_amount = "0";
+					$remarks = '';
+					$transaction_status = '1';
+				}
+				if ($mode_of_payment == "OnlinePayment") {
+					$paying_amount = $this->input->post('transaction_amount');
+					$academic_year = "2024-2025";
+					$receipt_no = 1;
+					$transaction_date = date('Y-m-d');
+					$transaction_type = '3';
+					$bank_name = "";
+					$reference_no = $this->input->post('transaction_id');
+					$reference_date = date('Y-m-d', strtotime($this->input->post('transaction_date')));
+					$paid_amount = "0";
+					$remarks = '';
+					$transaction_status = '1';
+				}
+
+				//    echo $data['studentDetails']->aided_unaided;
+				//    echo "<br>";
+				//    echo "Cur Balance:".$current_balance_amount;
+				//    echo "<br>";
+				//    echo "Paying:".$paying_amount;
+				//    echo "<br>";
+
+				$aided_fee = 0;
+				$mgt_fee = 0;
+				$unaided_fee = 0;
+
+				if ($data['studentDetails']->aided_unaided === "Aided") {
+					if ($final_amount == $current_balance_amount) {
+						if ($paying_amount >= $total_college_fee) {
+							$second_payment = $paying_amount - $total_college_fee;
+							if ($second_payment == 0) {
+								$aided_fee = $total_college_fee;
+								$mgt_fee = 0;
+							}
+							if ($second_payment) {
+								$aided_fee = $total_college_fee;
+								$mgt_fee = $second_payment;
+							}
+						}
+					} else {
+						$aided_fee = 0;
+						$mgt_fee = $paying_amount;
+					}
+				} else {
+					$unaided_fee = $paying_amount;
+				}
+
+				//echo "<br>";
+				//echo "Aided:".$aided_fee;
+				//echo "<br>";
+				//echo "Mgt:".$mgt_fee;
+				//echo "<br>";
+				//echo "UnAided:".$unaided_fee;
+
+				//die;
+				if ($aided_fee) {
+					$adm_type = "Aided";
+					if ($receipt_no) {
+						$tag = $this->receiptPre[$adm_type];
+						$receipt_no = null;
+						$cnt_number = $this->getReceiptNo($adm_type);
+						$receipt_no = $tag . $cnt_number;
+					} else {
+						$receipt_no = '';
+					}
+					// $balance_amount = $current_balance_amount - $aided_fee;    
+					$balance_amount = 0;
+					$transactionDetails = array(
+						'academic_year' => "2024-2025",
+						'admissions_id' => $data['admissionDetails']->id,
+						'mobile' => $data['admissionDetails']->mobile,
+						'aided_unaided' => $adm_type,
+						'receipt_no' => $receipt_no,
+						'year' => '1',
+						'transaction_date' => date('Y-m-d'),
+						'transaction_type' => $transaction_type,
+						'bank_name' => $bank_name,
+						'reference_no' => $reference_no,
+						'reference_date' => $reference_date,
+						'paid_amount' => $paid_amount,
+						'amount' => $aided_fee,
+						'balance_amount' => $balance_amount,
+						'remarks' => $remarks,
+						'transaction_status' => $transaction_status,
+						'created_by' => $data['name'],
+						'created_on' => date('Y-m-d h:i:s')
+					);
+					//print_r($transactionDetails);
+					$result = $this->admin_model->insertDetails('transactions', $transactionDetails);
+				}
+				if ($mgt_fee) {
+					$adm_type = "Mgt";
+					if ($receipt_no) {
+						$tag = $this->receiptPre[$adm_type];
+						$receipt_no = null;
+						$cnt_number = $this->getReceiptNo($adm_type);
+						$receipt_no = $tag . $cnt_number;
+					} else {
+						$receipt_no = '';
+					}
+					$balance_amount = ($current_balance_amount - ($mgt_fee + $aided_fee));
+					$transactionDetails = array(
+						'academic_year' => "2024-2025",
+						'admissions_id' => $data['admissionDetails']->id,
+						'mobile' => $data['admissionDetails']->mobile,
+						'aided_unaided' => $adm_type,
+						'receipt_no' => $receipt_no,
+						'year' => '1',
+						'transaction_date' => date('Y-m-d'),
+						'transaction_type' => $transaction_type,
+						'bank_name' => $bank_name,
+						'reference_no' => $reference_no,
+						'reference_date' => $reference_date,
+						'paid_amount' => $paid_amount,
+						'amount' => $mgt_fee,
+						'balance_amount' => $balance_amount,
+						'remarks' => $remarks,
+						'transaction_status' => $transaction_status,
+						'created_by' => $data['name'],
+						'created_on' => date('Y-m-d h:i:s')
+					);
+					//print_r($transactionDetails);
+					$result = $this->admin_model->insertDetails('transactions', $transactionDetails);
+				}
+				if ($unaided_fee) {
+					$adm_type = "UnAided";
+					if ($receipt_no) {
+						$tag = $this->receiptPre[$adm_type];
+						$receipt_no = null;
+						$cnt_number = $this->getReceiptNo($adm_type);
+						$receipt_no = $tag . $cnt_number;
+					} else {
+						$receipt_no = '';
+					}
+					$balance_amount = $current_balance_amount - $unaided_fee;
+					$transactionDetails = array(
+						'academic_year' => "2024-2025",
+						'admissions_id' => $data['admissionDetails']->id,
+						'mobile' => $data['admissionDetails']->mobile,
+						'aided_unaided' => $adm_type,
+						'receipt_no' => $receipt_no,
+						'year' => '1',
+						'transaction_date' => date('Y-m-d'),
+						'transaction_type' => $transaction_type,
+						'bank_name' => $bank_name,
+						'reference_no' => $reference_no,
+						'reference_date' => $reference_date,
+						'paid_amount' => $paid_amount,
+						'amount' => $unaided_fee,
+						'balance_amount' => $balance_amount,
+						'remarks' => $remarks,
+						'transaction_status' => $transaction_status,
+						'created_by' => $data['name'],
+						'created_on' => date('Y-m-d h:i:s')
+					);
+					//print_r($transactionDetails);
+					$result = $this->admin_model->insertDetails('transactions', $transactionDetails);
+				}
+
+				if ($rec) {
+					$updateDetails = array('adm_date' => date('Y-m-d'));
+					$res = $this->admin_model->updateDetails('admissions', $data['studentDetails']->id, $updateDetails);
+				}
+
+				if ($result) {
+					$this->session->set_flashdata('message', 'Fee Payment details udpated successfully...!');
+					$this->session->set_flashdata('status', 'alert-success');
+				} else {
+					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				}
+				redirect('admin/paymentDetail/' . $encryptId, 'refresh');
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	function new_voucher($encryptId)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			$data['page_title'] = "New Voucher Request";
+			$data['menu'] = "vouchers";
+			$id = base64_decode($encryptId);
+			$admissionSingle = $this->admin_model->getDetails('admissions', $id)->row();
+
+			$data['fee_structure'] = $this->admin_model->getFee($admissionSingle->dept_id, $admissionSingle->quota, $admissionSingle->sub_quota)->row();
+			$data['stud_id'] = $id;
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+			$this->form_validation->set_rules('final_fee', 'Total Amount', 'numeric|required');
+
+
+			if ($this->form_validation->run() === FALSE) {
+				$data['action'] = 'admin/new_voucher/' . $encryptId;
+				$this->admin_template->show('admin/new_voucher', $data);
+			} else {
+
+
+				$selectedFees = $this->input->post('selected_fees');
+
+				$finalFee = $this->input->post('final_fee');
+				$selectedFeesArray = json_decode($selectedFees, true);
+
+				// Debugging - Output selected fees array (adjust as needed)
+				$updateDetails['type'] = 0;
+				foreach ($selectedFeesArray as $selected) {
+					$field = $newName = preg_replace('/_checkbox$/', '', $selected['name']);
+
+					$updateDetails[$field] = $selected['value'];
+
+					if ($field == 'corpus_fund') {
+						$updateDetails['type'] = 1;
+					}
+				}
+
+				$updateDetails['admission_id'] = $id;
+				$updateDetails['mobile'] = $data['admissionDetails']->mobile;;
+				$updateDetails['final_fee'] = $this->input->post('final_fee');
+				$updateDetails['requested_by'] = $data['full_name'];
+				$updateDetails['requested_on'] = date('Y-m-d h:i:s');
+
+				// var_dump($updateDetails);
+
+				$result = $this->admin_model->insertDetails('payment_structure', $updateDetails);
+
+
+				if ($result) {
+					$this->session->set_flashdata('message', 'New Payment Details are added successfully...!');
+					$this->session->set_flashdata('status', 'alert-success');
+				} else {
+					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				}
+
+				redirect('admin/voucherDetail/' . $encryptId, 'refresh');
+			}
+		} else {
+			redirect('admin', 'refresh');
 		}
 	}
 

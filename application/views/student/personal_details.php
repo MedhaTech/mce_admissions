@@ -32,7 +32,7 @@
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Gender<span class="text-danger">*</span></label>
-                                  <input type="text" class="form-control" placeholder="Enter Sports" id="gender"
+                                  <input type="text" class="form-control" placeholder="Enter Gender" id="gender"
                                       value="<?php echo (set_value('gender')) ? set_value('gender') : $gender; ?>"
                                       name="gender">
                                   <span class="text-danger"><?php echo form_error('gender'); ?></span>
@@ -290,9 +290,9 @@
                               <?php echo anchor('student/entranceexamdetails', 'BACK', 'class="btn btn-danger btn-square" '); ?>
                           </div>
                           <div class="col-md-6 text-right">
-                              <button type="submit" class="btn btn-info btn-square" name="Update" id="Update"> SAVE 
+                              <button type="submit" class="btn btn-info btn-square" name="Update" id="Update"> SAVE & NEXT
                               </button>
-                              <?php echo anchor('student/parentdetails', 'NEXT', 'class="btn btn-danger btn-square float-right" '); ?>
+                              <?php //// echo anchor('student/parentdetails', 'NEXT', 'class="btn btn-danger btn-square float-right" '); ?>
                           </div>
                       </div>
                   </div>
