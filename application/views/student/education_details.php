@@ -81,21 +81,21 @@
                           <div class="col-md-3 col-sm-6">
                               <div class="form-group">
                                   <label class="label">Institution Type</label>
-                                  <input type="text" name="inst_type" id="inst_type" class="form-control" placeholder="Enter Institution Type">
+                                  <input type="text" name="inst_type" id="inst_type" class="form-control" placeholder="Enter Institution Type"  value="<?php echo (set_value('inst_type')) ? set_value('inst_type') : $inst_type; ?>">
                                   <span class="text-danger"><?php echo form_error('inst_type'); ?></span>
                               </div>
                           </div>
                           <div class="col-md-3 col-sm-6">
                               <div class="form-group">
                                   <label class="label">Board / University</label>
-                                  <input type="text" name="inst_board" id="inst_board" class="form-control" placeholder="Enter Institution Board">
+                                  <input type="text" name="inst_board" id="inst_board" value="<?php echo (set_value('inst_board')) ? set_value('inst_board') : $inst_board; ?>" class="form-control" placeholder="Enter Institution Board">
                                   <span class="text-danger"><?php echo form_error('inst_board'); ?></span>
                               </div>
                           </div>
                           <div class="col-md-3 col-sm-6">
                               <div class="form-group">
                                   <label class="label">Institution Name</label>
-                                  <input type="text" name="inst_name" id="inst_name" class="form-control" placeholder="Enter Institution Name">
+                                  <input type="text" name="inst_name" id="inst_name" value="<?php echo (set_value('inst_name')) ? set_value('inst_name') : $inst_name; ?>" class="form-control" placeholder="Enter Institution Name">
                                   <span class="text-danger"><?php echo form_error('inst_name'); ?></span>
                               </div>
                           </div>
@@ -107,28 +107,28 @@
                           <div class="col-md-3 col-sm-6">
                               <div class="form-group">
                                   <label class="label">Institution Address</label>
-                                  <input type="text" name="inst_address" id="inst_address" class="form-control" placeholder="Enter Institution Address">
+                                  <input type="text" name="inst_address" id="inst_address" value="<?php echo (set_value('inst_address')) ? set_value('inst_address') : $inst_address; ?>" class="form-control" placeholder="Enter Institution Address">
                                   <span class="text-danger"><?php echo form_error('inst_address'); ?></span>
                               </div>
                           </div>
                           <div class="col-md-3 col-sm-6">
                               <div class="form-group">
                                   <label class="label">Institution City</label>
-                                  <input type="text" name="inst_city" id="inst_city" class="form-control" placeholder="Enter Institution City">
+                                  <input type="text" name="inst_city" id="inst_city" value="<?php echo (set_value('inst_city')) ? set_value('inst_city') : $inst_city; ?>" class="form-control" placeholder="Enter Institution City">
                                   <span class="text-danger"><?php echo form_error('inst_city'); ?></span>
                               </div>
                           </div>
                           <div class="col-md-3 col-sm-6">
                               <div class="form-group">
                                   <label class="label">Institution State</label>
-                                  <input type="text" name="inst_state" id="inst_state" class="form-control" placeholder="Enter Institution State">
+                                  <input type="text" name="inst_state" id="inst_state" value="<?php echo (set_value('inst_state')) ? set_value('inst_state') : $inst_state; ?>" class="form-control" placeholder="Enter Institution State">
                                   <span class="text-danger"><?php echo form_error('inst_state'); ?></span>
                               </div>
                           </div>
                           <div class="col-md-3 col-sm-6">
                               <div class="form-group">
                                   <label class="label">Institution Country</label>
-                                  <input type="text" name="inst_country" id="inst_country" class="form-control" placeholder="Enter Institution Country">
+                                  <input type="text" name="inst_country" id="inst_country" value="<?php echo (set_value('inst_country')) ? set_value('inst_country') : $inst_country; ?>" class="form-control" placeholder="Enter Institution Country">
                                   <span class="text-danger"><?php echo form_error('inst_country'); ?></span>
                               </div>
                           </div>
@@ -140,21 +140,21 @@
                           <div class="col-md-3 col-sm-6">
                               <div class="form-group">
                                   <label class="label">Medium of Instruction</label>
-                                  <input type="text" name="medium_of_instruction" id="medium_of_instruction" class="form-control" placeholder="Enter Medium of Instruction">
+                                  <input type="text" name="medium_of_instruction" value="<?php echo (set_value('medium_of_instruction')) ? set_value('medium_of_instruction') : $medium_of_instruction; ?>" id="medium_of_instruction" class="form-control" placeholder="Enter Medium of Instruction">
                                   <span class="text-danger"><?php echo form_error('medium_of_instruction'); ?></span>
                               </div>
                           </div>
                           <div class="col-md-3 col-sm-6">
                               <div class="form-group">
                                   <label class="label">Register Number</label>
-                                  <input type="number" name="register_number" id="register_number" class="form-control" placeholder="Enter Register Number">
+                                  <input type="number" name="register_number" value="<?php echo (set_value('register_number')) ? set_value('register_number') : $register_number; ?>" id="register_number" class="form-control" placeholder="Enter Register Number">
                                   <span class="text-danger"><?php echo form_error('register_number'); ?></span>
                               </div>
                           </div>
                           <div class="col-md-3 col-sm-6">
                               <div class="form-group">
                                   <label class="label">Year of Passing</label>
-                                  <input type="month" name="year_of_passing" id="year_of_passing" class="form-control" placeholder="Enter School Year">
+                                  <input type="month" name="year_of_passing" value="<?php echo (set_value('year_of_passing')) ? set_value('year_of_passing') : $year_of_passing; ?>" id="year_of_passing" class="form-control" placeholder="Enter School Year">
                                   <span class="text-danger"><?php echo form_error('year_of_passing'); ?></span>
                               </div>
                           </div>

@@ -151,13 +151,13 @@
                         <li class="nav-header">ACCOUNTS</li>
                         <?php } ?>
                         <?php if((in_array($role, array(1,2,6,7)))){ ?>
-                        <li class="nav-item ">
+                        <!-- <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/collect_payment"
                                 class="nav-link <?= $menu_active = ($menu == "collectpayment") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-bars"></i>
                                 <p> Collect Payment </p>
                             </a>
-                        </li>
+                        </li> -->
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/payments"
                                 class="nav-link <?= $menu_active = ($menu == "payments") ? 'active' : ''; ?>">
