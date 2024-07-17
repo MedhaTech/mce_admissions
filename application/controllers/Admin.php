@@ -5774,6 +5774,35 @@ With good wishes";
 			redirect('admin', 'refresh');
 		}
 	}
+	public function voucherletter()
+	{
+
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Admission Details';
+			$data['menu'] = 'admissions';
+
+		
+
+			$this->load->library('fpdf'); // Load library
+			ini_set("session.auto_start", 0);
+			ini_set('memory_limit', '-1');
+			define('FPDF_FONTPATH', 'plugins/font');
+			$pdf = new FPDF();
+			$pdf->AddPage('L', ''); // 'P' for portrait orientation, 'A4' for A4 size (210x297 mm)
+
+			
+			// $pdf->output();
+			
+		} else {
+			redirect('admin/timeout');
+		}
+	}
 
 
 

@@ -1626,7 +1626,7 @@ class Student extends CI_Controller
 				'amount' => number_format((float)$this->input->post('amount'), 2, '.', ''),
 				// 'amount' => '10.00',
 				'reg_no' => $this->input->post('usn'),
-				// 'email' => $this->input->post('email'),
+				'aided_unaided' => $this->input->post('aided_unaided'),
 				'mobile' => $this->input->post('mobile'),
 				'reference_no' => $this->input->post('usn') . time(),
 				'transaction_type' => '3',
