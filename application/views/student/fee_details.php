@@ -130,6 +130,7 @@
         <input type="hidden" name="usn" id="usn" value="' . htmlspecialchars($student->adm_no) . '">
         <input type="hidden" name="name" id="name" value="' . htmlspecialchars($student->student_name) . '">
         <input type="hidden" name="email" id="email" value="' . htmlspecialchars($student->email) . '">
+        <input type="hidden" name="aided_unaided" id="aided_unaided" value="' . htmlspecialchars($student->sub_quota) . '">
         <input type="hidden" name="mobile" id="mobile" value="' . htmlspecialchars($student->mobile) . '">
         <input type="hidden" name="amount" id="amount" value="' . htmlspecialchars($paymentDetails1->final_fee) . '">
           <input type="hidden" name="type" id="type" value="' . htmlspecialchars($paymentDetails1->type) . '">
