@@ -562,6 +562,34 @@ class Admin_model extends CI_Model
     }
   }
 
+
+public function getCountries() {
+  $query = $this->db->get('countries');
+  return $query->result();
+}
+
+public function get_states() {
+  $query = $this->db->get('states');
+  return $query->result();
+}
+
+public function get_city() {
+  $query = $this->db->get('cities');
+  return $query->result();
+}
+
+public function getStates($country_id) {
+  $this->db->where('country_id', $country_id);
+  $query = $this->db->get('states');
+  return $query->result();
+}
+
+public function getCities($state_id) {
+  $this->db->where('state_id', $state_id);
+  $query = $this->db->get('cities');
+  return $query->result();
+}
+
   public function get_department_name($admission_id)
   {
     // Select department_name from departments based on dept_id in admissions table
@@ -570,6 +598,7 @@ class Admin_model extends CI_Model
     $this->db->join('departments AS d', 'a.dept_id = d.department_id', 'left');
     $this->db->where('a.id', $admission_id);
     $query = $this->db->get();
+
 
     if ($query->num_rows() > 0) {
       return $query->row()->department_name;

@@ -71,38 +71,48 @@
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="form-label">Country of Birth</label>
-                                  <input type="text" class="form-control" placeholder="Enter Nationality"
-                                      id="country_of_birth"
-                                      value="<?php echo (set_value('country_of_birth')) ? set_value('country_of_birth') : $country_of_birth; ?>"
-                                      name="country_of_birth">
-                                  <span class="text-danger"><?php echo form_error('country_of_birth'); ?></span>
+                                  <select name="country_of_birth" id="country_of_birth" class="form-control input-lg select2">
+                                        <option>Select Country</option>
+                                        <?php foreach ($countries as $country): ?>
+                                            <?php
+                                                $selected = ($country->name == $country_of_birth) ? 'selected' : '';
+                                            ?>
+                                            <option data-id="<?= $country->id ?>" value="<?= $country->name ?>" <?= $selected ?>><?= $country->name ?></option>
+                                        <?php endforeach; ?>
+                                 </select>
+                                    <span class="text-danger"><?php echo form_error('country_of_birth'); ?></span>
                               </div>
                           </div>
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="form-label">Nationality</label>
-                                  <input type="text" class="form-control" placeholder="Enter Nationality"
-                                      id="nationality"
-                                      value="<?php echo (set_value('nationality')) ? set_value('nationality') : $nationality; ?>"
-                                      name="nationality">
-                                  <span class="text-danger"><?php echo form_error('nationality'); ?></span>
+                                  <select name="nationality" id="nationality" class="form-control input-lg select2">
+                                        <option>Select Nationality</option>
+                                        <?php foreach ($countries as $country): ?>
+                                            <?php
+                                                $selected = ($country->name == $nationality) ? 'selected' : '';
+                                            ?>
+                                            <option data-id="<?= $country->id ?>" value="<?= $country->name ?>" <?= $selected ?>><?= $country->name ?></option>
+                                        <?php endforeach; ?>
+                                 </select>
+                                    <span class="text-danger"><?php echo form_error('nationality'); ?></span>
                               </div>
                           </div>
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="form-label">Religion</label>
-                                  <input type="text" class="form-control" placeholder="Enter Religion" id="religion"
-                                      value="<?php echo (set_value('religion')) ? set_value('religion') : $religion; ?>"
-                                      name="religion">
+                                  <?php 
+                                     echo form_dropdown('religion', $religion_option, (set_value('religion')) ? set_value('religion') : $religion, 'class="form-control form-control" id="religion"'); 
+                                 ?>
                                   <span class="text-danger"><?php echo form_error('religion'); ?></span>
                               </div>
                           </div>
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="form-label">Caste</label>
-                                  <input type="text" class="form-control" placeholder="Enter Caste" id="caste"
-                                      value="<?php echo (set_value('caste')) ? set_value('caste') : $caste; ?>"
-                                      name="caste">
+                                  <?php 
+                                     echo form_dropdown('caste', $caste_option, (set_value('caste')) ? set_value('caste') : $caste, 'class="form-control form-control" id="caste"'); 
+                                 ?>
                                   <span class="text-danger"><?php echo form_error('caste'); ?></span>
                               </div>
                           </div>

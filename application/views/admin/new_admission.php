@@ -76,7 +76,7 @@
                           </div>
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
-                                  <label class="form-label">College Quota</label>
+                                  <label class="form-label">College Code</label>
                                   <?php
                                     echo form_dropdown('subquota', $subquota_options, (set_value('subquota')) ? set_value('subquota') : $sub_quota, 'class="form-control input-xs" id="subquota" disabled');
                                     ?>
