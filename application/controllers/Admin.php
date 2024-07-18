@@ -4795,7 +4795,7 @@ With good wishes";
 			// Set left, top, and right margins (20 mm)
 			$pdf->SetMargins(20, 20, 20);
 
-			$pdf->Image('assets/img/mce_pro_letter3.jpg', 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHeight());
+			$pdf->Image('assets/img/mce_pro_letter31.jpg', 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHeight());
 
 
 			$topGap = 30;
