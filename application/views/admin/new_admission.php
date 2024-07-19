@@ -159,7 +159,7 @@
                           <div class="col-md-4 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Admission Order No<span class="text-danger">*</span></label>
-                                  <input type="number" name="admission_order_no" id="admission_order_no"
+                                  <input type="text" name="admission_order_no" id="admission_order_no"
                                       class="form-control"
                                       value="<?php echo (set_value('admission_order_no')) ? set_value('admission_order_no') : $admission_order_no; ?>"
                                       placeholder="Enter Admission Order No">
@@ -192,7 +192,7 @@
                           <div class="col-md-6 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Fees Receipt No<span class="text-danger">*</span></label>
-                                  <input type="number" name="fees_receipt_no" id="fees_receipt_no" class="form-control"
+                                  <input type="text" name="fees_receipt_no" id="fees_receipt_no" class="form-control"
                                       value="<?php echo (set_value('fees_receipt_no')) ? set_value('fees_receipt_no') : $fees_receipt_no; ?>"
                                       placeholder="Enter Fees Receipt No">
                                   <span class="text-danger"><?php echo form_error('fees_receipt_no'); ?></span>
