@@ -173,6 +173,23 @@
                                   <span class="text-danger"><?php echo form_error('hobbies'); ?></span>
                               </div>
                           </div>
+                          <div class="col-md-3 col-sm-12">
+                              <div class="form-group">
+                                  <label class="label">Admission Based On<span class="text-danger">*</span></label>
+                                <?php $level_options = array(" " => "Select Level","PUC" => "PUC", "Diploma" => "Diploma");
+                                    echo form_dropdown('admission_based', $level_options, (set_value('admission_based')) ? set_value('admission_based') : $admission_based, 'class="form-control " id="admission_based"');
+                                  ?>
+                               
+                              </div>
+                          </div>
+                          <div class="col-md-3 col-sm-12 latclass">
+                              <div class="form-group">
+                                  <label class="form-label">Lateral Entry</label>
+                                  <?php $level_options = array("DIPLOMA" => "DIPLOMA", "GTTC" => "GT & TC");
+                                    echo form_dropdown('lateral_entry', $level_options, (set_value('lateral_entry')) ? set_value('lateral_entry') : $lateral_entry, 'class="form-control " id="lateral_entry"');
+                                  ?>
+                              </div>
+                          </div>
                       </div>
                       <hr>
                       <div class="row">
@@ -317,12 +334,26 @@
             if($("#disability").val() == "yes") {
                 $(".labeldis").show();
             }
-        })
+        });
 
         $("#disability").change(function () {
             if($("#disability").val() == "no") {
                 $(".labeldis").hide();
             }
-        })
-    })
+        });
+
+
+        $(".latclass").hide();
+        $("#admission_based").change(function () {
+            if($("#admission_based").val() == "Diploma") {
+                $(".latclass").show();
+            }
+        });
+
+        $("#admission_based").change(function () {
+            if($("#admission_based").val() == "PUC") {
+                $(".latclass").hide();
+            }
+        });
+    });
 </script>

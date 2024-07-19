@@ -348,6 +348,7 @@ class Student extends CI_Controller
 			$this->form_validation->set_rules('type_of_disability', 'Type of Disability');
 			$this->form_validation->set_rules('economically_backward', 'Economically Backward', 'required');
 			$this->form_validation->set_rules('domicile_of_state', 'Domicile of State', 'required');
+			$this->form_validation->set_rules('admission_based', 'Admission Based On', 'required');
 			$this->form_validation->set_rules('hobbies', 'Hobbies', 'required');
 			$this->form_validation->set_rules('current_address', 'Current Address', 'required');
 			$this->form_validation->set_rules('current_city', 'Current City', 'required');
@@ -382,6 +383,8 @@ class Student extends CI_Controller
 				$data['type_of_disability'] = $personalDetails->type_of_disability;
 				$data['economically_backward'] = $personalDetails->economically_backward;
 				$data['domicile_of_state'] = $personalDetails->domicile_of_state;
+				$data['admission_based'] = $personalDetails->admission_based;
+				$data['lateral_entry'] = $personalDetails->lateral_entry;
 				$data['hobbies'] = $personalDetails->hobbies;
 				$data['current_address'] = $personalDetails->current_address;
 				$data['current_city'] = $personalDetails->current_city;
@@ -412,6 +415,8 @@ class Student extends CI_Controller
 					'type_of_disability' => $this->input->post('type_of_disability'),
 					'economically_backward' => $this->input->post('economically_backward'),
 					'domicile_of_state' => $this->input->post('domicile_of_state'),
+					'lateral_entry' => $this->input->post('lateral_entry'),
+					'admission_based' => $this->input->post('admission_based'),
 					'hobbies' => $this->input->post('hobbies'),
 					'current_address' => $this->input->post('current_address'),
 					'current_city' => $this->input->post('current_city'),
@@ -550,9 +555,10 @@ class Student extends CI_Controller
 			$student_id = $student_session['id'];
 			$data['page_title'] = "EDUCATION DETAILS";
 			$data['menu'] = "educationdetails";
-			
+			$personalDetails = $this->admin_model->getDetails('admissions', $data['id'])->row();
+
 			$this->form_validation->set_rules('education_level', 'Education Level', 'required');
-			$this->form_validation->set_rules('inst_type', 'Institution Type', 'required');
+			// $this->form_validation->set_rules('inst_type', 'Institution Type', 'required');
 			$this->form_validation->set_rules('inst_board', 'Board / University', 'required');
 			$this->form_validation->set_rules('inst_name', 'Institution Name', 'required');
 			$this->form_validation->set_rules('inst_address', 'Institution Address', 'required');
@@ -562,8 +568,50 @@ class Student extends CI_Controller
 			$this->form_validation->set_rules('medium_of_instruction', 'Medium of Instruction', 'required');
 			$this->form_validation->set_rules('register_number', 'Register Number', 'required');
 			$this->form_validation->set_rules('year_of_passing', 'Year of Passing', 'required');
+			if ($personalDetails->admission_based == "PUC") {
+				$this->form_validation->set_rules('puc_education_level', 'Education Level', 'required');
+				// $this->form_validation->set_rules('puc_inst_type', 'Institution Type', 'required');
+				$this->form_validation->set_rules('puc_inst_board', 'Board / University', 'required');
+				$this->form_validation->set_rules('puc_inst_name', 'Institution Name', 'required');
+				$this->form_validation->set_rules('puc_inst_address', 'Institution Address', 'required');
+				$this->form_validation->set_rules('puc_inst_city', 'Institution City');
+				$this->form_validation->set_rules('puc_inst_state', 'Institution State', 'required');
+				$this->form_validation->set_rules('puc_inst_country', 'Institution Country', 'required');
+				$this->form_validation->set_rules('puc_medium_of_instruction', 'Medium of Instruction', 'required');
+				$this->form_validation->set_rules('puc_register_number', 'Register Number', 'required');
+				$this->form_validation->set_rules('puc_year_of_passing', 'Year of Passing', 'required');
+			}
+			if ($personalDetails->admission_based == "Diploma" && $personalDetails->lateral_entry == "DIPLOMA") {
+				$this->form_validation->set_rules('diploma_education_level', 'Education Level', 'required');
+				// $this->form_validation->set_rules('diploma_inst_type', 'Institution Type', 'required');
+				$this->form_validation->set_rules('diploma_inst_board', 'Board / University', 'required');
+				$this->form_validation->set_rules('diploma_inst_name', 'Institution Name', 'required');
+				$this->form_validation->set_rules('diploma_inst_address', 'Institution Address', 'required');
+				$this->form_validation->set_rules('diploma_inst_city', 'Institution City');
+				$this->form_validation->set_rules('diploma_inst_state', 'Institution State', 'required');
+				$this->form_validation->set_rules('diploma_inst_country', 'Institution Country', 'required');
+				$this->form_validation->set_rules('diploma_medium_of_instruction', 'Medium of Instruction', 'required');
+				$this->form_validation->set_rules('diploma_register_number', 'Register Number', 'required');
+				$this->form_validation->set_rules('diploma_year_of_passing', 'Year of Passing', 'required');
+			}
+			if ($personalDetails->admission_based == "Diploma" && $personalDetails->lateral_entry == "GTTC") {
+				$this->form_validation->set_rules('gt_education_level', 'Education Level', 'required');
+				// $this->form_validation->set_rules('gt_inst_type', 'Institution Type', 'required');
+				$this->form_validation->set_rules('gt_inst_board', 'Board / University', 'required');
+				$this->form_validation->set_rules('gt_inst_name', 'Institution Name', 'required');
+				$this->form_validation->set_rules('gt_inst_address', 'Institution Address', 'required');
+				$this->form_validation->set_rules('gt_inst_city', 'Institution City');
+				$this->form_validation->set_rules('gt_inst_state', 'Institution State', 'required');
+				$this->form_validation->set_rules('gt_inst_country', 'Institution Country', 'required');
+				$this->form_validation->set_rules('gt_medium_of_instruction', 'Medium of Instruction', 'required');
+				$this->form_validation->set_rules('gt_register_number', 'Register Number', 'required');
+				$this->form_validation->set_rules('gt_year_of_passing', 'Year of Passing', 'required');
+			}
 
 			if ($this->form_validation->run() === FALSE) {
+
+				// var_dump($this->input->post());
+				// die();
 				$data = array(
 					'education_level' => $this->input->post('education_level'),
 					'inst_type' => $this->input->post('inst_type'),
@@ -577,8 +625,6 @@ class Student extends CI_Controller
 					'register_number' => $this->input->post('register_number'),
 					'year_of_passing' => $this->input->post('year_of_passing')
 				);
-
-				// Insert subject fields
 				for ($i = 1; $i <= 6; $i++) {
 					$subject_name = $this->input->post('subject_' . $i . '_name');
 					$min_marks = $this->input->post('subject_' . $i . '_min_marks');
@@ -593,6 +639,103 @@ class Student extends CI_Controller
 						$data['subject_' . $i . '_obtained_marks'] = $obtained_marks;
 					}
 				}
+				if ($personalDetails->admission_based == "PUC") {
+
+					$data = array(
+						'puc_education_level' => $this->input->post('puc_education_level'),
+						'puc_inst_type' => $this->input->post('puc_inst_type'),
+						'puc_inst_board' => $this->input->post('puc_inst_board'),
+						'puc_inst_name' => $this->input->post('puc_inst_name'),
+						'puc_inst_address' => $this->input->post('puc_inst_address'),
+						'puc_inst_city' => $this->input->post('puc_inst_city'),
+						'puc_inst_state' => $this->input->post('puc_inst_state'),
+						'puc_inst_country' => $this->input->post('puc_inst_country'),
+						'puc_medium_of_instruction' => $this->input->post('puc_medium_of_instruction'),
+						'puc_register_number' => $this->input->post('puc_register_number'),
+						'puc_year_of_passing' => $this->input->post('puc_year_of_passing')
+					);
+					for ($i = 1; $i <= 6; $i++) {
+						$subject_name = $this->input->post('puc_subject_' . $i . '_name');
+						$min_marks = $this->input->post('puc_subject_' . $i . '_min_marks');
+						$max_marks = $this->input->post('puc_subject_' . $i . '_max_marks');
+						$obtained_marks = $this->input->post('puc_subject_' . $i . '_obtained_marks');
+
+						// Only add subject if name is not empty
+						if (!empty($subject_name)) {
+							$data['puc_subject_' . $i . '_name'] = $subject_name;
+							$data['puc_subject_' . $i . '_min_marks'] = $min_marks;
+							$data['puc_subject_' . $i . '_max_marks'] = $max_marks;
+							$data['puc_subject_' . $i . '_obtained_marks'] = $obtained_marks;
+						}
+					}
+				}
+
+				if ($personalDetails->admission_based == "Diploma" && $personalDetails->lateral_entry == "DIPLOMA") {
+
+					$data = array(
+						'diploma_education_level' => $this->input->post('education_level'),
+						'diploma_inst_type' => $this->input->post('diploma_inst_type'),
+						'diploma_inst_board' => $this->input->post('diploma_inst_board'),
+						'diploma_inst_name' => $this->input->post('diploma_inst_name'),
+						'diploma_inst_address' => $this->input->post('diploma_inst_address'),
+						'diploma_inst_city' => $this->input->post('diploma_inst_city'),
+						'diploma_inst_state' => $this->input->post('diploma_inst_state'),
+						'diploma_inst_country' => $this->input->post('diploma_inst_country'),
+						'diploma_medium_of_instruction' => $this->input->post('diploma_medium_of_instruction'),
+						'diploma_register_number' => $this->input->post('diploma_register_number'),
+						'diploma_year_of_passing' => $this->input->post('diploma_year_of_passing')
+					);
+					for ($i = 1; $i <= 3; $i++) {
+						$subject_name = $this->input->post('diploma_subject_' . $i . '_name');
+						$min_marks = $this->input->post('diploma_subject_' . $i . '_min_marks');
+						$max_marks = $this->input->post('diploma_subject_' . $i . '_max_marks');
+						$obtained_marks = $this->input->post('diploma_subject_' . $i . '_obtained_marks');
+
+						// Only add subject if name is not empty
+						if (!empty($subject_name)) {
+							$data['diploma_subject_' . $i . '_name'] = $subject_name;
+							$data['diploma_subject_' . $i . '_min_marks'] = $min_marks;
+							$data['diploma_subject_' . $i . '_max_marks'] = $max_marks;
+							$data['diploma_subject_' . $i . '_obtained_marks'] = $obtained_marks;
+						}
+					}
+				}
+
+				if ($personalDetails->admission_based == "Diploma" && $personalDetails->lateral_entry == "GTTC") {
+
+					$data = array(
+						'gt_education_level' => $this->input->post('gt_education_level'),
+						'gt_inst_type' => $this->input->post('gt_inst_type'),
+						'gt_inst_board' => $this->input->post('gt_inst_board'),
+						'gt_inst_name' => $this->input->post('gt_inst_name'),
+						'gt_inst_address' => $this->input->post('gt_inst_address'),
+						'gt_inst_city' => $this->input->post('gt_inst_city'),
+						'gt_inst_state' => $this->input->post('gt_inst_state'),
+						'gt_inst_country' => $this->input->post('gt_inst_country'),
+						'gt_medium_of_instruction' => $this->input->post('gt_medium_of_instruction'),
+						'gt_register_number' => $this->input->post('gt_register_number'),
+						'gt_year_of_passing' => $this->input->post('gt_year_of_passing')
+					);
+					for ($i = 1; $i <= 4; $i++) {
+						$subject_name = $this->input->post('gt_subject_' . $i . '_name');
+						$min_marks = $this->input->post('gt_subject_' . $i . '_min_marks');
+						$max_marks = $this->input->post('gt_subject_' . $i . '_max_marks');
+						$obtained_marks = $this->input->post('gt_subject_' . $i . '_obtained_marks');
+
+						// Only add subject if name is not empty
+						if (!empty($subject_name)) {
+							$data['gt_subject_' . $i . '_name'] = $subject_name;
+							$data['gt_subject_' . $i . '_min_marks'] = $min_marks;
+							$data['gt_subject_' . $i . '_max_marks'] = $max_marks;
+							$data['gt_subject_' . $i . '_obtained_marks'] = $obtained_marks;
+						}
+					}
+				}
+
+
+
+				// Insert subject fields
+
 				$data['educations_details'] = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'student_education_details')->result();
 				$data['action'] = 'student/educationdetails/';
 				$data['student_name'] = $student_session['student_name'];
@@ -602,8 +745,11 @@ class Student extends CI_Controller
 				$data['menu'] = "educationdetails";
 				$data['instruction_options'] = array(" " => "Select Medium of instruction") + $this->globals->medium_of_instruction();
 				$data['countries'] = $this->admin_model->getCountries();
+				$data['personalDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$this->student_template->show('student/education_details', $data);
 			} else {
+
+
 
 				$insertDetails = array(
 					'student_id' => $student_id,
@@ -619,6 +765,8 @@ class Student extends CI_Controller
 					'register_number' => $this->input->post('register_number'),
 					'year_of_passing' => $this->input->post('year_of_passing'),
 					'aggregate' => $this->input->post('aggregate'),
+					'obtained' => $this->input->post('total_obtained_marks'),
+					'maximum' => $this->input->post('total_max_marks'),
 					'updated_on' => date('Y-m-d h:i:s'),
 					'updated_by' => $data['student_name']
 				);
@@ -639,6 +787,127 @@ class Student extends CI_Controller
 					}
 				}
 				$result = $this->admin_model->insertDetails('student_education_details', $insertDetails);
+
+				if ($personalDetails->admission_based == "PUC") {
+					$insertDetails3 = array(
+						'student_id' => $student_id,
+						'education_level' => $this->input->post('puc_education_level'),
+						'inst_type' => $this->input->post('puc_inst_type'),
+						'inst_board' => $this->input->post('puc_inst_board'),
+						'inst_name' => $this->input->post('puc_inst_name'),
+						'inst_address' => $this->input->post('puc_inst_address'),
+						'inst_city' => $this->input->post('puc_inst_city'),
+						'inst_state' => $this->input->post('puc_inst_state'),
+						'inst_country' => $this->input->post('puc_inst_country'),
+						'medium_of_instruction' => $this->input->post('puc_medium_of_instruction'),
+						'register_number' => $this->input->post('puc_register_number'),
+						'year_of_passing' => $this->input->post('puc_year_of_passing'),
+						'aggregate' => $this->input->post('puc_aggregate'),
+						'obtained' => $this->input->post('puc_total_obtained_marks'),
+						'maximum' => $this->input->post('puc_total_max_marks'),
+						'updated_on' => date('Y-m-d h:i:s'),
+						'updated_by' => $data['student_name']
+					);
+
+					// Insert subject fields
+					for ($i = 1; $i <= 6; $i++) {
+						$subject_name = $this->input->post('puc_subject_' . $i . '_name');
+						$min_marks = $this->input->post('puc_subject_' . $i . '_min_marks');
+						$max_marks = $this->input->post('puc_subject_' . $i . '_max_marks');
+						$obtained_marks = $this->input->post('puc_subject_' . $i . '_obtained_marks');
+
+						// Only add subject if name is not empty
+						if (!empty($subject_name)) {
+							$insertDetails3['subject_' . $i . '_name'] = $subject_name;
+							$insertDetails3['subject_' . $i . '_min_marks'] = $min_marks;
+							$insertDetails3['subject_' . $i . '_max_marks'] = $max_marks;
+							$insertDetails3['subject_' . $i . '_obtained_marks'] = $obtained_marks;
+						}
+					}
+					$result = $this->admin_model->insertDetails('student_education_details', $insertDetails);
+				}
+
+				if ($personalDetails->admission_based == "Diploma" && $personalDetails->lateral_entry == "DIPLOMA") {
+					$insertDetails2 = array(
+						'student_id' => $student_id,
+						'education_level' => $this->input->post('diploma_education_level'),
+						'inst_type' => $this->input->post('diploma_inst_type'),
+						'inst_board' => $this->input->post('diploma_inst_board'),
+						'inst_name' => $this->input->post('diploma_inst_name'),
+						'inst_address' => $this->input->post('diploma_inst_address'),
+						'inst_city' => $this->input->post('diploma_inst_city'),
+						'inst_state' => $this->input->post('diploma_inst_state'),
+						'inst_country' => $this->input->post('diploma_inst_country'),
+						'medium_of_instruction' => $this->input->post('diploma_medium_of_instruction'),
+						'register_number' => $this->input->post('diploma_register_number'),
+						'year_of_passing' => $this->input->post('diploma_year_of_passing'),
+						'aggregate' => $this->input->post('diploma_aggregate'),
+						'obtained' => $this->input->post('diploma_total_obtained_marks'),
+						'maximum' => $this->input->post('diploma_total_max_marks'),
+						'updated_on' => date('Y-m-d h:i:s'),
+						'updated_by' => $data['student_name']
+					);
+
+					// Insert subject fields
+					for ($i = 1; $i <= 3; $i++) {
+						$subject_name = $this->input->post('diploma_subject_' . $i . '_name');
+						$min_marks = $this->input->post('diploma_subject_' . $i . '_min_marks');
+						$max_marks = $this->input->post('diploma_subject_' . $i . '_max_marks');
+						$obtained_marks = $this->input->post('diploma_subject_' . $i . '_obtained_marks');
+
+						// Only add subject if name is not empty
+						if (!empty($min_marks)) {
+							$insertDetails2['subject_' . $i . '_name'] = $subject_name;
+							$insertDetails2['subject_' . $i . '_min_marks'] = $min_marks;
+							$insertDetails2['subject_' . $i . '_max_marks'] = $max_marks;
+							$insertDetails2['subject_' . $i . '_obtained_marks'] = $obtained_marks;
+						}
+					}
+					$result = $this->admin_model->insertDetails('student_education_details', $insertDetails2);
+				}
+
+				if ($personalDetails->admission_based == "Diploma" && $personalDetails->lateral_entry == "GTTC") {
+					$insertDetails1 = array(
+						'student_id' => $student_id,
+						'education_level' => $this->input->post('gt_education_level'),
+						'inst_type' => $this->input->post('gt_inst_type'),
+						'inst_board' => $this->input->post('gt_inst_board'),
+						'inst_name' => $this->input->post('gt_inst_name'),
+						'inst_address' => $this->input->post('gt_inst_address'),
+						'inst_city' => $this->input->post('gt_inst_city'),
+						'inst_state' => $this->input->post('gt_inst_state'),
+						'inst_country' => $this->input->post('gt_inst_country'),
+						'medium_of_instruction' => $this->input->post('gt_medium_of_instruction'),
+						'register_number' => $this->input->post('gt_register_number'),
+						'year_of_passing' => $this->input->post('gt_year_of_passing'),
+						'aggregate' => $this->input->post('gt_aggregate'),
+						'obtained' => $this->input->post('gt_total_obtained_marks'),
+						'maximum' => $this->input->post('gt_total_max_marks'),
+						'updated_on' => date('Y-m-d h:i:s'),
+						'updated_by' => $data['student_name']
+					);
+
+					// Insert subject fields
+					for ($i = 1; $i <= 4; $i++) {
+						$subject_name = $this->input->post('gt_subject_' . $i . '_name');
+						$min_marks = $this->input->post('gt_subject_' . $i . '_min_marks');
+						$max_marks = $this->input->post('gt_subject_' . $i . '_max_marks');
+						$obtained_marks = $this->input->post('gt_subject_' . $i . '_obtained_marks');
+
+						// Only add subject if name is not empty
+						if (!empty($min_marks)) {
+							$insertDetails1['subject_' . $i . '_name'] = $subject_name;
+							$insertDetails1['subject_' . $i . '_min_marks'] = $min_marks;
+							$insertDetails1['subject_' . $i . '_max_marks'] = $max_marks;
+							$insertDetails1['subject_' . $i . '_obtained_marks'] = $obtained_marks;
+						}
+					}
+
+					
+					$result = $this->admin_model->insertDetails('student_education_details', $insertDetails1);
+				}
+
+
 
 				if ($result) {
 					$this->session->set_flashdata('message', 'Education Details added successfully...!');
@@ -759,17 +1028,19 @@ class Student extends CI_Controller
 		}
 	}
 
-	public function get_states() {
-        $country_id = $this->input->post('country_id');
-        $states = $this->admin_model->getStates($country_id);
-        echo json_encode($states);
-    }
+	public function get_states()
+	{
+		$country_id = $this->input->post('country_id');
+		$states = $this->admin_model->getStates($country_id);
+		echo json_encode($states);
+	}
 
-    public function get_cities() {
-        $state_id = $this->input->post('state_id');
-        $cities = $this->admin_model->getCities($state_id);
-        echo json_encode($cities);
-    }
+	public function get_cities()
+	{
+		$state_id = $this->input->post('state_id');
+		$cities = $this->admin_model->getCities($state_id);
+		echo json_encode($cities);
+	}
 
 	function downloadReceipt($admission_id, $transaction_id)
 	{
@@ -793,9 +1064,9 @@ class Student extends CI_Controller
 
 
 
-			$fees= $this->admin_model->getDetailsbyfield($admission_id, 'student_id', 'fee_master')->row();
-			 $balance_amount = $fees->final_fee - $paid_amount;
-                                     
+			$fees = $this->admin_model->getDetailsbyfield($admission_id, 'student_id', 'fee_master')->row();
+			$balance_amount = $fees->final_fee - $paid_amount;
+
 			$currentAcademicYear = $this->globals->currentAcademicYear();
 
 			$this->load->library('fpdf'); // Load library
@@ -851,7 +1122,7 @@ class Student extends CI_Controller
 			$pdf->Cell(0, $row, "Course & Combination", 1, 0, 'L', false);
 			$pdf->setFont('Arial', '', 9);
 			$pdf->SetXY(50, $y + $row);
-			$pdf->Cell(0, $row, 'I Year - B.E ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] , 1, 0, 'L', false);
+			$pdf->Cell(0, $row, 'I Year - B.E ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"], 1, 0, 'L', false);
 
 			$y = $pdf->getY();
 			$pdf->setFont('Arial', 'B', 9);
@@ -1165,10 +1436,10 @@ class Student extends CI_Controller
 			$data['student_name'] = $student_session['student_name'];
 			$data['id'] = $student_session['id'];
 			$data['page_title'] = 'Update Education Details';
-			$data['menu'] = 'educationdetails';		
-
+			$data['menu'] = 'educationdetails';
+			
 			$this->form_validation->set_rules('education_level', 'Education Level', 'required');
-			$this->form_validation->set_rules('inst_type', 'Institution Type', 'required');
+			// $this->form_validation->set_rules('inst_type', 'Institution Type', 'required');
 			$this->form_validation->set_rules('inst_board', 'Board / University', 'required');
 			$this->form_validation->set_rules('inst_name', 'Institution Name', 'required');
 			$this->form_validation->set_rules('inst_address', 'Institution Address', 'required');
@@ -1220,6 +1491,7 @@ class Student extends CI_Controller
 				$data['countries'] = $this->admin_model->getCountries();
 				$data['states'] = $this->admin_model->get_states();
 				$data['cities'] = $this->admin_model->get_city();
+				$data['personalDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$this->student_template->show('student/update_education_details', $data);
 			} else {
 
@@ -1514,7 +1786,7 @@ class Student extends CI_Controller
 
 				$result = $this->admin_model->updateDetailsbyfield('reference_no', $response_array['orderid'], $updateDetails, 'transactions');
 				$result1 = $this->admin_model->updateDetailsbyfield('id', $response_array['additional_info']->additional_info7, $updateDetails1, 'payment_structure');
-				
+
 				$payment = ['orderid' => $response_array['orderid']];
 				$this->session->set_userdata('payment', $payment);
 
@@ -1608,7 +1880,7 @@ class Student extends CI_Controller
 			$res['amount'] = (int)$response_array['amount'];
 		}
 
-		
+
 		return $res;
 	}
 
@@ -1620,23 +1892,19 @@ class Student extends CI_Controller
 			$data['student_name'] = $student_session['student_name'];
 			$data['id'] = $student_session['id'];
 			require_once APPPATH . 'libraries/Jwt.php';
-			$acc_type=$this->input->post('type');
-			if($acc_type==0)
-			{
-				$mid="CNBMLNDEGC";
-				$clientid="cnbmlndegc";
-				$midkey="WHjXW5WHk27mr50KetSh75vyapmO14IT";	
-				$returnurl= base_url() . 'student/callback';
-				$page='student/payment';
-
-			}
-			else
-			{
-				$mid="CNBMLNDTRT";
-				$clientid="cnbmlndtrt";
-				$midkey="k2ieff4ugn8Ehv31tUhXTRoHK2MEBrdJ";
-				$returnurl= base_url() . 'student/callbackcorpus';
-				$page='student/payment_corpus';
+			$acc_type = $this->input->post('type');
+			if ($acc_type == 0) {
+				$mid = "CNBMLNDEGC";
+				$clientid = "cnbmlndegc";
+				$midkey = "WHjXW5WHk27mr50KetSh75vyapmO14IT";
+				$returnurl = base_url() . 'student/callback';
+				$page = 'student/payment';
+			} else {
+				$mid = "CNBMLNDTRT";
+				$clientid = "cnbmlndtrt";
+				$midkey = "k2ieff4ugn8Ehv31tUhXTRoHK2MEBrdJ";
+				$returnurl = base_url() . 'student/callbackcorpus';
+				$page = 'student/payment_corpus';
 			}
 
 			$this->load->library('logger');
@@ -1694,7 +1962,7 @@ class Student extends CI_Controller
 				"user_agent"    => $_SERVER['HTTP_USER_AGENT'],
 				"accept_header" => "text/html",
 			);
-		
+
 
 			/*****************************************/
 			// Encode payload
