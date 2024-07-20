@@ -222,18 +222,28 @@
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
                                   <label class="form-label">State</label>
-                                  <input type="text" class="form-control" placeholder="Enter Current State"
-                                      id="current_state"
-                                      value="<?php echo (set_value('current_state')) ? set_value('current_state') : $current_state; ?>"
-                                      name="current_state">
+                                  <select name="current_state" id="current_state" class="form-control input-lg select2">
+                                        <option>Select State</option>
+                                        <?php foreach ($states1 as $state): ?>
+                                            <?php
+                                                $selected = ($state->name == $current_state) ? 'selected' : '';
+                                            ?>
+                                            <option data-id="<?= $state->id ?>" value="<?= $state->name ?>" <?= $selected ?>><?= $state->name ?></option>
+                                        <?php endforeach; ?>
+                                 </select>
                                   <span class="text-danger"><?php echo form_error('current_state'); ?></span>
                               </div>
                               <div class="form-group col-md-6 col-sm-12">
                                   <label class="form-label">Country</label>
-                                  <input type="text" class="form-control" placeholder="Enter Current Country"
-                                      id="current_country"
-                                      value="<?php echo (set_value('current_country')) ? set_value('current_country') : $current_country; ?>"
-                                      name="current_country">
+                                  <select name="current_country" id="current_country" class="form-control input-lg select2">
+                                        <option>Select Country</option>
+                                        <?php foreach ($countries as $country): ?>
+                                            <?php
+                                                $selected = ($country->name == $current_country) ? 'selected' : '';
+                                            ?>
+                                            <option data-id="<?= $country->id ?>" value="<?= $country->name ?>" <?= $selected ?>><?= $country->name ?></option>
+                                        <?php endforeach; ?>
+                                 </select>
                                   <span class="text-danger"><?php echo form_error('current_country'); ?></span>
                               </div>
                               <div class="form-group col-md-6 col-sm-12">
@@ -280,19 +290,29 @@
                                   <span class="text-danger"><?php echo form_error('present_district'); ?></span>
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
-                                  <label class="form-label">State</label>
-                                  <input type="text" class="form-control" placeholder="Enter Permanent State"
-                                      id="present_state"
-                                      value="<?php echo (set_value('present_state')) ? set_value('present_state') : $present_state; ?>"
-                                      name="present_state">
+                                  <label class="form-label">Select State</label>
+                                  <select name="present_state" id="present_state" class="form-control input-lg select2">
+                                        <option>Select State</option>
+                                        <?php foreach ($states1 as $state): ?>
+                                            <?php
+                                                $selected = ($state->name == $present_state) ? 'selected' : '';
+                                            ?>
+                                            <option data-id="<?= $state->id ?>" value="<?= $state->name ?>" <?= $selected ?>><?= $state->name ?></option>
+                                        <?php endforeach; ?>
+                                 </select>
                                   <span class="text-danger"><?php echo form_error('present_state'); ?></span>
                               </div>
                               <div class="form-group col-md-6 col-sm-12">
-                                  <label class="form-label">Country</label>
-                                  <input type="text" class="form-control" placeholder="Enter Permanent Country"
-                                      id="present_country"
-                                      value="<?php echo (set_value('present_country')) ? set_value('present_country') : $present_country; ?>"
-                                      name="present_country">
+                                  <label class="form-label">Select Country</label>
+                                  <select name="present_country" id="present_country" class="form-control input-lg select2">
+                                        <option>Select Country</option>
+                                        <?php foreach ($countries as $country): ?>
+                                            <?php
+                                                $selected = ($country->name == $present_country) ? 'selected' : '';
+                                            ?>
+                                            <option data-id="<?= $country->id ?>" value="<?= $country->name ?>" <?= $selected ?>><?= $country->name ?></option>
+                                        <?php endforeach; ?>
+                                 </select>
                                   <span class="text-danger"><?php echo form_error('present_country'); ?></span>
                               </div>
                               <div class="form-group col-md-6 col-sm-12">
