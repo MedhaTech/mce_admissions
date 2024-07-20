@@ -3941,6 +3941,7 @@ With good wishes";
 			$data['religion_option'] = array(" " => "Select Religion") + $this->globals->religion();
 			$data['caste_option'] = array(" " => "Select Caste") + $this->globals->caste();
 			$data['countries'] = $this->admin_model->getCountries();
+			$data['states1']= $this->admin_model->get_states();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			// var_dump($data['admissionDetails']); die();
 
