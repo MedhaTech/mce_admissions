@@ -29,7 +29,7 @@
                             if (count($educations_details)) {
                                 $table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
                                 $this->table->set_template($table_setup);
-                                $print_fields = array('S.NO', 'Level', 'Board ', 'Institution Name', 'Institution City', 'Medium of Instruction','Aggregate(%)', 'Register Number', 'Year of Passing', 'Actions');
+                                $print_fields = array('S.NO', 'Level', 'Board ', 'Institution Name', 'Institution City', 'Medium of Instruction', 'Aggregate(%)', 'Register Number', 'Year of Passing', 'Actions');
                                 $this->table->set_heading($print_fields);
 
                                 $i = 1;
@@ -59,13 +59,13 @@
                       </div>
                   </div>
               </div>
-              <div class="card card-info shadow mb-2"> 
-                 <?php if (count($educations_details) == 0) { ?>
-                  <div class="card-header">
-                      <h3 class="m-0 card-title text-uppercase">New Education Details</h6>
-                  </div>
-                  <?php echo form_open_multipart($action, 'class="user"'); ?>
-                
+              <div class="card card-info shadow mb-2">
+                  <?php if (count($educations_details) == 0) { ?>
+                      <div class="card-header">
+                          <h3 class="m-0 card-title text-uppercase">New Education Details</h6>
+                      </div>
+                      <?php echo form_open_multipart($action, 'class="user"'); ?>
+
                       <div class="card-body">
 
 
@@ -177,8 +177,8 @@
                               <thead>
                                   <tr>
                                       <th>Subject Name</th>
-                                      <th>Min Marks</th>
                                       <th>Max Marks</th>
+                                      <th>Min Marks</th>
 
                                       <th>Obtained Marks</th>
                                   </tr>
@@ -191,12 +191,12 @@
                                           <span class="text-danger"><?php echo form_error('subject_1_name'); ?></span>
                                       </td>
                                       <td>
-                                          <input type="number" name="subject_1_min_marks" id="subject_1_min_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('subject_1_min_marks')) ? set_value('subject_1_min_marks') : ''; ?>">
-                                          <span class="text-danger"><?php echo form_error('subject_1_min_marks'); ?></span>
+                                          <input type="number" name="subject_1_max_marks" id="subject_1_max_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('subject_1_max_marks')) ? set_value('subject_1_max_marks') : ''; ?>">
+                                          <span class="text-danger"><?php echo form_error('subject_1_max_marks'); ?></span>
                                       </td>
                                       <td>
-                                          <input type="number" name="subject_1_max_marks" id="subject_1_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('subject_1_max_marks')) ? set_value('subject_1_max_marks') : ''; ?>">
-                                          <span class="text-danger"><?php echo form_error('subject_1_max_marks'); ?></span>
+                                          <input type="number" name="subject_1_min_marks" id="subject_1_min_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('subject_1_min_marks')) ? set_value('subject_1_min_marks') : ''; ?>">
+                                          <span class="text-danger"><?php echo form_error('subject_1_min_marks'); ?></span>
                                       </td>
                                       <td>
                                           <input type="number" name="subject_1_obtained_marks" id="subject_1_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('subject_1_obtained_marks')) ? set_value('subject_1_obtained_marks') : ''; ?>">
@@ -210,12 +210,12 @@
                                           <span class="text-danger"><?php echo form_error('subject_2_name'); ?></span>
                                       </td>
                                       <td>
-                                          <input type="number" name="subject_2_min_marks" id="subject_2_min_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('subject_2_min_marks')) ? set_value('subject_2_min_marks') : ''; ?>">
-                                          <span class="text-danger"><?php echo form_error('subject_2_min_marks'); ?></span>
+                                          <input type="number" name="subject_2_max_marks" id="subject_2_max_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('subject_2_max_marks')) ? set_value('subject_2_max_marks') : ''; ?>">
+                                          <span class="text-danger"><?php echo form_error('subject_2_max_marks'); ?></span>
                                       </td>
                                       <td>
-                                          <input type="number" name="subject_2_max_marks" id="subject_2_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('subject_2_max_marks')) ? set_value('subject_2_max_marks') : ''; ?>">
-                                          <span class="text-danger"><?php echo form_error('subject_2_max_marks'); ?></span>
+                                          <input type="number" name="subject_2_min_marks" id="subject_2_min_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('subject_2_min_marks')) ? set_value('subject_2_min_marks') : ''; ?>">
+                                          <span class="text-danger"><?php echo form_error('subject_2_min_marks'); ?></span>
                                       </td>
                                       <td>
                                           <input type="number" name="subject_2_obtained_marks" id="subject_2_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('subject_2_obtained_marks')) ? set_value('subject_2_obtained_marks') : ''; ?>">
@@ -229,12 +229,12 @@
                                           <span class="text-danger"><?php echo form_error('subject_3_name'); ?></span>
                                       </td>
                                       <td>
-                                          <input type="number" name="subject_3_min_marks" id="subject_3_min_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('subject_3_min_marks')) ? set_value('subject_3_min_marks') : ''; ?>">
-                                          <span class="text-danger"><?php echo form_error('subject_3_min_marks'); ?></span>
+                                          <input type="number" name="subject_3_max_marks" id="subject_3_max_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('subject_3_max_marks')) ? set_value('subject_3_max_marks') : ''; ?>">
+                                          <span class="text-danger"><?php echo form_error('subject_3_max_marks'); ?></span>
                                       </td>
                                       <td>
-                                          <input type="number" name="subject_3_max_marks" id="subject_3_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('subject_3_max_marks')) ? set_value('subject_3_max_marks') : ''; ?>">
-                                          <span class="text-danger"><?php echo form_error('subject_3_max_marks'); ?></span>
+                                          <input type="number" name="subject_3_min_marks" id="subject_3_min_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('subject_3_min_marks')) ? set_value('subject_3_min_marks') : ''; ?>">
+                                          <span class="text-danger"><?php echo form_error('subject_3_min_marks'); ?></span>
                                       </td>
                                       <td>
                                           <input type="number" name="subject_3_obtained_marks" id="subject_3_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('subject_3_obtained_marks')) ? set_value('subject_3_obtained_marks') : ''; ?>">
@@ -248,12 +248,12 @@
                                           <span class="text-danger"><?php echo form_error('subject_4_name'); ?></span>
                                       </td>
                                       <td>
-                                          <input type="number" name="subject_4_min_marks" id="subject_4_min_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('subject_4_min_marks')) ? set_value('subject_4_min_marks') : ''; ?>">
-                                          <span class="text-danger"><?php echo form_error('subject_4_min_marks'); ?></span>
+                                          <input type="number" name="subject_4_max_marks" id="subject_4_max_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('subject_4_max_marks')) ? set_value('subject_4_max_marks') : ''; ?>">
+                                          <span class="text-danger"><?php echo form_error('subject_4_max_marks'); ?></span>
                                       </td>
                                       <td>
-                                          <input type="number" name="subject_4_max_marks" id="subject_4_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('subject_4_max_marks')) ? set_value('subject_4_max_marks') : ''; ?>">
-                                          <span class="text-danger"><?php echo form_error('subject_4_max_marks'); ?></span>
+                                          <input type="number" name="subject_4_min_marks" id="subject_4_min_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('subject_4_min_marks')) ? set_value('subject_4_min_marks') : ''; ?>">
+                                          <span class="text-danger"><?php echo form_error('subject_4_min_marks'); ?></span>
                                       </td>
                                       <td>
                                           <input type="number" name="subject_4_obtained_marks" id="subject_4_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('subject_4_obtained_marks')) ? set_value('subject_4_obtained_marks') : ''; ?>">
@@ -267,12 +267,12 @@
                                           <span class="text-danger"><?php echo form_error('subject_5_name'); ?></span>
                                       </td>
                                       <td>
-                                          <input type="number" name="subject_5_min_marks" id="subject_5_min_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('subject_5_min_marks')) ? set_value('subject_5_min_marks') : ''; ?>">
-                                          <span class="text-danger"><?php echo form_error('subject_5_min_marks'); ?></span>
+                                          <input type="number" name="subject_5_max_marks" id="subject_5_max_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('subject_5_max_marks')) ? set_value('subject_5_max_marks') : ''; ?>">
+                                          <span class="text-danger"><?php echo form_error('subject_5_max_marks'); ?></span>
                                       </td>
                                       <td>
-                                          <input type="number" name="subject_5_max_marks" id="subject_5_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('subject_5_max_marks')) ? set_value('subject_5_max_marks') : ''; ?>">
-                                          <span class="text-danger"><?php echo form_error('subject_5_max_marks'); ?></span>
+                                          <input type="number" name="subject_5_min_marks" id="subject_5_min_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('subject_5_min_marks')) ? set_value('subject_5_min_marks') : ''; ?>">
+                                          <span class="text-danger"><?php echo form_error('subject_5_min_marks'); ?></span>
                                       </td>
                                       <td>
                                           <input type="number" name="subject_5_obtained_marks" id="subject_5_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('subject_5_obtained_marks')) ? set_value('subject_5_obtained_marks') : ''; ?>">
@@ -286,12 +286,12 @@
                                           <span class="text-danger"><?php echo form_error('subject_6_name'); ?></span>
                                       </td>
                                       <td>
-                                          <input type="number" name="subject_6_min_marks" id="subject_6_min_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('subject_6_min_marks')) ? set_value('subject_6_min_marks') : ''; ?>">
-                                          <span class="text-danger"><?php echo form_error('subject_6_min_marks'); ?></span>
+                                          <input type="number" name="subject_6_max_marks" id="subject_6_max_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('subject_6_max_marks')) ? set_value('subject_6_max_marks') : ''; ?>">
+                                          <span class="text-danger"><?php echo form_error('subject_6_max_marks'); ?></span>
                                       </td>
                                       <td>
-                                          <input type="number" name="subject_6_max_marks" id="subject_6_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('subject_6_max_marks')) ? set_value('subject_6_max_marks') : ''; ?>">
-                                          <span class="text-danger"><?php echo form_error('subject_6_max_marks'); ?></span>
+                                          <input type="number" name="subject_6_min_marks" id="subject_6_min_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('subject_6_min_marks')) ? set_value('subject_6_min_marks') : ''; ?>">
+                                          <span class="text-danger"><?php echo form_error('subject_6_min_marks'); ?></span>
                                       </td>
                                       <td>
                                           <input type="number" name="subject_6_obtained_marks" id="subject_6_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('subject_6_obtained_marks')) ? set_value('subject_6_obtained_marks') : ''; ?>">
@@ -302,8 +302,8 @@
                               <!-- <tfoot>
                                   <tr>
                                       <th>Total</th>
-                                      <th> <input type="text" name="total_min_marks" id="total_min_marks" class="form-control" value="" readonly></th>
-                                      <th><input type="text" name="total_max_marks" id="total_max_marks" class="form-control" value="" readonly></th>
+                                      <th> <input type="text" name="total_max_marks" id="total_max_marks" class="form-control" value="" readonly></th>
+                                      <th><input type="text" name="total_min_marks" id="total_min_marks" class="form-control" value="" readonly></th>
                                       <th><input type="text" name="total_obtained_marks" id="total_obtained_marks" class="form-control" value="" readonly></th>
                                   </tr>
 
@@ -446,12 +446,16 @@
                                       </div>
                                   </div>
                               </div>
+
+
+
+
                               <table class="table" border="1">
                                   <thead>
                                       <tr>
                                           <th>Subject Name</th>
-                                          <th>Min Marks</th>
                                           <th>Max Marks</th>
+                                          <th>Min Marks</th>
 
                                           <th>Obtained Marks</th>
                                       </tr>
@@ -464,12 +468,12 @@
                                               <span class="text-danger"><?php echo form_error('puc_subject_1_name'); ?></span>
                                           </td>
                                           <td>
-                                              <input type="number" name="puc_subject_1_min_marks" id="puc_subject_1_min_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('puc_subject_1_min_marks')) ? set_value('puc_subject_1_min_marks') : ''; ?>">
-                                              <span class="text-danger"><?php echo form_error('puc_subject_1_min_marks'); ?></span>
+                                              <input type="number" name="puc_subject_1_max_marks" id="puc_subject_1_max_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('puc_subject_1_max_marks')) ? set_value('puc_subject_1_max_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('puc_subject_1_max_marks'); ?></span>
                                           </td>
                                           <td>
-                                              <input type="number" name="puc_subject_1_max_marks" id="puc_subject_1_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('puc_subject_1_max_marks')) ? set_value('puc_subject_1_max_marks') : ''; ?>">
-                                              <span class="text-danger"><?php echo form_error('puc_subject_1_max_marks'); ?></span>
+                                              <input type="number" name="puc_subject_1_min_marks" id="puc_subject_1_min_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('puc_subject_1_min_marks')) ? set_value('puc_subject_1_min_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('puc_subject_1_min_marks'); ?></span>
                                           </td>
                                           <td>
                                               <input type="number" name="puc_subject_1_obtained_marks" id="puc_subject_1_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('puc_subject_1_obtained_marks')) ? set_value('puc_subject_1_obtained_marks') : ''; ?>">
@@ -483,12 +487,12 @@
                                               <span class="text-danger"><?php echo form_error('puc_subject_2_name'); ?></span>
                                           </td>
                                           <td>
-                                              <input type="number" name="puc_subject_2_min_marks" id="puc_subject_2_min_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('puc_subject_2_min_marks')) ? set_value('puc_subject_2_min_marks') : ''; ?>">
-                                              <span class="text-danger"><?php echo form_error('puc_subject_2_min_marks'); ?></span>
+                                              <input type="number" name="puc_subject_2_max_marks" id="puc_subject_2_max_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('puc_subject_2_max_marks')) ? set_value('puc_subject_2_max_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('puc_subject_2_max_marks'); ?></span>
                                           </td>
                                           <td>
-                                              <input type="number" name="puc_subject_2_max_marks" id="puc_subject_2_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('puc_subject_2_max_marks')) ? set_value('puc_subject_2_max_marks') : ''; ?>">
-                                              <span class="text-danger"><?php echo form_error('puc_subject_2_max_marks'); ?></span>
+                                              <input type="number" name="puc_subject_2_min_marks" id="puc_subject_2_min_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('puc_subject_2_min_marks')) ? set_value('puc_subject_2_min_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('puc_subject_2_min_marks'); ?></span>
                                           </td>
                                           <td>
                                               <input type="number" name="puc_subject_2_obtained_marks" id="puc_subject_2_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('puc_subject_2_obtained_marks')) ? set_value('puc_subject_2_obtained_marks') : ''; ?>">
@@ -502,12 +506,12 @@
                                               <span class="text-danger"><?php echo form_error('puc_subject_3_name'); ?></span>
                                           </td>
                                           <td>
-                                              <input type="number" name="puc_subject_3_min_marks" id="puc_subject_3_min_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('puc_subject_3_min_marks')) ? set_value('puc_subject_3_min_marks') : ''; ?>">
-                                              <span class="text-danger"><?php echo form_error('puc_subject_3_min_marks'); ?></span>
+                                              <input type="number" name="puc_subject_3_max_marks" id="puc_subject_3_max_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('puc_subject_3_max_marks')) ? set_value('puc_subject_3_max_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('puc_subject_3_max_marks'); ?></span>
                                           </td>
                                           <td>
-                                              <input type="number" name="puc_subject_3_max_marks" id="puc_subject_3_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('puc_subject_3_max_marks')) ? set_value('puc_subject_3_max_marks') : ''; ?>">
-                                              <span class="text-danger"><?php echo form_error('puc_subject_3_max_marks'); ?></span>
+                                              <input type="number" name="puc_subject_3_min_marks" id="puc_subject_3_min_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('puc_subject_3_min_marks')) ? set_value('puc_subject_3_min_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('puc_subject_3_min_marks'); ?></span>
                                           </td>
                                           <td>
                                               <input type="number" name="puc_subject_3_obtained_marks" id="puc_subject_3_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('puc_subject_3_obtained_marks')) ? set_value('puc_subject_3_obtained_marks') : ''; ?>">
@@ -521,12 +525,12 @@
                                               <span class="text-danger"><?php echo form_error('puc_subject_4_name'); ?></span>
                                           </td>
                                           <td>
-                                              <input type="number" name="puc_subject_4_min_marks" id="puc_subject_4_min_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('puc_subject_4_min_marks')) ? set_value('puc_subject_4_min_marks') : ''; ?>">
-                                              <span class="text-danger"><?php echo form_error('puc_subject_4_min_marks'); ?></span>
+                                              <input type="number" name="puc_subject_4_max_marks" id="puc_subject_4_max_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('puc_subject_4_max_marks')) ? set_value('puc_subject_4_max_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('puc_subject_4_max_marks'); ?></span>
                                           </td>
                                           <td>
-                                              <input type="number" name="puc_subject_4_max_marks" id="puc_subject_4_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('puc_subject_4_max_marks')) ? set_value('puc_subject_4_max_marks') : ''; ?>">
-                                              <span class="text-danger"><?php echo form_error('puc_subject_4_max_marks'); ?></span>
+                                              <input type="number" name="puc_subject_4_min_marks" id="puc_subject_4_min_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('puc_subject_4_min_marks')) ? set_value('puc_subject_4_min_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('puc_subject_4_min_marks'); ?></span>
                                           </td>
                                           <td>
                                               <input type="number" name="puc_subject_4_obtained_marks" id="puc_subject_4_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('puc_subject_4_obtained_marks')) ? set_value('puc_subject_4_obtained_marks') : ''; ?>">
@@ -540,12 +544,12 @@
                                               <span class="text-danger"><?php echo form_error('puc_subject_5_name'); ?></span>
                                           </td>
                                           <td>
-                                              <input type="number" name="puc_subject_5_min_marks" id="puc_subject_5_min_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('puc_subject_5_min_marks')) ? set_value('puc_subject_5_min_marks') : ''; ?>">
-                                              <span class="text-danger"><?php echo form_error('puc_subject_5_min_marks'); ?></span>
+                                              <input type="number" name="puc_subject_5_max_marks" id="puc_subject_5_max_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('puc_subject_5_max_marks')) ? set_value('puc_subject_5_max_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('puc_subject_5_max_marks'); ?></span>
                                           </td>
                                           <td>
-                                              <input type="number" name="puc_subject_5_max_marks" id="puc_subject_5_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('puc_subject_5_max_marks')) ? set_value('puc_subject_5_max_marks') : ''; ?>">
-                                              <span class="text-danger"><?php echo form_error('puc_subject_5_max_marks'); ?></span>
+                                              <input type="number" name="puc_subject_5_min_marks" id="puc_subject_5_min_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('puc_subject_5_min_marks')) ? set_value('puc_subject_5_min_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('puc_subject_5_min_marks'); ?></span>
                                           </td>
                                           <td>
                                               <input type="number" name="puc_subject_5_obtained_marks" id="puc_subject_5_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('puc_subject_5_obtained_marks')) ? set_value('puc_subject_5_obtained_marks') : ''; ?>">
@@ -559,12 +563,12 @@
                                               <span class="text-danger"><?php echo form_error('puc_subject_6_name'); ?></span>
                                           </td>
                                           <td>
-                                              <input type="number" name="puc_subject_6_min_marks" id="puc_subject_6_min_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('puc_subject_6_min_marks')) ? set_value('puc_subject_6_min_marks') : ''; ?>">
-                                              <span class="text-danger"><?php echo form_error('puc_subject_6_min_marks'); ?></span>
+                                              <input type="number" name="puc_subject_6_max_marks" id="puc_subject_6_max_marks" class="form-control" placeholder="Enter Min Marks" value="<?php echo (set_value('puc_subject_6_max_marks')) ? set_value('puc_subject_6_max_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('puc_subject_6_max_marks'); ?></span>
                                           </td>
                                           <td>
-                                              <input type="number" name="puc_subject_6_max_marks" id="puc_subject_6_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('puc_subject_6_max_marks')) ? set_value('puc_subject_6_max_marks') : ''; ?>">
-                                              <span class="text-danger"><?php echo form_error('puc_subject_6_max_marks'); ?></span>
+                                              <input type="number" name="puc_subject_6_min_marks" id="puc_subject_6_min_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('puc_subject_6_min_marks')) ? set_value('puc_subject_6_min_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('puc_subject_6_min_marks'); ?></span>
                                           </td>
                                           <td>
                                               <input type="number" name="puc_subject_6_obtained_marks" id="puc_subject_6_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('puc_subject_6_obtained_marks')) ? set_value('puc_subject_6_obtained_marks') : ''; ?>">
@@ -575,8 +579,8 @@
                                   <!-- <tfoot>
                                       <tr>
                                           <th>Total</th>
-                                          <th><input type="text" name="puc_total_max_marks" id="puc_total_max_marks" class="form-control" value="" readonly></th>
-                                          <th> <input type="text" name="puc_total_min_marks" id="puc_total_min_marks" class="form-control" value="" readonly></th>
+                                          <th><input type="text" name="puc_total_min_marks" id="puc_total_min_marks" class="form-control" value="" readonly></th>
+                                          <th> <input type="text" name="puc_total_max_marks" id="puc_total_max_marks" class="form-control" value="" readonly></th>
                                           <th><input type="text" name="puc_total_obtained_marks" id="puc_total_obtained_marks" class="form-control" value="" readonly></th>
                                       </tr>
 
@@ -642,7 +646,7 @@
                                           <span class="text-danger"><?php echo form_error('diploma_inst_name'); ?></span>
                                       </div>
                                   </div>
-                                 
+
 
 
                               </div>
@@ -745,7 +749,7 @@
                                               <span class="text-danger"><?php echo form_error('diploma_subject_1_max_marks'); ?></span>
                                           </td>
                                           <td>
-                                              <input type="number" name="diploma_subject_1_min_marks" id="diploma_subject_1_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('diploma_subject_1_min_marks')) ? set_value('diploma_subject_1_min_marks') : ''; ?>">
+                                              <input type="text" readonly name="diploma_subject_1_min_marks" id="diploma_subject_1_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('diploma_subject_1_min_marks')) ? set_value('diploma_subject_1_min_marks') : ''; ?>">
                                               <span class="text-danger"><?php echo form_error('diploma_subject_1_min_marks'); ?></span>
                                           </td>
                                       </tr>
@@ -761,7 +765,7 @@
                                               <span class="text-danger"><?php echo form_error('diploma_subject_2_max_marks'); ?></span>
                                           </td>
                                           <td>
-                                              <input type="number" name="diploma_subject_2_min_marks" id="diploma_subject_2_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('diploma_subject_2_min_marks')) ? set_value('diploma_subject_2_min_marks') : ''; ?>">
+                                              <input type="text" readonly name="diploma_subject_2_min_marks" id="diploma_subject_2_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('diploma_subject_2_min_marks')) ? set_value('diploma_subject_2_min_marks') : ''; ?>">
                                               <span class="text-danger"><?php echo form_error('diploma_subject_2_min_marks'); ?></span>
                                           </td>
                                       </tr>
@@ -777,7 +781,7 @@
                                               <span class="text-danger"><?php echo form_error('diploma_subject_3_max_marks'); ?></span>
                                           </td>
                                           <td>
-                                              <input type="number" name="diploma_subject_3_min_marks" id="diploma_subject_3_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('diploma_subject_3_min_marks')) ? set_value('diploma_subject_3_min_marks') : ''; ?>">
+                                              <input type="text" readonly name="diploma_subject_3_min_marks" id="diploma_subject_3_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('diploma_subject_3_min_marks')) ? set_value('diploma_subject_3_min_marks') : ''; ?>">
                                               <span class="text-danger"><?php echo form_error('diploma_subject_3_min_marks'); ?></span>
                                           </td>
                                       </tr>
@@ -851,7 +855,7 @@
                                           <span class="text-danger"><?php echo form_error('gt_inst_name'); ?></span>
                                       </div>
                                   </div>
-                               
+
 
 
                               </div>
@@ -956,7 +960,7 @@
                                               <span class="text-danger"><?php echo form_error('gt_subject_1_max_marks'); ?></span>
                                           </td>
                                           <td>
-                                              <input type="number" name="gt_subject_1_min_marks" id="gt_subject_1_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('gt_subject_1_min_marks')) ? set_value('gt_subject_1_min_marks') : ''; ?>">
+                                              <input type="text" readonly name="gt_subject_1_min_marks" id="gt_subject_1_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('gt_subject_1_min_marks')) ? set_value('gt_subject_1_min_marks') : ''; ?>">
                                               <span class="text-danger"><?php echo form_error('gt_subject_1_min_marks'); ?></span>
                                           </td>
                                       </tr>
@@ -972,7 +976,7 @@
                                               <span class="text-danger"><?php echo form_error('gt_subject_2_max_marks'); ?></span>
                                           </td>
                                           <td>
-                                              <input type="number" name="gt_subject_2_min_marks" id="gt_subject_2_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('gt_subject_2_min_marks')) ? set_value('gt_subject_2_min_marks') : ''; ?>">
+                                              <input type="text" readonly name="gt_subject_2_min_marks" id="gt_subject_2_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('gt_subject_2_min_marks')) ? set_value('gt_subject_2_min_marks') : ''; ?>">
                                               <span class="text-danger"><?php echo form_error('gt_subject_2_min_marks'); ?></span>
                                           </td>
                                       </tr>
@@ -988,7 +992,7 @@
                                               <span class="text-danger"><?php echo form_error('gt_subject_3_max_marks'); ?></span>
                                           </td>
                                           <td>
-                                              <input type="number" name="gt_subject_3_min_marks" id="gt_subject_3_min_marks" class="form-control" placeholder="Enter Percentage" value="<?php echo (set_value('gt_subject_3_min_marks')) ? set_value('gt_subject_3_min_marks') : ''; ?>">
+                                              <input type="text" readonly name="gt_subject_3_min_marks" id="gt_subject_3_min_marks" class="form-control" placeholder="Enter Percentage" value="<?php echo (set_value('gt_subject_3_min_marks')) ? set_value('gt_subject_3_min_marks') : ''; ?>">
                                               <span class="text-danger"><?php echo form_error('gt_subject_3_min_marks'); ?></span>
                                           </td>
                                       </tr>
@@ -1004,7 +1008,7 @@
                                               <span class="text-danger"><?php echo form_error('gt_subject_4_max_marks'); ?></span>
                                           </td>
                                           <td>
-                                              <input type="number" name="gt_subject_4_min_marks" id="gt_subject_4_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('gt_subject_4_min_marks')) ? set_value('gt_subject_4_min_marks') : ''; ?>">
+                                              <input type="text" readonly name="gt_subject_4_min_marks" id="gt_subject_4_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('gt_subject_4_min_marks')) ? set_value('gt_subject_4_min_marks') : ''; ?>">
                                               <span class="text-danger"><?php echo form_error('gt_subject_4_min_marks'); ?></span>
                                           </td>
                                       </tr>
@@ -1142,16 +1146,20 @@
               let totalMaxMarks = 0;
 
               // Iterate through each subject row in the table
-              for (let i = 1; i <= 6; i++) { // Assuming you have 6 subjects as per your example
+              for (let i = 1; i <= 3; i++) { // Assuming you have 6 subjects as per your example
                   // Get obtained marks and max marks for each subject
                   let obtainedMarksInput = document.getElementById(`diploma_subject_${i}_obtained_marks`);
                   let maxMarksInput = document.getElementById(`diploma_subject_${i}_max_marks`);
-
+                  let minMarksInput = document.getElementById(`diploma_subject_${i}_min_marks`);
                   // Check if inputs exist before accessing their values
                   if (obtainedMarksInput && maxMarksInput) {
                       let obtainedMarks = parseFloat(obtainedMarksInput.value) || 0;
                       let maxMarks = parseFloat(maxMarksInput.value) || 0;
+                      let percent = (obtainedMarks / maxMarks) * 100;
 
+                    
+                      // Update the percentage field for the subject
+                      minMarksInput.value = percent.toFixed(2) + '%';
                       // Add to cumulative totals
                       totalObtainedMarks += obtainedMarks;
                       totalMaxMarks += maxMarks;
@@ -1176,18 +1184,23 @@
               let totalObtainedMarks = 0;
               let totalMaxMarks = 0;
 
+
               // Iterate through each subject row in the table
               // Iterate through each subject row in the table
-              for (let i = 1; i <= 6; i++) { // Assuming you have 6 subjects as per your example
+              for (let i = 1; i <= 4; i++) { // Assuming you have 6 subjects as per your example
                   // Get obtained marks and max marks for each subject
                   let obtainedMarksInput = document.getElementById(`gt_subject_${i}_obtained_marks`);
                   let maxMarksInput = document.getElementById(`gt_subject_${i}_max_marks`);
-
+                  let minMarksInput = document.getElementById(`gt_subject_${i}_min_marks`);
                   // Check if inputs exist before accessing their values
                   if (obtainedMarksInput && maxMarksInput) {
                       let obtainedMarks = parseFloat(obtainedMarksInput.value) || 0;
                       let maxMarks = parseFloat(maxMarksInput.value) || 0;
+                      let percent = (obtainedMarks / maxMarks) * 100;
 
+                    
+                      // Update the percentage field for the subject
+                      minMarksInput.value = percent.toFixed(2) + '%';
                       // Add to cumulative totals
                       totalObtainedMarks += obtainedMarks;
                       totalMaxMarks += maxMarks;
@@ -1210,8 +1223,8 @@
 
           // Calculate totals on input change
           $('input[type="number"]').on('input', calculateTotals);
-          //   $('input[type="number"]').on('input', calculateTotals1);
-          //   $('input[type="number"]').on('input', calculateTotals2);
+          $('input[type="number"]').on('input', calculateTotals1);
+          $('input[type="number"]').on('input', calculateTotals2);
           $('input[type="number"]').on('input', calculateTotals3);
 
           $('#inst_country').change(function() {
