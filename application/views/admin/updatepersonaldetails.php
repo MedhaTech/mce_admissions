@@ -11,7 +11,7 @@
                       <div class="card-tools">
                           <ul class="nav nav-pills ml-auto">
                               <li class="nav-item">
-                                  <?php echo anchor('admin/admissions', '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Back ', 'class="btn btn-dark btn-sm"'); ?>
+                                  <?php   $encryptId = base64_encode($admissionDetails->id); echo anchor('admin/admissionDetails/'.$encryptId, '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Back ', 'class="btn btn-dark btn-sm"'); ?>
                               </li>
                           </ul>
                       </div>
@@ -205,18 +205,28 @@
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
                                   <label class="form-label">State</label>
-                                  <input type="text" class="form-control" placeholder="Enter Current State"
-                                      id="current_state"
-                                      value="<?php echo (set_value('current_state')) ? set_value('current_state') : $current_state; ?>"
-                                      name="current_state">
+                                  <select name="current_state" id="current_state" class="form-control input-lg select2">
+                                        <option>Select State</option>
+                                        <?php foreach ($states1 as $state): ?>
+                                            <?php
+                                                $selected = ($state->name == $current_state) ? 'selected' : '';
+                                            ?>
+                                            <option data-id="<?= $state->id ?>" value="<?= $state->name ?>" <?= $selected ?>><?= $state->name ?></option>
+                                        <?php endforeach; ?>
+                                 </select>
                                   <span class="text-danger"><?php echo form_error('current_state'); ?></span>
                               </div>
                               <div class="form-group col-md-6 col-sm-12">
                                   <label class="form-label">Country</label>
-                                  <input type="text" class="form-control" placeholder="Enter Current Country"
-                                      id="current_country"
-                                      value="<?php echo (set_value('current_country')) ? set_value('current_country') : $current_country; ?>"
-                                      name="current_country">
+                                  <select name="current_country" id="current_country" class="form-control input-lg select2">
+                                        <option>Select Country</option>
+                                        <?php foreach ($countries as $country): ?>
+                                            <?php
+                                                $selected = ($country->name == $current_country) ? 'selected' : '';
+                                            ?>
+                                            <option data-id="<?= $country->id ?>" value="<?= $country->name ?>" <?= $selected ?>><?= $country->name ?></option>
+                                        <?php endforeach; ?>
+                                 </select>
                                   <span class="text-danger"><?php echo form_error('current_country'); ?></span>
                               </div>
                               <div class="form-group col-md-6 col-sm-12">
@@ -264,18 +274,28 @@
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
                                   <label class="form-label">State</label>
-                                  <input type="text" class="form-control" placeholder="Enter Permanent State"
-                                      id="present_state"
-                                      value="<?php echo (set_value('present_state')) ? set_value('present_state') : $present_state; ?>"
-                                      name="present_state">
+                                  <select name="present_state" id="present_state" class="form-control input-lg select2">
+                                        <option>Select State</option>
+                                        <?php foreach ($states1 as $state): ?>
+                                            <?php
+                                                $selected = ($state->name == $present_state) ? 'selected' : '';
+                                            ?>
+                                            <option data-id="<?= $state->id ?>" value="<?= $state->name ?>" <?= $selected ?>><?= $state->name ?></option>
+                                        <?php endforeach; ?>
+                                 </select>
                                   <span class="text-danger"><?php echo form_error('present_state'); ?></span>
                               </div>
                               <div class="form-group col-md-6 col-sm-12">
                                   <label class="form-label">Country</label>
-                                  <input type="text" class="form-control" placeholder="Enter Permanent Country"
-                                      id="present_country"
-                                      value="<?php echo (set_value('present_country')) ? set_value('present_country') : $present_country; ?>"
-                                      name="present_country">
+                                  <select name="present_country" id="present_country" class="form-control input-lg select2">
+                                        <option>Select Country</option>
+                                        <?php foreach ($countries as $country): ?>
+                                            <?php
+                                                $selected = ($country->name == $present_country) ? 'selected' : '';
+                                            ?>
+                                            <option data-id="<?= $country->id ?>" value="<?= $country->name ?>" <?= $selected ?>><?= $country->name ?></option>
+                                        <?php endforeach; ?>
+                                 </select>
                                   <span class="text-danger"><?php echo form_error('present_country'); ?></span>
                               </div>
                               <div class="form-group col-md-6 col-sm-12">
@@ -308,21 +328,24 @@
       </section>
 </div>
 
-<!-- <script>
-   $(document).ready(function() {
-    var base_url = '<?php echo base_url(); ?>';
-
-        $(".labeldis").hide();
-        $("#disability").change(function () {
-            if($("#disability").val() == "yes") {
-                $(".labeldis").show();
-            }
-        })
-
-        $("#disability").change(function () {
-            if($("#disability").val() == "no") {
-                $(".labeldis").hide();
-            }
-        })
-    })
-</script> -->
+<script>
+$("#customCheck1").change(function(){
+			event.preventDefault();
+			var check = $('#customCheck1:checked').val();
+			if(check) {
+                $('#present_address').val($('#current_address').val());
+                $('#present_city').val($('#current_city').val());
+                $('#present_district').val($('#current_district').val());
+                $('#present_state').val($('#current_state').val());
+                $('#present_country').val($('#current_country').val());
+                $('#present_pincode').val($('#current_pincode').val());
+            }else{
+                $('#present_address').val('');
+                $('#present_city').val('');
+                $('#present_district').val('');
+                $('#present_state').val('');
+                $('#present_country').val('');
+                $('#present_pincode').val('');
+            }    
+		});
+</script>
