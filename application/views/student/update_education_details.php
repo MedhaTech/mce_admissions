@@ -120,7 +120,7 @@
                               <div class="col-md-3 col-sm-6">
                                   <div class="form-group">
                                       <label class="label">Register Number</label>
-                                      <input type="number" name="register_number" id="register_number" class="form-control" placeholder="Enter Register Number" value="<?php echo (set_value('register_number')) ? set_value('register_number') : $register_number; ?>">
+                                      <input type="text" name="register_number" id="register_number" class="form-control" placeholder="Enter Register Number" value="<?php echo (set_value('register_number')) ? set_value('register_number') : $register_number; ?>">
                                       <span class="text-danger"><?php echo form_error('register_number'); ?></span>
                                   </div>
                               </div>
@@ -392,7 +392,7 @@
                                   <div class="col-md-3 col-sm-6">
                                       <div class="form-group">
                                           <label class="label">Register Number</label>
-                                          <input type="number" name="register_number" id="register_number" class="form-control" placeholder="Enter Register Number" value="<?php echo (set_value('register_number')) ? set_value('register_number') : $register_number; ?>">
+                                          <input type="text" name="register_number" id="register_number" class="form-control" placeholder="Enter Register Number" value="<?php echo (set_value('register_number')) ? set_value('register_number') : $register_number; ?>">
                                           <span class="text-danger"><?php echo form_error('register_number'); ?></span>
                                       </div>
                                   </div>
@@ -610,7 +610,7 @@
                                   <div class="col-md-3 col-sm-6">
                                       <div class="form-group">
                                           <label class="label">Register Number</label>
-                                          <input type="number" name="register_number" id="register_number" class="form-control" placeholder="Enter Register Number" value="<?php echo (set_value('register_number')) ? set_value('register_number') : $register_number; ?>">
+                                          <input type="text" name="register_number" id="register_number" class="form-control" placeholder="Enter Register Number" value="<?php echo (set_value('register_number')) ? set_value('register_number') : $register_number; ?>">
                                           <span class="text-danger"><?php echo form_error('register_number'); ?></span>
                                       </div>
                                   </div>

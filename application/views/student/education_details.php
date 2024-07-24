@@ -161,7 +161,7 @@
                               <div class="col-md-3 col-sm-6">
                                   <div class="form-group">
                                       <label class="label">Register Number</label>
-                                      <input type="number" name="register_number" value="<?php echo (set_value('register_number')) ? set_value('register_number') : $register_number; ?>" id="register_number" class="form-control" placeholder="Enter Register Number">
+                                      <input type="text" name="register_number" value="<?php echo (set_value('register_number')) ? set_value('register_number') : $register_number; ?>" id="register_number" class="form-control" placeholder="Enter Register Number">
                                       <span class="text-danger"><?php echo form_error('register_number'); ?></span>
                                   </div>
                               </div>
@@ -434,7 +434,7 @@
                                   <div class="col-md-3 col-sm-6">
                                       <div class="form-group">
                                           <label class="label">Register Number</label>
-                                          <input type="number" name="puc_register_number" value="<?php echo (set_value('puc_register_number')) ? set_value('puc_register_number') : $puc_register_number; ?>" id="puc_register_number" class="form-control" placeholder="Enter Register Number">
+                                          <input type="text" name="puc_register_number" value="<?php echo (set_value('puc_register_number')) ? set_value('puc_register_number') : $puc_register_number; ?>" id="puc_register_number" class="form-control" placeholder="Enter Register Number">
                                           <span class="text-danger"><?php echo form_error('puc_register_number'); ?></span>
                                       </div>
                                   </div>
@@ -715,7 +715,7 @@
                                   <div class="col-md-3 col-sm-6">
                                       <div class="form-group">
                                           <label class="label">Register Number</label>
-                                          <input type="number" name="diploma_register_number" value="<?php echo (set_value('diploma_register_number')) ? set_value('diploma_register_number') : $diploma_register_number; ?>" id="diploma_register_number" class="form-control" placeholder="Enter Register Number">
+                                          <input type="text" name="diploma_register_number" value="<?php echo (set_value('diploma_register_number')) ? set_value('diploma_register_number') : $diploma_register_number; ?>" id="diploma_register_number" class="form-control" placeholder="Enter Register Number">
                                           <span class="text-danger"><?php echo form_error('diploma_register_number'); ?></span>
                                       </div>
                                   </div>
@@ -924,7 +924,7 @@
                                   <div class="col-md-3 col-sm-6">
                                       <div class="form-group">
                                           <label class="label">Register Number</label>
-                                          <input type="number" name="gt_register_number" value="<?php echo (set_value('gt_register_number')) ? set_value('gt_register_number') : $gt_register_number; ?>" id="gt_register_number" class="form-control" placeholder="Enter Register Number">
+                                          <input type="text" name="gt_register_number" value="<?php echo (set_value('gt_register_number')) ? set_value('gt_register_number') : $gt_register_number; ?>" id="gt_register_number" class="form-control" placeholder="Enter Register Number">
                                           <span class="text-danger"><?php echo form_error('gt_register_number'); ?></span>
                                       </div>
                                   </div>
