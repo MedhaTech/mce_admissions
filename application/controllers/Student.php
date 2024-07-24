@@ -825,7 +825,7 @@ class Student extends CI_Controller
 							$insertDetails3['subject_' . $i . '_obtained_marks'] = $obtained_marks;
 						}
 					}
-					$result = $this->admin_model->insertDetails('student_education_details', $insertDetails);
+					$result = $this->admin_model->insertDetails('student_education_details', $insertDetails3);
 				}
 
 				if ($personalDetails->admission_based == "Diploma" && $personalDetails->lateral_entry == "DIPLOMA") {

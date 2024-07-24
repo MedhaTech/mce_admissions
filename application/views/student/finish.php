@@ -1099,12 +1099,42 @@
 
                         <div class="col-md-3 col-sm-6">
                             <div class="form-group">
+                                <label class="form-label mb-0">Maximum Marks</label><br>
+                              
+                                <?php
+                                if($edu->maximum != NULL)
+                                    {
+                                        echo $edu->maximum;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Obtained Marks</label><br>
+                              
+                                <?php
+                                if($edu->obtained != NULL)
+                                    {
+                                        echo $edu->obtained;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
                                 <label class="form-label mb-0">Aggregate</label><br>
                                 <!-- <p><?= $edu->aggregate;?>%</p> -->
                                 <?php
                                 if($edu->aggregate != NULL)
                                     {
-                                        echo $edu->aggregate;
+                                        echo $edu->aggregate.'%';
                                     }
                                 else{
                                         echo "--" ;
@@ -1114,6 +1144,10 @@
                         </div>
                     </div>
                     <table class="table" border="1">
+                    <?php
+                                if(($edu->education_level == 'SSLC')||($edu->education_level == 'PUC'))
+                                    {
+                                        ?>
                         <thead>
                             <tr>
                                 <th>Subject Name</th>
@@ -1122,6 +1156,17 @@
                                 <th>Obtained Marks</th>
                             </tr>
                         </thead>
+                        <?php } else{ ?>
+                            <thead>
+                            <tr>
+                                <th>Years</th>
+                                <th>Percentage(%)</th>
+                                <th>Max Marks</th>
+                                <th>Obtained Marks</th>
+                            </tr>
+                        </thead>
+
+                            <?php }?>
                         <tbody>
                             <?php
                             for ($i = 1; $i <= 6; $i++) {
