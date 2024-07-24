@@ -226,7 +226,7 @@
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
                             <li class="nav-item">
-                                <?php echo anchor('admin/new_payment/' . $encryptId, '<i class="fas fa-plus fa-sm fa-fw"></i> Create New Payment ', 'class="btn btn-dark btn-sm"'); ?>
+                                <?php echo anchor('admin/new_voucher/' . $encryptId, '<i class="fas fa-plus fa-sm fa-fw"></i> Create New Voucher ', 'class="btn btn-dark btn-sm"'); ?>
                             </li>
                         </ul>
                     </div>
@@ -240,7 +240,7 @@
                     $rec = 0;
                     $table_setup = array('table_open' => '<table class="table table-hover font14">');
                     $this->table->set_template($table_setup);
-                    $print_fields = array('S.No', 'Amount', 'Date',  'Status');
+                    $print_fields = array('S.No', 'Amount', 'Date',  'Voucher');
                     $this->table->set_heading($print_fields);
 
                     $statusTypes = array("0" => "Not Paid", "1" => "Paid", "2" => "Failed", "3" => "Processing");
@@ -250,14 +250,15 @@
                     foreach ($paymentDetail as $paymentDetails1) {
 
 
-
+$url=anchor('admin/voucherletter/' . $encryptId . '/' . $paymentDetails1->id, "Download");
 
 
                         $result_array = array(
                             $i++,
                             number_format($paymentDetails1->final_fee, 2),
                             $paymentDetails1->requested_on,
-                            $statusTypes[$paymentDetails1->status]
+                            $url
+                           
 
 
 
@@ -268,7 +269,7 @@
                     echo $this->table->generate();
                 } else {
                     $rec = 1;
-                    echo "<h6 class='text-left'> No payment details found..! </h6>";
+                    echo "<h6 class='text-left'> No voucher details found..! </h6>";
                 }
                 ?>
 

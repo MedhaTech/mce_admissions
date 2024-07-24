@@ -263,26 +263,41 @@
                                       </td>
                                   </tr>
                               </tbody>
-                              <tfoot>
+                              <!-- <tfoot>
                                   <tr>
                                       <th>Total</th>
+                                      <th<input type="text" name="total_max_marks" value="<?php echo (set_value('total_max_marks')) ? set_value('total_max_marks') : ''; ?>" id="total_max_marks" class="form-control" readonly></th>
                                       <th> <input type="text" name="total_min_marks" id="total_min_marks" class="form-control" value="" readonly></th>
-                                      <th><input type="text" name="total_max_marks" id="total_max_marks" class="form-control" value="" readonly></th>
-                                      <th><input type="text" name="total_obtained_marks" id="total_obtained_marks" class="form-control" value="" readonly></th>
+                                      
+                                    <th><input type="text" name="total_obtained_marks" value="<?php echo (set_value('total_obtained_marks')) ? set_value('total_obtained_marks') : ''; ?>" id="total_obtained_marks" class="form-control" readonly></th>  
                                   </tr>
 
-                              </tfoot>
+                              </tfoot> -->
                           </table>
                           <div class="form-row">
-                              <div class="col-md-3 col-sm-6">
-                                  <div class="form-group">
-                                      <label class="label">Aggregate Percentage</label>
-                                      <input type="text" name="aggregate" id="aggregate" value="<?php echo (set_value('aggregate')) ? set_value('aggregate') : $aggregate; ?>" class="form-control" readonly>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Obtained Marks</label>
+                                          <input type="text" name="total_obtained_marks" value="<?php echo (set_value('total_obtained_marks')) ? set_value('total_obtained_marks') : ''; ?>" id="total_obtained_marks" class="form-control" readonly>
 
+                                      </div>
                                   </div>
-                              </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Maximum Marks</label>
+                                          <input type="text" name="total_max_marks" value="<?php echo (set_value('total_max_marks')) ? set_value('total_max_marks') : ''; ?>" id="total_max_marks" class="form-control" readonly>
 
-                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Aggregate Percentage</label>
+                                          <input type="text" name="aggregate" value="<?php echo (set_value('aggregate')) ? set_value('aggregate') : ''; ?>" id="aggregate" class="form-control" readonly>
+
+                                      </div>
+                                  </div>
+
+                              </div>
                       <?php } ?>
 
                       <?php if ($education_level == "Diploma" && $personalDetails->lateral_entry == "DIPLOMA") { ?>
@@ -750,9 +765,22 @@
   </div>
   <script>
       $(document).ready(function() {
+        <?php if ($education_level == "SSLC" || $education_level == "PUC") { ?>
+            $('input[type="number"]').on('input', calculateTotals);
           calculateTotals();
-          calculateTotals2();
-          calculateTotals3();
+          <?php }?>
+          <?php if ($education_level == "Diploma" && $personalDetails->lateral_entry == "DIPLOMA") { ?>
+            $('input[type="number"]').on('input', calculateTotals2);
+           calculateTotals2();
+          <?php }?>
+          <?php if ($education_level == "Diploma" && $personalDetails->lateral_entry == "GTTC") { ?>
+            $('input[type="number"]').on('input', calculateTotals3);
+            calculateTotals3();
+          <?php }?>
+         
+          
+          
+
           // Function to calculate totals
           function calculateTotals() {
               var totalMinMarks = 0;
@@ -860,9 +888,9 @@
           }
 
           // Calculate totals on input change
-          $('input[type="number"]').on('input', calculateTotals);
-          $('input[type="number"]').on('input', calculateTotals2);
-          $('input[type="number"]').on('input', calculateTotals3);
+        //   $('input[type="number"]').on('input', calculateTotals);
+        //   $('input[type="number"]').on('input', calculateTotals2);
+        //   $('input[type="number"]').on('input', calculateTotals3);
 
           $('#inst_country').change(function() {
               var country_id = $(this).find(':selected').data('id');
