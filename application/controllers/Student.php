@@ -111,7 +111,7 @@ class Student extends CI_Controller
 				$data['personalDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$data['parentDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$data['educations_details'] = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'student_education_details')->result();
-
+				$data['flow_status']=$flow;
 				$upload_path = "./assets/students/$student_id/";
 
 				// Check if the directory exists
@@ -933,6 +933,21 @@ class Student extends CI_Controller
 			$data['page_title'] = "Finish";
 			$data['menu'] = "finish";
 			$data['id'] = $student_session['id'];
+		} else {
+			redirect('student', 'refresh');
+		}
+	}
+	function completed()
+	{
+		if ($this->session->userdata('student_in')) {
+			$student_session = $this->session->userdata('student_in');
+			$data['student_name'] = $student_session['student_name'];
+			$data['page_title'] = "Finish";
+			$data['menu'] = "finish";
+			$data['id'] = $student_session['id'];
+			$updateDetails = array('flow' => '2','updated_on' => date('Y-m-d h:i:s'));
+			$result = $this->admin_model->updateDetails($data['id'], $updateDetails, 'admissions');
+			$this->student_template->show('student/completed', $data);
 		} else {
 			redirect('student', 'refresh');
 		}

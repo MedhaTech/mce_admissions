@@ -3301,7 +3301,7 @@ With good wishes";
 			               <th> Reference Date </th>
 			               <th> Bank Name </th>
 			               <th> Amount </th>
-						    <th> Date </th>
+						    <th> Transaction Date </th>
 			          </tr>';
 
 			$table .= '</thead>';

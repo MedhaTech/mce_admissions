@@ -1206,6 +1206,7 @@
                 </div>
             </div>
             <div class="card m-2 shadow">
+            <?php if($flow_status==1) {?>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -1248,13 +1249,15 @@
                         </div>
                     </div>
                 </div>
+              
                 <div class="card-footer">
                     <?php //echo anchor('student/enquiries/', '<i class="fas fa-credit-card fa-sm fa-fw"></i> Back', 'class="btn btn-danger btn-sm float-right" ');  ?>
                     <!-- <?php echo anchor('student/admissionfee/', '<i class="fas fa-save fa-sm fa-fw"></i> SUBMIT APPLICATION', 'class="btn btn-danger btn-square btn-sm float-right"'); ?> -->
                     <button class="btn btn-danger btn-square btn-sm float-right"
                     type="submit" value="submit" name="submit" id="submit"
-                    disabled="true"onclick="window.location.href='admissionfee';"><i class="fas fa-save fa-sm fa-fw"></i> Submit Application</button>                                    
+                    disabled="true"onclick="window.location.href='completed';"><i class="fas fa-save fa-sm fa-fw"></i> Submit Application</button>                                    
                 </div>
+                <?php }?>
             </div>
 
 
