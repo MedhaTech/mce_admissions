@@ -4462,7 +4462,8 @@ With good wishes";
 			$student_id = base64_decode($encryptId);
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $student_id)->row();
-			$data['paymentDetail'] = $this->admin_model->getDetailsbyfield($student_id, 'admission_id', 'payment_structure')->result();
+			// $data['paymentDetail'] = $this->admin_model->getDetailsbyfield($student_id, 'admission_id', 'payment_structure')->result();
+			$data['paymentDetail'] = $this->admin_model->getDetailsbyfield2('admission_id', $student_id, 'offline', '0', 'payment_structure')->result();
 			$data['transactionDetails'] = $this->admin_model->getDetailsbyfield($student_id, 'admissions_id', 'transactions')->result();
 			$data['paid_amount'] = $this->admin_model->paidfee('admissions_id', $student_id, 'transaction_status', '1', 'transactions');
 
@@ -5487,7 +5488,7 @@ With good wishes";
 			$student_id = base64_decode($encryptId);
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $student_id)->row();
-			$data['paymentDetail'] = $this->admin_model->getDetailsbyfield($student_id, 'admission_id', 'payment_structure')->result();
+			$data['paymentDetail'] = $this->admin_model->getDetailsbyfield2('admission_id', $student_id, 'offline', '1', 'payment_structure')->result();
 			$data['transactionDetails'] = $this->admin_model->getDetailsbyfield($student_id, 'admissions_id', 'transactions')->result();
 			$data['paid_amount'] = $this->admin_model->paidfee('admissions_id', $student_id, 'transaction_status', '1', 'transactions');
 
@@ -5759,7 +5760,7 @@ With good wishes";
 						$updateDetails['type'] = 1;
 					}
 				}
-
+				$updateDetails['offline'] = 1;
 				$updateDetails['admission_id'] = $id;
 				$updateDetails['mobile'] = $data['admissionDetails']->mobile;;
 				$updateDetails['final_fee'] = $this->input->post('final_fee');
@@ -5785,7 +5786,7 @@ With good wishes";
 			redirect('admin', 'refresh');
 		}
 	}
-	public function voucherletter()
+	public function voucherletter1($encryptId, $id)
 	{
 
 		if ($this->session->userdata('logged_in')) {
@@ -5797,19 +5798,264 @@ With good wishes";
 
 			$data['page_title'] = 'Admission Details';
 			$data['menu'] = 'admissions';
+			$student_id = base64_decode($encryptId);
+			$admissionDetails = $this->admin_model->getDetails('admissions', $student_id)->row();
+			$voucherDetails = $this->admin_model->getDetails('payment_structure', $id)->row();
 
-		
 
 			$this->load->library('fpdf'); // Load library
 			ini_set("session.auto_start", 0);
 			ini_set('memory_limit', '-1');
 			define('FPDF_FONTPATH', 'plugins/font');
 			$pdf = new FPDF();
-			$pdf->AddPage('L', ''); // 'P' for portrait orientation, 'A4' for A4 size (210x297 mm)
 
-			
-			// $pdf->output();
-			
+			// College Information
+			$collegeName = "MALNAD COLLEGE OF ENGINEERING";
+			$affiliation = "FEE RECEIPT";
+			$contactInfo = "CANARA BANK";
+			$contactInfo1 = "M.C.E BRANCH, HASSAN - 573202";
+			$issuedOn = "Date : " . date("m-d-Y ");
+			$programe = "PROGRAME : B.E";
+			$chellan = "Chellan : TF24-25/" . $voucherDetails->id;
+			$dept = "Dept. :" . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"];
+			$scopy = "STUDENT COPY";
+			$bcopy = "BANK COPY";
+			$sacopy = "S.A COPY";
+			$ocopy = "OFFICE COPY";
+			// Define the data for the table
+			$tableData = [
+				['Admission No.', $admissionDetails->adm_no],
+				['Name', $admissionDetails->student_name],
+				['Year', 1],
+				['Type of seat', $admissionDetails->sub_quota],
+				['Category', $admissionDetails->category_allotted]
+			];
+
+
+			$fees = [
+				'E-Learning Fee' => $voucherDetails->e_learning_fee,
+				'Eligibility Fee' => $voucherDetails->eligibility_fee,
+				'E-Consortium Fee' => $voucherDetails->e_consortium_fee,
+				'Sport Fee' => $voucherDetails->sport_fee,
+				'Sports Development Fee' => $voucherDetails->sports_development_fee,
+				'Career Guidance Counseling Fee' => $voucherDetails->career_guidance_counseling_fee,
+				'University Development Fund' => $voucherDetails->university_development_fund,
+				'Promotion of Indian Cultural Activities Fee' => $voucherDetails->promotion_of_indian_cultural_activities_fee,
+				'Teachers Development Fee' => $voucherDetails->teachers_development_fee,
+				'Student Development Fee' => $voucherDetails->student_development_fee,
+				'Indian Red Cross Membership Fee' => $voucherDetails->indian_red_cross_membership_fee,
+				'Women Cell Fee' => $voucherDetails->women_cell_fee,
+				'NSS Fee' => $voucherDetails->nss_fee,
+				'University Registration Fee' => $voucherDetails->university_registration_fee,
+				'Total University Fee' => $voucherDetails->total_university_fee,
+				'Admission Fee' => $voucherDetails->admission_fee,
+				'Processing Fee Paid at KEA' => $voucherDetails->processing_fee_paid_at_kea,
+				'Tution Fee' => $voucherDetails->tution_fee,
+				'College Other Fee' => $voucherDetails->college_other_fee,
+				'Total Tution Fee' => $voucherDetails->total_tution_fee,
+				'Total College Fee' => $voucherDetails->total_college_fee,
+				'Skill Development Fee' => $voucherDetails->skill_development_fee
+			];
+
+			// Iterate through the fees and check if they are greater than 0
+			foreach ($fees as $feeName => $feeValue) {
+				if ($feeValue > 0) {
+					$tableData[] = [$feeName, $feeValue];
+				}
+			}
+
+			///bank copy
+			$pdf->AddPage('P', 'A4'); // 'P' for portrait orientation, 'A4' for A4 size (210x297 mm)
+			$pdf->SetMargins(17, 20, 20);
+			$pdf->SetFont('Arial', 'B', 12);
+			$pdf->Cell(0, 10, $collegeName, 0, 1, 'C');
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(0, 4, $affiliation, 0, 1, 'C');
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(0, 6, $contactInfo, 0, 1, 'C');
+			$pdf->Cell(0, 6, $contactInfo1, 0, 1, 'C');
+			$x1 = 17;  // Starting point x-coordinate
+			$y1 = 37;  // Starting point y-coordinate
+			$x2 = 198; // Ending point x-coordinate
+			$y2 = 37;  // Ending point y-coordinate
+
+
+			// Set line width
+			$pdf->SetLineWidth(0.5);
+
+			// Draw a line from (x1, y1) to (x2, y2)
+			$pdf->Line($x1, $y1, $x2, $y2);
+			$pdf->Ln(1);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(0, 6, $issuedOn, 0, 0, 'L');
+			$pdf->Cell(0, 6, $programe, 0, 1, 'R');
+			$pdf->Cell(0, 6, $chellan, 0, 0, 'L');
+			$pdf->Cell(0, 6, $dept, 0, 1, 'R');
+			$pdf->MultiCell(0, 6, "Paid into the credit of CA A/C No. 14053070001574 of The Principal Malnad College Engineering, Hassan.");
+			$pdf->SetFont('Arial', '', 10);
+
+
+
+			foreach ($tableData as $row) {
+				$pdf->Cell(90, 7, $row[0], 1, 0, 'C');
+				$pdf->Cell(90, 7, $row[1], 1, 1, 'C');
+			}
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(90, 10, "TOTAL", 1, 0, 'C');
+			$pdf->Cell(90, 10, $voucherDetails->final_fee, 1, 1, 'C');
+			$pdf->Ln(1);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->MultiCell(0, 6, "Amount (In Words) : " . convert_number_to_words($voucherDetails->final_fee) . " Only/-");
+			$pdf->Cell(0, 10, $bcopy, 0, 0, 'L');
+			$pdf->Cell(0, 10, "Signature of Remitter", 0, 1, 'R');
+			$pdf->Ln(4);
+
+			$pdf->Ln(10);
+
+			///office copy
+			$pdf->SetFont('Arial', 'B', 12);
+
+			$pdf->Cell(0, 10, $collegeName, 0, 1, 'C');
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(0, 4, $affiliation, 0, 1, 'C');
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(0, 6, $contactInfo, 0, 1, 'C');
+			$pdf->Cell(0, 6, $contactInfo1, 0, 1, 'C');
+
+			$currentY = $pdf->GetY();
+			$x1 = 17;  // Starting point x-coordinate
+			$y1 = $currentY;  // Starting point y-coordinate
+			$x2 = 198; // Ending point x-coordinate
+			$y2 = $currentY;  // Ending point y-coordinate
+
+
+			// Set line width
+			$pdf->SetLineWidth(0.5);
+
+			// Draw a line from (x1, y1) to (x2, y2)
+			$pdf->Line($x1, $y1, $x2, $y2);
+			$pdf->Ln(1);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(0, 6, $issuedOn, 0, 0, 'L');
+			$pdf->Cell(0, 6, $programe, 0, 1, 'R');
+			$pdf->Cell(0, 6, $chellan, 0, 0, 'L');
+			$pdf->Cell(0, 6, $dept, 0, 1, 'R');
+			$pdf->MultiCell(0, 6, "Paid into the credit of CA A/C No. 14053070001574 of The Principal Malnad College Engineering, Hassan.");
+			$pdf->SetFont('Arial', '', 10);
+
+
+
+			foreach ($tableData as $row) {
+				$pdf->Cell(90, 7, $row[0], 1, 0, 'C');
+				$pdf->Cell(90, 7, $row[1], 1, 1, 'C');
+			}
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(90, 10, "TOTAL", 1, 0, 'C');
+			$pdf->Cell(90, 10, $voucherDetails->final_fee, 1, 1, 'C');
+			$pdf->Ln(1);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->MultiCell(0, 6, "Amount (In Words) : " . convert_number_to_words($voucherDetails->final_fee) . " Only/-");
+			$pdf->Cell(0, 10, $ocopy, 0, 0, 'L');
+			$pdf->Cell(0, 10, "Signature of Remitter", 0, 1, 'R');
+
+			///sa copy
+			$pdf->AddPage(); // 'P' for portrait orientation, 'A4' for A4 size (210x297 mm)
+
+			$pdf->SetFont('Arial', 'B', 12);
+			$pdf->Cell(0, 10, $collegeName, 0, 1, 'C');
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(0, 4, $affiliation, 0, 1, 'C');
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(0, 6, $contactInfo, 0, 1, 'C');
+			$pdf->Cell(0, 6, $contactInfo1, 0, 1, 'C');
+			$x1 = 17;  // Starting point x-coordinate
+			$y1 = 46;  // Starting point y-coordinate
+			$x2 = 198; // Ending point x-coordinate
+			$y2 = 46;  // Ending point y-coordinate
+
+
+			// Set line width
+			$pdf->SetLineWidth(0.5);
+
+			// Draw a line from (x1, y1) to (x2, y2)
+			$pdf->Line($x1, $y1, $x2, $y2);
+			$pdf->Ln(1);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(0, 6, $issuedOn, 0, 0, 'L');
+			$pdf->Cell(0, 6, $programe, 0, 1, 'R');
+			$pdf->Cell(0, 6, $chellan, 0, 0, 'L');
+			$pdf->Cell(0, 6, $dept, 0, 1, 'R');
+			$pdf->MultiCell(0, 6, "Paid into the credit of CA A/C No. 14053070001574 of The Principal Malnad College Engineering, Hassan.");
+			$pdf->SetFont('Arial', '', 10);
+
+
+
+			foreach ($tableData as $row) {
+				$pdf->Cell(90, 7, $row[0], 1, 0, 'C');
+				$pdf->Cell(90, 7, $row[1], 1, 1, 'C');
+			}
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(90, 10, "TOTAL", 1, 0, 'C');
+			$pdf->Cell(90, 10, $voucherDetails->final_fee, 1, 1, 'C');
+			$pdf->Ln(1);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->MultiCell(0, 6, "Amount (In Words) : " . convert_number_to_words($voucherDetails->final_fee) . " Only/-");
+			$pdf->Cell(0, 10, $sacopy, 0, 0, 'L');
+			$pdf->Cell(0, 10, "Signature of Remitter", 0, 1, 'R');
+			$pdf->Ln(4);
+
+			$pdf->Ln(10);
+
+
+			$pdf->SetFont('Arial', 'B', 12);
+
+			$pdf->Cell(0, 10, $collegeName, 0, 1, 'C');
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(0, 4, $affiliation, 0, 1, 'C');
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(0, 6, $contactInfo, 0, 1, 'C');
+			$pdf->Cell(0, 6, $contactInfo1, 0, 1, 'C');
+
+			$currentY = $pdf->GetY();
+			$x1 = 17;  // Starting point x-coordinate
+			$y1 = $currentY;  // Starting point y-coordinate
+			$x2 = 198; // Ending point x-coordinate
+			$y2 = $currentY;  // Ending point y-coordinate
+
+
+			// Set line width
+			$pdf->SetLineWidth(0.5);
+
+			// Draw a line from (x1, y1) to (x2, y2)
+			$pdf->Line($x1, $y1, $x2, $y2);
+			$pdf->Ln(1);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(0, 6, $issuedOn, 0, 0, 'L');
+			$pdf->Cell(0, 6, $programe, 0, 1, 'R');
+			$pdf->Cell(0, 6, $chellan, 0, 0, 'L');
+			$pdf->Cell(0, 6, $dept, 0, 1, 'R');
+			$pdf->MultiCell(0, 6, "Paid into the credit of CA A/C No. 14053070001574 of The Principal Malnad College Engineering, Hassan.");
+			$pdf->SetFont('Arial', '', 10);
+
+
+
+			foreach ($tableData as $row) {
+				$pdf->Cell(90, 7, $row[0], 1, 0, 'C');
+				$pdf->Cell(90, 7, $row[1], 1, 1, 'C');
+			}
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(90, 10, "TOTAL", 1, 0, 'C');
+			$pdf->Cell(90, 10, $voucherDetails->final_fee, 1, 1, 'C');
+			$pdf->Ln(1);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->MultiCell(0, 6, "Amount (In Words) : " . convert_number_to_words($voucherDetails->final_fee) . " Only/-");
+			$pdf->Cell(0, 10, $ocopy, 0, 0, 'L');
+			$pdf->Cell(0, 10, "Signature of Remitter", 0, 1, 'R');
+			$pdf->Ln(4);
+
+
+
+			$pdf->output();
 		} else {
 			redirect('admin/timeout');
 		}
@@ -5826,5 +6072,158 @@ With good wishes";
         $cities = $this->admin_model->getCities($state_id);
         echo json_encode($cities);
     }
+	public function voucherletter($encryptId, $id)
+	{
+
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Admission Details';
+			$data['menu'] = 'admissions';
+			$student_id = base64_decode($encryptId);
+			$admissionDetails = $this->admin_model->getDetails('admissions', $student_id)->row();
+			$voucherDetails = $this->admin_model->getDetails('payment_structure', $id)->row();
+
+
+			$this->load->library('fpdf'); // Load library
+			ini_set("session.auto_start", 0);
+			ini_set('memory_limit', '-1');
+			define('FPDF_FONTPATH', 'plugins/font');
+			$pdf = new FPDF();
+
+		
+
+			$collegeName = "MALNAD COLLEGE OF ENGINEERING";
+			$affiliation = "FEE RECEIPT";
+			$contactInfo = "CANARA BANK";
+			$contactInfo1 = "M.C.E BRANCH, HASSAN - 573202";
+			$issuedOn = "Date : " . date("m-d-Y ");
+			$programe = "PROGRAME : B.E";
+			$chellan = "Chellan : TF24-25/" . $voucherDetails->id;
+			$dept = "Dept. :" . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"];
+			$bcopy = "BANK COPY";
+			$copyData = array('Bank Copy', 'Office Copy', 'S.A Copy', 'Student Copy');
+			// Define the data for the table
+			$tableData = [
+				['Admission No.', $admissionDetails->adm_no],
+				['Name', $admissionDetails->student_name],
+				['Year', 1],
+				['Type of seat', $admissionDetails->sub_quota],
+				['Category', $admissionDetails->category_allotted]
+			];
+			
+			$fees = [
+				'E-Learning Fee' => $voucherDetails->e_learning_fee,
+				'Eligibility Fee' => $voucherDetails->eligibility_fee,
+				'E-Consortium Fee' => $voucherDetails->e_consortium_fee,
+				'Sport Fee' => $voucherDetails->sport_fee,
+				'Sports Development Fee' => $voucherDetails->sports_development_fee,
+				'Career Guidance Counseling Fee' => $voucherDetails->career_guidance_counseling_fee,
+				'University Development Fund' => $voucherDetails->university_development_fund,
+				'Promotion of Indian Cultural Fee' => $voucherDetails->promotion_of_indian_cultural_activities_fee,
+				'Teachers Development Fee' => $voucherDetails->teachers_development_fee,
+				'Student Development Fee' => $voucherDetails->student_development_fee,
+				'Indian Red Cross Membership Fee' => $voucherDetails->indian_red_cross_membership_fee,
+				'Women Cell Fee' => $voucherDetails->women_cell_fee,
+				'NSS Fee' => $voucherDetails->nss_fee,
+				'University Registration Fee' => $voucherDetails->university_registration_fee,
+				'Total University Fee' => $voucherDetails->total_university_fee,
+				'Admission Fee' => $voucherDetails->admission_fee,
+				'Processing Fee Paid at KEA' => $voucherDetails->processing_fee_paid_at_kea,
+				'Tution Fee' => $voucherDetails->tution_fee,
+				'College Other Fee' => $voucherDetails->college_other_fee,
+				'Total Tution Fee' => $voucherDetails->total_tution_fee,
+				'Total College Fee' => $voucherDetails->total_college_fee,
+				'Skill Development Fee' => $voucherDetails->skill_development_fee
+			];
+			foreach ($fees as $feeName => $feeValue) {
+				if ($feeValue > 0) {
+					$tableData[] = [$feeName, $feeValue];
+				}
+			}
+			// Create a function to generate a single copy
+			function generateCopy($i,$pdf, $x, $y, $collegeName, $affiliation, $contactInfo, $contactInfo1, $issuedOn, $programe, $chellan, $dept, $tableData, $voucherDetails, $copy)
+			{
+				$pdf->Rect($x-2, $y, 69, 90+70);
+				$pdf->SetXY($x, $y);
+				$pdf->SetFont('Arial', 'B', 8);
+				$pdf->Cell(65, 6, $collegeName, 0, 1, 'C');
+				$pdf->SetX($x);
+				$pdf->SetFont('Arial', 'B', 6);
+				$pdf->Cell(65, 4, $affiliation, 0, 1, 'C');
+				$pdf->SetX($x);
+				$pdf->SetFont('Arial', 'B', 6);
+				$pdf->Cell(65, 4, $contactInfo, 0, 1, 'C');
+				$pdf->SetX($x);
+				$pdf->Cell(65, 4, $contactInfo1, 0, 1, 'C');
+			
+				// Draw a line
+				$pdf->SetLineWidth(0.2);
+				$pdf->Line($x, $y + 18, $x + 65, $y + 18);
+				$pdf->Ln(1);
+				$pdf->SetFont('Arial', '', 6);
+				$pdf->SetXY($x, $y + 20);
+				$pdf->Cell(65, 4, $issuedOn, 0, 0, 'L');
+				$pdf->SetXY($x, $y + 20);
+				$pdf->Cell(65, 4, $programe, 0, 1, 'R');
+				$pdf->SetXY($x, $y + 23);
+				$pdf->Cell(65, 4, $chellan, 0, 0, 'L');
+				$pdf->SetXY($x, $y + 23);
+				$pdf->Cell(65, 4, $dept, 0, 1, 'R');
+				$pdf->SetXY($x, $y + 30);
+				$pdf->SetFont('Arial', '', 7);
+				$pdf->MultiCell(65, 4, "Paid into the credit of CA A/C No. 14053070001574 of \nThe Principal Malnad College Engineering, Hassan.");
+				$pdf->SetFont('Arial', '', 6);
+			
+				$tableY = $pdf->GetY(); // Get current Y position for the table
+				foreach ($tableData as $row) {
+					$pdf->SetXY($x, $tableY);
+					$pdf->Cell(32.5, 4, $row[0], 1, 0, 'C');
+					$pdf->Cell(32.5, 4, $row[1], 1, 1, 'C');
+					$tableY += 4; // Move Y position down for the next row
+				}
+				$pdf->SetFont('Arial', 'B', 6);
+				$pdf->SetXY($x, $tableY);
+				$pdf->Cell(32.5, 4, "TOTAL", 1, 0, 'C');
+				$pdf->Cell(32.5, 4, $voucherDetails->final_fee, 1, 1, 'C');
+				$tableY += 5;
+				$pdf->SetFont('Arial', '', 6);
+				$pdf->SetXY($x, $tableY);
+				$pdf->MultiCell(65, 4, "Amount (In Words) : " . convert_number_to_words($voucherDetails->final_fee) . " Only/-");
+				$pdf->SetXY($x, $tableY + 10);
+				$pdf->Cell(32.5, 4, ' ', 0, 0, 'L');
+				$pdf->Cell(32.5, 4, "Signature of Remitter", 0, 1, 'R');
+				$pdf->SetXY($x, $tableY + 30);
+				$pdf->SetFont('Arial', '', 8);
+				$pdf->Cell(65, 4, $copy, 0, 1, 'C');
+			}
+			
+			// Add page and set margins
+			$pdf->AddPage('L', 'A4'); // 'L' for landscape orientation, 'A4' for A4 size (210x297 mm)
+			$pdf->SetMargins(10, 10, 10);
+			
+			// Generate four copies horizontally
+			$startX = 10;
+			$startY = 10;
+			$spacingX = 70; // Adjust this spacing to fit the copies horizontally
+			
+			for ($i = 0; $i < 4; $i++) {
+				generateCopy($i,$pdf, $startX + ($i * $spacingX), $startY, $collegeName, $affiliation, $contactInfo, $contactInfo1, $issuedOn, $programe, $chellan, $dept, $tableData, $voucherDetails, $copyData[$i]);
+			}
+			
+			// $pdf->Output();
+			$fileName = $admissionDetails->student_name . '-Voucher.pdf';
+			$pdf->output($fileName, 'D'); 
+			
+					
+
+		} else {
+			redirect('admin/timeout');
+		}
+	}
 
 }
