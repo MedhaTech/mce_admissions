@@ -1263,10 +1263,19 @@
                                     <input type="checkbox" class="form-check-input" id="applyCheck"
                                     onclick="enable()">
                                     <label class="form-check-label text-gray font--12" for="applyCheck">
-                                    I hereby declare that the entries made by me in the Application
+                                   Fee once paid will not be refunded under any circumstances - Kindly verify the data entered before final submission.</label><br>
+                                 
+                                </div>
+                                <div class="checkbox vertical">&nbsp;&nbsp;
+                                <!-- <label><input type="checkbox" name="iAgree" id="iAgree" value="I Agree" disabled="true" onclick="enable()"> I hereby declare that the entries made by me in the Application
                                     Form are complete and true to the best of my knowledge, belief and information. I
                                     acknowledge that the college has the authority for taking punitive actions against
-                                    me for violation or non-compliance of the same*</label>
+                                    me for violation or non-compliance of the same*</label> -->
+                                   
+                                   <input type="checkbox" class="form-check-input" id="applyCheck1"
+                                    onclick="enable1()">
+                                    <label class="form-check-label text-gray font--12" for="applyCheck1">
+                                   Submit the necessary documents along with fee receipt for further processing.</label>
                                 </div>
                         </div>
                         <div class="col-md-6 mt-2">
