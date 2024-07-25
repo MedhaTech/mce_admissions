@@ -1078,7 +1078,7 @@ class Student extends CI_Controller
 			// var_dump($transactionDetails);
 			$admissionDetails = $this->admin_model->getDetails('admissions', $admission_id)->row();
 			$paid_amount = $this->admin_model->paidfee('admissions_id', $admission_id, 'transaction_status', '1', 'transactions');
-
+			$studentfeeDetails = $this->admin_model->getDetailsbyfield($admission_id, 'student_id', 'fee_master')->row();
 
 
 			$fees = $this->admin_model->getDetailsbyfield($admission_id, 'student_id', 'fee_master')->row();
@@ -1139,7 +1139,7 @@ class Student extends CI_Controller
 			$pdf->Cell(0, $row, "Course & Combination", 1, 0, 'L', false);
 			$pdf->setFont('Arial', '', 9);
 			$pdf->SetXY(50, $y + $row);
-			$pdf->Cell(0, $row, 'I Year - B.E ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"], 1, 0, 'L', false);
+			$pdf->Cell(0, $row, $studentfeeDetails->year.' Year - B.E ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"], 1, 0, 'L', false);
 
 			$y = $pdf->getY();
 			$pdf->setFont('Arial', 'B', 9);
@@ -1155,7 +1155,7 @@ class Student extends CI_Controller
 			$pdf->Cell(0, $row, "College Code", 1, 0, 'L', false);
 			$pdf->setFont('Arial', '', 9);
 			$pdf->SetXY(50, $y + $row);
-			$pdf->Cell(0, $row, $admissionDetails->sub_quota, 1, 0, 'L', false);
+			$pdf->Cell(0, $row, $admissionDetails->college_code, 1, 0, 'L', false);
 
 			$y = $pdf->getY();
 			$pdf->setFont('Arial', 'B', 9);
@@ -1180,7 +1180,7 @@ class Student extends CI_Controller
 			$pdf->Cell(0, $row, "Mode of Payment", 1, 0, 'L', false);
 			$pdf->setFont('Arial', '', 9);
 			$pdf->SetXY(50, $y + $row);
-			$transactionTypes = array("1" => "Cash", "2" => "Cheque/DD", "3" => "Online Payment");
+			$transactionTypes = array("1" => "Cash", "2" => "DD", "3" => "Online Payment");
 			$pdf->Cell(0, $row, $transactionTypes[$transactionDetails->transaction_type], 1, 0, 'L', false);
 
 			$final_amount = $admissionDetails->final_amount;
