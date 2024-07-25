@@ -165,6 +165,13 @@
                                 <p> Payments </p>
                             </a>
                         </li>
+                        <li class="nav-item ">
+                            <a href="<?php echo base_url(); ?>admin/vouchers"
+                                class="nav-link <?= $menu_active = ($menu == "vouchers") ? 'active' : ''; ?>">
+                                <i class="nav-icon fas fa-bars"></i>
+                                <p> Vouchers </p>
+                            </a>
+                        </li>
                         <?php } ?>
                         <?php if((in_array($role, array(1,2,3,4,5,6,7,8)))){ ?>
                         <li class="nav-header">SETTINGS</li>

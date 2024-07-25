@@ -825,7 +825,7 @@ class Student extends CI_Controller
 							$insertDetails3['subject_' . $i . '_obtained_marks'] = $obtained_marks;
 						}
 					}
-					$result = $this->admin_model->insertDetails('student_education_details', $insertDetails);
+					$result = $this->admin_model->insertDetails('student_education_details', $insertDetails3);
 				}
 
 				if ($personalDetails->admission_based == "Diploma" && $personalDetails->lateral_entry == "DIPLOMA") {
@@ -967,7 +967,8 @@ class Student extends CI_Controller
 			$data['fees'] = $this->admin_model->getDetailsbyfield($data['id'], 'student_id', 'fee_master')->row();
 			$data['transactionDetails'] = $this->admin_model->getDetailsbyfield($student_id, 'admissions_id', 'transactions')->result();
 			$data['paid_amount'] = $this->admin_model->paidfee('admissions_id', $student_id, 'transaction_status', '1', 'transactions');
-			$data['paymentDetail'] = $this->admin_model->getDetailsbyfield($student_id, 'admission_id', 'payment_structure')->result();
+			// $data['paymentDetail'] = $this->admin_model->getDetailsbyfield($student_id, 'admission_id', 'payment_structure')->result();
+			$data['paymentDetail'] = $this->admin_model->getDetailsbyfield2('admission_id',$student_id, 'offline','0', 'payment_structure')->result();
 			// $this->student_template->show('student/fee_details', $data);
 
 			$this->form_validation->set_rules('mode_of_payment', 'Mode of Payment', 'required');
@@ -1359,7 +1360,7 @@ class Student extends CI_Controller
 				$documents = $this->input->post('documents');
 
 				$config['upload_path'] = './assets/students/' . $data['id'] . '/';
-				$config['allowed_types']    = 'jpg|png|pdf'; // Adjust file types as needed
+				$config['allowed_types']    = 'jpg|png|pdf|jpeg'; // Adjust file types as needed
 				$config['max_size']         = 10240; // Maximum file size in kilobytes (10MB)
 				$config['encrypt_name']     = FALSE; // Encrypt the file name for security
 				// Make sure the directory exists, if not, create it
@@ -1480,7 +1481,9 @@ class Student extends CI_Controller
 					'medium_of_instruction' => $eduDetails->medium_of_instruction,
 					'register_number' => $eduDetails->register_number,
 					'year_of_passing' => $eduDetails->year_of_passing,
-					'aggregate' => $eduDetails->aggregate
+					'aggregate' => $eduDetails->aggregate,
+					'total_obtained_marks' => $eduDetails->obtained,
+					'total_max_marks' => $eduDetails->maximum
 				);
 
 				// Insert subject fields
@@ -1525,6 +1528,8 @@ class Student extends CI_Controller
 					'register_number' => $this->input->post('register_number'),
 					'year_of_passing' => $this->input->post('year_of_passing'),
 					'aggregate' => $this->input->post('aggregate'),
+					'obtained' => $this->input->post('total_obtained_marks'),
+					'maximum' => $this->input->post('total_max_marks'),
 					'updated_on' => date('Y-m-d h:i:s'),
 					'updated_by' => $data['student_name']
 				);

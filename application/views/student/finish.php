@@ -1099,12 +1099,42 @@
 
                         <div class="col-md-3 col-sm-6">
                             <div class="form-group">
+                                <label class="form-label mb-0">Maximum Marks</label><br>
+                              
+                                <?php
+                                if($edu->maximum != NULL)
+                                    {
+                                        echo $edu->maximum;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Obtained Marks</label><br>
+                              
+                                <?php
+                                if($edu->obtained != NULL)
+                                    {
+                                        echo $edu->obtained;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
                                 <label class="form-label mb-0">Aggregate</label><br>
                                 <!-- <p><?= $edu->aggregate;?>%</p> -->
                                 <?php
                                 if($edu->aggregate != NULL)
                                     {
-                                        echo $edu->aggregate;
+                                        echo $edu->aggregate.'%';
                                     }
                                 else{
                                         echo "--" ;
@@ -1114,6 +1144,10 @@
                         </div>
                     </div>
                     <table class="table" border="1">
+                    <?php
+                                if(($edu->education_level == 'SSLC')||($edu->education_level == 'PUC'))
+                                    {
+                                        ?>
                         <thead>
                             <tr>
                                 <th>Subject Name</th>
@@ -1122,6 +1156,17 @@
                                 <th>Obtained Marks</th>
                             </tr>
                         </thead>
+                        <?php } else{ ?>
+                            <thead>
+                            <tr>
+                                <th>Years</th>
+                                <th>Percentage(%)</th>
+                                <th>Max Marks</th>
+                                <th>Obtained Marks</th>
+                            </tr>
+                        </thead>
+
+                            <?php }?>
                         <tbody>
                             <?php
                             for ($i = 1; $i <= 6; $i++) {
@@ -1218,10 +1263,19 @@
                                     <input type="checkbox" class="form-check-input" id="applyCheck"
                                     onclick="enable()">
                                     <label class="form-check-label text-gray font--12" for="applyCheck">
-                                    I hereby declare that the entries made by me in the Application
+                                   Fee once paid will not be refunded under any circumstances - Kindly verify the data entered before final submission.</label><br>
+                                 
+                                </div>
+                                <div class="checkbox vertical">&nbsp;&nbsp;
+                                <!-- <label><input type="checkbox" name="iAgree" id="iAgree" value="I Agree" disabled="true" onclick="enable()"> I hereby declare that the entries made by me in the Application
                                     Form are complete and true to the best of my knowledge, belief and information. I
                                     acknowledge that the college has the authority for taking punitive actions against
-                                    me for violation or non-compliance of the same*</label>
+                                    me for violation or non-compliance of the same*</label> -->
+                                   
+                                   <input type="checkbox" class="form-check-input" id="applyCheck1"
+                                    onclick="enable1()">
+                                    <label class="form-check-label text-gray font--12" for="applyCheck1">
+                                   Submit the necessary documents along with fee receipt for further processing.</label>
                                 </div>
                         </div>
                         <div class="col-md-6 mt-2">
