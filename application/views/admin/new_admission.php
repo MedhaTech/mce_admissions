@@ -81,6 +81,9 @@
                                     echo form_dropdown('subquota', $subquota_options, (set_value('subquota')) ? set_value('subquota') : $sub_quota, 'class="form-control input-xs" id="subquota" disabled');
                                     ?>
                                   <span class="text-danger"><?php echo form_error('subquota'); ?></span>
+                                  <input type="hidden" name="college_code" id="college_code" class="form-control"
+                                      value="<?php echo (set_value('college_code')) ? set_value('college_code') : $college_code; ?>">
+                              
                               </div>
                           </div>
                       </div>
@@ -440,6 +443,13 @@ $(document).ready(function() {
                     $('#final_amount').val(finalAmount);
                 }
             });
+            var selectedText = $(this).find('option:selected').text();
+                
+                // Extract the part before the dash
+                var textBeforeDash = selectedText.split('-')[0].trim();
+                
+                // Update the hidden field
+                $('#college_code').val(textBeforeDash);
         }
     });
 
