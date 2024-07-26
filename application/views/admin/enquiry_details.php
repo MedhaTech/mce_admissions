@@ -253,6 +253,8 @@
                                           <label class="form-label">Sub Quota </label>
                                           <?php echo form_dropdown('subquota', $subquota_options, (set_value('subquota')) ? set_value('subquota') : '', 'class="form-control" id="subquota" disabled'); ?>
                                           <span class="text-danger"><?php echo form_error('subquota'); ?></span>
+                                          <input type="hidden" name="college_code" id="college_code" class="form-control"
+                                          value="<?php echo (set_value('college_code')) ? set_value('college_code') : $college_code; ?>">
                                       </div>
                                   </div>
 
@@ -767,6 +769,10 @@ $(document).ready(function() {
 
 
         var subquota = $("#subquota").val();
+        var selectedText = $('#subquota option:selected').text();
+                
+                // Extract the part before the dash
+                var college_code = selectedText.split('-')[0].trim();
         var quota = $("#quota").val();
         var exam_rank = $("#exam_rank").val();
         var category_allotted = $("#category_allotted").val();
@@ -791,6 +797,7 @@ $(document).ready(function() {
                 'course': course,
                 'quota': quota,
                 'subquota': subquota,
+                'college_code': college_code,
                 'course_val': course_val,
                 'corpus': corpus,
                 'exam_rank': exam_rank,

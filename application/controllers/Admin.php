@@ -683,6 +683,7 @@ class Admin extends CI_Controller
 				'aadhaar' => $enquiryDetails->aadhaar,
 				'quota' => $this->input->post('quota'),
 				'sub_quota' => $this->input->post('subquota'),
+				'college_code' => $this->input->post('college_code'),
 				'exam_rank' => $this->input->post('exam_rank'),
 				'gender' => $enquiryDetails->gender,
 				'password' => md5($enquiryDetails->mobile),
@@ -1668,7 +1669,7 @@ class Admin extends CI_Controller
 					'sub_quota' => $this->input->post('subquota'),
 					'category_allotted' => $this->input->post('category_allotted'),
 					'category_claimed' => $this->input->post('category_claimed'),
-					'college_code' => "NA",
+					'college_code' => $this->input->post('college_code'),
 					'sports' => $this->input->post('sports'),
 					'sports_activity' => $this->input->post('sports_activity'),
 					'password' => md5($this->input->post('mobile')),
@@ -6115,7 +6116,7 @@ With good wishes";
 			$collegeName3 = "PB NO. 21";
 			$contactInfo1 = "SALAGAME ROAD HASSAN";
 			$contactInfo2 = "State Name : Karnataka";
-			$affiliation = "ACKNOWLEDGEMENT";
+			$affiliation = "FEE RECEIPT";
 			$contactInfo = "UG (AY-2024-2025)";
 
 			$issuedOn = "Date : " . date("m-d-Y ");
@@ -6129,7 +6130,8 @@ With good wishes";
 				['Admission No.', $admissionDetails->adm_no],
 				['Name', $admissionDetails->student_name],
 				['Year', $feeDetails->year],
-				['College Code', $admissionDetails->college_code],
+				['Quota', $admissionDetails->quota],
+				['College Code', $admissionDetails->college_code.' - '.$admissionDetails->sub_quota],
 				['Category', $admissionDetails->category_allotted]
 			];
 
@@ -6201,29 +6203,32 @@ With good wishes";
 				$pdf->Cell(65, 3, $contactInfo2, 0, 1, 'C');
 				$pdf->SetX($x);
 				$pdf->SetFont('Arial', 'B', 6);
-				$pdf->Cell(65, 4, $affiliation, 0, 0, 'C');
+				$pdf->Cell(65, 4, $affiliation, 0, 1, 'C');
 				$pdf->SetX($x);
 				$pdf->SetFont('Arial', '', 5);
-				$pdf->Cell(65, 3, $contactInfo, 0, 1, 'R');
+				$pdf->Cell(65, 4, $contactInfo, 0, 1, 'C');
 
 
 				// Draw a line
 				$pdf->SetLineWidth(0.2);
 				$pdf->Line($x, $y + 23, $x + 65, $y + 23);
 				$pdf->Ln(3);
+				$pdf->SetLineWidth(0.2);
+				$pdf->Line($x, $y + 27, $x + 65, $y + 27);
+				$pdf->Ln(3);
 				$pdf->SetFont('Arial', '', 6);
-				$pdf->SetXY($x, $y + 24);
+				$pdf->SetXY($x, $y + 28);
 				$pdf->Cell(65, 4, $issuedOn, 0, 0, 'L');
-				$pdf->SetXY($x, $y + 24);
+				$pdf->SetXY($x, $y + 28);
 				$pdf->Cell(65, 4, $programe, 0, 1, 'R');
-				$pdf->SetXY($x, $y + 27);
+				$pdf->SetXY($x, $y + 31);
 				$pdf->Cell(65, 4, $chellan, 0, 0, 'L');
-				$pdf->SetXY($x, $y + 27);
+				$pdf->SetXY($x, $y + 31);
 				$pdf->Cell(65, 4, $dept, 0, 1, 'R');
-				$pdf->SetXY($x, $y + 32);
+				$pdf->SetXY($x, $y + 36);
 				$pdf->SetFont('Arial', '', 7);
-				$pdf->MultiCell(65, 3, "Paid into the credit of CANARA BANK M.C.E BRANCH,\nHASSAN -573202., CA A/C No. 14053070001574 of \nThe Principal Malnad College Engineering, Hassan.");
-				$pdf->SetXY($x, $y + 41);
+				$pdf->MultiCell(65, 3, "Paid into the credit of CANARA BANK M.C.E BRANCH,\nHASSAN -573202., CA A/C No. 14053070001574 of \nThe Principal Malnad College of Engineering, Hassan.");
+				$pdf->SetXY($x, $y + 46);
 				$pdf->SetFont('Arial', '', 7);
 				$pdf->MultiCell(65, 4, "Cash/D.D.No.____________Dt_________Bank_______");
 				$pdf->SetFont('Arial', '', 6);
