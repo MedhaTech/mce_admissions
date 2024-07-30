@@ -75,7 +75,7 @@
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('e_consortium_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('e_consortium_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -95,15 +95,15 @@
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('sport_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('sport_fee', $stud_id);
 
-                                            if ($readonlyvalue) {
-                                                $readonly = "disabled";
-                                            } else {
-                                                $readonly = "";
-                                            }
+                                                if ($readonlyvalue) {
+                                                    $readonly = "disabled";
+                                                } else {
+                                                    $readonly = "";
+                                                }
 
-                                            ?>
+                                                ?>
                                               <input type="checkbox" <?= $readonly; ?> name="fees[]" id="sport_fee_checkbox" value="<?php echo (set_value('sport_fee')) ? set_value('sport_fee') : $fee_structure->sport_fee; ?>">
                                           </div>
                                       </div>
@@ -116,15 +116,15 @@
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('sports_development_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('sports_development_fee', $stud_id);
 
-                                            if ($readonlyvalue) {
-                                                $readonly = "disabled";
-                                            } else {
-                                                $readonly = "";
-                                            }
+                                                if ($readonlyvalue) {
+                                                    $readonly = "disabled";
+                                                } else {
+                                                    $readonly = "";
+                                                }
 
-                                            ?>
+                                                ?>
                                               <input type="checkbox" <?= $readonly; ?> name="fees[]" id="sports_development_fee_checkbox" value="<?php echo (set_value('sports_development_fee')) ? set_value('sports_development_fee') : $fee_structure->sports_development_fee; ?>">
                                           </div>
                                       </div>
@@ -137,7 +137,7 @@
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('career_guidance_counseling_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('career_guidance_counseling_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -158,15 +158,15 @@
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('university_development_fund', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('university_development_fund', $stud_id);
 
-                                            if ($readonlyvalue) {
-                                                $readonly = "disabled";
-                                            } else {
-                                                $readonly = "";
-                                            }
+                                                if ($readonlyvalue) {
+                                                    $readonly = "disabled";
+                                                } else {
+                                                    $readonly = "";
+                                                }
 
-                                            ?>
+                                                ?>
                                               <input type="checkbox" <?= $readonly; ?> name="fees[]" id="university_development_fund_checkbox" value="<?php echo (set_value('university_development_fund')) ? set_value('university_development_fund') : $fee_structure->university_development_fund; ?>">
                                           </div>
                                       </div>
@@ -179,7 +179,7 @@
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('promotion_of_indian_cultural_activities_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('promotion_of_indian_cultural_activities_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -200,7 +200,7 @@
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('teachers_development_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('teachers_development_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -221,7 +221,7 @@
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('student_development_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('student_development_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -242,7 +242,7 @@
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('indian_red_cross_membership_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('indian_red_cross_membership_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -263,7 +263,7 @@
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('women_cell_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('women_cell_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -283,15 +283,15 @@
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('nss_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('nss_fee', $stud_id);
 
-                                            if ($readonlyvalue) {
-                                                $readonly = "disabled";
-                                            } else {
-                                                $readonly = "";
-                                            }
+                                                if ($readonlyvalue) {
+                                                    $readonly = "disabled";
+                                                } else {
+                                                    $readonly = "";
+                                                }
 
-                                            ?>
+                                                ?>
                                               <input type="checkbox" <?= $readonly; ?> name="fees[]" id="nss_fee_checkbox" value="<?php echo (set_value('nss_fee')) ? set_value('nss_fee') : $fee_structure->nss_fee; ?>">
                                           </div>
                                       </div>
@@ -304,15 +304,15 @@
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('university_registration_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('university_registration_fee', $stud_id);
 
-                                            if ($readonlyvalue) {
-                                                $readonly = "disabled";
-                                            } else {
-                                                $readonly = "";
-                                            }
+                                                if ($readonlyvalue) {
+                                                    $readonly = "disabled";
+                                                } else {
+                                                    $readonly = "";
+                                                }
 
-                                            ?>
+                                                ?>
                                               <input type="checkbox" <?= $readonly; ?> name="fees[]" id="university_registration_fee_checkbox" value="<?php echo (set_value('university_registration_fee')) ? set_value('university_registration_fee') : $fee_structure->university_registration_fee; ?>">
                                           </div>
                                       </div>
@@ -331,15 +331,15 @@
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('admission_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('admission_fee', $stud_id);
 
-                                            if ($readonlyvalue) {
-                                                $readonly = "disabled";
-                                            } else {
-                                                $readonly = "";
-                                            }
+                                                if ($readonlyvalue) {
+                                                    $readonly = "disabled";
+                                                } else {
+                                                    $readonly = "";
+                                                }
 
-                                            ?>
+                                                ?>
                                               <input type="checkbox" <?= $readonly; ?> name="fees[]" id="admission_fee_checkbox" value="<?php echo (set_value('admission_fee')) ? set_value('admission_fee') : $fee_structure->admission_fee; ?>">
                                           </div>
                                       </div>
@@ -353,15 +353,15 @@
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('processing_fee_paid_at_kea', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('processing_fee_paid_at_kea', $stud_id);
 
-                                            if ($readonlyvalue) {
-                                                $readonly = "disabled";
-                                            } else {
-                                                $readonly = "";
-                                            }
+                                                if ($readonlyvalue) {
+                                                    $readonly = "disabled";
+                                                } else {
+                                                    $readonly = "";
+                                                }
 
-                                            ?>
+                                                ?>
                                               <input type="checkbox" <?= $readonly; ?> name="fees[]" id="processing_fee_paid_at_kea_checkbox" value="<?php echo (set_value('processing_fee_paid_at_kea')) ? set_value('processing_fee_paid_at_kea') : $fee_structure->processing_fee_paid_at_kea; ?>">
                                           </div>
                                       </div>
@@ -373,7 +373,7 @@
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('tution_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('tution_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -393,7 +393,7 @@
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('college_other_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('college_other_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -413,15 +413,15 @@
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('skill_development_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('skill_development_fee', $stud_id);
 
-                                            if ($readonlyvalue) {
-                                                $readonly = "disabled";
-                                            } else {
-                                                $readonly = "";
-                                            }
+                                                if ($readonlyvalue) {
+                                                    $readonly = "disabled";
+                                                } else {
+                                                    $readonly = "";
+                                                }
 
-                                            ?>
+                                                ?>
                                               <input type="checkbox" <?= $readonly; ?> name="fees[]" id="skill_development_fee_checkbox" value="<?php echo (set_value('skill_development_fee')) ? set_value('skill_development_fee') : $fee_structure->skill_development_fee; ?>">
                                           </div>
                                       </div>
@@ -435,15 +435,15 @@
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('corpus_fund', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('corpus_fund', $stud_id);
 
-                                            if ($readonlyvalue) {
-                                                $readonly = "disabled";
-                                            } else {
-                                                $readonly = "";
-                                            }
+                                                if ($readonlyvalue) {
+                                                    $readonly = "disabled";
+                                                } else {
+                                                    $readonly = "";
+                                                }
 
-                                            ?>
+                                                ?>
                                               <input type="checkbox" <?= $readonly; ?> name="fees[]" id="corpus_fund_checkbox" value="<?php echo (set_value('corpus_fund')) ? set_value('corpus_fund') : $fee_structure->corpus_fund; ?>">
                                           </div>
                                       </div>
@@ -482,51 +482,51 @@
   <!-- End of Main Content -->
 
   <script>
-  $(document).ready(function() {
-    // Function to update final fee based on selected checkboxes
-    function updateFinalFee() {
-      var sum = 0;
-      var corpusFundChecked = false;
+      $(document).ready(function() {
+          // Function to update final fee based on selected checkboxes
+          function updateFinalFee() {
+              var sum = 0;
+              var corpusFundChecked = false;
 
-      // Iterate over each checkbox that needs to be considered
-      $('input[type="checkbox"]').each(function() {
-        if ($(this).prop('checked')) {
-          var inputId = $(this).attr('id').replace('_checkbox', '');
-          var inputValue = parseFloat($('#' + inputId).val());
-          
-          if ($(this).attr('id') === 'corpus_fund_checkbox') {
-            // If corpus_fund_checkbox is checked, uncheck all others
-            corpusFundChecked = true;
-            sum = inputValue; // Set sum to only the corpus fund value
-          } else {
-            // Add value to sum only if it's not corpus_fund_checkbox
-            sum += inputValue;
+              // Iterate over each checkbox that needs to be considered
+              $('input[type="checkbox"]').each(function() {
+                  if ($(this).prop('checked')) {
+                      var inputId = $(this).attr('id').replace('_checkbox', '');
+                      var inputValue = parseFloat($('#' + inputId).val());
+
+                      if ($(this).attr('id') === 'corpus_fund_checkbox') {
+                          // If corpus_fund_checkbox is checked, uncheck all others
+                          corpusFundChecked = true;
+                          sum = inputValue; // Set sum to only the corpus fund value
+                      } else {
+                          // Add value to sum only if it's not corpus_fund_checkbox
+                          sum += inputValue;
+                      }
+                  }
+              });
+
+              // Update the final_fee input with the calculated sum
+              $('#final_fee').val(sum.toFixed(2));
+
+              // If corpus_fund_checkbox is checked, uncheck all other checkboxes
+              if (corpusFundChecked) {
+                  $('input[type="checkbox"]').each(function() {
+                      if ($(this).attr('id') !== 'corpus_fund_checkbox' && $(this).prop('checked')) {
+                          $(this).prop('checked', false);
+                      }
+                  });
+              }
           }
-        }
+
+          // Attach change event listener to relevant checkboxes
+          $('input[type="checkbox"]').change(function() {
+              updateFinalFee(); // Update the final fee whenever a checkbox changes
+          });
+
+          // Initialize final fee on page load
+          updateFinalFee();
       });
-
-      // Update the final_fee input with the calculated sum
-      $('#final_fee').val(sum.toFixed(2));
-
-      // If corpus_fund_checkbox is checked, uncheck all other checkboxes
-      if (corpusFundChecked) {
-        $('input[type="checkbox"]').each(function() {
-          if ($(this).attr('id') !== 'corpus_fund_checkbox' && $(this).prop('checked')) {
-            $(this).prop('checked', false);
-          }
-        });
-      }
-    }
-
-    // Attach change event listener to relevant checkboxes
-    $('input[type="checkbox"]').change(function() {
-      updateFinalFee(); // Update the final fee whenever a checkbox changes
-    });
-
-    // Initialize final fee on page load
-    updateFinalFee();
-  });
-</script>
+  </script>
 
   <script>
       $(document).ready(function() {
