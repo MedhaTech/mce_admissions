@@ -6197,19 +6197,19 @@ With good wishes";
 				}
 			}
 			if ($university > 0) {
-				$tableData[] = ["University Other Fee", $university];
+				$tableData[] = ["University Other Fee", number_format($university,2)];
 			}
 			if ($voucherDetails->admission_fee > 0) {
-				$tableData[] = ['Admission Fee', $voucherDetails->admission_fee];
+				$tableData[] = ['Admission Fee', number_format($voucherDetails->admission_fee,2)];
 			}
 			if ($voucherDetails->processing_fee_paid_at_kea > 0) {
-				$tableData[] = ['Processing Fee Paid at KEA', $voucherDetails->processing_fee_paid_at_kea];
+				$tableData[] = ['Processing Fee Paid at KEA', number_format($voucherDetails->processing_fee_paid_at_kea,2)];
 			}
 			if ($voucherDetails->tution_fee > 0) {
-				$tableData[] = ['Tution Fee', $voucherDetails->tution_fee];
+				$tableData[] = ['Tution Fee', number_format($voucherDetails->tution_fee,2)];
 			}
 			if ($voucherDetails->college_other_fee > 0) {
-				$tableData[] = ['College Other Fee', $voucherDetails->college_other_fee];
+				$tableData[] = ['College Other Fee', number_format($voucherDetails->college_other_fee,2)];
 			}
 
 			// Create a function to generate a single copy
@@ -6217,79 +6217,80 @@ With good wishes";
 			{
 				$collegeName1 = "Autonomous Institute Affiliated to the VTU";
 				$collegeName2 = "Under the auspices of the MTES (R),";
-				$collegeName3 = "PB NO. 21";
-				$contactInfo1 = "SALAGAME ROAD HASSAN";
-				$contactInfo2 = "State Name : Karnataka";
+				$collegeName3 = "";
+				$contactInfo1 = "PB NO. 21,SALAGAME ROAD HASSAN, KARNATAKA";
+				$contactInfo2 = "";
 				$contactInfo = "UG (AY-2024-2025)";
 				$pdf->Rect($x - 2, $y, 69, 90 + 70);
 				$pdf->SetXY($x, $y);
 				$pdf->SetFont('Arial', 'B', 8);
-				$pdf->Cell(65, 4, $collegeName, 0, 1, 'C');
+				$pdf->Cell(65, 6, $collegeName, 0, 1, 'C');
 				$pdf->SetX($x);
 				$pdf->SetFont('Arial', '', 7);
 				$pdf->Cell(65, 3, $collegeName1, 0, 1, 'C');
 				$pdf->SetX($x);
 				$pdf->SetFont('Arial', '', 7);
-				$pdf->Cell(65, 3, $collegeName2, 0, 1, 'C');
-				$pdf->SetX($x);
-				$pdf->SetFont('Arial', '', 7);
-				$pdf->Cell(65, 3, $collegeName3, 0, 1, 'C');
+				$pdf->Cell(65, 4, $collegeName2, 0, 1, 'C');
+				// $pdf->SetX($x);
+				// $pdf->SetFont('Arial', '', 7);
+				// $pdf->Cell(65, 3, $collegeName3, 0, 1, 'C');
 				$pdf->SetX($x);
 				$pdf->SetFont('Arial', '', 6);
 				$pdf->Cell(65, 3, $contactInfo1, 0, 1, 'C');
+				// $pdf->SetX($x);
+				// $pdf->Cell(65, 3, $contactInfo2, 0, 1, 'C');
 				$pdf->SetX($x);
-				$pdf->Cell(65, 3, $contactInfo2, 0, 1, 'C');
+				$pdf->SetFont('Arial', 'B', 7);
+				$pdf->Cell(65, 5, $affiliation, 0, 1, 'C');
 				$pdf->SetX($x);
-				$pdf->SetFont('Arial', 'B', 6);
-				$pdf->Cell(65, 4, $affiliation, 0, 1, 'C');
-				$pdf->SetX($x);
-				$pdf->SetFont('Arial', '', 5);
+				$pdf->SetFont('Arial', '', 6);
 				$pdf->Cell(65, 4, $contactInfo, 0, 1, 'C');
 
 
 				// Draw a line
 				$pdf->SetLineWidth(0.2);
-				$pdf->Line($x, $y + 23, $x + 65, $y + 23);
+				$pdf->Line($x, $y + 21, $x + 65, $y + 21);
 				$pdf->Ln(3);
 				$pdf->SetLineWidth(0.2);
-				$pdf->Line($x, $y + 27, $x + 65, $y + 27);
+				$pdf->Line($x, $y + 25, $x + 65, $y + 25);
 				$pdf->Ln(3);
-				$pdf->SetFont('Arial', '', 6);
-				$pdf->SetXY($x, $y + 28);
-				$pdf->Cell(65, 4, $issuedOn, 0, 0, 'L');
-				$pdf->SetXY($x, $y + 28);
-				$pdf->Cell(65, 4, $programe, 0, 1, 'R');
-				$pdf->SetXY($x, $y + 31);
-				$pdf->Cell(65, 4, $chellan, 0, 0, 'L');
-				$pdf->SetXY($x, $y + 31);
-				$pdf->Cell(65, 4, $dept, 0, 1, 'R');
-				$pdf->SetXY($x, $y + 36);
 				$pdf->SetFont('Arial', '', 7);
-				$pdf->MultiCell(65, 3, "Paid into the credit of CANARA BANK M.C.E BRANCH,\nHASSAN -573202., CA A/C No. 14053070001574 of \nThe Principal Malnad College of Engineering, Hassan.");
-				$pdf->SetXY($x, $y + 46);
+				$pdf->SetXY($x, $y + 29);
+				$pdf->Cell(65, 4, $issuedOn, 0, 0, 'L');
+				$pdf->SetXY($x, $y + 29);
+				$pdf->Cell(65, 4, $programe, 0, 1, 'R');
+				$pdf->SetXY($x, $y + 34);
+				$pdf->Cell(65, 4, $chellan, 0, 0, 'L');
+				$pdf->SetXY($x, $y + 34);
+				$pdf->Cell(65, 4, $dept, 0, 1, 'R');
+				$pdf->SetXY($x, $y + 39);
+				$pdf->SetFont('Arial', '', 7);
+				$pdf->MultiCell(65, 4, "Paid into the credit of CANARA BANK M.C.E BRANCH,\nHASSAN -573202., CA A/C No. 14053070001574 of \nThe Principal Malnad College of Engineering, Hassan.");
+				$pdf->SetXY($x, $y + 52);
 				$pdf->SetFont('Arial', '', 7);
 				$pdf->MultiCell(65, 4, "Cash/D.D.No.________________________Dt________\n");
-				$pdf->SetXY($x, $y + 50);
+				$pdf->SetXY($x, $y + 56);
 				$pdf->SetFont('Arial', '', 7);
 				$pdf->MultiCell(65, 4, "Bank_________________________________________");
-				$pdf->SetFont('Arial', '', 6);
+				$pdf->SetFont('Arial', '', 7);
 				$pdf->MultiCell(65, 4, "");
 				$tableY = $pdf->GetY(); // Get current Y position for the table
 				foreach ($tableData as $row) {
 					$pdf->SetXY($x, $tableY);
-					$pdf->Cell(32.5, 4, $row[0], 1, 0, 'C');
-					$pdf->Cell(32.5, 4, $row[1], 1, 1, 'C');
-					$tableY += 4; // Move Y position down for the next row
+					$pdf->Cell(32.5, 5, $row[0], 1, 0, 'L');
+					$pdf->Cell(32.5, 5, $row[1], 1, 1, 'L');
+					$tableY += 5; // Move Y position down for the next row
 				}
-				$pdf->SetFont('Arial', 'B', 6);
+				
+				$pdf->SetFont('Arial', 'B', 7);
+				$pdf->SetXY($x, $tableY+3);
+				$pdf->Cell(32.5, 4, "TOTAL", 1, 0, 'L');
+				$pdf->Cell(32.5, 4, number_format($voucherDetails->final_fee,2), 1, 1, 'L');
+				$tableY += 9;
+				$pdf->SetFont('Arial', '', 7.5);
 				$pdf->SetXY($x, $tableY);
-				$pdf->Cell(32.5, 4, "TOTAL", 1, 0, 'C');
-				$pdf->Cell(32.5, 4, $voucherDetails->final_fee, 1, 1, 'C');
-				$tableY += 6;
-				$pdf->SetFont('Arial', '', 7);
-				$pdf->SetXY($x, $tableY);
-				$pdf->MultiCell(65, 4, "Amount (In Words) : " . convert_number_to_words($voucherDetails->final_fee) . " Only");
-				$pdf->SetXY($x, $tableY + 10);
+				$pdf->MultiCell(65, 4, "Amount (In Words) : Rs."  . convert_number_to_words($voucherDetails->final_fee) . " Only");
+				$pdf->SetXY($x, $tableY + 14);
 				$pdf->Cell(32.5, 4, ' ', 0, 0, 'L');
 				$pdf->Cell(32.5, 4, "Signature of Remitter", 0, 1, 'R');
 				$pdf->SetXY($x, $tableY + 30);
