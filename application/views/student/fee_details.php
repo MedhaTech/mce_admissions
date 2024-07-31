@@ -98,7 +98,7 @@
                   </div>
               </div>
 
-              <div class="card m-2 shadow card-info">
+              <div class="card shadow card-info">
                   <div class="card-header">
                       <h3 class="card-title">Payment Amount Details</h3>
                       <div class="card-tools">
