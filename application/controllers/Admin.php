@@ -142,6 +142,118 @@ class Admin extends CI_Controller
 		}
 	}
 
+	function dashboard2()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = "Dashboard";
+			$data['menu'] = "dashboard";
+			$data['enquiryStatus'] = $this->globals->enquiryStatus();
+			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$depart = $this->admin_model->getActiveComedk()->result();
+			// var_dump($depart); die();
+			$unaidedmgmt = array();
+			$unaidedcomed = array();
+			foreach ($depart as $depart1) {
+				if ($depart1->unaided_mgmt_intake) {
+					array_push($unaidedmgmt, $depart1);
+				}
+				if ($depart1->unaided_comed_k_intake) {
+					array_push($unaidedcomed, $depart1);
+				}
+			}
+			$data['unaidedmgmt'] = $unaidedmgmt;
+			$data['unaidedcomed'] = $unaidedcomed;
+			// var_dump($data['unaidedcomed']); die();
+			$this->admin_template->show('admin/Dashboard2', $data);
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+	public function updatedashboard2()
+{
+    if ($this->session->userdata('logged_in')) {
+        $session_data = $this->session->userdata('logged_in');
+        $data['id'] = $session_data['id'];
+        $data['username'] = $session_data['username'];
+        $data['full_name'] = $session_data['full_name'];
+        $data['role'] = $session_data['role'];
+
+        $data['page_title'] = "Dashboard";
+        $data['menu'] = "dashboard";
+        $data['enquiryStatus'] = $this->globals->enquiryStatus();
+        $data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
+        $data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+        $depart = $this->admin_model->getActiveComedk()->result();
+        $unaidedmgmt = array();
+        $unaidedcomed = array();
+        foreach ($depart as $depart1) {
+            if ($depart1->unaided_mgmt_intake) {
+                array_push($unaidedmgmt, $depart1);
+            }
+            if ($depart1->unaided_comed_k_intake) {
+                array_push($unaidedcomed, $depart1);
+            }
+        }
+        $data['unaidedmgmt'] = $unaidedmgmt;
+        $data['unaidedcomed'] = $unaidedcomed;
+
+        if ($this->input->post()) {
+            $department_ids = $this->input->post('department_ids');
+            $moved_seats = $this->input->post('moved_seats');
+            $comedk_intakes = $this->input->post('comedk_intakes');
+            $mgmt_intakes = $this->input->post('mgmt_intakes');
+
+            foreach ($department_ids as $index => $department_id) {
+                $moved = $moved_seats[$index];
+                $comedk_intake = $comedk_intakes[$index] + $moved;
+                $mgmt_intake = $mgmt_intakes[$index] - $moved;
+
+                // Update database with new values
+                $result = $this->admin_model->updateIntakeValues($department_id, $comedk_intake, $mgmt_intake, $moved);
+            }
+
+            // Handle file upload
+            if (isset($_FILES['document']) && $_FILES['document']['error'] == 0) {
+                $config['upload_path'] = './assets/seats/';
+                $config['allowed_types'] = 'jpg|png|pdf|jpeg'; // Adjust file types as needed
+                $config['max_size'] = 10240; // Maximum file size in kilobytes (10MB)
+                $config['encrypt_name'] = FALSE; // Encrypt the file name for security
+
+                // Load the upload library with the config settings
+                $this->load->library('upload', $config);
+
+                if (!$this->upload->do_upload('document')) {
+                    // If the upload failed, display the error
+                    $error = array('error' => $this->upload->display_errors());
+                    echo "Failed to upload file: " . $error['error'];
+                } else {
+                    // If the upload succeeded, display success message
+                    $upload_data = $this->upload->data();
+                    echo "File uploaded successfully!";
+                    // You can save file info to database if needed
+                    $file_name = $upload_data['file_name'];
+                    // Save $file_name to the database if required
+                }
+            } 
+
+            redirect('admin/updatedashboard2', 'refresh');
+        }
+
+        $this->admin_template->show('admin/updatedashboard2', $data);
+    } else {
+        redirect('admin', 'refresh');
+    }
+}
+
+
 	function dashboard1()
 	{
 		if ($this->session->userdata('logged_in')) {
@@ -6534,4 +6646,827 @@ With good wishes";
 			redirect('admin/timeout');
 		}
 	}
+
+	public function admissionform($encryptId)
+	{
+
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Admission Form';
+			$data['menu'] = 'admissionsfrom';
+
+			$id =  base64_decode($encryptId);
+
+			$data['admissionStatus'] = $this->globals->admissionStatus();
+			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$admissionDetails = $this->admin_model->getDetails('admissions', $id)->row();
+			$transactionDetails = $this->admin_model->getDetails('transactions', $id)->row();
+
+			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
+			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'id', 'student_education_details')->result();
+
+
+			$this->load->library('fpdf'); // Load library
+			ini_set("session.auto_start", 0);
+			ini_set('memory_limit', '-1');
+			define('FPDF_FONTPATH', 'plugins/font');
+			$pdf = new FPDF();
+			$pdf->AddPage('P', 'A4'); // 'P' for portrait orientation, 'A4' for A4 size (210x297 mm)
+
+			// Set left, top, and right margins (20 mm)
+			$pdf->SetMargins(20, 20, 20);
+
+			$pdf->Image('assets/img/mce_pro_letter2.jpg', 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHeight());
+			$temporaryUSN = "MCE24AU001K012024";
+
+			$topGap = 30;
+
+			$pdf->SetFont('Arial', 'B', 12);
+			$pdf->SetY($topGap + 5);
+			$pdf->Cell(0, 10, ' KEA-CET(GOVT) SEAT ', 0, 1, 'C');
+			$pdf->SetY($topGap);
+			$pdf->Cell(0, 10, ' ADMISSION PARTICULARS  ', 0, 1, 'C');
+
+			$pdf->SetFont('Arial', '', 9);
+			$pdf->SetXY(15, $topGap + 9);
+			$pdf->Cell(0, 10, 'Temporary USN:'.$temporaryUSN, 0, 1, 'L');
+
+			$pdf->SetFont('Arial', '', 9);
+			$pdf->SetXY(-30, $topGap + 9);
+			$pdf->Cell(0, 10, 'Year:' .$admissionDetails->academic_year, 0, 1, 'R');
+			$pdf->Cell(0, 1, 'Adm. No.:'.$admissionDetails->adm_no, 0, 1, 'R');
+
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->SetX(15, $topGap);
+			$pdf->Cell(60, 6, 'CET AT No.', 0);	
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(0, 6, ': '.$admissionDetails->entrance_reg_no, 0, 'C');
+			// $pdf->Cell(60, 10, 'CET AT No. :', 0);
+            // $pdf->Cell(130, 10, '123', 0);
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(60, 6, 'Rank No.', 0);
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(0, 6, ': '.$admissionDetails->entrance_rank, 0, 'C');
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(60, 6, 'Name of the candidate.', 0);
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(0, 6, ': '.$admissionDetails->student_name, 0, 'C');
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(0, 6, 'Board from which the candidate has passed his/her qualifying Examination Marks secured in below subjects : ', 0, 1);
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(0, 6, ''.$edu->inst_board, 0, 'C');
+			
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(60, 6, 'PHYSICS : 79', 0, 1);
+			$pdf->Cell(60, 6, 'MATHEMATICS : 98', 0, 1);
+		
+
+			// Marks
+			$pdf->SetFont('Arial', '', 10);
+			// $pdf->Cell(60, 10, 'PHYSICS : 79', 0, 0);
+			// $pdf->Cell(60, 10, 'MATHEMATICS : 98', 0, 1);
+			$pdf->Cell(0, 6, 'Total 177 / 200 Percentage of PCM: 85.00', 0, 1, 'C');
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->Cell(60, 7, 'Total marks in all subjects', 0);
+			$pdf->Cell(0, 6, ': 536 / 600', 0, 'C');
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(60, 6, 'Date of Birth and Age', 0);
+			$pdf->SetFont('Arial', 'B', 10);
+			if ($admissionDetails->date_of_birth) {
+			$age = $admissionDetails->academic_year - $admissionDetails->date_of_birth;
+			}
+			$combinedValue = $admissionDetails->date_of_birth . ' ' . $age;
+			$pdf->Cell(0, 6, ': '.$combinedValue, 0, 'C');
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(60, 6, 'Category Claimed', 0);
+			$pdf->SetFont('Arial', 'B', 9);
+			$pdf->Cell(0, 6, ': '.$admissionDetails->category_claimed, 0, 'C');
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(60, 6, 'Category Allotted', 0);
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(0, 6, ': '.$admissionDetails->category_allotted, 0, 'C');
+
+			$pdf->SetFont('Arial', 'BU', 12);
+			$pdf->Cell(60, 10, 'DOCUMENTS PRODUCED ', 0, 1, 'C');
+			
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->Cell(60, 6, '1) Application forms ', 0);
+			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->Cell(60, 6, '2) P.U.C. marks card', 0);
+			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->Cell(60, 6, '3) S.S.L.C. marks card', 0);
+			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->Cell(60, 6, '4) Cumulative record', 0);
+			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->Cell(60, 6, '5) Proof of domicile', 0);
+			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->Cell(60, 6, '6) T.C. produced/T.C. form given', 0);
+			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->Cell(60, 6, '7) Medical Certificate', 0);
+			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->Cell(60, 6, '8) Three passport size photos', 0);
+			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->Cell(60, 6, '9) Eligibility Certificate', 0);
+			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->Cell(60, 6, '10) Conduct Certificate', 0);
+			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->Cell(60, 6, '11) Migration Certificate', 0);
+			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->Cell(60, 6, '12) Diploma / GT&TC marks card', 0);
+			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->Cell(60, 6, '13) Any other document', 0);
+			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			$pdf->SetX(15, $topGap + 9);
+			$pdf->MultiCell(0, 5, "For orders to admit the candidate to Semester 1 AUTOMOBILE Provisionally pending approval of the Director of Technical Education, Karnataka and Visvesvaraya Technological University.");
+			$pdf->Cell(0, 10, "", 0, 1);
+
+			// $pdf->SetY($topGap + 5);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(0, 4, "'Verified by:", 0, 1, 'L');
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(0, 4, 'Name:', 0, 1, 'L');
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(0, 4, 'College fee reciept No. & Date with amount.', 0, 1, 'L');
+			$pdf->Cell(0, 4, 'Initial of Cashier.', 0, 1, 'L');
+
+
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(0, 4, 'Case Worker', 0, 1, 'R');
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(0, 4, 'Name:', 0, 1, 'R');
+
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(0, 20, 'Principal', 0, 1, 'R');
+
+			$pdf->SetX(10, $topGap + 9);
+			$pdf->SetFont('Arial', '', 12);
+			$pdf->Cell(0, 10, 'Malnad College of Engineering Hassan-573201 Karnataka India', 0, 1, 'C');
+
+			$pdf->SetFont('Arial', '', 9);
+			$pdf->SetXY(15, $topGap + 9);
+			$pdf->Cell(0, 5, 'Sl.no:'  .$admissionDetails->app_no, 0, 1, 'L');
+
+			$pdf->SetFont('Arial', '', 9);
+			$pdf->SetXY(-30, $topGap + 9);
+			$pdf->Cell(0, 5, 'Temp USN
+            MCE24AU001K01', 0, 1, 'R');
+
+			$pdf->SetFont('Arial', 'B', 12);
+			$pdf->Cell(0, 10, 'ADMISSION FORM', 0, 1, 'C');
+			$pdf->Line(0, $pdf->GetY(), 300, $pdf->GetY());
+
+			$pdf->SetFont('Arial', '', 9);
+		// Define cell width and height
+		$cellWidth = 40;
+		$cellHeight = 5;
+
+		// Set fill color to white (to remove border)
+		$pdf->SetFillColor(255, 255, 255);
+
+		$pdf->Ln(3);
+		// FOR B.E FOR THE YEAR 
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "FOR B.E FOR THE YEAR :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5 , $cellHeight, $admissionDetails->academic_year, 0, 0, 'L', true);
+
+		// Degree Name
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Degree Name :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, "Bachelor of Engineering", 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		// College Code
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "College Code :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5 , $cellHeight, $admissionDetails->college_code, 0, 0, 'L', true);
+
+		// Admission Type
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Admission Type :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5 , $cellHeight, "REGULAR", 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		// Semester
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Semester :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		if ($admissionDetails->quota == 'KEA-CET(LATERAL)'){
+            $semester = 'semester 3';
+        } else {
+            $semester = 'semester 1';
+        }
+		$pdf->Cell($cellWidth * 1 , $cellHeight, $semester, 0, 0, 'L', true);
+
+		// Branch
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Branch :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth, $cellHeight, ''.$this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_name"], 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		// Quota 
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Quota :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5 , $cellHeight, $admissionDetails->quota, 0, 0, 'L', true);
+
+		// Sub Quota
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Sub Quota :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->sub_quota, 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		// Category Claimed
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, "Admission Order No. and date:", 0, 0, 'L', true);
+
+		// Concatenate two dynamic values
+        $combinedValue = $admissionDetails->admission_order_no . ' ' . $admissionDetails->admission_order_date;
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5 , $cellHeight,  $combinedValue, 0, 0, 'L', true);
+
+		// Category Alloted
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Category Alloted :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5 , $cellHeight, $admissionDetails->category_allotted, 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		// Admission Order No. and date
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, "Category Claimed :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth, $cellHeight, $admissionDetails->category_claimed, 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, "CET / COMEDK / AIEEE Registration No :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->entrance_reg_no, 0, 0, 'L', true);
+
+		$pdf->Ln($cellHeight * 1.5); // You can adjust the height if necessary
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Term :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, "Odd Term 2024", 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Admission based on :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->admission_based, 0, 1, 'L', true);
+
+		$pdf->Ln(3); // You can adjust the height if necessary
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "CET Fees Paid :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $admissionDetails->fees_paid, 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "College Fees Paid :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $transactionDetails->paid_amount, 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		// Admission Order No. and date
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth * 1.3, $cellHeight, "College Fees Receipt No.& Date :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$combinedValue = $transactionDetails->receipt_no . ' ' . $transactionDetails->transaction_date;
+		$pdf->Cell($cellWidth , $cellHeight, $combinedValue, 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, "CET/COMEDK Fees Receipt No.& Date :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$combinedValue = $admissionDetails->fees_receipt_no . ' ' . $admissionDetails->fees_receipt_date;
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $combinedValue, 0, 0, 'L', true);
+
+		$pdf->Ln($cellHeight *1.7);
+		// Admission Order No. and date
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth * 2.4, $cellHeight, "Full Name of Applicant in Block Letters (As per SSLC Marks card):", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth , $cellHeight, $admissionDetails->student_name, 0, 0, 'L', true);
+
+		$pdf->Ln($cellHeight *1.7);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Date of Birth and age :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		if ($admissionDetails->date_of_birth) {
+		$age = $admissionDetails->academic_year - $admissionDetails->date_of_birth;
+		}
+		$combinedValue = $admissionDetails->date_of_birth . ' ' . $age;
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $combinedValue, 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Gender :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->gender, 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Blood Group :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $admissionDetails->blood_group, 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "First Name :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->student_name, 0, 1, 'L', true);
+
+		// $pdf->Ln(3);
+		// $pdf->SetFont('Arial', '', 9);
+		// $pdf->Cell($cellWidth, $cellHeight, "Middle Name :", 0, 0, 'L', true);
+		// $pdf->SetFont('Arial', 'B', 9);
+		// $pdf->Cell($cellWidth * 1.2, $cellHeight, "", 0, 0, 'L', true);
+
+		// // Adding a spacer cell
+		// $pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		// $pdf->SetFont('Arial', '', 9);
+		// $pdf->Cell($cellWidth, $cellHeight, "Last Name/Surname/Initials:", 0, 0, 'L', true);
+		// $pdf->SetFont('Arial', 'B', 9);
+		// $pdf->Cell($cellWidth * 1.5, $cellHeight, "", 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		// Admission Order No. and date
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth , $cellHeight, "Current Address:", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth , $cellHeight, $admissionDetails->current_address, 0, 0, 'L', true);
+
+		$pdf->Ln($cellHeight *1.7);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "City :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $admissionDetails->current_city, 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "State :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->current_state, 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Pincode :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $admissionDetails->current_pincode, 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Country :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->current_country, 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		// Admission Order No. and date
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth , $cellHeight, "Permanent Address:", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth , $cellHeight, $admissionDetails->present_address, 0, 0, 'L', true);
+
+		$pdf->Ln($cellHeight *1.7);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "City :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $admissionDetails->present_city, 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "State :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->present_state, 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Pincode :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $admissionDetails->present_pincode, 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Country :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->present_country, 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Contact Number :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $admissionDetails->mobile, 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth * 1.1, $cellHeight, "Emergency Contact Number :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.8, $cellHeight, $admissionDetails->father_mobile, 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		// Admission Order No. and date
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth , $cellHeight, "Email Id:", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth , $cellHeight, $admissionDetails->email, 0, 0, 'L', true);
+
+		$pdf->Ln($cellHeight *1.7);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Domicile :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $admissionDetails->domicile_of_state, 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Area :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->place_of_birth, 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Place of Birth :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $admissionDetails->place_of_birth, 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "State of Birth :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->state_of_birth, 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Country of Birth :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $admissionDetails->country_of_birth, 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Religion :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->religion, 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Nationality :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $admissionDetails->nationality, 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "NRI :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, "No", 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Caste :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $admissionDetails->caste, 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Mother Tongue :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->mother_tongue, 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Disability / Handicap :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $admissionDetails->disability, 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Type of disability :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, "$admissionDetails->type_of_disability", 0, 1, 'L', true);
+
+		$pdf->Ln(2);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Economically Backward :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $admissionDetails->economically_backward, 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Aadhar number :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->aadhaar, 0, 1, 'L', true);
+
+		$pdf->Ln(2);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Academic Details", 0, 0, 'L', true);
+		$pdf->Ln(5);
+		$pdf->Cell($cellWidth, $cellHeight, "SSLC/10th Standard details", 0, 0, 'L', true);
+
+		$pdf->Ln($cellHeight *1.7);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "College Name :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $edu->inst_name, 0, 0, 'L', true);
+
+		$pdf->Ln($cellHeight *1.7);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Board Name :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, "XYZ", 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Medium of Instruction :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, "English", 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Register Number :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, "1345656", 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Total Marks :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, "600", 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Obtained Marks :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, "592", 0, 0, 'L', true);
+
+		$pdf->Ln(5); // Move down a little
+
+		// Create table header
+		$pdf->Cell(30, 5, 'Subject', 1, 0, 'C');
+		$pdf->Cell(30, 5, 'Maximum Marks', 1, 0, 'C');
+		$pdf->Cell(30, 5, 'Minimum Marks', 1, 0, 'C');
+		$pdf->Cell(30, 5, 'Obtained Marks', 1, 1, 'C'); // Move to the next line
+
+		// Table content (example data)
+		$data = array(
+			array('Kannada', '35', '100', '81'),
+			array('English', '35', '100', '83'),
+			array('Hindi', '35', '100', '85'),
+			array('Mathematics', '35', '100', '89'),
+			array('Science', '35', '100', '85'),
+			array('Social Science', '35', '100', '90'),
+			array('Total', '600', '210', '593'),
+		);
+
+		// Add rows
+		foreach($data as $row) {
+			$pdf->Cell(30, 5, $row[0], 1, 0, 'C');
+			$pdf->Cell(30, 5, $row[1], 1, 0, 'C');
+			$pdf->Cell(30, 5, $row[2], 1, 0, 'C');
+			$pdf->Cell(30, 5, $row[3], 1, 1, 'C'); // Move to the next line
+		}
+
+		$pdf->Ln(3);
+		$pdf->Cell($cellWidth, $cellHeight, "Puc/12th Standard details", 0, 0, 'L', true);
+
+		$pdf->Ln($cellHeight *1.7);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "College Name :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 0, 0, 'L', true);
+
+		$pdf->Ln($cellHeight *1.7);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Board Name :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, "XYZ", 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Medium of Instruction :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, "English", 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Register Number :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, "1345656", 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "PCM / PME / PMCs Marks Percentage % :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, "85.00", 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "PCM / PME / PMCs Marks Marks :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, "592", 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "School/College Country :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, "India", 0, 1, 'L', true);
+
+		$pdf->Ln(3); // Move down a little
+
+		// Create table header
+		$pdf->Cell(30, 5, 'Subject', 1, 0, 'C');
+		$pdf->Cell(30, 5, 'Maximum Marks', 1, 0, 'C');
+		$pdf->Cell(30, 5, 'Minimum Marks', 1, 0, 'C');
+		$pdf->Cell(30, 5, 'Obtained Marks', 1, 1, 'C'); // Move to the next line
+
+		// Table content (example data)
+		$data = array(
+			array('Kannada', '35', '100', '81'),
+			array('English', '35', '100', '83'),
+			array('Physics', '35', '100', '85'),
+			array('Mathematics', '35', '100', '89'),
+			array('Computer Science', '35', '100', '85'),
+			array('Biology', '35', '100', '90'),
+			array('Total', '600', '210', '593'),
+		);
+
+		// Add rows
+		foreach($data as $row) {
+			$pdf->Cell(30, 5, $row[0], 1, 0, 'C');
+			$pdf->Cell(30, 5, $row[1], 1, 0, 'C');
+			$pdf->Cell(30, 5, $row[2], 1, 0, 'C');
+			$pdf->Cell(30, 5, $row[3], 1, 1, 'C'); // Move to the next line
+		}
+
+		$pdf->Ln(3);
+		$pdf->Cell($cellWidth, $cellHeight, "Father details", 0, 0, 'L', true);
+
+		$pdf->Ln(5);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Name of Father :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $admissionDetails->father_name, 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Mobile Number 1 :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->father_mobile, 0, 0, 'L', true);
+
+		$pdf->Ln(6);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Occupation :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $admissionDetails->father_occupation, 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Annual Income:", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->father_annual_income, 0, 1, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		// $pdf->SetFont('Arial', '', 9);
+		// $pdf->Cell($cellWidth, $cellHeight, "Mobile Number 2 :", 0, 0, 'L', true);
+		// $pdf->SetFont('Arial', 'B', 9);
+		// $pdf->Cell($cellWidth * 1.5, $cellHeight, "", 0, 1, 'L', true);
+
+		$pdf->Ln(5);
+		$pdf->Cell($cellWidth, $cellHeight, "Mother details", 0, 0, 'L', true);
+
+		$pdf->Ln(5);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Name of Mother :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $admissionDetails->mother_name, 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Mobile Number 1 :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->mother_mobile, 0, 0, 'L', true);
+
+		$pdf->Ln(6);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Occupation :", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.2, $cellHeight, $admissionDetails->mother_occupation, 0, 0, 'L', true);
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Annual Income:", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->mother_annual_income, 0, 1, 'L', true);
+
+
+		// Adding a spacer cell
+		$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+
+		// $pdf->SetFont('Arial', '', 9);
+		// $pdf->Cell($cellWidth, $cellHeight, "Mobile Number 2 :", 0, 0, 'L', true);
+		// $pdf->SetFont('Arial', 'B', 9);
+		// $pdf->Cell($cellWidth * 1.5, $cellHeight, "976756786", 0, 1, 'L', true);
+
+		$pdf->Ln(3);
+		$pdf->Cell($cellWidth, $cellHeight, "Verified the above entries", 0, 0, 'L', true);
+		$pdf->Ln(4);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "Date:", 0, 0, 'L', true);
+		$pdf->SetFont('Arial', 'B', 9);
+		$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->updated_on, 0, 1, 'L', true);
+		$pdf->Ln(1);
+		$pdf->SetFont('Arial', '', 9);
+		$pdf->Cell($cellWidth, $cellHeight, "We hereby agree to receive SMS to above mentioned mobile No's from Malnad College of Engineering regarding any information.", 0, 0, 'L', true);
+
+		$pdf->Ln(19); 
+		$pdf->Cell(0, 10, "Signature of Parent/Guardian", 0, 0, 'L');
+		$pdf->Cell(0, 10, "Signature of Student", 0, 1, 'R');
+		$pdf->Ln(11);
+
+			$pdf->output();
+			} else {
+				redirect('admin/timeout');
+			}
+		}
+
 }
