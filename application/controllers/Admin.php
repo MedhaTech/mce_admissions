@@ -7469,4 +7469,381 @@ With good wishes";
 			}
 		}
 
+ public function feereceipt()
+    {
+    if ($this->session->userdata('logged_in')) {
+        $session_data = $this->session->userdata('logged_in');
+        $data['id'] = $session_data['id'];
+        $data['username'] = $session_data['username'];
+        $data['full_name'] = $session_data['full_name'];
+        $data['role'] = $session_data['role'];
+
+        $data['page_title'] = 'Fees Receipt';
+        $data['menu'] = 'feereceipt';
+
+        $this->load->library('fpdf'); // Load library
+        ini_set("session.auto_start", 0);
+        ini_set('memory_limit', '-1');
+        define('FPDF_FONTPATH', 'plugins/font');
+        $pdf = new FPDF();
+        $pdf->AddPage('P', 'A4'); // 'P' for portrait orientation, 'A4' for A4 size (210x297 mm)
+
+        // Set margins
+        $pdf->SetMargins(20, 20, 20);
+
+        $pdf->SetFont('Arial', 'B', 9);
+
+        // Centered header
+        $cellWidth = 40;
+        $cellHeight = 5;
+        $pdf->SetFont('Arial', '', 9);
+        $pageWidth = $pdf->GetPageWidth();
+        $xPos = ($pageWidth - $cellWidth) / 2;
+        $lines = [
+            'MALNAD COLLEGE OF ENGINEERING',
+            'AN AUTONOMOUS INSTITUTION AFFILIATED TO THE VTU',
+            'UNDER THE AUSPICES OF THE MTES(R)',
+            'PB NO 21, SALAGAME ROAD HASSAN 573 202',
+            'STATE-KARNATAKA',
+			'FEE RECEIPT'
+        ];
+        foreach ($lines as $line) {
+            $pdf->SetX($xPos);
+            $pdf->Cell($cellWidth, $cellHeight, $line, 0, 1, 'C');
+        }
+
+        // Amount Paid Box
+        $boxWidth = 188;
+        $boxHeight = 5;
+        $boxXPos = ($pageWidth - $boxWidth) / 2;
+        $pdf->SetX($boxXPos);
+        $pdf->Rect($boxXPos, $pdf->GetY(), $boxWidth, $boxHeight);
+        $pdf->SetX($boxXPos);
+        $pdf->Cell($boxWidth, $boxHeight, 'AMOUNT PAID 85000', 0, 1, 'C');
+
+        // Amount in Words Heading
+        $pdf->Ln(4);
+        $pdf->SetX(10);
+        $pdf->SetFont('Arial', 'B', 11);
+        $pdf->Cell(0, $cellHeight, 'Amount in words:', 0, 1, 'L');
+
+        // Transaction Details Table
+        $pdf->Ln(3);
+        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->SetTextColor(33, 33, 33);
+        $rowHeight = 7;
+        $cellWidth1 = 90; // Width for the label column
+        $cellWidth2 = 70; // Width for the value column
+        $pdf->SetX(10);
+        // $pdf->Cell($cellWidth1 + $cellWidth2, $rowHeight, 'TRANSACTION DETAILS:', 0, 1, 'L');
+		$boxWidth = 188;
+        $boxHeight = 7;
+        $boxXPos = ($pageWidth - $boxWidth) / 2;
+        $pdf->SetX($boxXPos);
+        $pdf->Rect($boxXPos, $pdf->GetY(), $boxWidth, $boxHeight);
+        $pdf->SetX($boxXPos);
+        $pdf->Cell($boxWidth, $boxHeight, 'TRANSACTION DETAILS', 0, 1, 'L');
+        $pdf->SetFont('Arial', '', 11);
+        $pdf->SetTextColor(0, 0, 0);
+
+        function printRow($pdf, $label, $value, $startY, $rowHeight, $cellWidth1, $cellWidth2) {
+            $pdf->SetXY(10, $startY);
+            $pdf->Cell($cellWidth1, $rowHeight, $label, 0, 0, 'L', false);
+            $pdf->Cell($cellWidth2, $rowHeight, $value, 0, 1, 'L', false);
+        }
+
+        printRow($pdf, "Transaction Status :", 'Successful', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printRow($pdf, "Transaction Date-Time :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printRow($pdf, "Transaction Id :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printRow($pdf, "Payment Ref No :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+
+        // Student Details Table
+
+        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->SetX(10);
+		$boxWidth = 188;
+        $boxHeight = 7;
+        $boxXPos = ($pageWidth - $boxWidth) / 2;
+        $pdf->SetX($boxXPos);
+        $pdf->Rect($boxXPos, $pdf->GetY(), $boxWidth, $boxHeight);
+        $pdf->SetX($boxXPos);
+        $pdf->Cell($boxWidth, $boxHeight, 'STUDENT DETAILS', 0, 1, 'L');
+		$pdf->Ln(1);
+        $pdf->SetFont('Arial', '', 11);
+        $pdf->SetTextColor(0, 0, 0);
+
+        function printStudent($pdf, $label, $value, $startY, $rowHeight, $cellWidth1, $cellWidth2) {
+            $pdf->SetXY(10, $startY);
+            $pdf->Cell($cellWidth1, $rowHeight, $label, 0, 0, 'L', false);
+            $pdf->Cell($cellWidth2, $rowHeight, $value, 0, 1, 'L', false);
+        }
+
+        printStudent($pdf, "Usn Number :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "Student Name :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "Email Id :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "Mobile Number :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "Category Claimed :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "Quota :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "College Code :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "Gender :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "Year :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "Ug :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "Pg :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+		$pdf->Ln(1);
+
+        // Payment Summary Table
+        $pdf->Ln(1);
+        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->SetX(10);
+		$boxWidth = 188;
+        $boxHeight = 7;
+        $boxXPos = ($pageWidth - $boxWidth) / 2;
+        $pdf->SetX($boxXPos);
+        $pdf->Rect($boxXPos, $pdf->GetY(), $boxWidth, $boxHeight);
+        $pdf->SetX($boxXPos);
+        $pdf->Cell($boxWidth, $boxHeight, 'PAYMENT SUMMARY', 0, 1, 'L');
+		$pdf->Ln(1);
+        $pdf->SetFont('Arial', '', 11);
+        $pdf->SetTextColor(0, 0, 0);
+
+        function printPayment($pdf, $label, $value, $startY, $rowHeight, $cellWidth1, $cellWidth2) {
+            $pdf->SetXY(10, $startY);
+            $pdf->Cell($cellWidth1, $rowHeight, $label, 0, 0, 'L', false);
+            $pdf->Cell($cellWidth2, $rowHeight, $value, 0, 1, 'L', false);
+        }
+
+        printPayment($pdf, "Paid Fees :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printPayment($pdf, "Balance Fees :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+		$pdf->Ln(1);
+
+        // Payment Description Table
+        $pdf->Ln(1);
+        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->SetX(10);
+		$boxWidth = 188;
+        $boxHeight = 7;
+        $boxXPos = ($pageWidth - $boxWidth) / 2;
+        $pdf->SetX($boxXPos);
+        $pdf->Rect($boxXPos, $pdf->GetY(), $boxWidth, $boxHeight);
+        $pdf->SetX($boxXPos);
+        $pdf->Cell($boxWidth, $boxHeight, 'PAYMENT DESCRIPTION', 0, 1, 'L');
+		$pdf->Ln(1);
+        $pdf->SetFont('Arial', '', 11);
+        $pdf->SetTextColor(0, 0, 0);
+
+        function paymentdescription($pdf, $label, $value, $startY, $rowHeight, $cellWidth1, $cellWidth2) {
+            $pdf->SetXY(10, $startY);
+            $pdf->Cell($cellWidth1, $rowHeight, $label, 0, 0, 'L', false);
+            $pdf->Cell($cellWidth2, $rowHeight, $value, 0, 1, 'L', false);
+        }
+
+        paymentdescription($pdf, "Fee Receipt :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        paymentdescription($pdf, "Tution Fees :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        paymentdescription($pdf, "College Other Fees :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        paymentdescription($pdf, "University Other Fees :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        paymentdescription($pdf, "Total Amount :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+
+        // Note and Receipt Date
+        $cellWidth = $pdf->GetPageWidth() - 20;
+        $rowHeight = 10;
+        $pdf->Ln(10);
+        $pdf->SetFont('Arial', '', 9);
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetX(10);
+        $pdf->Cell($cellWidth, $rowHeight, 'NOTE: THIS IS A COMPUTER GENERATED RECEIPT AND DOES NOT REQUIRED SIGNATURE.', 0, 1, 'L');
+        $pdf->SetX(10);
+        $pdf->Cell($cellWidth, $rowHeight, 'RECEIPT GENERATED DATE & TIME :', 0, 1, 'L');
+
+        $pdf->Output();
+    } else {
+        redirect('admin/timeout');
+    }
 }
+
+public function corpusreceipt()
+   {
+    if ($this->session->userdata('logged_in')) {
+        $session_data = $this->session->userdata('logged_in');
+        $data['id'] = $session_data['id'];
+        $data['username'] = $session_data['username'];
+        $data['full_name'] = $session_data['full_name'];
+        $data['role'] = $session_data['role'];
+
+        $data['page_title'] = 'Corpus Receipt';
+        $data['menu'] = 'corpusreceipt';
+
+        $this->load->library('fpdf'); // Load library
+        ini_set("session.auto_start", 0);
+        ini_set('memory_limit', '-1');
+        define('FPDF_FONTPATH', 'plugins/font');
+        $pdf = new FPDF();
+        $pdf->AddPage('P', 'A4'); // 'P' for portrait orientation, 'A4' for A4 size (210x297 mm)
+
+        // Set margins
+        $pdf->SetMargins(20, 20, 20);
+
+        $pdf->SetFont('Arial', 'B', 9);
+
+        // Centered header
+        $cellWidth = 40;
+        $cellHeight = 5;
+
+        $pdf->SetFont('Arial', '', 9);
+
+        // Calculate the X position to center the cell
+        $pageWidth = $pdf->GetPageWidth();
+        $xPos = ($pageWidth - $cellWidth) / 2;
+
+        // Define the lines to be printed
+        $lines = [
+            'MALNAD TECHNICAL EDUCATION SOCIETY (R)',
+            'REGD NO. S .2080/589 Dtd 22.01.1959',
+            'BESIDE  MCE  GANAPATHI TEMPLE ,MG ROAD,VIDYANAGAR,HASSAN-573202',
+            'STATE-KARNATAKA',
+            'CORPUS FUND RECEIPT'
+        ];
+
+        foreach ($lines as $line) {
+            $pdf->SetX($xPos);
+            $pdf->Cell($cellWidth, $cellHeight, $line, 0, 1, 'C');
+        }
+
+        // Amount Paid Box
+        $boxWidth = 188;
+        $boxHeight = 5;
+        $boxXPos = ($pageWidth - $boxWidth) / 2;
+        $pdf->SetX($boxXPos);
+        $pdf->Rect($boxXPos, $pdf->GetY(), $boxWidth, $boxHeight);
+        $pdf->SetX($boxXPos);
+        $pdf->Cell($boxWidth, $boxHeight, 'AMOUNT PAID 85000', 0, 1, 'C');
+
+        // Amount in Words
+        $pdf->Ln(4);
+        $pdf->SetX(10);
+        $pdf->SetFont('Arial', 'B', 11);
+        $pdf->Cell(0, $cellHeight, 'Amount in words:', 0, 1, 'L');
+
+        // Transaction Details Table
+        $pdf->Ln(3);
+        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->SetTextColor(33, 33, 33);
+        $rowHeight = 7;
+        $cellWidth1 = 90; // Width for the label column
+        $cellWidth2 = 70; // Width for the value column
+        $pdf->SetX(10);
+        // $pdf->Cell($cellWidth1 + $cellWidth2, $rowHeight, 'TRANSACTION DETAILS:', 0, 1, 'L');
+		$boxWidth = 188;
+        $boxHeight = 7;
+        $boxXPos = ($pageWidth - $boxWidth) / 2;
+        $pdf->SetX($boxXPos);
+        $pdf->Rect($boxXPos, $pdf->GetY(), $boxWidth, $boxHeight);
+        $pdf->SetX($boxXPos);
+        $pdf->Cell($boxWidth, $boxHeight, 'TRANSACTION DETAILS', 0, 1, 'L');
+        $pdf->SetFont('Arial', '', 11);
+        $pdf->SetTextColor(0, 0, 0);
+
+        function printRow($pdf, $label, $value, $startY, $rowHeight, $cellWidth1, $cellWidth2) {
+            $pdf->SetXY(10, $startY);
+            $pdf->Cell($cellWidth1, $rowHeight, $label, 0, 0, 'L', false);
+            $pdf->Cell($cellWidth2, $rowHeight, $value, 0, 1, 'L', false);
+        }
+
+		printRow($pdf, "Transaction Status :", 'Successful', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printRow($pdf, "Transaction Date-Time :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printRow($pdf, "Transaction Id :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printRow($pdf, "Payment Ref No :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+		$pdf->Ln(1);
+
+        // Student Details Table
+        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->SetX(10);
+        $pdf->SetX($boxXPos);
+        $pdf->Rect($boxXPos, $pdf->GetY(), $boxWidth, $boxHeight);
+        $pdf->SetX($boxXPos);
+        $pdf->Cell($boxWidth, $boxHeight, 'TRANSACTION DETAILS', 0, 1, 'L');
+		$pdf->Ln(1);
+        $pdf->SetFont('Arial', '', 11);
+        $pdf->SetTextColor(0, 0, 0);
+
+        function printStudent($pdf, $label, $value, $startY, $rowHeight, $cellWidth1, $cellWidth2) {
+            $pdf->SetXY(10, $startY);
+            $pdf->Cell($cellWidth1, $rowHeight, $label, 0, 0, 'L', false);
+            $pdf->Cell($cellWidth2, $rowHeight, $value, 0, 1, 'L', false);
+        }
+
+        printStudent($pdf, "Usn Number :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "Student Name :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "Email Id :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "Mobile Number :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "Category Claimed :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "Quota :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "College Code :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "Gender :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "Year :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "Ug :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printStudent($pdf, "Pg :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+
+        $pdf->Ln(1);
+
+        // Payment Summary Table
+        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->SetX(10);
+		$pdf->SetX($boxXPos);
+        $pdf->Rect($boxXPos, $pdf->GetY(), $boxWidth, $boxHeight);
+        $pdf->SetX($boxXPos);
+        $pdf->Cell($boxWidth, $boxHeight, 'PAYMENT SUMMARY', 0, 1, 'L');
+		$pdf->Ln(1);
+        $pdf->SetFont('Arial', '', 11);
+        $pdf->SetTextColor(0, 0, 0);
+
+        function printPayment($pdf, $label, $value, $startY, $rowHeight, $cellWidth1, $cellWidth2) {
+            $pdf->SetXY(10, $startY);
+            $pdf->Cell($cellWidth1, $rowHeight, $label, 0, 0, 'L', false);
+            $pdf->Cell($cellWidth2, $rowHeight, $value, 0, 1, 'L', false);
+        }
+
+        printPayment($pdf, "Total Fees :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printPayment($pdf, "Paid Fees :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        printPayment($pdf, "Balance Fees :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+
+        $pdf->Ln(1);
+
+        // Payment Description Table
+        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->SetX(10);
+        $pdf->SetX($boxXPos);
+        $pdf->Rect($boxXPos, $pdf->GetY(), $boxWidth, $boxHeight);
+        $pdf->SetX($boxXPos);
+        $pdf->Cell($boxWidth, $boxHeight, 'PAYMENT DESCRIPTION', 0, 1, 'L');
+		$pdf->Ln(1);
+        $pdf->SetFont('Arial', '', 11);
+        $pdf->SetTextColor(0, 0, 0);
+
+        function paymentdescription($pdf, $label, $value, $startY, $rowHeight, $cellWidth1, $cellWidth2) {
+            $pdf->SetXY(10, $startY);
+            $pdf->Cell($cellWidth1, $rowHeight, $label, 0, 0, 'L', false);
+            $pdf->Cell($cellWidth2, $rowHeight, $value, 0, 1, 'L', false);
+        }
+
+        paymentdescription($pdf, "Corpus Fund Fee Receipt :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+        paymentdescription($pdf, "Total Amount :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+
+        // Note and Receipt Date
+        $cellWidth = $pdf->GetPageWidth() - 20;
+        $rowHeight = 10;
+        $pdf->Ln(10);
+        $pdf->SetFont('Arial', '', 9);
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetX(10);
+        $pdf->Cell($cellWidth, $rowHeight, 'NOTE: THIS IS A COMPUTER GENERATED RECEIPT AND DOES NOT REQUIRED SIGNATURE.', 0, 1, 'L');
+        $pdf->SetX(10);
+        $pdf->Cell($cellWidth, $rowHeight, 'RECEIPT GENERATED DATE & TIME :', 0, 1, 'L');
+
+        $pdf->Output();
+    } else {
+        redirect('admin/timeout');
+    }
+}
+
+			
+	}
