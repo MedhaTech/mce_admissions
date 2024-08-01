@@ -11,7 +11,7 @@
                         <ul class="nav nav-pills ml-auto">
                             <!-- <li class="nav-item">
                                 <?php $encryptId = base64_encode($admissionDetails->id);
-                                echo anchor('admin/admissionsdetails/'.$encryptId, '<i class="fas fa-download fa-sm fa-fw"></i> Download ', 'class="btn btn-danger btn-sm"'); ?>
+                                echo anchor('admin/admissionform/'.$encryptId, '<i class="fas fa-download fa-sm fa-fw"></i> Download ', 'class="btn btn-danger btn-sm"'); ?>
                             </li> -->
                             <!-- <li class="nav-item">
                                 <?php $encryptId = base64_encode($admissionDetails->id);

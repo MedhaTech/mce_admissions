@@ -372,6 +372,13 @@ class Admin_model extends CI_Model
     return $this->db->get('enquiries');
   }
 
+  function getActiveComedk()
+  {
+    $this->db->select('comedk_seats.department_id, comedk_seats.stream_id, streams.stream_name, streams.stream_short_name, comedk_seats.department_name, comedk_seats.department_short_name, comedk_seats.unaided_mgmt_intake, comedk_seats.unaided_comed_k_intake, comedk_seats.moved, comedk_seats.unaided_mgmt_intake_new, comedk_seats.unaided_comed_k_intake_new');
+    $this->db->join('streams', 'streams.stream_id = comedk_seats.stream_id');
+    $this->db->where('comedk_seats.status', '1');
+    return $this->db->get('comedk_seats');
+  }
 
   function getActiveDepartments()
   {
@@ -606,4 +613,15 @@ public function getCities($state_id) {
       return false;
     }
   }
+
+public function updateIntakeValues($department_id, $comedk_intake, $mgmt_intake, $moved) {
+  $data = array(
+      'unaided_comed_k_intake_new' => $comedk_intake,
+      'unaided_mgmt_intake_new' => $mgmt_intake,
+      'moved' => $moved
+  );
+  $this->db->where('department_id', $department_id);
+  $this->db->update('comedk_seats', $data);
+}
+
 }
