@@ -1180,7 +1180,7 @@ class Student extends CI_Controller
 			$pdf->Cell(0, $row, "Mode of Payment", 1, 0, 'L', false);
 			$pdf->setFont('Arial', '', 9);
 			$pdf->SetXY(50, $y + $row);
-			$transactionTypes = array("1" => "Cash", "2" => "DD", "3" => "Online Payment");
+			$transactionTypes = array("1" => "Cash", "2"=>"DD", "3"=>"Online Payment", "4"=>"Online Transfer");
 			$pdf->Cell(0, $row, $transactionTypes[$transactionDetails->transaction_type], 1, 0, 'L', false);
 
 			$final_amount = $admissionDetails->final_amount;
@@ -1940,6 +1940,7 @@ class Student extends CI_Controller
 				'academic_year' => "2024-2025",
 				'admissions_id' => $data['id'],
 				'reference_date' => date('Y-m-d'),
+				'payment_id' => $this->input->post('pay_id'),
 				'transaction_status' => '0',
 				'created_on' => date('Y-m-d h:i:s')
 			);
