@@ -190,7 +190,7 @@
                         $print_fields = array('S.No', 'Receipt', 'Date', 'Mode of Payment', 'Amount');
                         $this->table->set_heading($print_fields);
 
-                        $transactionTypes = array("1" => "Cash", "2" => "Cheque/DD", "3" => "Online Payment");
+                        $transactionTypes = array("1" => "Cash", "2" => "DD", "3" => "Online Payment", "4" => "Online Transfer");
 
                         $i = 1;
                         $total = 0;

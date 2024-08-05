@@ -20,7 +20,15 @@
                                   <div class="col-md-8 offset-1">
 
 
+                                      <div class="form-group row">
 
+                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">Select All</label>
+                                          <div class="col-md-6">
+                                              <input type="checkbox" value="0" id="selectAllCheckbox">
+                                          </div>
+
+
+                                      </div>
 
 
                                       <div class="form-group row">
@@ -517,7 +525,13 @@
                   });
               }
           }
+          $('#selectAllCheckbox').change(function() {
+              // Check if the master checkbox is checked
+              var isChecked = $(this).is(':checked');
 
+              // Select or deselect all checkboxes that are not disabled and not with the ID 'corpus_fund_checkbox'
+              $('input[type="checkbox"]:not(:disabled):not(#corpus_fund_checkbox)').prop('checked', isChecked);
+          });
           // Attach change event listener to relevant checkboxes
           $('input[type="checkbox"]').change(function() {
               updateFinalFee(); // Update the final fee whenever a checkbox changes
