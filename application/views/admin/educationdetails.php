@@ -47,7 +47,7 @@
                                         $edu->medium_of_instruction,
                                         $edu->register_number,
                                         $edu->year_of_passing,
-                                        anchor('admin/updateeducationdetails/' . $edu->id, '<span class="icon"><i class="fas fa-edit"></i></span> <span class="text">Edit</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"')
+                                        anchor('admin/updateeducationdetails/' . $edu->id.'/'.$student_id, '<span class="icon"><i class="fas fa-edit"></i></span> <span class="text">Edit</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm"')
 
                                     );
                                     $this->table->add_row($result_array);
