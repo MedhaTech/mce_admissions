@@ -3881,6 +3881,7 @@ With good wishes";
 			$data['academicYear'] = $this->globals->academicYear();
 			$data['course_options'] = array(" " => "Select Branch") + $this->courses();
 			$data['type_options'] = array(" " => "Select") + $this->globals->category();
+			$data['category_options'] = array(" " => "Select") + $this->globals->category_claimed();
 
 			$id = base64_decode($encryptId);
 
@@ -3896,12 +3897,12 @@ With good wishes";
 			$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]');
 			$this->form_validation->set_rules('email', 'Email', 'trim|valid_email');
 			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]');
-			$this->form_validation->set_rules('dept_id', 'Department Id', 'required');
-			$this->form_validation->set_rules('quota', 'Quota', 'required');
-			$this->form_validation->set_rules('sub_quota', 'sub_quota', 'required');
+			// $this->form_validation->set_rules('dept_id', 'Department Id', 'required');
+			// $this->form_validation->set_rules('quota', 'Quota', 'required');
+			// $this->form_validation->set_rules('sub_quota', 'sub_quota', 'required');
 			$this->form_validation->set_rules('category_allotted', 'Category Allocated', 'required');
 			$this->form_validation->set_rules('category_claimed', 'Category Claimed', 'required');
-			$this->form_validation->set_rules('college_code', 'College Code', 'required');
+			// $this->form_validation->set_rules('college_code', 'College Code', 'required');
 			$this->form_validation->set_rules('sports', 'Sports', 'required');
 
 			if ($this->form_validation->run() === FALSE) {
@@ -3914,12 +3915,12 @@ With good wishes";
 				$data['mobile'] = $admissionDetails->mobile;
 				$data['email'] = $admissionDetails->email;
 				$data['aadhaar'] = $admissionDetails->aadhaar;
-				$data['dept_id'] = $admissionDetails->dept_id;
-				$data['quota'] = $admissionDetails->quota;
-				$data['sub_quota'] = $admissionDetails->sub_quota;
+				// $data['dept_id'] = $admissionDetails->dept_id;
+				// $data['quota'] = $admissionDetails->quota;
+				// $data['sub_quota'] = $admissionDetails->sub_quota;
 				$data['category_allotted'] = $admissionDetails->category_allotted;
 				$data['category_claimed'] = $admissionDetails->category_claimed;
-				$data['college_code'] = $admissionDetails->college_code;
+				// $data['college_code'] = $admissionDetails->college_code;
 				$data['sports'] = $admissionDetails->sports;
 				$this->admin_template->show('admin/updateadmissiondetails', $data);
 			} else {
@@ -3928,12 +3929,12 @@ With good wishes";
 					'mobile' => $this->input->post('mobile'),
 					'email' => strtolower($this->input->post('email')),
 					'aadhaar' => $this->input->post('aadhaar'),
-					'dept_id' => $this->input->post('dept_id'),
-					'quota' => $this->input->post('quota'),
-					'sub_quota' => $this->input->post('sub_quota'),
+					// 'dept_id' => $this->input->post('dept_id'),
+					// 'quota' => $this->input->post('quota'),
+					// 'sub_quota' => $this->input->post('sub_quota'),
 					'category_allotted' => $this->input->post('category_allotted'),
 					'category_claimed' => $this->input->post('category_claimed'),
-					'college_code' => $this->input->post('college_code'),
+					// 'college_code' => $this->input->post('college_code'),
 					'sports' => $this->input->post('sports'),
 				);
 				// print_r($updateDetails);
@@ -4087,6 +4088,7 @@ With good wishes";
 			$this->form_validation->set_rules('economically_backward', 'Economically Backward', 'required');
 			$this->form_validation->set_rules('domicile_of_state', 'Domicile of State', 'required');
 			$this->form_validation->set_rules('hobbies', 'Hobbies', 'required');
+			$this->form_validation->set_rules('admission_based', 'Admission Based On');
 			$this->form_validation->set_rules('current_address', 'Current Address', 'required');
 			$this->form_validation->set_rules('current_city', 'Current City', 'required');
 			$this->form_validation->set_rules('current_district', 'Current District', 'required');
@@ -4123,6 +4125,8 @@ With good wishes";
 				$data['economically_backward'] = $personalDetails->economically_backward;
 				$data['domicile_of_state'] = $personalDetails->domicile_of_state;
 				$data['hobbies'] = $personalDetails->hobbies;
+				$data['admission_based'] = $personalDetails->admission_based;
+				$data['lateral_entry'] = $personalDetails->lateral_entry;
 				$data['current_address'] = $personalDetails->current_address;
 				$data['current_city'] = $personalDetails->current_city;
 				$data['current_district'] = $personalDetails->current_district;
@@ -4153,6 +4157,8 @@ With good wishes";
 					'economically_backward' => $this->input->post('economically_backward'),
 					'domicile_of_state' => $this->input->post('domicile_of_state'),
 					'hobbies' => $this->input->post('hobbies'),
+					'lateral_entry' => $this->input->post('lateral_entry'),
+					'admission_based' => $this->input->post('admission_based'),
 					'current_address' => $this->input->post('current_address'),
 					'current_city' => $this->input->post('current_city'),
 					'current_district' => $this->input->post('current_district'),
@@ -4299,6 +4305,7 @@ With good wishes";
 			$data['menu'] = "educationdetails";
 
 			$id = base64_decode($encryptId);
+			$data['student_id']=$encryptId;
 
 			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'student_id', 'student_education_details')->result();
 
@@ -4353,7 +4360,7 @@ With good wishes";
 				$data['menu'] = "educationdetails";
 				$data['countries'] = $this->admin_model->getCountries();
 				$data['instruction_options'] = array(" " => "Select Medium of instruction") + $this->globals->medium_of_instruction();
-
+				$data['student_id']=$encryptId;
 				$this->admin_template->show('admin/educationdetails', $data);
 			} else {
 
@@ -4408,7 +4415,7 @@ With good wishes";
 	}
 
 
-	function updateeducationdetails($edu_id)
+	function updateeducationdetails($edu_id,$encryptId)
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
@@ -4417,10 +4424,12 @@ With good wishes";
 			$data['role'] = $session_data['role'];
 			$data['page_title'] = 'Update Education Details';
 			$data['menu'] = 'educationdetails';
+			$id = base64_decode($encryptId);
+			$data['personalDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$data['instruction_options'] = array(" " => "Select Medium of instruction") + $this->globals->medium_of_instruction();
 
 			$this->form_validation->set_rules('education_level', 'Education Level', 'required');
-			$this->form_validation->set_rules('inst_type', 'Institution Type', 'required');
+			// $this->form_validation->set_rules('inst_type', 'Institution Type', 'required');
 			$this->form_validation->set_rules('inst_board', 'Board / University', 'required');
 			$this->form_validation->set_rules('inst_name', 'Institution Name', 'required');
 			$this->form_validation->set_rules('inst_address', 'Institution Address', 'required');
@@ -4463,7 +4472,7 @@ With good wishes";
 					$data['subject_' . $i . '_obtained_marks'] = $obtained_marks;
 					// }
 				}
-				$data['action'] = 'admin/updateeducationdetails/' . $edu_id;
+				$data['action'] = 'admin/updateeducationdetails/' . $edu_id . '/' . $encryptId;
 				$data['username'] = $session_data['username'];
 				$data['full_name'] = $session_data['full_name'];
 				$data['role'] = $session_data['role'];
@@ -4473,6 +4482,8 @@ With good wishes";
 				$data['countries'] = $this->admin_model->getCountries();
 				$data['states'] = $this->admin_model->get_states();
 				$data['cities'] = $this->admin_model->get_city();
+				$data['encryptId']=$encryptId;
+				$data['personalDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 				$data['instruction_options'] = array(" " => "Select Medium of instruction") + $this->globals->medium_of_instruction();
 
 				$this->admin_template->show('admin/updateeducationdetails', $data);
@@ -4494,6 +4505,7 @@ With good wishes";
 					'updated_on' => date('Y-m-d h:i:s'),
 					'updated_by' => $data['student_name']
 				);
+				// var_dump($updateDetails);die();
 
 				// Insert subject fields
 				for ($i = 1; $i <= 6; $i++) {
@@ -4523,7 +4535,7 @@ With good wishes";
 					$this->session->set_flashdata('status', 'alert-warning');
 				}
 
-				redirect('admin/updateeducationdetails/' . $edu_id, 'refresh');
+				redirect('admin/updateeducationdetails/' . $edu_id . '/' . $encryptId, 'refresh');
 			}
 		} else {
 			redirect('admin', 'refresh');

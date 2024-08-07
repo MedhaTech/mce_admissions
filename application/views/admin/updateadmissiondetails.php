@@ -11,7 +11,7 @@
                         <div class="card-tools">
                             <ul class="nav nav-pills ml-auto">
                                 <li class="nav-item">
-                                <!-- <?php echo anchor('student/dashboard', '<i class="fas fa-tachometer-alt"></i> Dashboard ', 'class="btn btn-dark btn-sm"'); ?> -->
+                                <?php   $encryptId = base64_encode($admissionDetails->id); echo anchor('admin/admissionDetails/'.$encryptId, '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Back ', 'class="btn btn-dark btn-sm"'); ?>
                                 </li>
                             </ul>
                         </div>
@@ -63,7 +63,7 @@
                                     <span class="text-danger"><?php echo form_error('aadhaar'); ?></span>
                                 </div>
                             </div>
-                            <div class="col-md-4 col-sm-12">
+                            <!-- <div class="col-md-4 col-sm-12">
                                 <div class="form-group">
                                     <label class="label">Department<span class="text-danger">*</span></label>
                                     <input type="text"
@@ -80,12 +80,37 @@
                                         class="form-control" placeholder="Enter Quota" >
                                     <span class="text-danger"><?php echo form_error('quota'); ?></span>
                                 </div>
+                            </div> -->
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label class="label">Category Allocated<span class="text-danger">*</span></label>
+                                    <?php echo form_dropdown('category_allotted', $category_options, (set_value('category_allotted')) ? set_value('category_allotted') : $category_allotted, 'class="form-control" id="category_allotted"'); ?>
+                                    <span class="text-danger"><?php echo form_error('category_allotted'); ?></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                    <label class="label">Category Claimed<span class="text-danger">*</span></label>
+                                    <?php echo form_dropdown('category_claimed', $category_options, (set_value('category_claimed')) ? set_value('category_claimed') : $category_claimed, 'class="form-control" id="category_claimed"'); ?>
+                                    <span class="text-danger"><?php echo form_error('category_claimed'); ?></span>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4 col-sm-12">
+                                <label class="label">Sports/Cultural Activities<span
+                                        class="text-danger">*</span></label>
+                                <!-- <input type="text" name="sports" id="sports"
+                                    value="<?php echo (set_value('sports')) ? set_value('sports') : $sports; ?>"
+                                    class="form-control" placeholder="Enter Sports" > -->
+                                <?php $sports_options = array(" "=>"Select Sports","District"=>"District","State"=>"State","National"=>"National","International"=>"International","Not Applicable"=>"Not Applicable");
+                                          echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : $sports, 'class="form-control" id="sports"'); ?>
+                                <span class="text-danger"><?php echo form_error('sports'); ?></span>
                             </div>
 
                         </div>
 
                         <div class="form-row">
-                            <div class="col-md-4 col-sm-12">
+                            <!-- <div class="col-md-4 col-sm-12">
                                 <div class="form-group">
                                     <label class="label">SubQuota<span class="text-danger">*</span></label>
                                     <input type="text" name="sub_quota" id="sub_quota"
@@ -93,56 +118,14 @@
                                         class="form-control" placeholder="Enter SubQuota" >
                                     <span class="text-danger"><?php echo form_error('sub_quota'); ?></span>
                                 </div>
-                            </div>
+                            </div> -->
 
-                            <div class="col-md-4 col-sm-12">
-                                <div class="form-group">
-                                    <label class="label">Category Allocated<span class="text-danger">*</span></label>
-                                    <input type="text" name="category_allotted" id="category_allotted"
-                                        value="<?php echo (set_value('category_allotted')) ? set_value('category_allotted') : $category_allotted; ?>"
-                                        class="form-control" placeholder="Enter Category Allocatted" >
-                                    <span class="text-danger"><?php echo form_error('category_allotted'); ?></span>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-sm-12">
-                                <div class="form-group">
-                                    <label class="label">Category Claimed<span class="text-danger">*</span></label>
-                                    <input type="text" name="category_claimed" id="category_claimed"
-                                        value="<?php echo (set_value('category_claimed')) ? set_value('category_claimed') : $category_claimed; ?>"
-                                        class="form-control" placeholder="Enter Category Claimed" >
-                                    <!-- <?php echo form_dropdown('category_claimed', $type_options, (set_value('category_claimed')) ? set_value('category_claimed') : $category_claimed, 'class="form-control" id="category_claimed"'); ?> -->
-                                    <span class="text-danger"><?php echo form_error('category_claimed'); ?></span>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-4 col-sm-12">
-                                <div class="form-group">
-                                    <label class="label">College Code<span class="text-danger">*</span></label>
-                                    <input type="text" name="college_code" id="college_code" class="form-control"
-                                        value="<?php echo (set_value('college_code')) ? set_value('college_code') : $college_code; ?>"
-                                        placeholder="Enter College Code" >
-                                    <span class="text-danger"><?php echo form_error('college_code'); ?></span>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-4 col-sm-12">
-                                <label class="label">Sports/Cultural Activities<span
-                                        class="text-danger">*</span></label>
-                                <input type="text" name="sports" id="sports"
-                                    value="<?php echo (set_value('sports')) ? set_value('sports') : $sports; ?>"
-                                    class="form-control" placeholder="Enter Sports" >
-                                <!-- <?php $sports_options = array(" "=>"Select Sports","District"=>"District","State"=>"State","National"=>"National","International"=>"International","Not Applicable"=>"Not Applicable");
-                                          echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : $sports, 'class="form-control" id="sports"'); ?> -->
-                                <span class="text-danger"><?php echo form_error('sports'); ?></span>
-                            </div>
                         </div>
 
                         <div class="card-footer">
                         <div class="row">
                             <div class="col-md-6">
-                                <?php echo anchor('admin/admissions', 'BACK', 'class="btn btn-danger btn-square" '); ?>
+                                <!-- <?php echo anchor('admin/admissions', 'BACK', 'class="btn btn-danger btn-square" '); ?> -->
                             </div>
                             <div class="col-md-6 text-right">
                             <button type="submit" class="btn btn-info btn-square" name="Update" id="Update"> SAVE 
