@@ -461,7 +461,7 @@
                               <div class="card-footer">
                                   <div class="row">
                                       <div class="col-md-6">
-                                          <?php echo anchor('admin/feestructure', 'BACK', 'class="btn btn-dark btn-square" '); ?>
+                                          <?php echo anchor('admin/paymentDetail/'.base64_encode($stud_id), 'BACK', 'class="btn btn-dark btn-square" '); ?>
                                       </div>
                                       <div class="col-md-6 text-right">
                                           <button type="submit" class="btn btn-info btn-square" name="create" id="create"> CREATE </button>
@@ -492,6 +492,7 @@
       $('input[type="checkbox"]').each(function() {
         if ($(this).prop('checked')) {
           var inputId = $(this).attr('id').replace('_checkbox', '');
+          $('#' + inputId).removeAttr('readonly');
           var inputValue = parseFloat($('#' + inputId).val());
           
           if ($(this).attr('id') === 'corpus_fund_checkbox') {
@@ -520,6 +521,9 @@
 
     // Attach change event listener to relevant checkboxes
     $('input[type="checkbox"]').change(function() {
+      updateFinalFee(); // Update the final fee whenever a checkbox changes
+    });
+    $('input[type="text"]').change(function() {
       updateFinalFee(); // Update the final fee whenever a checkbox changes
     });
 
