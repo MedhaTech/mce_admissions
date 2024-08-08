@@ -12,7 +12,7 @@
                         <ul class="nav nav-pills ml-auto">
                             <li class="nav-item">
                                 <?php
-                                    if($role == 1 || $role == 2){
+                                    if($role == 1 || $role == 2 || $role ==3){
                                         echo anchor('admin/updatedashboard2', ' <i class="fas fa-edit"></i>  Edit ', 'class="btn btn-primary btn-sm"'); 
                                         echo anchor('admin/dashboard', ' <i class="fas fa-list"></i>  OVERALL DASHBAORD ', 'class="btn btn-warning btn-sm"'); 
                                     }

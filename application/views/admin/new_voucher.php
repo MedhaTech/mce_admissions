@@ -469,7 +469,7 @@
                               <div class="card-footer">
                                   <div class="row">
                                       <div class="col-md-6">
-                                          <?php echo anchor('admin/feestructure', 'BACK', 'class="btn btn-dark btn-square" '); ?>
+                                          <?php echo anchor('admin/voucherDetail/'.base64_encode($stud_id), 'BACK', 'class="btn btn-dark btn-square" '); ?>
                                       </div>
                                       <div class="col-md-6 text-right">
                                           <button type="submit" class="btn btn-info btn-square" name="create" id="create"> CREATE </button>
