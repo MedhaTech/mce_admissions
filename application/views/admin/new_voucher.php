@@ -20,7 +20,15 @@
                                   <div class="col-md-8 offset-1">
 
 
+                                      <div class="form-group row">
 
+                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">Select All</label>
+                                          <div class="col-md-6">
+                                              <input type="checkbox" value="0" id="selectAllCheckbox">
+                                          </div>
+
+
+                                      </div>
 
 
                                       <div class="form-group row">
@@ -461,7 +469,7 @@
                               <div class="card-footer">
                                   <div class="row">
                                       <div class="col-md-6">
-                                          <?php echo anchor('admin/feestructure', 'BACK', 'class="btn btn-dark btn-square" '); ?>
+                                          <?php echo anchor('admin/voucherDetail/'.base64_encode($stud_id), 'BACK', 'class="btn btn-dark btn-square" '); ?>
                                       </div>
                                       <div class="col-md-6 text-right">
                                           <button type="submit" class="btn btn-info btn-square" name="create" id="create"> CREATE </button>
@@ -517,7 +525,13 @@
                   });
               }
           }
+          $('#selectAllCheckbox').change(function() {
+              // Check if the master checkbox is checked
+              var isChecked = $(this).is(':checked');
 
+              // Select or deselect all checkboxes that are not disabled and not with the ID 'corpus_fund_checkbox'
+              $('input[type="checkbox"]:not(:disabled):not(#corpus_fund_checkbox)').prop('checked', isChecked);
+          });
           // Attach change event listener to relevant checkboxes
           $('input[type="checkbox"]').change(function() {
               updateFinalFee(); // Update the final fee whenever a checkbox changes

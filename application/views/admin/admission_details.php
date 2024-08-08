@@ -13,10 +13,10 @@
                                 <?php $encryptId = base64_encode($admissionDetails->id);
                                 echo anchor('admin/admissionform/'.$encryptId, '<i class="fas fa-download fa-sm fa-fw"></i> Download ', 'class="btn btn-danger btn-sm"'); ?>
                             </li> -->
-                            <!-- <li class="nav-item">
+                            <li class="nav-item">
                                 <?php $encryptId = base64_encode($admissionDetails->id);
                                 echo anchor('admin/updateadmissiondetails/'.$encryptId, '<i class="fas fa-edit fa-sm fa-fw"></i> Edit ', 'class="btn btn-dark btn-sm"'); ?>
-                            </li> -->
+                            </li>
                             <?php if((in_array($role, array(1)))){ 
                                 if($admissionDetails->quota == "MGMT") {?>
                             <li class="nav-item">
@@ -566,6 +566,34 @@
                                 if($admissionDetails->hobbies != NULL)
                                     {
                                         echo $admissionDetails->hobbies;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Admission Based On</label><br>
+                                <?php
+                                if($admissionDetails->hobbies != NULL)
+                                    {
+                                        echo $admissionDetails->admission_based;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Latrel</label><br>
+                                <?php
+                                if($admissionDetails->hobbies != NULL)
+                                    {
+                                        echo $admissionDetails->lateral_entry;
                                     }
                                 else{
                                         echo "--" ;
@@ -1135,6 +1163,10 @@
                         </div>
                     </div>
                     <table class="table table-border">
+                         <?php
+                                if(($edu->education_level == 'SSLC')||($edu->education_level == 'PUC'))
+                                    {
+                                        ?>
                         <thead>
                             <tr>
                                 <th>Subject Name</th>
@@ -1143,6 +1175,17 @@
                                 <th>Obtained Marks</th>
                             </tr>
                         </thead>
+                        <?php } else{ ?>
+                            <thead>
+                            <tr>
+                                <th>Years</th>
+                                <th>Percentage(%)</th>
+                                <th>Max Marks</th>
+                                <th>Obtained Marks</th>
+                            </tr>
+                        </thead>
+
+                            <?php }?>
                         <tbody>
                             <?php
                             for ($i = 1; $i <= 6; $i++) {

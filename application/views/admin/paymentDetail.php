@@ -297,7 +297,7 @@
                     $print_fields = array('S.No', 'Receipt', 'Date', 'Mode of Payment', 'Amount');
                     $this->table->set_heading($print_fields);
 
-                    $transactionTypes = array("1" => "Cash", "2" => "DD", "3" => "Online Payment");
+                    $transactionTypes = array("1" => "Cash", "2" => "DD", "3" => "Online Payment", "4" => "Online Transfer");
 
                     $i = 1;
                     $total = 0;
@@ -306,11 +306,18 @@
                         $trans = null;
                         if ($transactionDetails1->transaction_type == 1) {
                             $trans = $transactionTypes[$transactionDetails1->transaction_type];
+                            $receiptprint=($transactionDetails1->receipt_no) ? anchor('admin/receiptletter/' . $admissionDetails->id . '/' . $transactionDetails1->id, $transactionDetails1->receipt_no) : "-";
                         }
                         if ($transactionDetails1->transaction_type == 2) {
+                            $receiptprint=($transactionDetails1->receipt_no) ? anchor('admin/receiptletter/' . $admissionDetails->id . '/' . $transactionDetails1->id, $transactionDetails1->receipt_no) : "-";
                             $trans = $transactionTypes[$transactionDetails1->transaction_type] . "<br> No:" . $transactionDetails1->reference_no . '<br> Dt:' . date('d-m-Y', strtotime($transactionDetails1->reference_date)) . ' <br> Bank: ' . $transactionDetails1->bank_name;
                         }
                         if ($transactionDetails1->transaction_type == 3) {
+                            $receiptprint=($transactionDetails1->receipt_no) ? anchor('admin/feereceipt/' . $admissionDetails->id . '/' . $transactionDetails1->id, $transactionDetails1->receipt_no) : "-";
+                            $trans = $transactionTypes[$transactionDetails1->transaction_type] . "<br> No:" . $transactionDetails1->reference_no . '<br> Dt:' . date('d-m-Y', strtotime($transactionDetails1->reference_date));
+                        }
+                        if ($transactionDetails1->transaction_type == 4) {
+                            $receiptprint=($transactionDetails1->receipt_no) ? anchor('admin/receiptletter/' . $admissionDetails->id . '/' . $transactionDetails1->id, $transactionDetails1->receipt_no) : "-";
                             $trans = $transactionTypes[$transactionDetails1->transaction_type] . "<br> No:" . $transactionDetails1->reference_no . '<br> Dt:' . date('d-m-Y', strtotime($transactionDetails1->reference_date));
                         }
 
@@ -318,7 +325,7 @@
 
                         $result_array = array(
                             $i++,
-                            ($transactionDetails1->receipt_no) ? anchor('admin/receiptletter/' . $admissionDetails->id . '/' . $transactionDetails1->id, $transactionDetails1->receipt_no) : "-",
+                            $receiptprint,
                             ($transactionDetails1->transaction_date != "") ? date('d-m-Y', strtotime($transactionDetails1->transaction_date)) : "-",
                             $trans,
                             number_format($transactionDetails1->amount, 2),
@@ -364,6 +371,17 @@
 
 
                         <div class="form-group row">
+
+                            <label for="staticEmail" class="col-md-5 col-form-label text-right">Select All</label>
+                            <div class="col-md-6">
+                                <input type="checkbox" value="0" id="selectAllCheckbox">
+                            </div>
+
+
+                        </div>
+
+                        <div class="form-group row">
+
                             <label for="staticEmail" class="col-md-5 col-form-label text-right">E
                                 Learning
                                 Fee</label>
@@ -813,7 +831,7 @@
                                 <input type="radio" name="mode_of_payment" id="mode_of_payment" value="ChequeDD"> DD
                             </label>
                             <label class="radio-inline mr-3">
-                                <input type="radio" name="mode_of_payment" id="mode_of_payment" value="OnlinePayment"> Online Payment
+                                <input type="radio" name="mode_of_payment" id="mode_of_payment" value="OnlinePayment"> Online Transfer
                             </label>
                             <span class="text-danger"><?php echo form_error('mode_of_payment'); ?></span>
                         </div>
@@ -875,6 +893,12 @@
                                 <span class="text-danger"><?php echo form_error('transaction_amount'); ?></span>
                             </div> -->
                         </div>
+                        <div class="form-group  col-sm-12">
+                            <label class="form-label">Comments:</label>
+                            <textarea class="form-control" placeholder="Enter Comments" id="remarks" name="remarks"> </textarea>
+                            <span class="text-danger"><?php echo form_error('remarks'); ?></span>
+                        </div>
+
                     </div>
                     <div class="row">
                         <div class="col-6">
@@ -1014,7 +1038,13 @@
                 });
             }
         }
+        $('#selectAllCheckbox').change(function() {
+            // Check if the master checkbox is checked
+            var isChecked = $(this).is(':checked');
 
+            // Select or deselect all checkboxes that are not disabled and not with the ID 'corpus_fund_checkbox'
+            $('input[type="checkbox"]:not(:disabled):not(#corpus_fund_checkbox)').prop('checked', isChecked);
+        });
         // Attach change event listener to relevant checkboxes
         $('input[type="checkbox"]').change(function() {
             updateFinalFee(); // Update the final fee whenever a checkbox changes
@@ -1025,48 +1055,48 @@
     });
 </script>
 <script>
-      $(document).ready(function() {
-          // Listen for form submission
-          $('form').submit(function(event) {
-              // Prevent the default form submission
-              event.preventDefault();
+    $(document).ready(function() {
+        // Listen for form submission
+        $('form').submit(function(event) {
+            // Prevent the default form submission
+            event.preventDefault();
 
-              // Array to store selected checkbox values
-              var selectedFees = [];
+            // Array to store selected checkbox values
+            var selectedFees = [];
 
-              // Iterate over each checked checkbox
-              $('input[name="fees[]"]:checked').each(function() {
-                  // Get the value of the checkbox (e.g., 'e_learning_fee')
-                  var feeValue = $(this).val();
+            // Iterate over each checked checkbox
+            $('input[name="fees[]"]:checked').each(function() {
+                // Get the value of the checkbox (e.g., 'e_learning_fee')
+                var feeValue = $(this).val();
 
-                  // Find the corresponding text field value based on feeValue
-                  var textFieldValue = $('#' + feeValue).val();
+                // Find the corresponding text field value based on feeValue
+                var textFieldValue = $('#' + feeValue).val();
 
-                  // Prepare data for submission
-                  selectedFees.push({
-                      name: $(this).attr('id'),
-                      value: feeValue,
-                      textFieldValue: textFieldValue
-                  });
-              });
-              var finalFee = $('#final_fee').val();
+                // Prepare data for submission
+                selectedFees.push({
+                    name: $(this).attr('id'),
+                    value: feeValue,
+                    textFieldValue: textFieldValue
+                });
+            });
+            var finalFee = $('#final_fee').val();
 
-              // Add final fee and selectedFees array as hidden input fields to the form
-              $('<input>').attr({
-                  type: 'hidden',
-                  name: 'final_fee',
-                  value: finalFee
-              }).appendTo('form');
+            // Add final fee and selectedFees array as hidden input fields to the form
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'final_fee',
+                value: finalFee
+            }).appendTo('form');
 
-              // Add selectedFees array as a hidden input field to the form
-              $('<input>').attr({
-                  type: 'hidden',
-                  name: 'selected_fees',
-                  value: JSON.stringify(selectedFees)
-              }).appendTo('form');
+            // Add selectedFees array as a hidden input field to the form
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'selected_fees',
+                value: JSON.stringify(selectedFees)
+            }).appendTo('form');
 
-              // Submit the form programmatically
-              this.submit();
-          });
-      });
-  </script>
+            // Submit the form programmatically
+            this.submit();
+        });
+    });
+</script>
