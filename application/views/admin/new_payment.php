@@ -546,7 +546,8 @@
               $('input[name="fees[]"]:checked').each(function() {
                   // Get the value of the checkbox (e.g., 'e_learning_fee')
                   var feeValue = $(this).val();
-
+                  var inputId = $(this).attr('id').replace('_checkbox', '');
+                  var inputValue = parseFloat($('#' + inputId).val());
                   // Find the corresponding text field value based on feeValue
                   var textFieldValue = $('#' + feeValue).val();
 
@@ -554,9 +555,11 @@
                   selectedFees.push({
                       name: $(this).attr('id'),
                       value: feeValue,
-                      textFieldValue: textFieldValue
+                      textFieldValue: textFieldValue,
+                      newvalue: inputValue
                   });
               });
+             
               var finalFee = $('#final_fee').val();
 
               // Add final fee and selectedFees array as hidden input fields to the form

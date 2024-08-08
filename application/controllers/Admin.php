@@ -4901,7 +4901,7 @@ With good wishes";
 				foreach ($selectedFeesArray as $selected) {
 					$field = $newName = preg_replace('/_checkbox$/', '', $selected['name']);
 
-					$updateDetails[$field] = $selected['value'];
+					$updateDetails[$field] = $selected['newvalue'];
 
 					if ($field == 'corpus_fund') {
 						$updateDetails['type'] = 1;
@@ -7640,7 +7640,7 @@ With good wishes";
 			printStudent($pdf, "College Code ", $admissionDetails->college_code, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			printStudent($pdf, "Gender ", $admissionDetails->gender, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			printStudent($pdf, "Year ", $feeDetails->year, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
-			printStudent($pdf, "Ug ", 'Ug', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+			printStudent($pdf, "Ug ", 'Ug - '.$this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_name"], $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			// printStudent($pdf, "Pg :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			$pdf->Ln(4);
 
