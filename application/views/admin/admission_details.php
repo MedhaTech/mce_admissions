@@ -1148,12 +1148,42 @@
 
                         <div class="col-md-3 col-sm-6">
                             <div class="form-group">
+                                <label class="form-label mb-0">Maximum Marks</label><br>
+                              
+                                <?php
+                                if($edu->maximum != NULL)
+                                    {
+                                        echo $edu->maximum;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Obtained Marks</label><br>
+                              
+                                <?php
+                                if($edu->obtained != NULL)
+                                    {
+                                        echo $edu->obtained;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
                                 <label class="form-label mb-0">Aggregate</label><br>
                                 <!-- <p><?= $edu->aggregate;?>%</p> -->
                                 <?php
                                 if($edu->aggregate != NULL)
                                     {
-                                        echo $edu->aggregate;
+                                        echo $edu->aggregate.'%';
                                     }
                                 else{
                                         echo "--" ;
@@ -1162,8 +1192,8 @@
                             </div>
                         </div>
                     </div>
-                    <table class="table table-border">
-                         <?php
+                    <table class="table" border="1">
+                    <?php
                                 if(($edu->education_level == 'SSLC')||($edu->education_level == 'PUC'))
                                     {
                                         ?>
@@ -1193,30 +1223,31 @@
                                 $min_marks = $edu->{"subject_" . $i . "_min_marks"};
                                 $max_marks = $edu->{"subject_" . $i . "_max_marks"};
                                 $obtained_marks = $edu->{"subject_" . $i . "_obtained_marks"};
-                                if($subject_name){
+                            
+                                if($subject_name!= ''){
                                 ?>
                             <tr>
                                 <td>
-                                    <?= $subject_name;?>
+                                  <?= $subject_name;?>
                                 </td>
                                 <td>
-                                    <?= $min_marks;?>
+                                <?= $min_marks;?>
                                 </td>
                                 <td>
-                                    <?= $max_marks;?>
+                                <?= $max_marks;?> 
                                 </td>
                                 <td>
-                                    <?= $obtained_marks;?>
+                                <?= $obtained_marks;?>
                                 </td>
                             </tr>
-                            <?php } } ?>
-
+                            <?php } }?>
+                        
                         </tbody>
-
+                        
                     </table>
                     <hr>
 
-                    <?php }   } ?>
+                   <?php }   } ?>
 
                 </div>
             </div>
