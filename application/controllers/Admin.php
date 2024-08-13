@@ -223,7 +223,7 @@ class Admin extends CI_Controller
 				// Handle file upload
 				if (isset($_FILES['document']) && $_FILES['document']['error'] == 0) {
 					$config['upload_path'] = './assets/seats/';
-					$config['allowed_types'] = 'jpg|png|pdf|jpeg'; // Adjust file types as needed
+					$config['allowed_types'] = 'pdf'; // Adjust file types as needed
 					$config['max_size'] = 10240; // Maximum file size in kilobytes (10MB)
 					$config['encrypt_name'] = FALSE; // Encrypt the file name for security
 
@@ -235,12 +235,22 @@ class Admin extends CI_Controller
 						$error = array('error' => $this->upload->display_errors());
 						echo "Failed to upload file: " . $error['error'];
 					} else {
-						// If the upload succeeded, display success message
 						$upload_data = $this->upload->data();
-						echo "File uploaded successfully!";
-						// You can save file info to database if needed
-						$file_name = $upload_data['file_name'];
-						// Save $file_name to the database if required
+
+						// Define the new file name
+						$new_file_name = 'mgmt_comed-k_seat.pdf';
+				
+						// Define old and new file paths
+						$old_file_path = $upload_data['full_path'];
+						$new_file_path = $config['upload_path'] . $new_file_name;
+				
+						// Rename the file
+						if (rename($old_file_path, $new_file_path)) {
+							// echo "File uploaded and renamed successfully!";
+							// You can now use $new_file_name for further processing or saving to the database
+						} else {
+							// echo "File uploaded but failed to rename.";
+						}
 					}
 				}
 
