@@ -63,7 +63,7 @@
                             </tbody>
                         </table>
                         <div class="form-group col-md-4">
-                            <label for="document">Upload Document</label>
+                            <label for="document">Upload Document (Only Pdf)</label>
                             <input type="file" name="document" id="document" class="form-control">
                         </div>
                         <button type="submit" class="btn btn-info btn-square" name="Update" id="Update">UPDATE</button>
