@@ -719,3 +719,76 @@
                 </div>
             </div>
             <!-- End Contact Address Area  -->
+
+<!-- Modal -->
+<div class="modal fade" id="autoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <h5 class="modal-title" id="exampleModalLabel">Welcome</h5> -->
+        <button type="button" class="close" data-dismiss="modal" id="customCloseButton" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <!-- Image inside the modal -->
+        <img src="<?= base_url('assets/img/Admission_doc_ (1).jpg') ?>" alt="Modal Image" class="img-fluid">
+      </div>
+      <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="customCloseButton1">Close</button>
+</div>
+    </div>
+  </div>
+</div>
+
+<!-- <script>
+$(document).ready(function() {
+    // Show the modal when the page loads
+    $('#autoModal').modal('show');
+
+    // Automatically close the modal after 5 seconds (50000 milliseconds)
+    setTimeout(function() {
+        $('#autoModal').modal('hide');
+    }, 50000);
+});
+</script> -->
+
+<!-- <script>
+$(document).ready(function() {
+    // Show the modal when the page loads
+    $('#autoModal').modal('show');
+
+    // Close the modal when the custom button is clicked
+    $('#customCloseButton').on('click', function() {
+        $('#autoModal').modal('hide');
+    });
+    $('#customCloseButton1').on('click', function() {
+        $('#autoModal').modal('hide');
+    });
+});
+</script> -->
+
+<script>
+$(document).ready(function() {
+    // Show the modal when the page loads
+    $('#autoModal').modal('show');
+
+    // Hide the page scrollbar when the modal is open
+    $('#autoModal').on('shown.bs.modal', function () {
+        $('body').css('overflow', 'hidden');
+    });
+
+    // Restore the page scrollbar when the modal is closed
+    $('#autoModal').on('hidden.bs.modal', function () {
+        $('body').css('overflow', 'auto');
+    });
+
+    // Close the modal when the custom button is clicked
+    $('#customCloseButton, #customCloseButton1').on('click', function() {
+        $('#autoModal').modal('hide');
+    });
+});
+</script>
+
+
+

@@ -12,11 +12,15 @@
                         <ul class="nav nav-pills ml-auto">
                             <li class="nav-item">
                                 <?php
-                                    if($role == 1 || $role == 2 || $role ==3){
+                                    if($role == 1 || $role == 3){
                                         echo anchor('admin/updatedashboard2', ' <i class="fas fa-edit"></i>  Edit ', 'class="btn btn-primary btn-sm"'); 
-                                        echo anchor('admin/dashboard', ' <i class="fas fa-list"></i>  OVERALL DASHBAORD ', 'class="btn btn-warning btn-sm"'); 
-                                    }
-                                ?>
+                             
+                                    }?>
+                                    <?php
+                                    if($role == 1 || $role == 2 || $role == 3){
+                                        echo anchor('assets/seats/', '<span class="icon"><i class="fas fa-file-o"></i></span> <span class="text">Download</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm" target="_blank"');
+                                        echo anchor('admin/dashboard', ' <i class="fas fa-list"></i>  OVERALL DASHBAORD ', 'class="btn btn-warning btn-sm"');
+                                    }?>
                             </li>
                             <!-- <li class="nav-item">
                                   <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
@@ -34,10 +38,10 @@
                                     <!-- <th width="20%">Stream</th> -->
                                     <th width="35%">DEPARTMENT</th>
                                     <th class='text-center' width="15%">COMED-K <br /> INTAKE</th>
-                                    <th class='text-center' width="15%">MGMT <br /> INTAKE</th>
-                                    <th class='text-center' width="15%">MOVED <br /> INTAKE COUNT</th>
+                                    <th class='text-center' width="15%">MGMT COMED-K<br /> INTAKE COUNT</th>
+                                    <!-- <th class='text-center' width="15%">MOVED <br /> INTAKE COUNT</th> -->
                                     <th class='text-center' width="15%">UPDATED COMEDK <br /> INTAKE</th>
-                                    <th class='text-center' width="15%">UPDATED MGMT <br /> INTAKE</th>
+                                    <!-- <th class='text-center' width="15%">UPDATED MGMT <br /> INTAKE</th> -->
                                 </tr>
                             </thead>
                             <tbody>    
@@ -51,7 +55,7 @@
                                             echo "<td>".$i++.".</td>";
                                             echo "<td class='text-left'>".$department_name."</td>";
 
-                                            echo "<td>".$unaidedmgmt1->unaided_mgmt_intake."</td>";
+                                            // echo "<td>".$unaidedmgmt1->unaided_mgmt_intake."</td>";
 
                                             echo "<td>".$unaidedmgmt1->unaided_comed_k_intake."</td>";
 
@@ -59,7 +63,7 @@
 
                                             echo "<td>".$unaidedmgmt1->unaided_comed_k_intake_new."</td>";
 
-                                            echo "<td>".$unaidedmgmt1->unaided_mgmt_intake_new."</td>";
+                                            // echo "<td>".$unaidedmgmt1->unaided_mgmt_intake_new."</td>";
                                             echo "</tr>";
                                         } 
 									 ?>
