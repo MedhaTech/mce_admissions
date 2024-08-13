@@ -33,7 +33,7 @@
                                     <th class='text-center' width="10%">DEPARTMENT</th>
                                     <th class='text-center' width="5%">NUMBER OF MOVED SEATS</th>
                                     <th class='text-center' width="5%">COMED-K <br /> INTAKE</th>
-                                    <th class='text-center' width="5%">MGMT <br /> INTAKE</th>
+                                    <th class='text-center' width="5%">COMED-K UNFILLED<br /> SEATS</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -50,8 +50,9 @@
                                         $COMEDK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'COMED-K', 'UnAided')->row()->cnt;
                                         echo "<td class='comedk-intake' data-dept-id='" . $department_id . "'>" . $COMEDK_UNAIDED . '/' . $unaidedmgmt1->unaided_comed_k_intake_new . "</td>";
 
-                                        $MGMT_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'MGMT', 'UnAided')->row()->cnt;
-                                        echo "<td class='mgmt-intake' data-dept-id='" . $department_id . "'>" . $MGMT_UNAIDED . '/' . $unaidedmgmt1->unaided_mgmt_intake_new . "</td>";
+                                        // $MGMT_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'MGMT', 'UnAided')->row()->cnt;
+                                        $MGMT=$unaidedmgmt1->unaided_comed_k_intake_new - $COMEDK_UNAIDED;
+                                        echo "<td class='mgmt-intake' data-dept-id='" . $department_id . "'>" . $MGMT . "</td>";
 
                                         echo "<input type='hidden' name='comedk_intakes[]' class='comedk-intake-input' value='" . $unaidedmgmt1->unaided_comed_k_intake . "'>";
                                         echo "<input type='hidden' name='mgmt_intakes[]' class='mgmt-intake-input' value='" . $unaidedmgmt1->unaided_mgmt_intake . "'>";

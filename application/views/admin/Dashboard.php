@@ -13,7 +13,7 @@
                             <li class="nav-item">
                                 <?php
                                     if($role == 1 || $role == 2){
-                                        echo anchor('admin/dashboard2', ' <i class="fas fa-list"></i>  COMED-K & MGMT DASHBAORD ', 'class="btn btn-success btn-sm"'); 
+                                        echo anchor('admin/dashboard2', ' <i class="fas fa-list"></i>  COMED-K-MGMT DASHBAORD ', 'class="btn btn-success btn-sm"'); 
                                         echo anchor('admin/dashboard1', ' <i class="fas fa-list"></i>  MGMT DASHBAORD ', 'class="btn btn-info btn-sm"'); 
                                     }
                                     if($role == 3){

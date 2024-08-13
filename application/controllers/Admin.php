@@ -6950,16 +6950,22 @@ With good wishes";
 			$data['menu'] = 'admissionsfrom';
 
 			$id =  base64_decode($encryptId);
+			$data['student_id']=$encryptId;
 
 			$data['admissionStatus'] = $this->globals->admissionStatus();
 			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			// $admissionDetails = $this->admin_model->getDetails('admissions', $id)->row();
+			// $transactionDetails = $this->admin_model->getDetails('transactions', $id)->row();
+
+			// $data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
+			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'student_id', 'student_education_details')->result();
+			// var_dump($data['educations_details']); die();
 			$admissionDetails = $this->admin_model->getDetails('admissions', $id)->row();
 			$transactionDetails = $this->admin_model->getDetails('transactions', $id)->row();
 
 			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
-			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'id', 'student_education_details')->result();
-
+			// var_dump($data['educations_details']); die();
 
 			$this->load->library('fpdf'); // Load library
 			ini_set("session.auto_start", 0);
@@ -7012,6 +7018,7 @@ With good wishes";
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(0, 6, 'Board from which the candidate has passed his/her qualifying Examination Marks secured in below subjects : ', 0, 1);
 			$pdf->SetFont('Arial', 'B', 10);
+			// var_dump($edu->inst_board); die();
 			$pdf->Cell(0, 6, '' . $edu->inst_board, 0, 'C');
 
 			$pdf->SetFont('Arial', '', 10);
