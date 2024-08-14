@@ -106,6 +106,15 @@
                                           echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : $sports, 'class="form-control" id="sports"'); ?>
                                 <span class="text-danger"><?php echo form_error('sports'); ?></span>
                             </div>
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label class="label">USN<span class="text-danger">*</span></label>
+                                    <input type="text" name="usn" id="usn"
+                                        value="<?php echo (set_value('usn')) ? set_value('usn') : $usn; ?>"
+                                        class="form-control" placeholder="Enter USN" >
+                                    <span class="text-danger"><?php echo form_error('usn'); ?></span>
+                                </div>
+                            </div>
 
                         </div>
 

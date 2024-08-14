@@ -9,10 +9,10 @@
                     </h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
-                            <!-- <li class="nav-item">
+                            <li class="nav-item">
                                 <?php $encryptId = base64_encode($admissionDetails->id);
                                 echo anchor('admin/admissionform/'.$encryptId, '<i class="fas fa-download fa-sm fa-fw"></i> Download ', 'class="btn btn-danger btn-sm"'); ?>
-                            </li> -->
+                            </li>
                             <li class="nav-item">
                                 <?php $encryptId = base64_encode($admissionDetails->id);
                                 echo anchor('admin/updateadmissiondetails/'.$encryptId, '<i class="fas fa-edit fa-sm fa-fw"></i> Edit ', 'class="btn btn-dark btn-sm"'); ?>
@@ -194,6 +194,20 @@
                                 if($admissionDetails->sports != NULL)
                                     {
                                         echo $admissionDetails->sports;
+                                    }
+                                else{
+                                        echo "--" ;
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="form-label mb-0">USN</label><br>
+                                <?php
+                                if($admissionDetails->usn != NULL)
+                                    {
+                                        echo $admissionDetails->usn;
                                     }
                                 else{
                                         echo "--" ;

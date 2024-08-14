@@ -3918,6 +3918,7 @@ With good wishes";
 			$this->form_validation->set_rules('category_claimed', 'Category Claimed', 'required');
 			// $this->form_validation->set_rules('college_code', 'College Code', 'required');
 			$this->form_validation->set_rules('sports', 'Sports', 'required');
+			$this->form_validation->set_rules('usn', 'Usn', 'required');
 
 			if ($this->form_validation->run() === FALSE) {
 
@@ -3936,6 +3937,7 @@ With good wishes";
 				$data['category_claimed'] = $admissionDetails->category_claimed;
 				// $data['college_code'] = $admissionDetails->college_code;
 				$data['sports'] = $admissionDetails->sports;
+				$data['usn'] = $admissionDetails->usn;
 				$this->admin_template->show('admin/updateadmissiondetails', $data);
 			} else {
 				$updateDetails = array(
@@ -3950,6 +3952,7 @@ With good wishes";
 					'category_claimed' => $this->input->post('category_claimed'),
 					// 'college_code' => $this->input->post('college_code'),
 					'sports' => $this->input->post('sports'),
+					'usn' => $this->input->post('usn'),
 				);
 				// print_r($updateDetails);
 				// die();
@@ -6973,13 +6976,25 @@ With good wishes";
 			// $transactionDetails = $this->admin_model->getDetails('transactions', $id)->row();
 
 			// $data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
-			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'student_id', 'student_education_details')->result();
+			$educations_details = $this->admin_model->getDetailsbyfield($id, 'student_id', 'student_education_details')->result();
 			// var_dump($data['educations_details']); die();
 			$admissionDetails = $this->admin_model->getDetails('admissions', $id)->row();
 			$transactionDetails = $this->admin_model->getDetails('transactions', $id)->row();
 
 			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
 			// var_dump($data['educations_details']); die();
+			$upload_path = "./assets/students/$id/";
+
+			// Check if the directory exists
+			if (is_dir($upload_path)) {
+				// Get list of files in the directory
+				$files = scandir($upload_path);
+
+				// Remove . and .. from the list
+				$file_doc = array_diff($files, array('.', '..'));
+			} else {
+				$file_doc = array();
+			}
 
 			$this->load->library('fpdf'); // Load library
 			ini_set("session.auto_start", 0);
@@ -6992,7 +7007,6 @@ With good wishes";
 			$pdf->SetMargins(20, 20, 20);
 
 			$pdf->Image('assets/img/mce_pro_letter2.jpg', 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHeight());
-			$temporaryUSN = "MCE24AU001K012024";
 
 			$topGap = 30;
 
@@ -7004,7 +7018,7 @@ With good wishes";
 
 			$pdf->SetFont('Arial', '', 9);
 			$pdf->SetXY(15, $topGap + 9);
-			$pdf->Cell(0, 10, 'Temporary USN:' . $temporaryUSN, 0, 1, 'L');
+			$pdf->Cell(0, 10, 'Temporary USN:' . $admissionDetails->usn, 0, 1, 'L');
 
 			$pdf->SetFont('Arial', '', 9);
 			$pdf->SetXY(-30, $topGap + 9);
@@ -7030,24 +7044,26 @@ With good wishes";
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->student_name, 0, 'C');
 			$pdf->SetX(15, $topGap + 9);
 			$pdf->SetFont('Arial', '', 10);
-			$pdf->Cell(0, 6, 'Board from which the candidate has passed his/her qualifying Examination Marks secured in below subjects : ', 0, 1);
-			$pdf->SetFont('Arial', 'B', 10);
-			// var_dump($edu->inst_board); die();
-			$pdf->Cell(0, 6, '' . $edu->inst_board, 0, 'C');
+			// $pdf->Cell(0, 6, 'Board from which the candidate has passed his/her qualifying Examination Marks secured in below subjects : ', 0, 1);
+			// $pdf->SetFont('Arial', 'B', 10);
+			// // var_dump($edu->inst_board); die();
+			// foreach ($educations_details as $edu) {
+			// $pdf->Cell(0, 6, '' . $edu->inst_board, 0, 'C');
+			// }
 
-			$pdf->SetFont('Arial', '', 10);
-			$pdf->Cell(60, 6, 'PHYSICS : 79', 0, 1);
-			$pdf->Cell(60, 6, 'MATHEMATICS : 98', 0, 1);
+			// $pdf->SetFont('Arial', '', 10);
+			// $pdf->Cell(60, 6, 'PHYSICS : 79', 0, 1);
+			// $pdf->Cell(60, 6, 'MATHEMATICS : 98', 0, 1);
 
 
-			// Marks
-			$pdf->SetFont('Arial', '', 10);
-			// $pdf->Cell(60, 10, 'PHYSICS : 79', 0, 0);
-			// $pdf->Cell(60, 10, 'MATHEMATICS : 98', 0, 1);
-			$pdf->Cell(0, 6, 'Total 177 / 200 Percentage of PCM: 85.00', 0, 1, 'C');
-			$pdf->SetX(15, $topGap + 9);
-			$pdf->Cell(60, 7, 'Total marks in all subjects', 0);
-			$pdf->Cell(0, 6, ': 536 / 600', 0, 'C');
+			// // Marks
+			// $pdf->SetFont('Arial', '', 10);
+			// // $pdf->Cell(60, 10, 'PHYSICS : 79', 0, 0);
+			// // $pdf->Cell(60, 10, 'MATHEMATICS : 98', 0, 1);
+			// $pdf->Cell(0, 6, 'Total 177 / 200 Percentage of PCM: 85.00', 0, 1, 'C');
+			// $pdf->SetX(15, $topGap + 9);
+			// $pdf->Cell(60, 7, 'Total marks in all subjects', 0);
+			// $pdf->Cell(0, 6, ': 536 / 600', 0, 'C');
 			$pdf->SetX(15, $topGap + 9);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(60, 6, 'Date of Birth and Age', 0);
@@ -7072,47 +7088,60 @@ With good wishes";
 			$pdf->Cell(60, 10, 'DOCUMENTS PRODUCED ', 0, 1, 'C');
 
 			$pdf->SetFont('Arial', '', 10);
+			$slno=1;
+			foreach ($file_doc as $file) {
+				 $document_type = substr($file, 0, strpos($file, '.'));
 			$pdf->SetX(15, $topGap + 9);
-			$pdf->Cell(60, 6, '1) Application forms ', 0);
-			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			$pdf->Cell(60, 6, $slno.') '.$document_type, 0);
+			$pdf->Cell(0, 6, '', 0, 'C');
+			$slno++;
+			}
+			// $pdf->SetX(15, $topGap + 9);
+			// $pdf->Cell(60, 6, '2) P.U.C. marks card', 0);
+			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
+
+			// $pdf->SetX(15, $topGap + 9);
+			// $pdf->Cell(60, 6, '3) S.S.L.C. marks card', 0);
+			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
+
+			// $pdf->SetX(15, $topGap + 9);
+			// $pdf->Cell(60, 6, '4) Cumulative record', 0);
+			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			// $pdf->SetX(15, $topGap + 9);
+			// $pdf->Cell(60, 6, '5) Proof of domicile', 0);
+			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			// $pdf->SetX(15, $topGap + 9);
+			// $pdf->Cell(60, 6, '6) T.C. produced/T.C. form given', 0);
+			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			// $pdf->SetX(15, $topGap + 9);
+			// $pdf->Cell(60, 6, '7) Medical Certificate', 0);
+			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			// $pdf->SetX(15, $topGap + 9);
+			// $pdf->Cell(60, 6, '8) Three passport size photos', 0);
+			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			// $pdf->SetX(15, $topGap + 9);
+			// $pdf->Cell(60, 6, '9) Eligibility Certificate', 0);
+			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			// $pdf->SetX(15, $topGap + 9);
+			// $pdf->Cell(60, 6, '10) Conduct Certificate', 0);
+			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			// $pdf->SetX(15, $topGap + 9);
+			// $pdf->Cell(60, 6, '11) Migration Certificate', 0);
+			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			// $pdf->SetX(15, $topGap + 9);
+			// $pdf->Cell(60, 6, '12) Diploma / GT&TC marks card', 0);
+			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			// $pdf->SetX(15, $topGap + 9);
+			// $pdf->Cell(60, 6, '13) Any other document', 0);
+			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
 			$pdf->SetX(15, $topGap + 9);
-			$pdf->Cell(60, 6, '2) P.U.C. marks card', 0);
-			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			$pdf->SetX(15, $topGap + 9);
-			$pdf->Cell(60, 6, '3) S.S.L.C. marks card', 0);
-			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			$pdf->SetX(15, $topGap + 9);
-			$pdf->Cell(60, 6, '4) Cumulative record', 0);
-			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			$pdf->SetX(15, $topGap + 9);
-			$pdf->Cell(60, 6, '5) Proof of domicile', 0);
-			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			$pdf->SetX(15, $topGap + 9);
-			$pdf->Cell(60, 6, '6) T.C. produced/T.C. form given', 0);
-			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			$pdf->SetX(15, $topGap + 9);
-			$pdf->Cell(60, 6, '7) Medical Certificate', 0);
-			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			$pdf->SetX(15, $topGap + 9);
-			$pdf->Cell(60, 6, '8) Three passport size photos', 0);
-			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			$pdf->SetX(15, $topGap + 9);
-			$pdf->Cell(60, 6, '9) Eligibility Certificate', 0);
-			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			$pdf->SetX(15, $topGap + 9);
-			$pdf->Cell(60, 6, '10) Conduct Certificate', 0);
-			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			$pdf->SetX(15, $topGap + 9);
-			$pdf->Cell(60, 6, '11) Migration Certificate', 0);
-			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			$pdf->SetX(15, $topGap + 9);
-			$pdf->Cell(60, 6, '12) Diploma / GT&TC marks card', 0);
-			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			$pdf->SetX(15, $topGap + 9);
-			$pdf->Cell(60, 6, '13) Any other document', 0);
-			$pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			$pdf->SetX(15, $topGap + 9);
-			$pdf->MultiCell(0, 5, "For orders to admit the candidate to Semester 1 AUTOMOBILE Provisionally pending approval of the Director of Technical Education, Karnataka and Visvesvaraya Technological University.");
+			if ($admissionDetails->quota == 'KEA-CET(LATERAL)') {
+				$semester = 'semester 3';
+			} else {
+				$semester = 'semester 1';
+			}
+			$dep = $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_name"];
+			$pdf->MultiCell(0, 5, "For orders to admit the candidate to  $semester  $dep Provisionally pending approval of the Director of Technical Education, Karnataka and Visvesvaraya Technological University.");
 			$pdf->Cell(0, 10, "", 0, 1);
 
 			// $pdf->SetY($topGap + 5);
@@ -7133,6 +7162,8 @@ With good wishes";
 			$pdf->SetFont('Arial', 'B', 10);
 			$pdf->Cell(0, 20, 'Principal', 0, 1, 'R');
 
+			$pdf->AddPage('P', 'A4'); // 'P' for portrait orientation, 'A4' for A4 size (210x297 mm)
+
 			$pdf->SetX(10, $topGap + 9);
 			$pdf->SetFont('Arial', '', 12);
 			$pdf->Cell(0, 10, 'Malnad College of Engineering Hassan-573201 Karnataka India', 0, 1, 'C');
@@ -7143,8 +7174,8 @@ With good wishes";
 
 			$pdf->SetFont('Arial', '', 9);
 			$pdf->SetXY(-30, $topGap + 9);
-			$pdf->Cell(0, 5, 'Temp USN
-            MCE24AU001K01', 0, 1, 'R');
+			$pdf->Cell(0, 5, 'Temp USN:'
+            .$admissionDetails->usn, 0, 1, 'R');
 
 			$pdf->SetFont('Arial', 'B', 12);
 			$pdf->Cell(0, 10, 'ADMISSION FORM', 0, 1, 'C');
@@ -7527,11 +7558,15 @@ With good wishes";
 			$pdf->SetFont('Arial', 'B', 9);
 			$pdf->Cell($cellWidth * 1.5, $cellHeight, $admissionDetails->aadhaar, 0, 1, 'L', true);
 
+			$pdf->AddPage('P', 'A4'); // 'P' for portrait orientation, 'A4' for A4 size (210x297 mm)
 			$pdf->Ln(2);
 			$pdf->SetFont('Arial', 'B', 9);
 			$pdf->Cell($cellWidth, $cellHeight, "Academic Details", 0, 0, 'L', true);
 			$pdf->Ln(5);
-			$pdf->Cell($cellWidth, $cellHeight, "SSLC/10th Standard details", 0, 0, 'L', true);
+
+			foreach ($educations_details as $edu) {
+
+			$pdf->Cell($cellWidth, $cellHeight, $edu->education_level, 0, 0, 'L', true);
 
 			$pdf->Ln($cellHeight * 1.7);
 			$pdf->SetFont('Arial', '', 9);
@@ -7543,7 +7578,7 @@ With good wishes";
 			$pdf->SetFont('Arial', '', 9);
 			$pdf->Cell($cellWidth, $cellHeight, "Board Name :", 0, 0, 'L', true);
 			$pdf->SetFont('Arial', 'B', 9);
-			$pdf->Cell($cellWidth * 1.2, $cellHeight, "XYZ", 0, 0, 'L', true);
+			$pdf->Cell($cellWidth * 1.2, $cellHeight, $edu->inst_board, 0, 0, 'L', true);
 
 			// Adding a spacer cell
 			$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
@@ -7551,13 +7586,13 @@ With good wishes";
 			$pdf->SetFont('Arial', '', 9);
 			$pdf->Cell($cellWidth, $cellHeight, "Medium of Instruction :", 0, 0, 'L', true);
 			$pdf->SetFont('Arial', 'B', 9);
-			$pdf->Cell($cellWidth * 1.5, $cellHeight, "English", 0, 1, 'L', true);
+			$pdf->Cell($cellWidth * 1.5, $cellHeight, $edu->medium_of_instruction, 0, 1, 'L', true);
 
 			$pdf->Ln(3);
 			$pdf->SetFont('Arial', '', 9);
 			$pdf->Cell($cellWidth, $cellHeight, "Register Number :", 0, 0, 'L', true);
 			$pdf->SetFont('Arial', 'B', 9);
-			$pdf->Cell($cellWidth * 1.2, $cellHeight, "1345656", 0, 0, 'L', true);
+			$pdf->Cell($cellWidth * 1.2, $cellHeight, $edu->register_number, 0, 0, 'L', true);
 
 			// Adding a spacer cell
 			$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
@@ -7565,119 +7600,46 @@ With good wishes";
 			$pdf->SetFont('Arial', '', 9);
 			$pdf->Cell($cellWidth, $cellHeight, "Total Marks :", 0, 0, 'L', true);
 			$pdf->SetFont('Arial', 'B', 9);
-			$pdf->Cell($cellWidth * 1.5, $cellHeight, "600", 0, 1, 'L', true);
+			$pdf->Cell($cellWidth * 1.5, $cellHeight, $edu->maximum, 0, 1, 'L', true);
 
 			$pdf->Ln(3);
 			$pdf->SetFont('Arial', '', 9);
 			$pdf->Cell($cellWidth, $cellHeight, "Obtained Marks :", 0, 0, 'L', true);
 			$pdf->SetFont('Arial', 'B', 9);
-			$pdf->Cell($cellWidth * 1.2, $cellHeight, "592", 0, 0, 'L', true);
+			$pdf->Cell($cellWidth * 1.2, $cellHeight, $edu->obtained, 0, 0, 'L', true);
 
 			$pdf->Ln(5); // Move down a little
 
+            if(($edu->education_level == 'SSLC')||($edu->education_level == 'PUC'))
+            {
 			// Create table header
-			$pdf->Cell(30, 5, 'Subject', 1, 0, 'C');
+			$pdf->Cell(35, 5, 'Subject', 1, 0, 'C');
 			$pdf->Cell(30, 5, 'Maximum Marks', 1, 0, 'C');
 			$pdf->Cell(30, 5, 'Minimum Marks', 1, 0, 'C');
 			$pdf->Cell(30, 5, 'Obtained Marks', 1, 1, 'C'); // Move to the next line
-
-			// Table content (example data)
-			$data = array(
-				array('Kannada', '35', '100', '81'),
-				array('English', '35', '100', '83'),
-				array('Hindi', '35', '100', '85'),
-				array('Mathematics', '35', '100', '89'),
-				array('Science', '35', '100', '85'),
-				array('Social Science', '35', '100', '90'),
-				array('Total', '600', '210', '593'),
-			);
-
-			// Add rows
-			foreach ($data as $row) {
-				$pdf->Cell(30, 5, $row[0], 1, 0, 'C');
-				$pdf->Cell(30, 5, $row[1], 1, 0, 'C');
-				$pdf->Cell(30, 5, $row[2], 1, 0, 'C');
-				$pdf->Cell(30, 5, $row[3], 1, 1, 'C'); // Move to the next line
-			}
-
-			$pdf->Ln(3);
-			$pdf->Cell($cellWidth, $cellHeight, "Puc/12th Standard details", 0, 0, 'L', true);
-
-			$pdf->Ln($cellHeight * 1.7);
-			$pdf->SetFont('Arial', '', 9);
-			$pdf->Cell($cellWidth, $cellHeight, "College Name :", 0, 0, 'L', true);
-			$pdf->SetFont('Arial', 'B', 9);
-			$pdf->Cell($cellWidth * 1.2, $cellHeight, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 0, 0, 'L', true);
-
-			$pdf->Ln($cellHeight * 1.7);
-			$pdf->SetFont('Arial', '', 9);
-			$pdf->Cell($cellWidth, $cellHeight, "Board Name :", 0, 0, 'L', true);
-			$pdf->SetFont('Arial', 'B', 9);
-			$pdf->Cell($cellWidth * 1.2, $cellHeight, "XYZ", 0, 0, 'L', true);
-
-			// Adding a spacer cell
-			$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
-
-			$pdf->SetFont('Arial', '', 9);
-			$pdf->Cell($cellWidth, $cellHeight, "Medium of Instruction :", 0, 0, 'L', true);
-			$pdf->SetFont('Arial', 'B', 9);
-			$pdf->Cell($cellWidth * 1.5, $cellHeight, "English", 0, 1, 'L', true);
-
-			$pdf->Ln(3);
-			$pdf->SetFont('Arial', '', 9);
-			$pdf->Cell($cellWidth, $cellHeight, "Register Number :", 0, 0, 'L', true);
-			$pdf->SetFont('Arial', 'B', 9);
-			$pdf->Cell($cellWidth * 1.2, $cellHeight, "1345656", 0, 0, 'L', true);
-
-			// Adding a spacer cell
-			$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
-
-			$pdf->SetFont('Arial', '', 9);
-			$pdf->Cell($cellWidth, $cellHeight, "PCM / PME / PMCs Marks Percentage % :", 0, 0, 'L', true);
-			$pdf->SetFont('Arial', 'B', 9);
-			$pdf->Cell($cellWidth * 1.5, $cellHeight, "85.00", 0, 1, 'L', true);
-
-			$pdf->Ln(3);
-			$pdf->SetFont('Arial', '', 9);
-			$pdf->Cell($cellWidth, $cellHeight, "PCM / PME / PMCs Marks Marks :", 0, 0, 'L', true);
-			$pdf->SetFont('Arial', 'B', 9);
-			$pdf->Cell($cellWidth * 1.2, $cellHeight, "592", 0, 0, 'L', true);
-
-			// Adding a spacer cell
-			$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
-
-			$pdf->SetFont('Arial', '', 9);
-			$pdf->Cell($cellWidth, $cellHeight, "School/College Country :", 0, 0, 'L', true);
-			$pdf->SetFont('Arial', 'B', 9);
-			$pdf->Cell($cellWidth * 1.5, $cellHeight, "India", 0, 1, 'L', true);
-
-			$pdf->Ln(3); // Move down a little
-
+		    } else{ 
 			// Create table header
-			$pdf->Cell(30, 5, 'Subject', 1, 0, 'C');
-			$pdf->Cell(30, 5, 'Maximum Marks', 1, 0, 'C');
-			$pdf->Cell(30, 5, 'Minimum Marks', 1, 0, 'C');
+			$pdf->Cell(35, 5, 'Years', 1, 0, 'C');
+			$pdf->Cell(30, 5, 'Max Marks', 1, 0, 'C');
+			$pdf->Cell(30, 5, 'Percentage(%)', 1, 0, 'C');
 			$pdf->Cell(30, 5, 'Obtained Marks', 1, 1, 'C'); // Move to the next line
-
-			// Table content (example data)
-			$data = array(
-				array('Kannada', '35', '100', '81'),
-				array('English', '35', '100', '83'),
-				array('Physics', '35', '100', '85'),
-				array('Mathematics', '35', '100', '89'),
-				array('Computer Science', '35', '100', '85'),
-				array('Biology', '35', '100', '90'),
-				array('Total', '600', '210', '593'),
-			);
-
+			 }
+			
 			// Add rows
-			foreach ($data as $row) {
-				$pdf->Cell(30, 5, $row[0], 1, 0, 'C');
-				$pdf->Cell(30, 5, $row[1], 1, 0, 'C');
-				$pdf->Cell(30, 5, $row[2], 1, 0, 'C');
-				$pdf->Cell(30, 5, $row[3], 1, 1, 'C'); // Move to the next line
+			for ($i = 1; $i <= 6; $i++) {
+				$subject_name = $edu->{"subject_" . $i . "_name"};
+				$min_marks = $edu->{"subject_" . $i . "_min_marks"};
+				$max_marks = $edu->{"subject_" . $i . "_max_marks"};
+				$obtained_marks = $edu->{"subject_" . $i . "_obtained_marks"};
+
+				$pdf->Cell(35, 5, $subject_name, 1, 0, 'C');
+				$pdf->Cell(30, 5, $max_marks, 1, 0, 'C');
+				$pdf->Cell(30, 5, $min_marks, 1, 0, 'C');
+				$pdf->Cell(30, 5, $obtained_marks, 1, 1, 'C'); // Move to the next line
 			}
 
+			$pdf->Ln(3);
+		}
 			$pdf->Ln(3);
 			$pdf->Cell($cellWidth, $cellHeight, "Father details", 0, 0, 'L', true);
 
