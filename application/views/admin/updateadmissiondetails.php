@@ -102,7 +102,7 @@
                                 <!-- <input type="text" name="sports" id="sports"
                                     value="<?php echo (set_value('sports')) ? set_value('sports') : $sports; ?>"
                                     class="form-control" placeholder="Enter Sports" > -->
-                                <?php $sports_options = array(" "=>"Select Sports","District"=>"District","State"=>"State","National"=>"National","International"=>"International","Not Applicable"=>"Not Applicable");
+                                <?php $sports_options = array(" "=>"Select Sports","State Level"=>"State Level","National Level"=>"National Level","International Level"=>"International Level","Not Applicable"=>"Not Applicable");
                                           echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : $sports, 'class="form-control" id="sports"'); ?>
                                 <span class="text-danger"><?php echo form_error('sports'); ?></span>
                             </div>

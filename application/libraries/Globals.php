@@ -794,6 +794,7 @@ class Globals
             "IIIGA" => "IIIGA",
             "IRULAR" => "IRULAR",
             "IRULIGA" => "IRULIGA",
+            "JAAT" => "JAAT",
             "JADAR" => "JADAR",
             "JAGGALI" => "JAGGALI",
             "JAINS (DIGAMBARAS)" => "JAINS (DIGAMBARAS)",

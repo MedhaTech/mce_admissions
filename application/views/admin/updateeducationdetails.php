@@ -696,7 +696,7 @@
                                           </td>
                                       </tr>
                                       <tr>
-                                          <th><input type="text" name="subject_4_name" id="subject_4_name" class="form-control font-weight-bold" placeholder="III year" value="III year" readonly></th>
+                                          <th><input type="text" name="subject_4_name" id="subject_4_name" class="form-control font-weight-bold" placeholder="IV year" value="IV year" readonly></th>
                                           <td>
                                               <input type="number" name="subject_4_obtained_marks" id="subject_4_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('subject_4_obtained_marks')) ? set_value('subject_4_obtained_marks') : $subject_4_obtained_marks; ?>">
                                               <span class="text-danger"><?php echo form_error('subject_4_obtained_marks'); ?></span>
