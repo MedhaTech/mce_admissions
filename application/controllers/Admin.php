@@ -1,5 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+require_once APPPATH . 'third_party/Dompdf/autoload.inc.php';
+
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class Admin extends CI_Controller
 {
@@ -4315,7 +4319,7 @@ With good wishes";
 			$data['menu'] = "educationdetails";
 
 			$id = base64_decode($encryptId);
-			$data['student_id']=$encryptId;
+			$data['student_id'] = $encryptId;
 			$personalDetails = $this->admin_model->getDetails('admissions', $id)->row();
 			// var_dump($personalDetails); die();
 
@@ -4509,7 +4513,7 @@ With good wishes";
 				$data['menu'] = "educationdetails";
 				$data['countries'] = $this->admin_model->getCountries();
 				$data['instruction_options'] = array(" " => "Select Medium of instruction") + $this->globals->medium_of_instruction();
-				$data['student_id']=$encryptId;
+				$data['student_id'] = $encryptId;
 				$data['personalDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 				// var_dump($personalDetails); die();
 				$this->admin_template->show('admin/educationdetails', $data);
@@ -4541,12 +4545,12 @@ With good wishes";
 					$subject_name = $this->input->post('subject_' . $i . '_name');
 					$min_marks = $this->input->post('subject_' . $i . '_min_marks');
 					$max_marks = $this->input->post('subject_' . $i . '_max_marks');
-// 					var_dump($max_marks);
-// die();
+					// 					var_dump($max_marks);
+					// die();
 
 					$obtained_marks = $this->input->post('subject_' . $i . '_obtained_marks');
 					//var_dump($max_marks);
-				// die();
+					// die();
 
 					// Only add subject if name is not empty
 					if (!empty($subject_name)) {
@@ -4557,8 +4561,8 @@ With good wishes";
 					}
 				}
 
-// var_dump($insertDetails);
-// die();
+				// var_dump($insertDetails);
+				// die();
 
 				$result = $this->admin_model->insertDetails('student_education_details', $insertDetails);
 				if ($personalDetails->admission_based == "PUC") {
@@ -4597,7 +4601,7 @@ With good wishes";
 							$insertDetails3['subject_' . $i . '_obtained_marks'] = $obtained_marks;
 						}
 					}
-					
+
 					$result = $this->admin_model->insertDetails('student_education_details', $insertDetails3);
 				}
 
@@ -4660,7 +4664,7 @@ With good wishes";
 						'updated_on' => date('Y-m-d h:i:s'),
 						'updated_by' => $data['full_name']
 					);
-				
+
 
 					// Insert subject fields
 					for ($i = 1; $i <= 4; $i++) {
@@ -4678,7 +4682,7 @@ With good wishes";
 						}
 					}
 
-					
+
 					$result = $this->admin_model->insertDetails('student_education_details', $insertDetails1);
 				}
 
@@ -4698,7 +4702,7 @@ With good wishes";
 	}
 
 
-	function updateeducationdetails($edu_id,$encryptId)
+	function updateeducationdetails($edu_id, $encryptId)
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
@@ -4765,7 +4769,7 @@ With good wishes";
 				$data['countries'] = $this->admin_model->getCountries();
 				$data['states'] = $this->admin_model->get_states();
 				$data['cities'] = $this->admin_model->get_city();
-				$data['encryptId']=$encryptId;
+				$data['encryptId'] = $encryptId;
 				$data['personalDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 				$data['instruction_options'] = array(" " => "Select Medium of instruction") + $this->globals->medium_of_instruction();
 
@@ -6960,7 +6964,7 @@ With good wishes";
 			$data['menu'] = 'admissionsfrom';
 
 			$id =  base64_decode($encryptId);
-			$data['student_id']=$encryptId;
+			$data['student_id'] = $encryptId;
 
 			$data['admissionStatus'] = $this->globals->admissionStatus();
 			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
@@ -7930,7 +7934,7 @@ With good wishes";
 			printStudent($pdf, "College Code ", $admissionDetails->college_code, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			printStudent($pdf, "Gender ", $admissionDetails->gender, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			printStudent($pdf, "Year ", $feeDetails->year, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
-			printStudent($pdf, "Ug ", 'Ug - '.$this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_name"], $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+			printStudent($pdf, "Ug ", 'Ug - ' . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_name"], $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			// printStudent($pdf, "Pg :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			$pdf->Ln(4);
 
@@ -8134,6 +8138,134 @@ With good wishes";
 			$pdf->Cell($cellWidth, $rowHeight, 'RECEIPT GENERATED DATE & TIME :', 0, 1, 'L');
 
 			$pdf->Output();
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+
+
+	public function idcard1($dept)
+	{
+
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['page_title'] = 'Admission Details';
+			$data['menu'] = 'admissions';
+
+			// $id = $this->encrypt->decode(base64_decode($encryptId));
+			$admissions = $this->admin_model->getAdmissions_course($data['currentAcademicYear'], $dept, 1)->result();
+
+			if (count($admissions)) {
+
+				foreach ($admissions as $admissions1) {
+
+					$data['admissionStatus'] = $this->globals->admissionStatus();
+					$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
+
+					$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $admissions1->id)->row();
+
+					$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $admissions1->id)->row();
+					$data['educations_details'] = $this->admin_model->getDetailsbyfield($admissions1->id, 'student_id', 'student_education_details')->result();
+
+
+					$this->load->library('fpdf'); // Load library
+					ini_set("session.auto_start", 0);
+					// ini_set('memory_limit', '-1');
+					// define('FPDF_FONTPATH', 'plugins/font');
+					// $pdf = new FPDF('L', 'mm', 'A4'); // 'L' for landscape
+					// $pdf->AddPage();
+					// $pdf->SetAutoPageBreak(true, 0);
+					$html = $this->load->view('admin/idcard', $data, true);
+					$options = new Options();
+					// $options->set('isHtml5ParserEnabled', true);
+					$dompdf = new Dompdf($options);
+					$dompdf->loadHtml($html);
+
+
+
+					// Set paper size (optional)
+					$dompdf->setPaper('A4', 'landscape');
+
+					// Render PDF (first page)
+					$dompdf->render();
+					$pdfContent = $dompdf->output();
+					
+				}
+
+				$dompdf->stream("", array("Attachment" => false));
+
+				// $pdf->output();
+				// $file_name = 'ID.pdf';
+                // $this->output
+                //     ->set_content_type('application/pdf')
+                //     ->set_header('Content-Disposition: attachment; filename="'.$file_name.'"')
+                //     ->set_output($pdfContent);
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function idcard($dept)
+	{
+
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['page_title'] = 'Admission Details';
+			$data['menu'] = 'admissions';
+
+			// $id = $this->encrypt->decode(base64_decode($encryptId));
+			$data['admissions'] = $this->admin_model->getAdmissions_course($data['currentAcademicYear'], $dept, 1)->result();
+
+			if (count($data['admissions'])) {
+
+			
+
+
+					$this->load->library('fpdf'); // Load library
+					ini_set("session.auto_start", 0);
+					// ini_set('memory_limit', '-1');
+					// define('FPDF_FONTPATH', 'plugins/font');
+					// $pdf = new FPDF('L', 'mm', 'A4'); // 'L' for landscape
+					// $pdf->AddPage();
+					// $pdf->SetAutoPageBreak(true, 0);
+					$html = $this->load->view('admin/idcard', $data, true);
+					$options = new Options();
+					// $options->set('isHtml5ParserEnabled', true);
+					$dompdf = new Dompdf($options);
+					$dompdf->loadHtml($html);
+
+
+
+					// Set paper size (optional)
+					$dompdf->setPaper('A4', 'landscape');
+
+					// Render PDF (first page)
+					$dompdf->render();
+					$pdfContent = $dompdf->output();
+					
+				}
+
+				$dompdf->stream("", array("Attachment" => false));
+
+				// $pdf->output();
+				// $file_name = 'ID.pdf';
+                // $this->output
+                //     ->set_content_type('application/pdf')
+                //     ->set_header('Content-Disposition: attachment; filename="'.$file_name.'"')
+                //     ->set_output($pdfContent);
+			
 		} else {
 			redirect('admin/timeout');
 		}
