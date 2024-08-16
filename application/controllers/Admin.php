@@ -1606,20 +1606,18 @@ class Admin extends CI_Controller
 
 	public function admissionDetails($encryptId)
 	{
-
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
 			$data['id'] = $session_data['id'];
 			$data['username'] = $session_data['username'];
 			$data['full_name'] = $session_data['full_name'];
 			$data['role'] = $session_data['role'];
-
+	
 			$data['page_title'] = 'Admission Details';
 			$data['menu'] = 'admissions';
-
-			// $id = $this->encrypt->decode(base64_decode($encryptId));
+	
 			$id = base64_decode($encryptId);
-
+	
 			$data['admissionStatus'] = $this->globals->admissionStatus();
 			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
@@ -1629,25 +1627,41 @@ class Admin extends CI_Controller
 			$data['parentDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
 			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'student_id', 'student_education_details')->result();
-
-
+	
 			$upload_path = "./assets/students/$id/";
-
+	
 			// Check if the directory exists
+			$photo = null;
 			if (is_dir($upload_path)) {
 				// Get list of files in the directory
 				$files = scandir($upload_path);
-
+	
 				// Remove . and .. from the list
-				$data['files'] = array_diff($files, array('.', '..'));
+				$files = array_diff($files, array('.', '..'));
+	
+				// Filter for photo files
+				$image_extensions = array('jpg', 'jpeg', 'png');
+				foreach ($files as $file) {
+					$ext = pathinfo($file, PATHINFO_EXTENSION);
+					if (in_array(strtolower($ext), $image_extensions)) {
+						$photo = $upload_path . $file;  // Use the first photo found
+						break;
+					}
+				}
+	
+				$data['files'] = $files;
 			} else {
 				$data['files'] = array();
 			}
+	
+			$data['student_photo'] = $photo;  // Pass the photo path to the view
+	
 			$this->admin_template->show('admin/admission_details', $data);
 		} else {
 			redirect('admin/timeout');
 		}
 	}
+	
 	public function testmail()
 	{
 		$email['name'] = strtoupper('Girish R');

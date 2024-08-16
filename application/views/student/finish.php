@@ -78,7 +78,7 @@
                                 ?>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label class="form-label mb-0">Department</label><br>
                                 <?php
@@ -90,6 +90,17 @@
                                         echo "--" ;
                                 }
                                 ?>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                            <?php if (!empty($student_photo)): ?>
+                                <div class="student-photo" style="width: 120px; height: 160px; border: 1px solid #000; overflow: hidden;">
+                                    <img src="<?php echo base_url($student_photo); ?>" alt="Student Photo" style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                            <?php else: ?>
+                                <p>No photo available.</p>
+                            <?php endif; ?>
                             </div>
                         </div>
                     </div>
