@@ -93,7 +93,8 @@ class Globals
             "KEA-SNQ" => "KEA-SNQ",
             "J&K (Non Karnataka)" => "J&K (Non Karnataka)",
             "GOI (Non Karnataka)" => "GOI (Non Karnataka)",
-            "KEA-CET(LATERAL)" => "KEA-CET(LATERAL)"
+            "KEA-CET(LATERAL)" => "KEA-CET(LATERAL)",
+            "MGMT-COMEDK" => "MGMT-COMEDK",
         );
     }
 

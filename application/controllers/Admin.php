@@ -16,6 +16,8 @@ class Admin extends CI_Controller
 		$this->load->model('admin_model', '', TRUE);
 		$this->load->library(array('table', 'form_validation'));
 		$this->load->helper(array('form', 'form_helper'));
+		$this->load->helper('barcode');
+
 		date_default_timezone_set('Asia/Kolkata');
 		ini_set('upload_max_filesize', '20M');
 	}
@@ -1135,7 +1137,7 @@ class Admin extends CI_Controller
 			if ($quota == "COMED-K") {
 				$result[] = '<option value="UnAided">' . $code_options['COMED-K'] . '</option>';
 			} else {
-				if ($quota != "MGMT") {
+				if (($quota != "MGMT") && ($quota != "MGMT-COMEDK")) {
 					$dept = 0;
 				} else {
 					$dept = $dept;
@@ -8240,6 +8242,7 @@ With good wishes";
 					// $pdf = new FPDF('L', 'mm', 'A4'); // 'L' for landscape
 					// $pdf->AddPage();
 					// $pdf->SetAutoPageBreak(true, 0);
+					
 					$html = $this->load->view('admin/idcard', $data, true);
 					$options = new Options();
 					// $options->set('isHtml5ParserEnabled', true);
@@ -8266,6 +8269,210 @@ With good wishes";
                 //     ->set_header('Content-Disposition: attachment; filename="'.$file_name.'"')
                 //     ->set_output($pdfContent);
 			
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	function updateConcession()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			$data['page_title'] = "ADMISSION DETAILS";
+			$data['menu'] = "admissiondetails";
+			$encryptId = $this->input->post('id');
+			$id =  base64_decode($encryptId);
+			$corpus = $this->input->post('corpus');
+
+			$total_tution_fee = $this->input->post('total_tution_fee');
+
+			$concession_type = $this->input->post('concession_type');
+			$concession_fee = $this->input->post('concession_fee');
+			
+
+			$final_amount = $this->input->post('final_amount');
+				$updateDetails = array(
+					
+				'final_fee' => $final_amount,
+				'consession_type' => $concession_type,
+				'consession_amount' => $concession_fee
+				);
+			
+				$result = $this->admin_model->updateDetailsbyfield('student_id',$id, $updateDetails, 'fee_master');
+
+			
+				if ($result) {
+					echo 1;
+				} else {
+					echo 0;
+				}
+
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+
+	public function admissionslettermgmtcomedk($encryptId)
+	{
+
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Admission Details';
+			$data['menu'] = 'admissions';
+
+			// $id = $this->encrypt->decode(base64_decode($encryptId));
+			$id = base64_decode($encryptId);
+
+			$data['admissionStatus'] = $this->globals->admissionStatus();
+			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+
+			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
+			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'id', 'student_education_details')->result();
+
+
+			$this->load->library('fpdf'); // Load library
+			ini_set("session.auto_start", 0);
+			ini_set('memory_limit', '-1');
+			define('FPDF_FONTPATH', 'plugins/font');
+			$pdf = new FPDF();
+			$pdf->AddPage('P', 'A4'); // 'P' for portrait orientation, 'A4' for A4 size (210x297 mm)
+
+			// Set left, top, and right margins (20 mm)
+			$pdf->SetMargins(30, 20, 30);
+
+			$pdf->Image('assets/img/mce_pro_letterNEW.jpg', 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHeight());
+
+
+			$topGap = 30;
+
+			$pdf->SetY($topGap + 5);
+			$pdf->SetFont('Arial', 'BU', 7);
+			$pdf->Cell(0, 3, "No.MCE/" . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"] . "/" . $data['admissionDetails']->adm_no, 0, 1, 'L');
+			$pdf->SetFont('Arial', 'B', 7);
+			$pdf->Cell(0, 3, 'Ashok Haranahalli', 0, 1, 'L');
+			$pdf->SetFont('Arial', '', 7);
+			$pdf->Cell(0, 3, 'Chairman, Governing Council', 0, 1, 'L');
+			$pdf->Cell(0, 3, 'of M.C.E. Hassan.', 0, 1, 'L');
+
+			$pdf->SetFont('Arial', '', 9);
+			$pdf->SetXY(-30, $topGap + 5);
+			$pdf->Cell(0, 10, 'Date:' . date('d-m-Y'), 0, 1, 'R');
+
+			$pdf->SetFont('Arial', 'BU', 12);
+			$pdf->SetY($topGap + 20);
+			$pdf->Cell(0, 10, ' PROVISIONAL ADMISSION LETTER ', 0, 1, 'C');
+
+
+			$pdf->SetFont('Arial', '', 9);
+			$pdf->Cell(0, 10, 'This is to certify that,', 0, 1);
+			$pdf->Ln(3);
+			$details = array(
+				'name' => $data['admissionDetails']->student_name,
+				'parent' => $data['admissionDetails']->father_name
+			);
+			if ($data['admissionDetails']->gender == "Male") {
+				$salut = "S/O. ";
+				
+			} else {
+				$salut = "D/O. ";
+				
+			}
+           $nameData= $data['admissionDetails']->student_name." ".$salut." ".$data['admissionDetails']->father_name;
+
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->MultiCell(0, 5, '       '.$nameData.' has sought admission to the 1" Semester B.E course in ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ' branch at Malnad Colege of Engineering, Hassan for the year 2024-25', 0, 1);
+			
+			$pdf->Ln(3);
+
+			$pdf->MultiCell(0, 5, "       There is likelihood of some soats remaining vacant from the COMED-K process and sO your request for admission will be considered. If for any reasons seats are filed up from the COMED-K, you have no right to seek admissions.");
+			$pdf->Ln(3);
+
+			$pdf->MultiCell(0, 5, "       In the meanwhile subject to the above conditions you are instructed to approach the Principal, Mainad College of Engineering, and to pay the required fee, produce the ceruficate in original and provisionally get admitted as per rules prescnibed by State Government and the Visweswaraiah Technological University, Belgaum.");
+			$pdf->Ln(3);
+
+
+
+			// $pdf->Cell(0, 5, 'Chairman - Admissions', 0, 1, 'L');
+			// $pdf->Cell(0, 5, 'Hon. Secretary', 0, 1, 'R');
+
+			$additionalDataY = $pdf->GetY() + 5;
+
+
+			$pdf->SetFont('Arial', '', 9);
+			$pdf->SetY($additionalDataY);
+
+			$email_parts = explode('@', $data['admissionDetails']->email);
+			$username = $email_parts[0];
+			$domain = $email_parts[1];
+
+			$masked_username = substr($username, 0, -2) . str_repeat('*', strlen($username) - 2);
+			$masked_email = $masked_username . '@' . $domain;
+
+			// Mask phone number
+			$masked_phone = str_repeat('*', strlen($data['admissionDetails']->mobile) - 4) . substr($data['admissionDetails']->mobile, -4);
+			$pdf->AddPage();
+			$pdf->Image('assets/img/qr.png', 80, 20, 50); // Adjust x, y, and size as needed
+			$pdf->SetY(68);
+			$pdf->SetFont('Arial', '', 12); // Bold font
+			$pdf->Cell(0, 10, 'bi8.in/202425', 0, 1, 'C');
+			$pdf->Ln(3);
+
+			$pdf->SetFont('Arial', 'B', 16); // Bold font
+			$pdf->Cell(0, 10, 'SCAN TO ENROLL ADMISSION', 0, 1, 'C');
+			$pdf->Ln(15);
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(0, 5, "No.MCE/" . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"] . "/" . $data['admissionDetails']->adm_no, 0, 1, 'L');
+			$pdf->Ln(3);
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(0, 5, $data['admissionDetails']->student_name . ", " . $salut . " " . $data['admissionDetails']->father_name, 0, 1, 'L');
+			$pdf->Ln(3);
+			// $pdf->SetFont('Arial', 'B', 10);
+			// $pdf->Cell(0, 5, "Portal Login Credentials,", 0, 1, 'L');
+			// $pdf->Ln(3);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->MultiCell(0, 5, "To complete your enrolment, please log in to our student portal using the credentials provided below. Here, you will be able to update your profile, access important information.");
+			$pdf->Ln(5);
+			$usernameWidth = $pdf->GetStringWidth("Username :\t");
+			$passwordWidth = $pdf->GetStringWidth("Temporary Password :\t");
+
+			// Calculate total width for the first line
+			$totalWidth = $usernameWidth + $pdf->GetStringWidth($masked_email);
+
+			// Determine x position for "Temporary Password"
+			$xPosition = $pdf->GetX() + $usernameWidth;
+
+			// Add content
+			$pdf->SetFont('Arial', 'B', 10); // Bold font
+			$pdf->Cell($usernameWidth, 4, "Username :\t", 0, 0, 'L'); // Bold text "Username : "
+			$pdf->SetFont('Arial', '', 10); // Normal font
+			$pdf->Cell(0, 4, "\t" . $masked_email, 0, 1, 'L'); // Normal text "masked_email" on a new line
+
+			$pdf->SetFont('Arial', 'B', 10); // Bold font
+			$pdf->Cell($passwordWidth, 4, "Temporary Password :\t", 0, 0, 'L'); // Bold text "Temporary Password : "
+			$pdf->SetFont('Arial', '', 10); // Normal font
+			$pdf->Cell(0, 4, "\t\t" . $masked_phone, 0, 1, 'L'); // Normal text "masked_phone" on a new line
+
+			$pdf->Ln(5); // Line break
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->MultiCell(0, 5, "Please log in at your earliest convenience and change your password for security. Follow the instructions on the portal to update your personal and academic details.");
+
+			$pdf->Ln(5);
+
+			$fileName = $data['admissionDetails']->student_name . '-Admit_Letter.pdf';
+			// $pdf->output();
+			$pdf->output($fileName, 'D');
 		} else {
 			redirect('admin/timeout');
 		}

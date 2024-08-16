@@ -147,7 +147,15 @@
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
                             <li class="nav-item">
-
+                                <?php if($fees->consession_amount==0){?>
+                                <button class="btn btn-dark btn-sm" id="edit_concession"
+                                    name="edit_concession">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-edit"></i>
+                                    </span>
+                                    <span class="text"> Edit Concession</span>
+                                </button>
+                                <?php }?>
                             </li>
                         </ul>
                     </div>
@@ -180,7 +188,7 @@
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
                                 <label class="form-label">Concession Fee</label>
-                                <h4><?php echo number_format($fees->concession_fee, 2); ?>
+                                <h4><?php echo number_format($fees->consession_amount, 2); ?>
                                 </h4>
                             </div>
                         </div>
@@ -306,18 +314,18 @@
                         $trans = null;
                         if ($transactionDetails1->transaction_type == 1) {
                             $trans = $transactionTypes[$transactionDetails1->transaction_type];
-                            $receiptprint=($transactionDetails1->receipt_no) ? anchor('admin/receiptletter/' . $admissionDetails->id . '/' . $transactionDetails1->id, $transactionDetails1->receipt_no) : "-";
+                            $receiptprint = ($transactionDetails1->receipt_no) ? anchor('admin/receiptletter/' . $admissionDetails->id . '/' . $transactionDetails1->id, $transactionDetails1->receipt_no) : "-";
                         }
                         if ($transactionDetails1->transaction_type == 2) {
-                            $receiptprint=($transactionDetails1->receipt_no) ? anchor('admin/receiptletter/' . $admissionDetails->id . '/' . $transactionDetails1->id, $transactionDetails1->receipt_no) : "-";
+                            $receiptprint = ($transactionDetails1->receipt_no) ? anchor('admin/receiptletter/' . $admissionDetails->id . '/' . $transactionDetails1->id, $transactionDetails1->receipt_no) : "-";
                             $trans = $transactionTypes[$transactionDetails1->transaction_type] . "<br> No:" . $transactionDetails1->reference_no . '<br> Dt:' . date('d-m-Y', strtotime($transactionDetails1->reference_date)) . ' <br> Bank: ' . $transactionDetails1->bank_name;
                         }
                         if ($transactionDetails1->transaction_type == 3) {
-                            $receiptprint=($transactionDetails1->receipt_no) ? anchor('admin/feereceipt/' . $admissionDetails->id . '/' . $transactionDetails1->id, $transactionDetails1->receipt_no) : "-";
+                            $receiptprint = ($transactionDetails1->receipt_no) ? anchor('admin/feereceipt/' . $admissionDetails->id . '/' . $transactionDetails1->id, $transactionDetails1->receipt_no) : "-";
                             $trans = $transactionTypes[$transactionDetails1->transaction_type] . "<br> No:" . $transactionDetails1->reference_no . '<br> Dt:' . date('d-m-Y', strtotime($transactionDetails1->reference_date));
                         }
                         if ($transactionDetails1->transaction_type == 4) {
-                            $receiptprint=($transactionDetails1->receipt_no) ? anchor('admin/receiptletter/' . $admissionDetails->id . '/' . $transactionDetails1->id, $transactionDetails1->receipt_no) : "-";
+                            $receiptprint = ($transactionDetails1->receipt_no) ? anchor('admin/receiptletter/' . $admissionDetails->id . '/' . $transactionDetails1->id, $transactionDetails1->receipt_no) : "-";
                             $trans = $transactionTypes[$transactionDetails1->transaction_type] . "<br> No:" . $transactionDetails1->reference_no . '<br> Dt:' . date('d-m-Y', strtotime($transactionDetails1->reference_date));
                         }
 
@@ -918,6 +926,88 @@
     <!-- /.content -->
 </div>
 
+<div class="modal fade" id="student_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content tx-14">
+            <div class="modal-header">
+                <h6 class="modal-title text-bold" id="exampleModalLabel">
+                    <?= $enquiryDetails->student_name; ?> Details</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="insert_form">
+
+
+
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="form-label">Total College Fee</label>
+                                <input type="text" class="form-control" id="total_college_fee"
+                                    name="total_college_fee" placeholder="Total College fee" readonly value="<?php echo $fees->total_college_fee; ?>">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="form-label">Corpus Fund</label>
+                                <input type="text" class="form-control" id="corpus_fund" name="corpus_fund"
+                                    placeholder="Corpus Fund" readonly value="<?php echo $fees->corpus_fund; ?>">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="form-label">Total Fee</label>
+                                <input type="text" class="form-control" id="total_tution_fee"
+                                    name="total_tution_fee" placeholder="Total Fee" readonly value="<?php echo $fees->final_fee; ?>">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="form-label">Concession Type</label>
+                                <?php $concession_type_options = array("" => "Select", "Sports Quota" => "Sports Quota", "Management Quota" => "Management Quota");
+                                echo form_dropdown('concession_type', $concession_type_options, '', 'class="form-control input-xs" id="concession_type"'); ?>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="form-label">Concession Amount (if any)</label>
+                                <input type="text" class="form-control" id="concession_fee"
+                                    name="concession_fee" placeholder="Enter Concession Fee" value="<?php echo $fees->consession_amount;?>">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="form-label">Final Fee</label>
+                                <input type="text" class="form-control" id="final_amount" name="final_amount"
+                                    placeholder="Payable Fee" readonly value="<?php echo $fees->final_fee; ?>">
+                            </div>
+                        </div>
+                    </div>
+
+                 
+                    <div class="row">
+                        <div class="col">
+                            <button type="button" class="btn btn-secondary btn-sm tx-13"
+                                data-dismiss="modal">Close</button>
+                        </div>
+                        <div class="col text-right">
+                            <input type="submit" name="insert" id="insert" value="Update Concession"
+                                class="btn btn-danger btn-sm" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function() {
         var base_url = '<?php echo base_url(); ?>';
@@ -1000,7 +1090,91 @@
 
             });
         });
-    })
+
+
+
+        $("#edit_concession").click(function() {
+            event.preventDefault();
+            $('#student_modal').modal('show');
+        });
+
+
+        $("#concession_fee").change(function() {
+            event.preventDefault();
+            var final_amount = finalAmount();
+            $('#final_amount').val(finalAmount);
+            var final_amount = collegeAmount();
+            $('#final_amount').val(final_amount);
+        });
+
+        $("#corpus_fee").change(function() {
+            event.preventDefault();
+            var final_amount = finalAmount();
+            $('#final_amount').val(finalAmount);
+        });
+
+        function finalAmount() {
+            var total_college_fee = $("#total_college_fee").val();
+            var corpus_fund = $("#corpus_fund").val();
+            var total_tution_fee = $("#total_tution_fee").val();
+            var concession_fee = $("#concession_fee").val();
+
+            var final_amount = parseInt(total_tution_fee) + parseInt(concession_fee);
+            return final_amount;
+        }
+
+        function collegeAmount() {
+            var total_tution_fee = $("#total_tution_fee").val();
+            var concession_fee = $("#concession_fee").val();
+
+            var total_college_fee = parseInt(total_tution_fee) - parseInt(concession_fee);
+
+            return total_college_fee;
+        }
+        $("#insert").click(function() {
+            event.preventDefault();
+            var id = '<?php echo $encryptId; ?>';
+
+           
+            var corpus = $("#corpus_fee").val();
+            var remarks = $("#remarks").val();
+            var total_tution_fee = $("#total_tution_fee").val();
+            var total_college_fee = $("#total_college_fee").val();
+
+            var concession_type = $("#concession_type").val();
+            var concession_fee = $("#concession_fee").val();
+            var final_amount = $('#final_amount').val();
+
+            $.ajax({
+                'type': 'POST',
+                'url': base_url + 'admin/updateConcession',
+                'data': {
+                    
+                   "id": id,
+                    "total_college_fee": total_college_fee,
+                    "total_tution_fee": total_tution_fee,
+
+                    "concession_type": concession_type,
+                    "concession_fee": concession_fee,
+                    "final_amount": final_amount
+                },
+                'dataType': 'text',
+                'cache': false,
+                'beforeSend': function() {
+                    $('#insert').val("Inserting...");
+                    $("#insert").attr("disabled", true);
+                },
+                'success': function(data) {
+                    $('#insert').val("Inserted");
+                    $('#student_modal').modal('hide');
+                    var url = base_url + 'admin/paymentDetail/' + id
+                     window.location.replace(url);
+                }
+            });
+
+        });
+
+    });
 </script>
 <script>
     $(document).ready(function() {
