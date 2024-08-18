@@ -467,7 +467,7 @@ class Admin extends CI_Controller
 			$data['menu'] = 'enquiries';
 
 			$data['course_options'] = array(" " => "Select") + $this->courses();
-			$data['quota_options'] = array(" " => "Select", "MGMT" => "MGMT");
+			$data['quota_options'] = array(" " => "Select", "MGMT" => "MGMT","MGMT-COMEDK" => "MGMT-COMEDK");
 			$data['subquota_options'] = array(" " => "Select") + $this->globals->sub_quota();
 			$data['type_options'] = array(" " => "Select") + $this->globals->category();
 
