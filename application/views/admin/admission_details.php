@@ -628,7 +628,7 @@
                                 ?>
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <!-- <div class="col-md-2">
                             <div class="form-group">
                                 <label class="form-label mb-0">Latrel</label><br>
                                 <?php
@@ -641,7 +641,7 @@
                                 }
                                 ?>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <div class="row">
