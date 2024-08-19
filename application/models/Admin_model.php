@@ -451,7 +451,7 @@ class Admin_model extends CI_Model
 
   function DCBReport($currentAcademicYear)
   {
-    $this->db->select('id, app_no, adm_no, admit_date, dept_id, student_name, mobile, fees_paid, status,remarks');
+    $this->db->select('id, app_no, adm_no, admit_date, dept_id, academic_year,student_name,usn,quota,sub_quota,college_code, mobile, fees_paid, status,remarks');
     $this->db->where('academic_year', $currentAcademicYear);
     $this->db->where('status != "7"');
     return $this->db->get('admissions');
@@ -505,7 +505,7 @@ class Admin_model extends CI_Model
   }
   function transactionsdatewise($from, $to)
   {
-    $this->db->select('admissions.id, admissions.app_no,admissions.dept_id, admissions.adm_no, admissions.student_name, admissions.mobile,  admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.amount, transactions.remarks, transactions.transaction_status');
+    $this->db->select('admissions.id, admissions.app_no,admissions.dept_id, admissions.adm_no,admissions.academic_year, admissions.usn,admissions.student_name,admissions.quota,admissions.sub_quota,admissions.college_code, admissions.mobile,  admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.amount, transactions.remarks, transactions.transaction_status');
 
     $this->db->where('transactions.transaction_status', '1');
     $this->db->where('transactions.transaction_date>=', $from);

@@ -3330,7 +3330,7 @@ With good wishes";
 			// $table_setup = array ('table_open'=> '<table class="table table-bordered font14" border="1" id="dataTable" >');
 			// $this->table->set_template($table_setup);
 
-			$print_fields = array('S.No', 'Course', 'Student Name', 'Mobile', 'Admit. Date', 'Total Fee', 'Fees Paid', 'Balance amount',  'Remarks');
+			$print_fields = array('S.No','Academic Year', 'Course', 'Student Name','Usn','Quota','Sub Quota','College Code','Studying Year','Mobile', 'Admit. Date', 'Total Fee', 'Fees Paid', 'Balance amount',  'Remarks');
 
 			$this->table->set_heading($print_fields);
 
@@ -3354,8 +3354,14 @@ With good wishes";
 					$i++,
 					// $admissions1->academic_year,
 					// $admissions1->reg_no,
+					$admissions1->academic_year,
 					$dmm,
 					$admissions1->student_name,
+					$admissions1->usn,
+					$admissions1->quota,
+					$admissions1->sub_quota,
+					$admissions1->college_code,
+					1,
 					$admissions1->mobile,
 					($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
 					number_format($fees_data->final_fee, 0),
@@ -3423,57 +3429,58 @@ With good wishes";
 			$data['username'] = $session_data['username'];
 			$data['full_name'] = $session_data['full_name'];
 			$data['role'] = $session_data['role'];
-
+	
 			$data['page_title'] = 'Day Book Report';
 			$data['menu'] = 'dayBookReport';
-
+	
 			$to = $this->input->post('to_date');
 			$from = $this->input->post('from_date');
-
+	
 			$transactions = $this->admin_model->transactionsdatewise($from, $to)->result();
 			$transactionTypes = $this->globals->transactionTypes();
-
-
-			$table = "<table class='table table-bordered' border='1'  id='example2' >";
-
+	
+			$table = "<table class='table table-bordered' border='1' id='example2'>";
+	
 			$table .= '<thead>';
-
+	
+			// Include From Date and To Date in the header
 			$table .= '<tr><th colspan="11" class="font20">' . $currentAcademicYear . ' Day Book Report</th></tr>';
-
+			$table .= '<tr><th colspan="11" class="font20">From: ' . date('d-m-Y', strtotime($from)) . ' To: ' . date('d-m-Y', strtotime($to)) . '</th></tr>';
+	
 			$table .= '<tr><th>S.No</th>
-			               <th> Student Name </th>
-						    <th> Department Name </th>
-			               <th> Receipt No. </th>
-			              
-			               <th> Mode of Payment </th>
-			               <th> Reference No. </th>
-			               <th> Reference Date </th>
-			               <th> Bank Name </th>
-			               <th> Amount </th>
-						    <th> Transaction Date </th>
-			          </tr>';
-
+						   <th>Academic Year</th>
+						   <th>Usn</th>
+						   <th>Student Name</th>
+						   <th>Quota</th>
+						   <th>Sub Quota</th>
+						   <th>College Code</th>
+						   <th>Department Name</th>
+						   <th>Receipt No.</th>
+						   <th>Mode of Payment</th>
+						   <th>Reference No.</th>
+						   <th>Reference Date</th>
+						   <th>Bank Name</th>
+						   <th>Amount</th>
+						   <th>Transaction Date</th>
+					  </tr>';
+	
 			$table .= '</thead>';
 			$table .= '<tbody>';
+	
 			$i = 1;
 			foreach ($transactions as $transactions1) {
-				//  print_r($transactions1); 
-				// if($transactions1->dsc_1 == $transactions1->dsc_2){
-				//     $combination = $transactions1->dsc_1;
-				// }else{
-				//     $combination = $transactions1->dsc_1.' - '.$transactions1->dsc_2;
-				// }
-
 				$table .= '<tr>';
 				$table .= '<td>' . $i++ . '</td>';
+				$table .= '<td>' . $transactions1->academic_year . '</td>';
+				$table .= '<td>' . $transactions1->usn . '</td>';
 				$table .= '<td>' . $transactions1->student_name . '</td>';
+				$table .= '<td>' . $transactions1->quota . '</td>';
+				$table .= '<td>' . $transactions1->sub_quota . '</td>';
+				$table .= '<td>' . $transactions1->college_code . '</td>';
 				$table .= '<td>' . $this->admin_model->get_dept_by_id($transactions1->dept_id)["department_name"] . '</td>';
-				//  $table .= '<td>'.$transactions1->course.'</td>';   
-				//  $table .= '<td>'.$combination.'</td>';   
-				// $table .= '<td>' . $transactions1->receipt_no . '</td>';
-				$table .= '<td>' . '"' . htmlspecialchars($transactions1->receipt_no) . '"' . '</td>';
+				$table .= '<td>\'' . htmlspecialchars($transactions1->receipt_no) . '</td>';
 				$table .= '<td>' . $transactionTypes[$transactions1->transaction_type] . '</td>';
-				$table .= '<td>' . '"' . htmlspecialchars($transactions1->reference_no) . '"' . '</td>';
+				$table .= '<td>' . htmlspecialchars($transactions1->reference_no) . '</td>';
 				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->reference_date)) . '</td>';
 				$table .= '<td>' . $transactions1->bank_name . '</td>';
 				$table .= '<td>' . number_format($transactions1->amount, 0) . '</td>';
@@ -3483,8 +3490,8 @@ With good wishes";
 			$table .= '</tbody>';
 			$table .= '</table>';
 			$data['table'] = $table;
-
-			$response =  array(
+	
+			$response = array(
 				'op' => 'ok',
 				'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
 			);
@@ -3492,7 +3499,7 @@ With good wishes";
 		} else {
 			redirect('admin/timeout');
 		}
-	}
+	}	
 
 	public function studentdetails_report($download = '')
 	{
