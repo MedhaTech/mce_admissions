@@ -464,58 +464,12 @@
                                               <span class="text-danger"></span>
                                           </div>
                                       </div>
-                                      <div class="col-sm-12">
-
-                                          <label class="form-label text-primary">Voucher Type</label>
-
-                                          <div class="form-group  col-sm-12">
-                                              <label class="radio-inline mr-3">
-                                                  <input type="radio" name="voucher_type" id="voucher_type" value="1"> Cash
-                                              </label>
-                                              <label class="radio-inline mr-3">
-                                                  <input type="radio" name="voucher_type" id="voucher_type" value="2"> DD
-                                              </label>
-                                              <label class="radio-inline mr-3">
-                                                  <input type="radio" name="voucher_type" id="voucher_type" value="5"> Bank DD
-                                              </label>
-                                              <label class="radio-inline mr-3">
-                                                  <input type="radio" name="voucher_type" id="voucher_type" value="4"> Bank Transfer
-                                              </label>
-                                              <label class="radio-inline mr-3">
-                                                  <input type="radio" name="voucher_type" id="voucher_type" value="3"> Online
-                                              </label>
-                                              <span class="text-danger"><?php echo form_error('voucher_type'); ?></span>
-                                          </div>
-
-
-                                          <div id="dd_details">
-                                              <div class="form-group col-md-6 col-sm-12">
-                                                  <label class="form-label">DD Date:</label>
-                                                  <input type="date" class="form-control" placeholder="Enter Date" id="dd_date" name="dd_date" value="">
-                                                  <span class="text-danger"><?php echo form_error('dd_date'); ?></span>
-                                              </div>
-                                              <div class="form-group col-md-6 col-sm-12">
-                                                  <label class="form-label">DD Number:</label>
-                                                  <input type="text" class="form-control" placeholder="Enter number" id="dd_number" name="dd_number" value="">
-                                                  <span class="text-danger"><?php echo form_error('dd_number'); ?></span>
-                                              </div>
-                                              <div class="form-group col-md-6 col-sm-12">
-                                                  <label class="form-label">Bank Name & Branch:</label>
-                                                  <input type="text" class="form-control" placeholder="Enter bank name" id="dd_bank" name="dd_bank" value="">
-                                                  <span class="text-danger"><?php echo form_error('dd_bank'); ?></span>
-                                              </div>
-
-                                          </div>
-
-
-
-                                      </div>
                                   </div>
                               </div>
                               <div class="card-footer">
                                   <div class="row">
                                       <div class="col-md-6">
-                                          <?php echo anchor('admin/voucherDetail/' . base64_encode($stud_id), 'BACK', 'class="btn btn-dark btn-square" '); ?>
+                                          <?php echo anchor('admin/voucherDetail/'.base64_encode($stud_id), 'BACK', 'class="btn btn-dark btn-square" '); ?>
                                       </div>
                                       <div class="col-md-6 text-right">
                                           <button type="submit" class="btn btn-info btn-square" name="create" id="create"> CREATE </button>
@@ -537,25 +491,6 @@
 
   <script>
       $(document).ready(function() {
-
-
-          $("#dd_details").hide();
-
-
-          $('input[type=radio][name=voucher_type]').change(function() {
-
-              if (this.value == "5") {
-
-                  $("#dd_details").show();
-
-              }
-              else
-              {
-                $("#dd_details").hide();
-              }
-
-
-          });
           // Function to update final fee based on selected checkboxes
           function updateFinalFee() {
               var sum = 0;
@@ -565,7 +500,6 @@
               $('input[type="checkbox"]').each(function() {
                   if ($(this).prop('checked')) {
                       var inputId = $(this).attr('id').replace('_checkbox', '');
-                      $('#' + inputId).removeAttr('readonly');
                       var inputValue = parseFloat($('#' + inputId).val());
 
                       if ($(this).attr('id') === 'corpus_fund_checkbox') {
