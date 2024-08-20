@@ -6168,7 +6168,7 @@ With good wishes";
 			$data['full_name'] = $session_data['full_name'];
 			$data['role'] = $session_data['role'];
 			$data['page_title'] = "New Voucher Request";
-			$data['menu'] = "vouchers";
+			$data['menu'] = "payments";
 			$id = base64_decode($encryptId);
 			$admissionSingle = $this->admin_model->getDetails('admissions', $id)->row();
 
