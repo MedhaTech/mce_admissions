@@ -3393,6 +3393,216 @@ With good wishes";
 		}
 	}
 
+		public function feebalance_report($download = 0)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$data['page_title'] = $currentAcademicYear . 'FEE BALANCE';
+			$data['menu'] = 'FeebalanceReport';
+
+			$data['download_action'] = 'admin/dcb_report';
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$admissions = $this->admin_model->FeebalanceReport($currentAcademicYear)->result();
+
+			$fees = $this->admin_model->feeDetails()->result();
+			$feeDetails = array();
+			foreach ($fees as $fees1) {
+				$feeDetails[$fees1->admissions_id] = $fees1->paid_amount;
+			}
+
+			$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2">');
+			$this->table->set_template($table_setup);
+
+			$print_fields = array('S.No', 'Usn', 'Student Name', 'Course', 'Quota', 'Sub Quota', 'College Code', 'Studying Year', 'Mobile', 'Admit. Date', 'Balance amount', 'Remarks');
+			$this->table->set_heading($print_fields);
+
+			$i = 1;
+			$final_fee = 0;
+			$fees_paid = 0;
+			$balance_amount = 0;
+			foreach ($admissions as $admissions1) {
+				$dmm = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+
+				$fees_data = $this->admin_model->getDetailsbyfield($admissions1->id, 'student_id', 'fee_master')->row();
+				$balance_amount_data = $fees_data->final_fee - (isset($feeDetails[$admissions1->id]) ? $feeDetails[$admissions1->id] : 0);
+
+				// Only add students with a positive balance amount
+				if ($balance_amount_data > 0) {
+					$result_array = array(
+						$i++,
+						$admissions1->usn,
+						$admissions1->student_name,
+						$dmm,
+						$admissions1->quota,
+						$admissions1->sub_quota,
+						$admissions1->college_code,
+						1,
+						$admissions1->mobile,
+						($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
+						number_format($balance_amount_data, 0),
+						$admissions1->remarks
+					);
+
+					$this->table->add_row($result_array);
+					$balance_amount += $balance_amount_data;
+				}
+			}
+
+			$data['table'] = $this->table->generate();
+
+			if (!$download) {
+				$this->admin_template->show('admin/feebalance_report', $data);
+			} else {
+				$response = array(
+					'op' => 'ok',
+					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+				);
+				die(json_encode($response));
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+		public function corpusoverall_report($download = 0)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$data['page_title'] = $currentAcademicYear . ' CORPUS OVERALL FEE';
+			$data['menu'] = 'CorpusoverallfeeReport';
+
+			$data['download_action'] = 'admin/corpusoverall_report';
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$admissions = $this->admin_model->CorpusReport($currentAcademicYear)->result();
+
+			$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2">');
+			$this->table->set_template($table_setup);
+
+			$print_fields = array('S.No', 'Academic Year', 'Usn', 'Student Name', 'Course', 'Quota', 'Sub Quota', 'College Code', 'Studying Year', 'Mobile', 'Admit. Date', 'Corpus Fund', 'Remarks');
+			$this->table->set_heading($print_fields);
+
+			$i = 1;
+			foreach ($admissions as $admissions1) {
+				$dmm = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+
+				// Only display students with a Corpus Fund fee
+				
+					$result_array = array(
+						$i++,
+						$admissions1->academic_year,
+						$admissions1->usn,
+						$admissions1->student_name,
+						$dmm,
+						$admissions1->quota,
+						$admissions1->sub_quota,
+						$admissions1->college_code,
+						1,
+						$admissions1->mobile,
+						($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
+						number_format($admissions1->Corpus_fund, 0), // Use Corpus_fund directly from the admissions object
+						$admissions1->remarks
+					);
+
+					$this->table->add_row($result_array);
+				}
+			
+
+			$data['table'] = $this->table->generate();
+
+			if (!$download) {
+				$this->admin_template->show('admin/corpusoverall_report', $data);
+			} else {
+				$response = array(
+					'op' => 'ok',
+					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+				);
+				die(json_encode($response));
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function corpusbalance_report($download = 0)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$data['page_title'] = $currentAcademicYear . ' CORPUS BALANCE FEE';
+			$data['menu'] = 'CorpusbalancefeeReport';
+
+			$data['download_action'] = 'admin/corpusbalance_report';
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$admissions = $this->admin_model->CorpusBalanceReport($currentAcademicYear)->result();
+
+			$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2">');
+			$this->table->set_template($table_setup);
+
+			$print_fields = array('S.No', 'Academic Year', 'Usn', 'Student Name', 'Course', 'Quota', 'Sub Quota', 'College Code', 'Studying Year', 'Mobile', 'Admit. Date', 'Corpus Fund Balance', 'Remarks');
+			$this->table->set_heading($print_fields);
+
+			$i = 1;
+			foreach ($admissions as $admissions1) {
+				$dmm = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+
+				// Only display students with a Corpus Fund fee
+				if ($admissions1->Corpus_fund > 0) { // Ensure Corpus_fund is greater than 0
+					$result_array = array(
+						$i++,
+						$admissions1->academic_year,
+						$admissions1->usn,
+						$admissions1->student_name,
+						$dmm,
+						$admissions1->quota,
+						$admissions1->sub_quota,
+						$admissions1->college_code,
+						1,
+						$admissions1->mobile,
+						($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
+						number_format($admissions1->Corpus_fund, 0), // Use Corpus_fund directly from the admissions object
+						$admissions1->remarks
+					);
+
+					$this->table->add_row($result_array);
+				}
+			}
+
+			$data['table'] = $this->table->generate();
+
+			if (!$download) {
+				$this->admin_template->show('admin/corpusbalance_report', $data);
+			} else {
+				$response = array(
+					'op' => 'ok',
+					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+				);
+				die(json_encode($response));
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
 	public function daybook_report()
 	{
 		if ($this->session->userdata('logged_in')) {
