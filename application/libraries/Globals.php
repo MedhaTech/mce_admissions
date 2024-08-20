@@ -1461,4 +1461,9 @@ class Globals
 
         );
     }
+
+    public function voucher_types()
+    {
+        return array("1" => "Cash", "2" => "DD", "3" => "Online", "4" => "Bank Transfer", "5" => "Bank DD");
+    }
 }

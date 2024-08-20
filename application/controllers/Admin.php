@@ -245,11 +245,11 @@ class Admin extends CI_Controller
 
 						// Define the new file name
 						$new_file_name = 'mgmt_comed-k_seat.pdf';
-				
+
 						// Define old and new file paths
 						$old_file_path = $upload_data['full_path'];
 						$new_file_path = $config['upload_path'] . $new_file_name;
-				
+
 						// Rename the file
 						if (rename($old_file_path, $new_file_path)) {
 							// echo "File uploaded and renamed successfully!";
@@ -467,7 +467,7 @@ class Admin extends CI_Controller
 			$data['menu'] = 'enquiries';
 
 			$data['course_options'] = array(" " => "Select") + $this->courses();
-			$data['quota_options'] = array(" " => "Select", "MGMT" => "MGMT","MGMT-COMEDK" => "MGMT-COMEDK");
+			$data['quota_options'] = array(" " => "Select", "MGMT" => "MGMT", "MGMT-COMEDK" => "MGMT-COMEDK");
 			$data['subquota_options'] = array(" " => "Select") + $this->globals->sub_quota();
 			$data['type_options'] = array(" " => "Select") + $this->globals->category();
 
@@ -1614,12 +1614,12 @@ class Admin extends CI_Controller
 			$data['username'] = $session_data['username'];
 			$data['full_name'] = $session_data['full_name'];
 			$data['role'] = $session_data['role'];
-	
+
 			$data['page_title'] = 'Admission Details';
 			$data['menu'] = 'admissions';
-	
+
 			$id = base64_decode($encryptId);
-	
+
 			$data['admissionStatus'] = $this->globals->admissionStatus();
 			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
@@ -1629,18 +1629,18 @@ class Admin extends CI_Controller
 			$data['parentDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
 			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'student_id', 'student_education_details')->result();
-	
+
 			$upload_path = "./assets/students/$id/";
-	
+
 			// Check if the directory exists
 			$photo = null;
 			if (is_dir($upload_path)) {
 				// Get list of files in the directory
 				$files = scandir($upload_path);
-	
+
 				// Remove . and .. from the list
 				$files = array_diff($files, array('.', '..'));
-	
+
 				// Filter for photo files
 				$image_extensions = array('jpg', 'jpeg', 'png');
 				foreach ($files as $file) {
@@ -1650,20 +1650,20 @@ class Admin extends CI_Controller
 						break;
 					}
 				}
-	
+
 				$data['files'] = $files;
 			} else {
 				$data['files'] = array();
 			}
-	
+
 			$data['student_photo'] = $photo;  // Pass the photo path to the view
-	
+
 			$this->admin_template->show('admin/admission_details', $data);
 		} else {
 			redirect('admin/timeout');
 		}
 	}
-	
+
 	public function testmail()
 	{
 		$email['name'] = strtoupper('Girish R');
@@ -3330,7 +3330,7 @@ With good wishes";
 			// $table_setup = array ('table_open'=> '<table class="table table-bordered font14" border="1" id="dataTable" >');
 			// $this->table->set_template($table_setup);
 
-			$print_fields = array('S.No','Academic Year', 'Course', 'Student Name','Usn','Quota','Sub Quota','College Code','Studying Year','Mobile', 'Admit. Date', 'Total Fee', 'Fees Paid', 'Balance amount',  'Remarks');
+			$print_fields = array('S.No', 'Academic Year', 'Course', 'Student Name', 'Usn', 'Quota', 'Sub Quota', 'College Code', 'Studying Year', 'Mobile', 'Admit. Date', 'Total Fee', 'Fees Paid', 'Balance amount',  'Remarks');
 
 			$this->table->set_heading($print_fields);
 
@@ -3393,7 +3393,7 @@ With good wishes";
 		}
 	}
 
-		public function feebalance_report($download = 0)
+	public function feebalance_report($download = 0)
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
@@ -3471,7 +3471,7 @@ With good wishes";
 		}
 	}
 
-		public function corpusoverall_report($download = 0)
+	public function corpusoverall_report($download = 0)
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
@@ -3500,26 +3500,26 @@ With good wishes";
 				$dmm = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
 
 				// Only display students with a Corpus Fund fee
-				
-					$result_array = array(
-						$i++,
-						$admissions1->academic_year,
-						$admissions1->usn,
-						$admissions1->student_name,
-						$dmm,
-						$admissions1->quota,
-						$admissions1->sub_quota,
-						$admissions1->college_code,
-						1,
-						$admissions1->mobile,
-						($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
-						number_format($admissions1->Corpus_fund, 0), // Use Corpus_fund directly from the admissions object
-						$admissions1->remarks
-					);
 
-					$this->table->add_row($result_array);
-				}
-			
+				$result_array = array(
+					$i++,
+					$admissions1->academic_year,
+					$admissions1->usn,
+					$admissions1->student_name,
+					$dmm,
+					$admissions1->quota,
+					$admissions1->sub_quota,
+					$admissions1->college_code,
+					1,
+					$admissions1->mobile,
+					($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
+					number_format($admissions1->Corpus_fund, 0), // Use Corpus_fund directly from the admissions object
+					$admissions1->remarks
+				);
+
+				$this->table->add_row($result_array);
+			}
+
 
 			$data['table'] = $this->table->generate();
 
@@ -3639,24 +3639,24 @@ With good wishes";
 			$data['username'] = $session_data['username'];
 			$data['full_name'] = $session_data['full_name'];
 			$data['role'] = $session_data['role'];
-	
+
 			$data['page_title'] = 'Day Book Report';
 			$data['menu'] = 'dayBookReport';
-	
+
 			$to = $this->input->post('to_date');
 			$from = $this->input->post('from_date');
-	
+
 			$transactions = $this->admin_model->transactionsdatewise($from, $to)->result();
 			$transactionTypes = $this->globals->transactionTypes();
-	
+
 			$table = "<table class='table table-bordered' border='1' id='example2'>";
-	
+
 			$table .= '<thead>';
-	
+
 			// Include From Date and To Date in the header
 			$table .= '<tr><th colspan="11" class="font20">' . $currentAcademicYear . ' Day Book Report</th></tr>';
 			$table .= '<tr><th colspan="11" class="font20">From: ' . date('d-m-Y', strtotime($from)) . ' To: ' . date('d-m-Y', strtotime($to)) . '</th></tr>';
-	
+
 			$table .= '<tr><th>S.No</th>
 						   <th>Academic Year</th>
 						   <th>Usn</th>
@@ -3673,10 +3673,10 @@ With good wishes";
 						   <th>Amount</th>
 						   <th>Transaction Date</th>
 					  </tr>';
-	
+
 			$table .= '</thead>';
 			$table .= '<tbody>';
-	
+
 			$i = 1;
 			foreach ($transactions as $transactions1) {
 				$table .= '<tr>';
@@ -3700,7 +3700,7 @@ With good wishes";
 			$table .= '</tbody>';
 			$table .= '</table>';
 			$data['table'] = $table;
-	
+
 			$response = array(
 				'op' => 'ok',
 				'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
@@ -3709,7 +3709,7 @@ With good wishes";
 		} else {
 			redirect('admin/timeout');
 		}
-	}	
+	}
 
 	public function studentdetails_report($download = '')
 	{
@@ -5115,10 +5115,11 @@ With good wishes";
 			$data['encryptId'] = $encryptId;
 			$student_id = base64_decode($encryptId);
 			$data['stud_id'] = $student_id;
+			$data['voucher_types'] = $this->globals->voucher_types();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $student_id)->row();
 			// $data['paymentDetail'] = $this->admin_model->getDetailsbyfield($student_id, 'admission_id', 'payment_structure')->result();
-			$data['paymentDetail'] = $this->admin_model->getDetailsbyfield2('admission_id', $student_id, 'offline', '0', 'payment_structure')->result();
+			$data['paymentDetail'] = $this->admin_model->getDetailsbyfield($student_id, 'admission_id',  'payment_structure')->result();
 			$data['transactionDetails'] = $this->admin_model->getDetailsbyfield($student_id, 'admissions_id', 'transactions')->result();
 			$data['paid_amount'] = $this->admin_model->paidfee('admissions_id', $student_id, 'transaction_status', '1', 'transactions');
 			$admissionSingle = $this->admin_model->getDetails('admissions', $student_id)->row();
@@ -5127,263 +5128,7 @@ With good wishes";
 			$data['fees'] = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'fee_master')->row();
 
 
-			$this->form_validation->set_rules('final_fee', 'Total Amount', 'required|greater_than[0]');
-			$this->form_validation->set_rules('mode_of_payment', 'Mode of Payment', 'required');
-			if ($this->form_validation->run() === FALSE) {
-				$data['action'] = 'admin/paymentDetail/' . $encryptId;
-				$this->admin_template->show('admin/paymentDetail', $data);
-			} else {
-
-				$rec = $this->input->post('rec');
-				$mode_of_payment = $this->input->post('mode_of_payment');
-
-				if ($mode_of_payment) {
-					$selectedFees = $this->input->post('selected_fees');
-
-					$finalFee = $this->input->post('final_fee');
-					$selectedFeesArray = json_decode($selectedFees, true);
-
-					// Debugging - Output selected fees array (adjust as needed)
-					$updateDetails['type'] = 0;
-					foreach ($selectedFeesArray as $selected) {
-						$field = $newName = preg_replace('/_checkbox$/', '', $selected['name']);
-
-						$updateDetails[$field] = $selected['value'];
-
-						if ($field == 'corpus_fund') {
-							$updateDetails['type'] = 1;
-						}
-					}
-					$updateDetails['offline'] = 1;
-					$updateDetails['status'] = 1;
-					$updateDetails['admission_id'] = $student_id;
-					$updateDetails['mobile'] = $data['admissionDetails']->mobile;;
-					$updateDetails['final_fee'] = $this->input->post('final_fee');
-					$updateDetails['requested_by'] = $data['full_name'];
-					$updateDetails['requested_on'] = date('Y-m-d h:i:s');
-
-
-
-					$result_payment = $this->admin_model->insertDetails('payment_structure', $updateDetails);
-				}
-
-
-
-				$paid_amount = $this->input->post('paid_amount');
-
-
-				$final_fee = $data['studentDetails']->final_fee;
-				$total_college_fee = $data['studentDetails']->total_college_fee;
-				$total_university_fee = $data['studentDetails']->total_university_fee;
-
-				$current_balance_amount = $data['studentDetails']->final_amount - $data['paid_amount'];
-
-				$paying_amount = 0;
-
-
-
-
-				if ($mode_of_payment == "Cash") {
-					$paying_amount = $this->input->post('cash_amount');
-					$academic_year = "2024-2025";
-					$receipt_no = 1;
-					$transaction_date = date('Y-m-d');
-					$transaction_type = '1';
-					$bank_name = "";
-					$reference_no = $this->input->post('reference_id');
-					$reference_date = date('Y-m-d', strtotime($this->input->post('cash_date')));
-					$paid_amount = "0";
-					$remarks = $this->input->post('remarks');
-					$transaction_status = '1';
-				}
-				if ($mode_of_payment == "ChequeDD") {
-					$paying_amount = $this->input->post('cheque_dd_amount');
-					$academic_year = "2024-2025";
-					$receipt_no = 1;
-					$transaction_date = "";
-					$transaction_type = '2';
-					$bank_name = $this->input->post('cheque_dd_bank');
-					$reference_no = $this->input->post('cheque_dd_number');
-					$reference_date = date('Y-m-d', strtotime($this->input->post('cheque_dd_date')));
-					$paid_amount = "0";
-					$remarks = $this->input->post('remarks');
-					$transaction_status = '1';
-				}
-				if ($mode_of_payment == "OnlinePayment") {
-					$paying_amount = $this->input->post('transaction_amount');
-					$academic_year = "2024-2025";
-					$receipt_no = 1;
-					$transaction_date = date('Y-m-d');
-					$transaction_type = '4';
-					$bank_name = "";
-					$reference_no = $this->input->post('transaction_id');
-					$reference_date = date('Y-m-d', strtotime($this->input->post('transaction_date')));
-					$paid_amount = "0";
-					$remarks = $this->input->post('remarks');
-					$transaction_status = '1';
-				}
-				$paying_amount = $this->input->post('final_fee');
-				//    echo $data['studentDetails']->aided_unaided;
-				//    echo "<br>";
-				//    echo "Cur Balance:".$current_balance_amount;
-				//    echo "<br>";
-				//    echo "Paying:".$paying_amount;
-				//    echo "<br>";
-
-				$aided_fee = 0;
-				$mgt_fee = 0;
-				$unaided_fee = 0;
-
-				if ($data['studentDetails']->aided_unaided === "Aided") {
-					if ($final_amount == $current_balance_amount) {
-						if ($paying_amount >= $total_college_fee) {
-							$second_payment = $paying_amount - $total_college_fee;
-							if ($second_payment == 0) {
-								$aided_fee = $total_college_fee;
-								$mgt_fee = 0;
-							}
-							if ($second_payment) {
-								$aided_fee = $total_college_fee;
-								$mgt_fee = $second_payment;
-							}
-						}
-					} else {
-						$aided_fee = 0;
-						$mgt_fee = $paying_amount;
-					}
-				} else {
-					$unaided_fee = $paying_amount;
-				}
-
-				//echo "<br>";
-				//echo "Aided:".$aided_fee;
-				//echo "<br>";
-				//echo "Mgt:".$mgt_fee;
-				//echo "<br>";
-				//echo "UnAided:".$unaided_fee;
-
-				//die;
-				if ($aided_fee) {
-					$adm_type = "Aided";
-					if ($receipt_no) {
-						$tag = $this->receiptPre[$adm_type];
-						$receipt_no = null;
-						$cnt_number = $this->getReceiptNo($adm_type);
-						$receipt_no = $tag . $cnt_number;
-					} else {
-						$receipt_no = '';
-					}
-					// $balance_amount = $current_balance_amount - $aided_fee;    
-					$balance_amount = 0;
-					$transactionDetails = array(
-						'academic_year' => "2024-2025",
-						'admissions_id' => $data['admissionDetails']->id,
-						'mobile' => $data['admissionDetails']->mobile,
-						'aided_unaided' => $adm_type,
-						'receipt_no' => $receipt_no,
-						'year' => '1',
-						'transaction_date' => date('Y-m-d'),
-						'transaction_type' => $transaction_type,
-						'bank_name' => $bank_name,
-						'reference_no' => $reference_no,
-						'reference_date' => $reference_date,
-						'paid_amount' => $paid_amount,
-						'amount' => $aided_fee,
-						'balance_amount' => $balance_amount,
-						'remarks' => $remarks,
-						'payment_id' => $result_payment,
-						'transaction_status' => $transaction_status,
-						'created_by' => $data['name'],
-						'created_on' => date('Y-m-d h:i:s')
-					);
-					//print_r($transactionDetails);
-					$result = $this->admin_model->insertDetails('transactions', $transactionDetails);
-				}
-				if ($mgt_fee) {
-					$adm_type = "Mgt";
-					if ($receipt_no) {
-						$tag = $this->receiptPre[$adm_type];
-						$receipt_no = null;
-						$cnt_number = $this->getReceiptNo($adm_type);
-						$receipt_no = $tag . $cnt_number;
-					} else {
-						$receipt_no = '';
-					}
-					$balance_amount = ($current_balance_amount - ($mgt_fee + $aided_fee));
-					$transactionDetails = array(
-						'academic_year' => "2024-2025",
-						'admissions_id' => $data['admissionDetails']->id,
-						'mobile' => $data['admissionDetails']->mobile,
-						'aided_unaided' => $adm_type,
-						'receipt_no' => $receipt_no,
-						'year' => '1',
-						'transaction_date' => date('Y-m-d'),
-						'transaction_type' => $transaction_type,
-						'bank_name' => $bank_name,
-						'reference_no' => $reference_no,
-						'reference_date' => $reference_date,
-						'paid_amount' => $paid_amount,
-						'amount' => $mgt_fee,
-						'balance_amount' => $balance_amount,
-						'remarks' => $remarks,
-						'payment_id' => $result_payment,
-						'transaction_status' => $transaction_status,
-						'created_by' => $data['name'],
-						'created_on' => date('Y-m-d h:i:s')
-					);
-					//print_r($transactionDetails);
-					$result = $this->admin_model->insertDetails('transactions', $transactionDetails);
-				}
-				if ($unaided_fee) {
-					$adm_type = "UnAided";
-					if ($receipt_no) {
-						$tag = $this->receiptPre[$adm_type];
-						$receipt_no = null;
-						$cnt_number = $this->getReceiptNo($adm_type);
-						$receipt_no = $tag . $cnt_number;
-					} else {
-						$receipt_no = '';
-					}
-					$balance_amount = $current_balance_amount - $unaided_fee;
-					$transactionDetails = array(
-						'academic_year' => "2024-2025",
-						'admissions_id' => $data['admissionDetails']->id,
-						'mobile' => $data['admissionDetails']->mobile,
-						'aided_unaided' => $adm_type,
-						'receipt_no' => $receipt_no,
-						'year' => '1',
-						'transaction_date' => date('Y-m-d'),
-						'transaction_type' => $transaction_type,
-						'bank_name' => $bank_name,
-						'reference_no' => $reference_no,
-						'reference_date' => $reference_date,
-						'paid_amount' => $paid_amount,
-						'amount' => $unaided_fee,
-						'balance_amount' => $balance_amount,
-						'remarks' => $remarks,
-						'payment_id' => $result_payment,
-						'transaction_status' => $transaction_status,
-						'created_by' => $data['name'],
-						'created_on' => date('Y-m-d h:i:s')
-					);
-					//print_r($transactionDetails);
-					$result = $this->admin_model->insertDetails('transactions', $transactionDetails);
-				}
-
-				if ($rec) {
-					$updateDetails = array('adm_date' => date('Y-m-d'));
-					$res = $this->admin_model->updateDetails('admissions', $data['studentDetails']->id, $updateDetails);
-				}
-
-				if ($result) {
-					$this->session->set_flashdata('message', 'Fee Payment details udpated successfully...!');
-					$this->session->set_flashdata('status', 'alert-success');
-				} else {
-					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
-					$this->session->set_flashdata('status', 'alert-warning');
-				}
-				redirect('admin/paymentDetail/' . $encryptId, 'refresh');
-			}
+			$this->admin_template->show('admin/paymentDetail', $data);
 		} else {
 			redirect('admin/timeout');
 		}
@@ -6430,9 +6175,9 @@ With good wishes";
 			$data['fee_structure'] = $this->admin_model->getFee($admissionSingle->dept_id, $admissionSingle->quota, $admissionSingle->sub_quota)->row();
 			$data['stud_id'] = $id;
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+			$this->form_validation->set_rules('voucher_type', 'Voucher Type', 'required');
+
 			$this->form_validation->set_rules('final_fee', 'Total Amount', 'numeric|required');
-
-
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/new_voucher/' . $encryptId;
 				$this->admin_template->show('admin/new_voucher', $data);
@@ -6455,7 +6200,20 @@ With good wishes";
 						$updateDetails['type'] = 1;
 					}
 				}
-				$updateDetails['offline'] = 1;
+				$updateDetails['voucher_type'] = $this->input->post('voucher_type');
+				if ($updateDetails['voucher_type'] == 5) {
+
+					$updateDetails['dd_bank'] = $this->input->post('dd_bank');
+					$updateDetails['dd_number'] = $this->input->post('dd_number');
+					$updateDetails['dd_date'] = date('Y-m-d', strtotime($this->input->post('dd_date')));
+				}
+				if ($updateDetails['voucher_type'] == 3) {
+					$updateDetails['offline'] = 0;
+				} else {
+					$updateDetails['offline'] = 1;
+				}
+
+
 				$updateDetails['admission_id'] = $id;
 				$updateDetails['mobile'] = $data['admissionDetails']->mobile;;
 				$updateDetails['final_fee'] = $this->input->post('final_fee');
@@ -6475,7 +6233,7 @@ With good wishes";
 					$this->session->set_flashdata('status', 'alert-warning');
 				}
 
-				redirect('admin/voucherDetail/' . $encryptId, 'refresh');
+				redirect('admin/paymentDetail/' . $encryptId, 'refresh');
 			}
 		} else {
 			redirect('admin', 'refresh');
@@ -6958,9 +6716,9 @@ With good wishes";
 				generateCopy($i, $pdf, $startX + ($i * $spacingX), $startY, $collegeName, $affiliation, $contactInfo, $contactInfo1, $issuedOn, $programe, $chellan, $dept, $tableData, $voucherDetails, $copyData[$i]);
 			}
 
-			// $pdf->Output();
-			$fileName = $admissionDetails->student_name . '-Voucher.pdf';
-			$pdf->output($fileName, 'D');
+			$pdf->Output();
+			// $fileName = $admissionDetails->student_name . '-Voucher.pdf';
+			// $pdf->output($fileName, 'D');
 		} else {
 			redirect('admin/timeout');
 		}
@@ -7321,13 +7079,13 @@ With good wishes";
 			$pdf->Cell(60, 10, 'DOCUMENTS PRODUCED ', 0, 1, 'C');
 
 			$pdf->SetFont('Arial', '', 10);
-			$slno=1;
+			$slno = 1;
 			foreach ($file_doc as $file) {
-				 $document_type = substr($file, 0, strpos($file, '.'));
-			$pdf->SetX(15, $topGap + 9);
-			$pdf->Cell(60, 6, $slno.') '.$document_type, 0);
-			$pdf->Cell(0, 6, '', 0, 'C');
-			$slno++;
+				$document_type = substr($file, 0, strpos($file, '.'));
+				$pdf->SetX(15, $topGap + 9);
+				$pdf->Cell(60, 6, $slno . ') ' . $document_type, 0);
+				$pdf->Cell(0, 6, '', 0, 'C');
+				$slno++;
 			}
 			// $pdf->SetX(15, $topGap + 9);
 			// $pdf->Cell(60, 6, '2) P.U.C. marks card', 0);
@@ -7408,7 +7166,7 @@ With good wishes";
 			$pdf->SetFont('Arial', '', 9);
 			$pdf->SetXY(-30, $topGap + 9);
 			$pdf->Cell(0, 5, 'Temp USN:'
-            .$admissionDetails->usn, 0, 1, 'R');
+				. $admissionDetails->usn, 0, 1, 'R');
 
 			$pdf->SetFont('Arial', 'B', 12);
 			$pdf->Cell(0, 10, 'ADMISSION FORM', 0, 1, 'C');
@@ -7799,80 +7557,79 @@ With good wishes";
 
 			foreach ($educations_details as $edu) {
 
-			$pdf->Cell($cellWidth, $cellHeight, $edu->education_level, 0, 0, 'L', true);
+				$pdf->Cell($cellWidth, $cellHeight, $edu->education_level, 0, 0, 'L', true);
 
-			$pdf->Ln($cellHeight * 1.7);
-			$pdf->SetFont('Arial', '', 9);
-			$pdf->Cell($cellWidth, $cellHeight, "College Name :", 0, 0, 'L', true);
-			$pdf->SetFont('Arial', 'B', 9);
-			$pdf->Cell($cellWidth * 1.2, $cellHeight, $edu->inst_name, 0, 0, 'L', true);
+				$pdf->Ln($cellHeight * 1.7);
+				$pdf->SetFont('Arial', '', 9);
+				$pdf->Cell($cellWidth, $cellHeight, "College Name :", 0, 0, 'L', true);
+				$pdf->SetFont('Arial', 'B', 9);
+				$pdf->Cell($cellWidth * 1.2, $cellHeight, $edu->inst_name, 0, 0, 'L', true);
 
-			$pdf->Ln($cellHeight * 1.7);
-			$pdf->SetFont('Arial', '', 9);
-			$pdf->Cell($cellWidth, $cellHeight, "Board Name :", 0, 0, 'L', true);
-			$pdf->SetFont('Arial', 'B', 9);
-			$pdf->Cell($cellWidth * 1.2, $cellHeight, $edu->inst_board, 0, 0, 'L', true);
+				$pdf->Ln($cellHeight * 1.7);
+				$pdf->SetFont('Arial', '', 9);
+				$pdf->Cell($cellWidth, $cellHeight, "Board Name :", 0, 0, 'L', true);
+				$pdf->SetFont('Arial', 'B', 9);
+				$pdf->Cell($cellWidth * 1.2, $cellHeight, $edu->inst_board, 0, 0, 'L', true);
 
-			// Adding a spacer cell
-			$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+				// Adding a spacer cell
+				$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
 
-			$pdf->SetFont('Arial', '', 9);
-			$pdf->Cell($cellWidth, $cellHeight, "Medium of Instruction :", 0, 0, 'L', true);
-			$pdf->SetFont('Arial', 'B', 9);
-			$pdf->Cell($cellWidth * 1.5, $cellHeight, $edu->medium_of_instruction, 0, 1, 'L', true);
+				$pdf->SetFont('Arial', '', 9);
+				$pdf->Cell($cellWidth, $cellHeight, "Medium of Instruction :", 0, 0, 'L', true);
+				$pdf->SetFont('Arial', 'B', 9);
+				$pdf->Cell($cellWidth * 1.5, $cellHeight, $edu->medium_of_instruction, 0, 1, 'L', true);
 
-			$pdf->Ln(3);
-			$pdf->SetFont('Arial', '', 9);
-			$pdf->Cell($cellWidth, $cellHeight, "Register Number :", 0, 0, 'L', true);
-			$pdf->SetFont('Arial', 'B', 9);
-			$pdf->Cell($cellWidth * 1.2, $cellHeight, $edu->register_number, 0, 0, 'L', true);
+				$pdf->Ln(3);
+				$pdf->SetFont('Arial', '', 9);
+				$pdf->Cell($cellWidth, $cellHeight, "Register Number :", 0, 0, 'L', true);
+				$pdf->SetFont('Arial', 'B', 9);
+				$pdf->Cell($cellWidth * 1.2, $cellHeight, $edu->register_number, 0, 0, 'L', true);
 
-			// Adding a spacer cell
-			$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
+				// Adding a spacer cell
+				$pdf->Cell($cellWidth / 3, $cellHeight, "", 0, 0, 'L', true);
 
-			$pdf->SetFont('Arial', '', 9);
-			$pdf->Cell($cellWidth, $cellHeight, "Total Marks :", 0, 0, 'L', true);
-			$pdf->SetFont('Arial', 'B', 9);
-			$pdf->Cell($cellWidth * 1.5, $cellHeight, $edu->maximum, 0, 1, 'L', true);
+				$pdf->SetFont('Arial', '', 9);
+				$pdf->Cell($cellWidth, $cellHeight, "Total Marks :", 0, 0, 'L', true);
+				$pdf->SetFont('Arial', 'B', 9);
+				$pdf->Cell($cellWidth * 1.5, $cellHeight, $edu->maximum, 0, 1, 'L', true);
 
-			$pdf->Ln(3);
-			$pdf->SetFont('Arial', '', 9);
-			$pdf->Cell($cellWidth, $cellHeight, "Obtained Marks :", 0, 0, 'L', true);
-			$pdf->SetFont('Arial', 'B', 9);
-			$pdf->Cell($cellWidth * 1.2, $cellHeight, $edu->obtained, 0, 0, 'L', true);
+				$pdf->Ln(3);
+				$pdf->SetFont('Arial', '', 9);
+				$pdf->Cell($cellWidth, $cellHeight, "Obtained Marks :", 0, 0, 'L', true);
+				$pdf->SetFont('Arial', 'B', 9);
+				$pdf->Cell($cellWidth * 1.2, $cellHeight, $edu->obtained, 0, 0, 'L', true);
 
-			$pdf->Ln(5); // Move down a little
+				$pdf->Ln(5); // Move down a little
 
-            if(($edu->education_level == 'SSLC')||($edu->education_level == 'PUC'))
-            {
-			// Create table header
-			$pdf->Cell(35, 5, 'Subject', 1, 0, 'C');
-			$pdf->Cell(30, 5, 'Maximum Marks', 1, 0, 'C');
-			$pdf->Cell(30, 5, 'Minimum Marks', 1, 0, 'C');
-			$pdf->Cell(30, 5, 'Obtained Marks', 1, 1, 'C'); // Move to the next line
-		    } else{ 
-			// Create table header
-			$pdf->Cell(35, 5, 'Years', 1, 0, 'C');
-			$pdf->Cell(30, 5, 'Max Marks', 1, 0, 'C');
-			$pdf->Cell(30, 5, 'Percentage(%)', 1, 0, 'C');
-			$pdf->Cell(30, 5, 'Obtained Marks', 1, 1, 'C'); // Move to the next line
-			 }
-			
-			// Add rows
-			for ($i = 1; $i <= 6; $i++) {
-				$subject_name = $edu->{"subject_" . $i . "_name"};
-				$min_marks = $edu->{"subject_" . $i . "_min_marks"};
-				$max_marks = $edu->{"subject_" . $i . "_max_marks"};
-				$obtained_marks = $edu->{"subject_" . $i . "_obtained_marks"};
+				if (($edu->education_level == 'SSLC') || ($edu->education_level == 'PUC')) {
+					// Create table header
+					$pdf->Cell(35, 5, 'Subject', 1, 0, 'C');
+					$pdf->Cell(30, 5, 'Maximum Marks', 1, 0, 'C');
+					$pdf->Cell(30, 5, 'Minimum Marks', 1, 0, 'C');
+					$pdf->Cell(30, 5, 'Obtained Marks', 1, 1, 'C'); // Move to the next line
+				} else {
+					// Create table header
+					$pdf->Cell(35, 5, 'Years', 1, 0, 'C');
+					$pdf->Cell(30, 5, 'Max Marks', 1, 0, 'C');
+					$pdf->Cell(30, 5, 'Percentage(%)', 1, 0, 'C');
+					$pdf->Cell(30, 5, 'Obtained Marks', 1, 1, 'C'); // Move to the next line
+				}
 
-				$pdf->Cell(35, 5, $subject_name, 1, 0, 'C');
-				$pdf->Cell(30, 5, $max_marks, 1, 0, 'C');
-				$pdf->Cell(30, 5, $min_marks, 1, 0, 'C');
-				$pdf->Cell(30, 5, $obtained_marks, 1, 1, 'C'); // Move to the next line
+				// Add rows
+				for ($i = 1; $i <= 6; $i++) {
+					$subject_name = $edu->{"subject_" . $i . "_name"};
+					$min_marks = $edu->{"subject_" . $i . "_min_marks"};
+					$max_marks = $edu->{"subject_" . $i . "_max_marks"};
+					$obtained_marks = $edu->{"subject_" . $i . "_obtained_marks"};
+
+					$pdf->Cell(35, 5, $subject_name, 1, 0, 'C');
+					$pdf->Cell(30, 5, $max_marks, 1, 0, 'C');
+					$pdf->Cell(30, 5, $min_marks, 1, 0, 'C');
+					$pdf->Cell(30, 5, $obtained_marks, 1, 1, 'C'); // Move to the next line
+				}
+
+				$pdf->Ln(3);
 			}
-
-			$pdf->Ln(3);
-		}
 			$pdf->Ln(3);
 			$pdf->Cell($cellWidth, $cellHeight, "Father details", 0, 0, 'L', true);
 
@@ -8160,7 +7917,7 @@ With good wishes";
 
 			printRow($pdf, "Fee Receipt Number ", $transactionDetails->receipt_no, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			printRow($pdf, "Transaction Status ", 'Successful', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
-			printRow($pdf, "Transaction Date-Time ", date('d-m-Y', strtotime($transactionDetails->reference_date)), $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+			printRow($pdf, "Transaction Date-Time ", date('d-m-Y', strtotime($transactionDetails->transaction_date)), $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			printRow($pdf, "Transaction ID ", $transactionDetails->transaction_id, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			printRow($pdf, "Payment Ref No ", $transactionDetails->reference_no, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			if ($voucherDetails->type == 0) {
@@ -8390,17 +8147,16 @@ With good wishes";
 					// Render PDF (first page)
 					$dompdf->render();
 					$pdfContent = $dompdf->output();
-					
 				}
 
 				$dompdf->stream("", array("Attachment" => false));
 
 				// $pdf->output();
 				// $file_name = 'ID.pdf';
-                // $this->output
-                //     ->set_content_type('application/pdf')
-                //     ->set_header('Content-Disposition: attachment; filename="'.$file_name.'"')
-                //     ->set_output($pdfContent);
+				// $this->output
+				//     ->set_content_type('application/pdf')
+				//     ->set_header('Content-Disposition: attachment; filename="'.$file_name.'"')
+				//     ->set_output($pdfContent);
 			}
 		} else {
 			redirect('admin/timeout');
@@ -8425,43 +8181,42 @@ With good wishes";
 
 			if (count($data['admissions'])) {
 
-			
-
-
-					$this->load->library('fpdf'); // Load library
-					ini_set("session.auto_start", 0);
-					// ini_set('memory_limit', '-1');
-					// define('FPDF_FONTPATH', 'plugins/font');
-					// $pdf = new FPDF('L', 'mm', 'A4'); // 'L' for landscape
-					// $pdf->AddPage();
-					// $pdf->SetAutoPageBreak(true, 0);
-					
-					$html = $this->load->view('admin/idcard', $data, true);
-					$options = new Options();
-					// $options->set('isHtml5ParserEnabled', true);
-					$dompdf = new Dompdf($options);
-					$dompdf->loadHtml($html);
 
 
 
-					// Set paper size (optional)
-					$dompdf->setPaper('A4', 'landscape');
+				$this->load->library('fpdf'); // Load library
+				ini_set("session.auto_start", 0);
+				// ini_set('memory_limit', '-1');
+				// define('FPDF_FONTPATH', 'plugins/font');
+				// $pdf = new FPDF('L', 'mm', 'A4'); // 'L' for landscape
+				// $pdf->AddPage();
+				// $pdf->SetAutoPageBreak(true, 0);
 
-					// Render PDF (first page)
-					$dompdf->render();
-					$pdfContent = $dompdf->output();
-					
-				}
+				$html = $this->load->view('admin/idcard', $data, true);
+				$options = new Options();
+				// $options->set('isHtml5ParserEnabled', true);
+				$dompdf = new Dompdf($options);
+				$dompdf->loadHtml($html);
 
-				$dompdf->stream("", array("Attachment" => false));
 
-				// $pdf->output();
-				// $file_name = 'ID.pdf';
-                // $this->output
-                //     ->set_content_type('application/pdf')
-                //     ->set_header('Content-Disposition: attachment; filename="'.$file_name.'"')
-                //     ->set_output($pdfContent);
-			
+
+				// Set paper size (optional)
+				$dompdf->setPaper('A4', 'landscape');
+
+				// Render PDF (first page)
+				$dompdf->render();
+				$pdfContent = $dompdf->output();
+			}
+
+			$dompdf->stream("", array("Attachment" => false));
+
+			// $pdf->output();
+			// $file_name = 'ID.pdf';
+			// $this->output
+			//     ->set_content_type('application/pdf')
+			//     ->set_header('Content-Disposition: attachment; filename="'.$file_name.'"')
+			//     ->set_output($pdfContent);
+
 		} else {
 			redirect('admin/timeout');
 		}
@@ -8485,25 +8240,24 @@ With good wishes";
 
 			$concession_type = $this->input->post('concession_type');
 			$concession_fee = $this->input->post('concession_fee');
-			
+
 
 			$final_amount = $this->input->post('final_amount');
-				$updateDetails = array(
-					
+			$updateDetails = array(
+
 				'final_fee' => $final_amount,
 				'consession_type' => $concession_type,
 				'consession_amount' => $concession_fee
-				);
-			
-				$result = $this->admin_model->updateDetailsbyfield('student_id',$id, $updateDetails, 'fee_master');
+			);
 
-			
-				if ($result) {
-					echo 1;
-				} else {
-					echo 0;
-				}
+			$result = $this->admin_model->updateDetailsbyfield('student_id', $id, $updateDetails, 'fee_master');
 
+
+			if ($result) {
+				echo 1;
+			} else {
+				echo 0;
+			}
 		} else {
 			redirect('admin', 'refresh');
 		}
@@ -8577,16 +8331,14 @@ With good wishes";
 			);
 			if ($data['admissionDetails']->gender == "Male") {
 				$salut = "S/O. ";
-				
 			} else {
 				$salut = "D/O. ";
-				
 			}
-           $nameData= $data['admissionDetails']->student_name." ".$salut." ".$data['admissionDetails']->father_name;
+			$nameData = $data['admissionDetails']->student_name . " " . $salut . " " . $data['admissionDetails']->father_name;
 
 			$pdf->SetFont('Arial', '', 10);
-			$pdf->MultiCell(0, 5, '       '.$nameData.' has sought admission to the 1" Semester B.E course in ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ' branch at Malnad Colege of Engineering, Hassan for the year 2024-25', 0, 1);
-			
+			$pdf->MultiCell(0, 5, '       ' . $nameData . ' has sought admission to the 1" Semester B.E course in ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ' branch at Malnad Colege of Engineering, Hassan for the year 2024-25', 0, 1);
+
 			$pdf->Ln(3);
 
 			$pdf->MultiCell(0, 5, "       There is likelihood of some soats remaining vacant from the COMED-K process and sO your request for admission will be considered. If for any reasons seats are filed up from the COMED-K, you have no right to seek admissions.");
@@ -8665,6 +8417,423 @@ With good wishes";
 
 			$fileName = $data['admissionDetails']->student_name . '-Admit_Letter.pdf';
 			// $pdf->output();
+			$pdf->output($fileName, 'D');
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+
+	function mark_paid($encryptId, $id)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Payments Details';
+			$data['menu'] = 'payments';
+			$student_id = base64_decode($encryptId);
+			$admissionDetails = $this->admin_model->getDetails('admissions', $student_id)->row();
+			$voucherDetails = $this->admin_model->getDetails('payment_structure', $id)->row();
+			$data['voucherDetails'] = $this->admin_model->getDetails('payment_structure', $id)->row();
+
+
+			$this->form_validation->set_rules('transaction_date', 'Paid Date', 'required');
+			$this->form_validation->set_rules('receipt_no', 'Receipt Number(Tally)', 'required');
+
+			if ($this->form_validation->run() === FALSE) {
+				$data['action'] = 'admin/mark_paid/' . $encryptId . '/' . $id;
+				$this->admin_template->show('admin/mark_paid', $data);
+			} else {
+
+				$receipt_no = $this->input->post('receipt_no');
+				$transaction_date = $this->input->post('transaction_date');
+				$remarks = $this->input->post('remarks');
+
+				if ($voucherDetails->voucher_type == 2 || $voucherDetails->voucher_type == 5) {
+					$bank_name = $this->input->post('dd_bank');
+					$reference_date = $this->input->post('dd_date');
+					$reference_no = $this->input->post('dd_number');
+				} else {
+					$bank_name = '';
+					$reference_date = '';
+					$reference_no = '';
+				}
+				if ($voucherDetails->voucher_type == 2) {
+					$payment_mode = $this->input->post('payment_mode');
+				} else {
+					$payment_mode = '';
+				}
+
+				$insert = array(
+					'amount' => $voucherDetails->final_fee,
+					'reg_no' => $voucherDetails->usn,
+					'aided_unaided' => $admissionDetails->aided_unaided,
+
+					'receipt_no' => $receipt_no,
+					'transaction_date' => $transaction_date,
+					'transaction_type' => $voucherDetails->voucher_type,
+					'bank_name' => $bank_name,
+					'reference_no' => $reference_no,
+					'reference_date' => $reference_date,
+					'payment_mode' => $payment_mode,
+
+
+					'mobile' => $voucherDetails->mobile,
+
+					'remarks' => $remarks,
+					'academic_year' => "2024-2025",
+					'admissions_id' => $student_id,
+
+					'payment_id' => $voucherDetails->id,
+					'transaction_status' => '1',
+					'created_on' => date('Y-m-d h:i:s')
+				);
+
+				$result = $this->admin_model->insertDetails('transactions', $insert);
+				$updateDetails1['status'] = '1';
+				$result1 = $this->admin_model->updateDetailsbyfield('id', $id, $updateDetails1, 'payment_structure');
+
+
+				if ($result) {
+					$this->session->set_flashdata('message', 'New Payment Details are added successfully...!');
+					$this->session->set_flashdata('status', 'alert-success');
+				} else {
+					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+					$this->session->set_flashdata('status', 'alert-warning');
+				}
+
+				redirect('admin/paymentDetail/' . $encryptId, 'refresh');
+			}
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+
+	public function cashvoucher($encryptId, $transaction_id)
+	{
+
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Admission Details';
+			$data['menu'] = 'admissions';
+			$student_id = base64_decode($encryptId);
+			$admission_id = $student_id;
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $admission_id)->row();
+
+			$admissionDetails = $this->admin_model->getDetails('admissions', $admission_id)->row();
+
+			$studentfeeDetails = $this->admin_model->getDetailsbyfield($admission_id, 'student_id', 'fee_master')->row();
+
+
+			$fees = $this->admin_model->getDetailsbyfield($admission_id, 'student_id', 'fee_master')->row();
+
+			$voucherDetails = $this->admin_model->getDetails('payment_structure', $transaction_id)->row();
+			$feeDetails = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'fee_master')->row();
+
+
+			$this->load->library('fpdf'); // Load library
+			ini_set("session.auto_start", 0);
+			ini_set('memory_limit', '-1');
+			define('FPDF_FONTPATH', 'plugins/font');
+			$pdf = new FPDF();
+
+
+
+			$collegeName = "MALNAD COLLEGE OF ENGINEERING";
+			$collegeName1 = "Autonomous Institute Affiliated to the VTU";
+			$collegeName2 = "Under the auspices of the MTES (R),";
+			$collegeName3 = "PB NO. 21";
+			$contactInfo1 = "SALAGAME ROAD HASSAN";
+			$contactInfo2 = "State Name : Karnataka";
+			$affiliation = "ACKNOWLEDGEMENT";
+			$contactInfo = "UG (AY-2024-2025)";
+
+			$issuedOn = "Date : " . date("d-m-Y ");
+			$programe = "PROGRAM : B.E";
+			$chellan = "Challan : TF24-25/" . $voucherDetails->id;
+			$dept = "Dept. :" . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"];
+			$bcopy = "BANK COPY";
+			$copyData = array('S.A Copy', 'Office Copy');
+			// Define the data for the table
+			$tableData = [
+				['Admission No.', $admissionDetails->adm_no],
+				['Name', $admissionDetails->student_name],
+				['Year', $feeDetails->year],
+				['Quota', $admissionDetails->quota],
+				['College Code', $admissionDetails->college_code . ' - ' . $admissionDetails->sub_quota],
+				['Category', $admissionDetails->category_allotted]
+			];
+			if ($voucherDetails->voucher_type == 1) {
+				$tableData[] = ['Payment Mode', 'Cash'];
+			} elseif ($voucherDetails->voucher_type == 5) {
+				$tableData[] = ['Payment Mode', 'Bank DD'];
+				$tableData[] = ['DD. No.', $voucherDetails->dd_number];
+				$tableData[] = ['DD. Date', date('d-m-Y', strtotime($voucherDetails->dd_date))];
+				$tableData[] = ['Bank Name', $voucherDetails->dd_bank];
+			}
+
+
+			$fees = [
+				'E-Learning Fee' => $voucherDetails->e_learning_fee,
+				'Eligibility Fee' => $voucherDetails->eligibility_fee,
+				'E-Consortium Fee' => $voucherDetails->e_consortium_fee,
+				'Sport Fee' => $voucherDetails->sport_fee,
+				'Sports Development Fee' => $voucherDetails->sports_development_fee,
+				'Career Guidance Counseling Fee' => $voucherDetails->career_guidance_counseling_fee,
+				'University Development Fund' => $voucherDetails->university_development_fund,
+				'Promotion of Indian Cultural Fee' => $voucherDetails->promotion_of_indian_cultural_activities_fee,
+				'Teachers Development Fee' => $voucherDetails->teachers_development_fee,
+				'Student Development Fee' => $voucherDetails->student_development_fee,
+				'Indian Red Cross Membership Fee' => $voucherDetails->indian_red_cross_membership_fee,
+				'Women Cell Fee' => $voucherDetails->women_cell_fee,
+				'NSS Fee' => $voucherDetails->nss_fee,
+				'University Registration Fee' => $voucherDetails->university_registration_fee
+			];
+
+			$university = 0;
+			foreach ($fees as $feeName => $feeValue) {
+				if ($feeValue > 0) {
+					$university += $feeValue;
+				}
+			}
+			if ($university > 0) {
+				$tableData[] = ["University Other Fee", $university];
+			}
+			if ($voucherDetails->admission_fee > 0) {
+				$tableData[] = ['Admission Fee', $voucherDetails->admission_fee];
+			}
+			if ($voucherDetails->processing_fee_paid_at_kea > 0) {
+				$tableData[] = ['Processing Fee Paid at KEA', $voucherDetails->processing_fee_paid_at_kea];
+			}
+			if ($voucherDetails->tution_fee > 0) {
+				$tableData[] = ['Tution Fee', $voucherDetails->tution_fee];
+			}
+			if ($voucherDetails->college_other_fee > 0) {
+				$tableData[] = ['College Other Fee', $voucherDetails->college_other_fee];
+			}
+
+			// Create a function to generate a single copy
+			function generateCopy($i, $pdf, $x, $y, $collegeName, $affiliation, $contactInfo, $contactInfo1, $issuedOn, $programe, $chellan, $dept, $tableData, $voucherDetails, $copy)
+			{
+				$collegeName1 = "Autonomous Institute Affiliated to the VTU";
+				$collegeName2 = "Under the auspices of the MTES (R),";
+				$collegeName3 = "PB NO. 21";
+				$contactInfo1 = "SALAGAME ROAD HASSAN";
+				$contactInfo2 = "State Name : Karnataka";
+				$contactInfo = "UG (AY-2024-2025)";
+				$pdf->Rect($x - 2, $y, 69, 90 + 70);
+				$pdf->SetXY($x, $y);
+				$pdf->SetFont('Arial', 'B', 8);
+				$pdf->Cell(65, 4, $collegeName, 0, 1, 'C');
+				$pdf->SetX($x);
+				$pdf->SetFont('Arial', '', 7);
+				$pdf->Cell(65, 3, $collegeName1, 0, 1, 'C');
+				$pdf->SetX($x);
+				$pdf->SetFont('Arial', '', 7);
+				$pdf->Cell(65, 3, $collegeName2, 0, 1, 'C');
+				$pdf->SetX($x);
+				$pdf->SetFont('Arial', '', 7);
+				$pdf->Cell(65, 3, $collegeName3, 0, 1, 'C');
+				$pdf->SetX($x);
+				$pdf->SetFont('Arial', '', 6);
+				$pdf->Cell(65, 3, $contactInfo1, 0, 1, 'C');
+				$pdf->SetX($x);
+				$pdf->Cell(65, 3, $contactInfo2, 0, 1, 'C');
+				$pdf->SetX($x);
+				$pdf->SetFont('Arial', 'B', 6);
+				$pdf->Cell(65, 4, $affiliation, 0, 1, 'C');
+				$pdf->SetX($x);
+				$pdf->SetFont('Arial', '', 5);
+				$pdf->Cell(65, 4, $contactInfo, 0, 1, 'C');
+
+
+				// Draw a line
+				$pdf->SetLineWidth(0.2);
+				$pdf->Line($x, $y + 23, $x + 65, $y + 23);
+				$pdf->Ln(3);
+				$pdf->SetLineWidth(0.2);
+				$pdf->Line($x, $y + 27, $x + 65, $y + 27);
+				$pdf->Ln(3);
+				$pdf->SetFont('Arial', '', 6);
+				$pdf->SetXY($x, $y + 28);
+				$pdf->Cell(65, 4, $issuedOn, 0, 0, 'L');
+				$pdf->SetXY($x, $y + 28);
+				$pdf->Cell(65, 4, $programe, 0, 1, 'R');
+				$pdf->SetXY($x, $y + 31);
+				$pdf->Cell(65, 4, $chellan, 0, 0, 'L');
+				$pdf->SetXY($x, $y + 31);
+				$pdf->Cell(65, 4, $dept, 0, 1, 'R');
+				$pdf->SetXY($x, $y + 36);
+				$pdf->SetFont('Arial', '', 7);
+				$pdf->MultiCell(65, 3, "");
+				// $pdf->SetXY($x, $y + 46);
+				// $pdf->SetFont('Arial', '', 7);
+				// $pdf->MultiCell(65, 4, "Cash/D.D.No.____________Dt_________Bank_______");
+				$pdf->SetFont('Arial', '', 6);
+
+				$tableY = $pdf->GetY(); // Get current Y position for the table
+				foreach ($tableData as $row) {
+					$pdf->SetXY($x, $tableY);
+					$pdf->Cell(32.5, 4, $row[0], 1, 0, 'C');
+					$pdf->Cell(32.5, 4, $row[1], 1, 1, 'C');
+					$tableY += 4; // Move Y position down for the next row
+				}
+				$pdf->SetFont('Arial', 'B', 6);
+				$pdf->SetXY($x, $tableY);
+				$pdf->Cell(32.5, 4, "TOTAL", 1, 0, 'C');
+				$pdf->Cell(32.5, 4, $voucherDetails->final_fee, 1, 1, 'C');
+				$tableY += 6;
+				$pdf->SetFont('Arial', '', 7);
+				$pdf->SetXY($x, $tableY);
+				$pdf->MultiCell(65, 4, "Amount (In Words) : " . convert_number_to_words($voucherDetails->final_fee) . " Only");
+				$pdf->SetXY($x, $tableY + 10);
+				$pdf->Cell(32.5, 4, ' ', 0, 0, 'L');
+				$pdf->Cell(32.5, 4, "Signature of Remitter", 0, 1, 'R');
+				$pdf->SetXY($x, $tableY + 30);
+				$pdf->SetFont('Arial', '', 8);
+				$pdf->Cell(65, 4, $copy, 0, 1, 'C');
+			}
+
+			// Add page and set margins
+			$pdf->AddPage('L', 'A4'); // 'L' for landscape orientation, 'A4' for A4 size (210x297 mm)
+			$pdf->SetMargins(10, 10, 10);
+
+			// Generate four copies horizontally
+			$startX = 10;
+			$startY = 10;
+			$spacingX = 70; // Adjust this spacing to fit the copies horizontally
+
+			for ($i = 0; $i < 2; $i++) {
+				generateCopy($i, $pdf, $startX + ($i * $spacingX), $startY, $collegeName, $affiliation, $contactInfo, $contactInfo1, $issuedOn, $programe, $chellan, $dept, $tableData, $voucherDetails, $copyData[$i]);
+			}
+
+			// $pdf->Output();
+			$fileName = $admissionDetails->student_name . '- Voucher.pdf';
+			$pdf->output($fileName, 'D');
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+	public function onlinevoucher($encryptId, $id)
+	{
+
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Admission Details';
+			$data['menu'] = 'admissions';
+			$student_id = base64_decode($encryptId);
+			$admissionDetails = $this->admin_model->getDetails('admissions', $student_id)->row();
+			$voucherDetails = $this->admin_model->getDetails('payment_structure', $id)->row();
+
+
+			$this->load->library('fpdf'); // Load library
+			ini_set("session.auto_start", 0);
+			ini_set('memory_limit', '-1');
+			define('FPDF_FONTPATH', 'plugins/font');
+			$pdf = new FPDF();
+
+			// College Information
+			$collegeName = "MALNAD COLLEGE OF ENGINEERING, HASSAN";
+			$affiliation = "";
+			$contactInfo = "Payment made by NEFT/RTGS/IMPS ORany other online made,";
+			$contactInfo1 = "Fill all the below mentioned data with Seal & Signature of the Payee Bank Officlal,";
+			$contactInfo2 = "and Upload to E Mail swdcb@mcehassan.ac.in,";
+			$contactInfo3 = "Submit the herd copy to Fees Section, Dean (SA) Office";
+			$issuedOn = "Date : " . date("m-d-Y ");
+			$programe = "PROGRAME : B.E";
+			$chellan = "Chellan : TF24-25/" . $voucherDetails->id;
+			$dept = "Dept. :" . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"];
+			$scopy = "STUDENT COPY";
+			$bcopy = "BANK COPY";
+			$sacopy = "S.A COPY";
+			$ocopy = "OFFICE COPY";
+			// Define the data for the table
+			$tableData = [
+				['USN', $admissionDetails->usn],
+				['Name', $admissionDetails->student_name],
+				['Branch', 'B.E - '.$this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"]],
+				['Year', 1],
+				['Mobile No.', $admissionDetails->mobile],
+				['Email ID', $admissionDetails->email],
+				['Mode of Payment NEFT/RTGS/IMPS/UPI', ],
+				['Fee paid in Rupees', $voucherDetails->final_fee],
+				['Date of Transaction', ''],
+				['UTR No. /PG Reference No.', ''],
+
+				
+			];
+
+
+			
+
+			///bank copy
+			$pdf->AddPage('P', 'A4'); // 'P' for portrait orientation, 'A4' for A4 size (210x297 mm)
+			$pdf->SetMargins(17, 20, 20);
+			$pdf->SetFont('Arial', 'B', 12);
+			$pdf->Cell(0, 10, $collegeName, 0, 1, 'C');
+			// $pdf->SetFont('Arial', 'B', 10);
+			// $pdf->Cell(0, 4, $affiliation, 0, 1, 'C');
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(0, 4, $contactInfo, 0, 1, 'C');
+			$pdf->Cell(0, 4, $contactInfo1, 0, 1, 'C');
+			$pdf->Cell(0, 4, $contactInfo2, 0, 1, 'C');
+			$pdf->Cell(0, 4, $contactInfo3, 0, 1, 'C');
+			$x1 = 17;  // Starting point x-coordinate
+			$y1 = 37;  // Starting point y-coordinate
+			$x2 = 198; // Ending point x-coordinate
+			$y2 = 37;  // Ending point y-coordinate
+
+
+			// Set line width
+			$pdf->SetLineWidth(0.5);
+
+			// Draw a line from (x1, y1) to (x2, y2)
+			$pdf->Line($x1, $y1, $x2, $y2);
+			$pdf->Ln(1);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(0, 6, $issuedOn, 0, 0, 'L');
+			$pdf->Cell(0, 6, $programe, 0, 1, 'R');
+			$pdf->Cell(0, 6, $chellan, 0, 0, 'L');
+			$pdf->Cell(0, 6, $dept, 0, 1, 'R');
+		
+			$pdf->SetFont('Arial', '', 10);
+
+
+
+			foreach ($tableData as $row) {
+				$pdf->Cell(90, 7, $row[0], 1, 0, 'C');
+				$pdf->Cell(90, 7, $row[1], 1, 1, 'C');
+			}
+
+			$pdf->Ln(1);
+			$pdf->SetFont('Arial', '', 10);
+	
+			$pdf->Cell(0, 50, "Seal with signature of the Paid Bank", 0, 0, 'L');
+			$pdf->Cell(0, 50, "Signature of the Student", 0, 1, 'R');
+			$pdf->Ln(4);
+
+			$pdf->Ln(10);
+
+		
+
+
+			// $pdf->output();
+			$fileName = $admissionDetails->student_name . '- Voucher.pdf';
 			$pdf->output($fileName, 'D');
 		} else {
 			redirect('admin/timeout');
