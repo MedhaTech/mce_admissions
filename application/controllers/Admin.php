@@ -8235,6 +8235,7 @@ With good wishes";
 			$encryptId = $this->input->post('id');
 			$id =  base64_decode($encryptId);
 			$corpus = $this->input->post('corpus');
+			$remarks = $this->input->post('remarks');
 
 			$total_tution_fee = $this->input->post('total_tution_fee');
 
@@ -8247,7 +8248,8 @@ With good wishes";
 
 				'final_fee' => $final_amount,
 				'consession_type' => $concession_type,
-				'consession_amount' => $concession_fee
+				'consession_amount' => $concession_fee,
+				'remarks' => $remarks
 			);
 
 			$result = $this->admin_model->updateDetailsbyfield('student_id', $id, $updateDetails, 'fee_master');
@@ -8319,11 +8321,10 @@ With good wishes";
 
 			$pdf->SetFont('Arial', 'BU', 12);
 			$pdf->SetY($topGap + 20);
-			$pdf->Cell(0, 10, ' PROVISIONAL ADMISSION LETTER ', 0, 1, 'C');
+			$pdf->Cell(0, 10, ' ADMISSION CERTIFICATE ', 0, 1, 'C');
 
 
-			$pdf->SetFont('Arial', '', 9);
-			$pdf->Cell(0, 10, 'This is to certify that,', 0, 1);
+
 			$pdf->Ln(3);
 			$details = array(
 				'name' => $data['admissionDetails']->student_name,
@@ -8337,7 +8338,7 @@ With good wishes";
 			$nameData = $data['admissionDetails']->student_name . " " . $salut . " " . $data['admissionDetails']->father_name;
 
 			$pdf->SetFont('Arial', '', 10);
-			$pdf->MultiCell(0, 5, '       ' . $nameData . ' has sought admission to the 1" Semester B.E course in ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ' branch at Malnad Colege of Engineering, Hassan for the year 2024-25', 0, 1);
+			$pdf->MultiCell(0, 5, '       ' . $nameData . ' has sought admission to the 1" Semester B.E course in ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ' branch at Malnad Colege of Engineering, Hassan for the year 2024-25.', 0, 1);
 
 			$pdf->Ln(3);
 
@@ -8346,7 +8347,8 @@ With good wishes";
 
 			$pdf->MultiCell(0, 5, "       In the meanwhile subject to the above conditions you are instructed to approach the Principal, Mainad College of Engineering, and to pay the required fee, produce the ceruficate in original and provisionally get admitted as per rules prescnibed by State Government and the Visweswaraiah Technological University, Belgaum.");
 			$pdf->Ln(3);
-
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(0, 30, 'With Good wishes', 0, 1);
 
 
 			// $pdf->Cell(0, 5, 'Chairman - Admissions', 0, 1, 'L');
@@ -8766,20 +8768,20 @@ With good wishes";
 			$tableData = [
 				['USN', $admissionDetails->usn],
 				['Name', $admissionDetails->student_name],
-				['Branch', 'B.E - '.$this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"]],
+				['Branch', 'B.E - ' . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"]],
 				['Year', 1],
 				['Mobile No.', $admissionDetails->mobile],
 				['Email ID', $admissionDetails->email],
-				['Mode of Payment NEFT/RTGS/IMPS/UPI', ],
+				['Mode of Payment NEFT/RTGS/IMPS/UPI',],
 				['Fee paid in Rupees', $voucherDetails->final_fee],
 				['Date of Transaction', ''],
 				['UTR No. /PG Reference No.', ''],
 
-				
+
 			];
 
 
-			
+
 
 			///bank copy
 			$pdf->AddPage('P', 'A4'); // 'P' for portrait orientation, 'A4' for A4 size (210x297 mm)
@@ -8810,7 +8812,7 @@ With good wishes";
 			$pdf->Cell(0, 6, $programe, 0, 1, 'R');
 			$pdf->Cell(0, 6, $chellan, 0, 0, 'L');
 			$pdf->Cell(0, 6, $dept, 0, 1, 'R');
-		
+
 			$pdf->SetFont('Arial', '', 10);
 
 
@@ -8822,14 +8824,14 @@ With good wishes";
 
 			$pdf->Ln(1);
 			$pdf->SetFont('Arial', '', 10);
-	
+
 			$pdf->Cell(0, 50, "Seal with signature of the Paid Bank", 0, 0, 'L');
 			$pdf->Cell(0, 50, "Signature of the Student", 0, 1, 'R');
 			$pdf->Ln(4);
 
 			$pdf->Ln(10);
 
-		
+
 
 
 			// $pdf->output();
