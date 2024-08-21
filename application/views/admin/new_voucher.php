@@ -548,10 +548,8 @@
 
                   $("#dd_details").show();
 
-              }
-              else
-              {
-                $("#dd_details").hide();
+              } else {
+                  $("#dd_details").hide();
               }
 
 
@@ -602,7 +600,9 @@
           $('input[type="checkbox"]').change(function() {
               updateFinalFee(); // Update the final fee whenever a checkbox changes
           });
-
+          $('input[type="text"]').change(function() {
+              updateFinalFee(); // Update the final fee whenever a checkbox changes
+          });
           // Initialize final fee on page load
           updateFinalFee();
       });
@@ -622,7 +622,8 @@
               $('input[name="fees[]"]:checked').each(function() {
                   // Get the value of the checkbox (e.g., 'e_learning_fee')
                   var feeValue = $(this).val();
-
+                  var inputId = $(this).attr('id').replace('_checkbox', '');
+                  var inputValue = parseFloat($('#' + inputId).val());
                   // Find the corresponding text field value based on feeValue
                   var textFieldValue = $('#' + feeValue).val();
 
@@ -630,7 +631,8 @@
                   selectedFees.push({
                       name: $(this).attr('id'),
                       value: feeValue,
-                      textFieldValue: textFieldValue
+                      textFieldValue: textFieldValue,
+                      newvalue: inputValue
                   });
               });
               var finalFee = $('#final_fee').val();
