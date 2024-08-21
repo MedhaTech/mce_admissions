@@ -55,7 +55,7 @@
                         </div>
                     </div>
 
-                   
+
 
 
 
@@ -69,15 +69,15 @@
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
                             <li class="nav-item">
-                                <?php if($fees->consession_amount==0){?>
-                                <button class="btn btn-dark btn-sm" id="edit_concession"
-                                    name="edit_concession">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-edit"></i>
-                                    </span>
-                                    <span class="text"> Edit Concession</span>
-                                </button>
-                                <?php }?>
+                                <?php if ($fees->consession_amount == 0) { ?>
+                                    <button class="btn btn-dark btn-sm" id="edit_concession"
+                                        name="edit_concession">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                        <span class="text"> Edit Concession</span>
+                                    </button>
+                                <?php } ?>
                             </li>
                         </ul>
                     </div>
@@ -170,7 +170,7 @@
                     $rec = 0;
                     $table_setup = array('table_open' => '<table class="table table-hover font14">');
                     $this->table->set_template($table_setup);
-                    $print_fields = array('S.No','Voucher', 'Amount', 'Voucher Type', 'Date',  'Status','Action');
+                    $print_fields = array('S.No', 'Voucher', 'Amount', 'Voucher Type', 'Date',  'Status', 'Action');
                     $this->table->set_heading($print_fields);
 
                     $statusTypes = array("0" => "Not Paid", "1" => "Paid", "2" => "Failed", "3" => "Processing");
@@ -179,37 +179,28 @@
                     $total = 0;
                     foreach ($paymentDetail as $paymentDetails1) {
 
-                        if($paymentDetails1->voucher_type==3)
-                        {
-                            $url='-';
-                            $button='-';
-                        }
-                        else
-                        {
-                            if($paymentDetails1->voucher_type==1 ||  $paymentDetails1->voucher_type== 5)
-                            {
-                                $url=anchor('admin/cashvoucher/' . $encryptId . '/' . $paymentDetails1->id, "TF24-25/" . $paymentDetails1->id);  
+                        if ($paymentDetails1->voucher_type == 3) {
+                            $url = '-';
+                            $button = '-';
+                        } else {
+                            if ($paymentDetails1->voucher_type == 1 ||  $paymentDetails1->voucher_type == 5) {
+                                $url = anchor('admin/cashvoucher/' . $encryptId . '/' . $paymentDetails1->id, "TF24-25/" . $paymentDetails1->id);
                             }
-                            if($paymentDetails1->voucher_type==2)
-                            {
-                                $url=anchor('admin/voucherletter/' . $encryptId . '/' . $paymentDetails1->id, "TF24-25/" . $paymentDetails1->id);  
+                            if ($paymentDetails1->voucher_type == 2) {
+                                $url = anchor('admin/voucherletter/' . $encryptId . '/' . $paymentDetails1->id, "TF24-25/" . $paymentDetails1->id);
                             }
-                            if($paymentDetails1->voucher_type==4)
-                            {
-                                $url=anchor('admin/onlinevoucher/' . $encryptId . '/' . $paymentDetails1->id, "TF24-25/" . $paymentDetails1->id);  
+                            if ($paymentDetails1->voucher_type == 4) {
+                                $url = anchor('admin/onlinevoucher/' . $encryptId . '/' . $paymentDetails1->id, "TF24-25/" . $paymentDetails1->id);
                             }
 
-                          
-                           if($paymentDetails1->status!=1)
-                           {
-                           $button=anchor('admin/mark_paid/' . $encryptId . '/' . $paymentDetails1->id, "Mark as paid",'class="btn btn-success btn-sm"');    
-                           }
-                           else
-                           {
-                            $button='-';
-                           }
+
+                            if ($paymentDetails1->status != 1) {
+                                $button = anchor('admin/mark_paid/' . $encryptId . '/' . $paymentDetails1->id, "Mark as paid", 'class="btn btn-success btn-sm"');
+                            } else {
+                                $button = '-';
+                            }
                         }
-                      
+
 
 
 
@@ -267,7 +258,7 @@
 
                         $trans = null;
                         if ($transactionDetails1->transaction_type == 1) {
-                            $trans = $voucher_types[$transactionDetails1->transaction_type] . "<br> No:" . $transactionDetails1->reference_no . '<br> Dt:' . date('d-m-Y', strtotime($transactionDetails1->transaction_date)) ;
+                            $trans = $voucher_types[$transactionDetails1->transaction_type] . "<br> No:" . $transactionDetails1->reference_no . '<br> Dt:' . date('d-m-Y', strtotime($transactionDetails1->transaction_date));
                             $receiptprint = $transactionDetails1->receipt_no;
                         }
                         if ($transactionDetails1->transaction_type == 2) {
@@ -371,7 +362,7 @@
                             <div class="form-group">
                                 <label class="form-label">Concession Amount (if any)</label>
                                 <input type="text" class="form-control" id="concession_fee"
-                                    name="concession_fee" placeholder="Enter Concession Fee" value="<?php echo $fees->consession_amount;?>">
+                                    name="concession_fee" placeholder="Enter Concession Fee" value="<?php echo $fees->consession_amount; ?>">
                             </div>
                         </div>
                         <div class="col">
@@ -381,9 +372,19 @@
                                     placeholder="Payable Fee" readonly value="<?php echo $fees->final_fee; ?>">
                             </div>
                         </div>
+
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="form-label">Remarks</label>
+                                <input type="text" class="form-control" id="remarks" name="remarks"
+                                    placeholder="Enter remarks" value="">
+                            </div>
+                        </div>
                     </div>
 
-                 
+
                     <div class="row">
                         <div class="col">
                             <button type="button" class="btn btn-secondary btn-sm tx-13"
@@ -527,7 +528,7 @@
             event.preventDefault();
             var id = '<?php echo $encryptId; ?>';
 
-           
+
             var corpus = $("#corpus_fee").val();
             var remarks = $("#remarks").val();
             var total_tution_fee = $("#total_tution_fee").val();
@@ -541,13 +542,14 @@
                 'type': 'POST',
                 'url': base_url + 'admin/updateConcession',
                 'data': {
-                    
-                   "id": id,
+
+                    "id": id,
                     "total_college_fee": total_college_fee,
                     "total_tution_fee": total_tution_fee,
 
                     "concession_type": concession_type,
                     "concession_fee": concession_fee,
+                    "remarks": remarks,
                     "final_amount": final_amount
                 },
                 'dataType': 'text',
@@ -560,7 +562,7 @@
                     $('#insert').val("Inserted");
                     $('#student_modal').modal('hide');
                     var url = base_url + 'admin/paymentDetail/' + id
-                     window.location.replace(url);
+                    window.location.replace(url);
                 }
             });
 
@@ -571,7 +573,7 @@
 <script>
     $(document).ready(function() {
 
-        
+
         // Function to update final fee based on selected checkboxes
         function updateFinalFee() {
             var sum = 0;
