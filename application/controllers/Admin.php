@@ -1645,8 +1645,12 @@ class Admin extends CI_Controller
 				$image_extensions = array('jpg', 'jpeg', 'png');
 				foreach ($files as $file) {
 					$ext = pathinfo($file, PATHINFO_EXTENSION);
-					if (in_array(strtolower($ext), $image_extensions)) {
-						$photo = $upload_path . $file;  // Use the first photo found
+					$filename = pathinfo($file, PATHINFO_FILENAME);
+
+					// Check if the file is an image and contains keywords like 'profile' or the student's ID
+					if (in_array(strtolower($ext), $image_extensions) && 
+						(stripos($filename, 'profile') !== false)) {
+						$photo = $upload_path . $file;  // Use the first matching photo found
 						break;
 					}
 				}

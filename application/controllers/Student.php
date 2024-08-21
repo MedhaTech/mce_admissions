@@ -115,31 +115,35 @@ class Student extends CI_Controller
 				
 				$upload_path = "./assets/students/$student_id/";
 	
-				// Check if the directory exists and find the photo
-				$photo = null;
-				if (is_dir($upload_path)) {
-					// Get list of files in the directory
-					$files = scandir($upload_path);
-	
-					// Remove . and .. from the list
-					$files = array_diff($files, array('.', '..'));
-	
-					// Filter for photo files
-					$image_extensions = array('jpg', 'jpeg', 'png', 'gif');
-					foreach ($files as $file) {
-						$ext = pathinfo($file, PATHINFO_EXTENSION);
-						if (in_array(strtolower($ext), $image_extensions)) {
-							$photo = $upload_path . $file;  // Use the first photo found
-							break;
-						}
+			// Check if the directory exists
+			$photo = null;
+			if (is_dir($upload_path)) {
+				// Get list of files in the directory
+				$files = scandir($upload_path);
+
+				// Remove . and .. from the list
+				$files = array_diff($files, array('.', '..'));
+
+				// Filter for photo files
+				$image_extensions = array('jpg', 'jpeg', 'png');
+				foreach ($files as $file) {
+					$ext = pathinfo($file, PATHINFO_EXTENSION);
+					$filename = pathinfo($file, PATHINFO_FILENAME);
+
+					// Check if the file is an image and contains keywords like 'profile' or the student's ID
+					if (in_array(strtolower($ext), $image_extensions) && 
+						(stripos($filename, 'profile') !== false)) {
+						$photo = $upload_path . $file;  // Use the first matching photo found
+						break;
 					}
-	
-					$data['files'] = $files;
-				} else {
-					$data['files'] = array();
 				}
-	
-				$data['student_photo'] = $photo;  // Pass the photo path to the view
+
+				$data['files'] = $files;
+			} else {
+				$data['files'] = array();
+			}
+
+			$data['student_photo'] = $photo;  // Pass the photo path to the view
 	
 				$this->student_template->show('student/finish', $data);
 			} else {
