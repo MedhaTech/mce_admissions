@@ -102,28 +102,45 @@ class Student extends CI_Controller
 			$data['student_name'] = $student_session['student_name'];
 			$data['page_title'] = "Dashboard";
 			$data['menu'] = "dashboard";
-
+	
 			$flow = $this->admin_model->getDetailsFilter('flow', $data['id'], 'admissions')->row()->flow;
-
+	
 			if ($flow) {
 				$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$data['entranceDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$data['personalDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$data['parentDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$data['educations_details'] = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'student_education_details')->result();
-				$data['flow_status']=$flow;
+				$data['flow_status'] = $flow;
+				
 				$upload_path = "./assets/students/$student_id/";
-
-				// Check if the directory exists
+	
+				// Check if the directory exists and find the photo
+				$photo = null;
 				if (is_dir($upload_path)) {
 					// Get list of files in the directory
 					$files = scandir($upload_path);
-
+	
 					// Remove . and .. from the list
-					$data['files'] = array_diff($files, array('.', '..'));
+					$files = array_diff($files, array('.', '..'));
+	
+					// Filter for photo files
+					$image_extensions = array('jpg', 'jpeg', 'png', 'gif');
+					foreach ($files as $file) {
+						$ext = pathinfo($file, PATHINFO_EXTENSION);
+						if (in_array(strtolower($ext), $image_extensions)) {
+							$photo = $upload_path . $file;  // Use the first photo found
+							break;
+						}
+					}
+	
+					$data['files'] = $files;
 				} else {
 					$data['files'] = array();
 				}
+	
+				$data['student_photo'] = $photo;  // Pass the photo path to the view
+	
 				$this->student_template->show('student/finish', $data);
 			} else {
 				$this->student_template->show('student/Dashboard', $data);
@@ -132,6 +149,7 @@ class Student extends CI_Controller
 			redirect('student', 'refresh');
 		}
 	}
+	
 
 	function startProcess()
 	{
@@ -964,6 +982,7 @@ class Student extends CI_Controller
 			$data['menu'] = "fee_details";
 			$data['action'] = "student/pay_now";
 			$data['student'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
+			$data['voucher_types'] = $this->globals->voucher_types();
 			$data['fees'] = $this->admin_model->getDetailsbyfield($data['id'], 'student_id', 'fee_master')->row();
 			$data['transactionDetails'] = $this->admin_model->getDetailsbyfield($student_id, 'admissions_id', 'transactions')->result();
 			$data['paid_amount'] = $this->admin_model->paidfee('admissions_id', $student_id, 'transaction_status', '1', 'transactions');

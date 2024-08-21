@@ -45,11 +45,9 @@
 
                                       <li><?php echo anchor('admin/daybook_report', 'Day Book Report'); ?> </li>
                                       <li><?php echo anchor('admin/dcb_report', 'DCB Report'); ?> </li>
-                                      <li><?php echo anchor('', 'Student wise Fee Report'); ?> </li>
-                                      <li><?php echo anchor('', 'Fee Balance Report'); ?> </li>
-                                      <li><?php echo anchor('', 'Corpus Fund Overall Fee Report'); ?> </li>
-                                      <li><?php echo anchor('', 'Corpus Fund Balance Fee Report'); ?> </li>
-
+                                      <li><?php echo anchor('admin/feebalance_report', 'Fee Balance Report'); ?> </li>
+                                      <li><?php echo anchor('admin/corpusoverall_report', 'Corpus Fund Overall Fee Report'); ?> </li>
+                                      <li><?php echo anchor('admin/corpusbalance_report', 'Corpus Fund Balance Fee Report'); ?> </li>
 
 
                                   </ul>

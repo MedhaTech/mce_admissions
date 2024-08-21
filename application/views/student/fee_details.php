@@ -34,21 +34,21 @@
                           <div class="col-2">
                               <div class="form-group">
                                   <label class="form-label">College Fee</label>
-                                  <h4><?php echo number_format($fees->total_college_fee, 0); ?>
+                                  <h4><?php echo number_format($fees->total_college_fee, 2); ?>
                                   </h4>
                               </div>
                           </div>
                           <div class="col-2">
                               <div class="form-group">
                                   <label class="form-label">Corpus Fund</label>
-                                  <h4><?php echo number_format($fees->corpus_fund, 0); ?>
+                                  <h4><?php echo number_format($fees->corpus_fund, 2); ?>
                                   </h4>
                               </div>
                           </div>
                           <div class="col-2">
                               <div class="form-group">
                                   <label class="form-label">Concession Fee</label>
-                                  <h4><?php echo number_format($fees->concession_fee, 0); ?>
+                                  <h4><?php echo number_format($fees->consession_amount, 2); ?>
                                   </h4>
                               </div>
                           </div>
@@ -197,15 +197,37 @@
                         foreach ($transactionDetails as $transactionDetails1) {
 
                             $trans = null;
+                            // if ($transactionDetails1->transaction_type == 1) {
+                            //     $trans = $transactionTypes[$transactionDetails1->transaction_type];
+                            // }
+                            // if ($transactionDetails1->transaction_type == 2) {
+                            //     $trans = $transactionTypes[$transactionDetails1->transaction_type] . "<br> No:" . $transactionDetails1->reference_no . '<br> Dt:' . date('d-m-Y', strtotime($transactionDetails1->reference_date)) . ' <br> Bank: ' . $transactionDetails1->bank_name;
+                            // }
+                            // if ($transactionDetails1->transaction_type == 3) {
+                            //     $trans = $transactionTypes[$transactionDetails1->transaction_type] . "<br> No:" . $transactionDetails1->reference_no . '<br> Dt:' . date('d-m-Y', strtotime($transactionDetails1->reference_date));
+                            // }
+
                             if ($transactionDetails1->transaction_type == 1) {
-                                $trans = $transactionTypes[$transactionDetails1->transaction_type];
+                                $trans = $voucher_types[$transactionDetails1->transaction_type] . "<br> No:" . $transactionDetails1->reference_no . '<br> Dt:' . date('d-m-Y', strtotime($transactionDetails1->transaction_date)) ;
+                                $receiptprint = $transactionDetails1->receipt_no;
                             }
                             if ($transactionDetails1->transaction_type == 2) {
-                                $trans = $transactionTypes[$transactionDetails1->transaction_type] . "<br> No:" . $transactionDetails1->reference_no . '<br> Dt:' . date('d-m-Y', strtotime($transactionDetails1->reference_date)) . ' <br> Bank: ' . $transactionDetails1->bank_name;
+                                $receiptprint = $transactionDetails1->receipt_no;
+                                $trans = $voucher_types[$transactionDetails1->transaction_type] . "<br> No:" . $transactionDetails1->reference_no . '<br> Dt:' . date('d-m-Y', strtotime($transactionDetails1->transaction_date)) . ' <br> Bank: ' . $transactionDetails1->bank_name;
                             }
                             if ($transactionDetails1->transaction_type == 3) {
-                                $trans = $transactionTypes[$transactionDetails1->transaction_type] . "<br> No:" . $transactionDetails1->reference_no . '<br> Dt:' . date('d-m-Y', strtotime($transactionDetails1->reference_date));
+                                $receiptprint = $transactionDetails1->receipt_no;
+                                $trans = $voucher_types[$transactionDetails1->transaction_type] . "<br> No:" . $transactionDetails1->reference_no . '<br> Dt:' . date('d-m-Y', strtotime($transactionDetails1->transaction_date));
                             }
+                            if ($transactionDetails1->transaction_type == 4) {
+                                $receiptprint =$transactionDetails1->receipt_no;
+                                $trans = $voucher_types[$transactionDetails1->transaction_type] . "<br> No:" . $transactionDetails1->reference_no . '<br> Dt:' . date('d-m-Y', strtotime($transactionDetails1->transaction_date));
+                            }
+                            if ($transactionDetails1->transaction_type == 5) {
+                                $receiptprint = $transactionDetails1->receipt_no;
+                                $trans = $voucher_types[$transactionDetails1->transaction_type] . "<br> No:" . $transactionDetails1->reference_no . '<br> Dt:' . date('d-m-Y', strtotime($transactionDetails1->transaction_date));
+                            }
+    
 
                             // if($transactionDetails1->transaction_status == 1){
                             //     $transaction_status = "<span class='text-success'>Verified</span>";

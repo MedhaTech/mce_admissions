@@ -58,10 +58,12 @@
 $i=1;
 foreach ($admissions as $admissions1) {
 $admissionDetails = $this->admin_model->getDetails('admissions', $admissions1->id)->row();
-
-?>
+$barcode = generate_barcode_with_text($admissionDetails->adm_no);
+// $barcode = generate_barcode_with_text($admissionDetails->usn);
+?>  
  <div class="container">
         <table>
+       
             <tbody>
            
                 <tr>
@@ -108,7 +110,7 @@ $admissionDetails = $this->admin_model->getDetails('admissions', $admissions1->i
                 </tr>
                 <tr>
                 <td ></td>
-                    <td colspan="3" class="left-align"> <img src="<?php echo base_url();?>assets/img/3.jpg" alt="Photo" class="photo1"></td>
+                    <td colspan="3" class="left-align">  <img src="data:image/png;base64,<?php echo $barcode; ?>" alt="Barcode"   class="photo1"/></td>
                     
                     
                     <td colspan="3" class="left-align">Malnad College of Engineering Hassan-573201 Karnataka India</td>

@@ -685,7 +685,7 @@ $(document).ready(function() {
         $('#final_amount').val(final_amount);
     });
     
-    $("#corpus_fee").change(function() {
+    $("#corpus_fund").change(function() {
         event.preventDefault();
         var final_amount = finalAmount();
         $('#final_amount').val(finalAmount);
@@ -779,7 +779,7 @@ $(document).ready(function() {
         var category_claimed = $("#category_claimed").val();
 
         var total_university_fee = $("#total_university_fee").val();
-        var corpus = $("#corpus_fee").val();
+        var corpus = $("#corpus_fund").val();
         var remarks = $("#remarks").val();
         var total_tution_fee = $("#total_tution_fee").val();
         var total_college_fee = $("#total_college_fee").val();

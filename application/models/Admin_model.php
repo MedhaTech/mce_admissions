@@ -451,12 +451,60 @@ class Admin_model extends CI_Model
 
   function DCBReport($currentAcademicYear)
   {
-    $this->db->select('id, app_no, adm_no, admit_date, dept_id, student_name, mobile, fees_paid, status,remarks');
+    $this->db->select('id, app_no, adm_no, admit_date, dept_id, academic_year,student_name,usn,quota,sub_quota,college_code, mobile, fees_paid, status,remarks');
     $this->db->where('academic_year', $currentAcademicYear);
     $this->db->where('status != "7"');
     return $this->db->get('admissions');
   }
 
+  function FeebalanceReport($currentAcademicYear)
+  {
+    $this->db->select('id, app_no, adm_no, admit_date, dept_id, academic_year,student_name,usn,quota,sub_quota,college_code, mobile, fees_paid, status,remarks');
+    $this->db->where('academic_year', $currentAcademicYear);
+    $this->db->where('status != "7"');
+    return $this->db->get('admissions');
+  }
+
+  function CorpusReport($currentAcademicYear)
+  {
+      $this->db->select('admissions.id, admissions.app_no, admissions.adm_no, admissions.admit_date, admissions.dept_id, admissions.academic_year, admissions.student_name, admissions.usn, admissions.quota, admissions.sub_quota, admissions.college_code, admissions.mobile, admissions.fees_paid, admissions.status, fee_master.Corpus_fund, admissions.remarks');
+      $this->db->from('admissions');
+      $this->db->join('fee_master', 'fee_master.student_id = admissions.id');
+      $this->db->where('admissions.academic_year', $currentAcademicYear);
+      $this->db->where('admissions.status !=', '7');
+      $this->db->where('fee_master.Corpus_fund >', 0);
+      return $this->db->get();
+  }  
+
+  function CorpusBalanceReport($currentAcademicYear)
+  {
+      $this->db->select('admissions.id, 
+                         admissions.app_no, 
+                         admissions.adm_no, 
+                         MAX(admissions.admit_date) AS admit_date, 
+                         MAX(admissions.dept_id) AS dept_id, 
+                         MAX(admissions.academic_year) AS academic_year, 
+                         MAX(admissions.student_name) AS student_name, 
+                         MAX(admissions.usn) AS usn, 
+                         MAX(admissions.quota) AS quota, 
+                         MAX(admissions.sub_quota) AS sub_quota, 
+                         MAX(admissions.college_code) AS college_code, 
+                         MAX(admissions.mobile) AS mobile, 
+                         MAX(admissions.fees_paid) AS fees_paid, 
+                         MAX(admissions.status) AS status, 
+                         MAX(fee_master.Corpus_fund) AS Corpus_fund, 
+                         MAX(admissions.remarks) AS remarks, 
+                         (MAX(fee_master.Corpus_fund) - COALESCE(SUM(transactions.amount), 0)) AS Corpus_fund_balance');
+      $this->db->from('admissions');
+      $this->db->join('fee_master', 'fee_master.student_id = admissions.id');
+      $this->db->join('transactions', 'transactions.id = admissions.id', 'left'); 
+      $this->db->where('admissions.academic_year', $currentAcademicYear);
+      $this->db->where('admissions.status !=', '7');
+      $this->db->group_by('admissions.id'); 
+      $this->db->having('Corpus_fund_balance >', 0); 
+      return $this->db->get();
+  }  
+  
   function dayBookReport($from_date, $to_date)
   {
     $this->db->select('transactions.id as transaction_id, transactions.admissions_id, admissions.id, admissions.academic_year,admissions.app_no, admissions.adm_no, admissions.course, admissions.dsc_1, admissions.dsc_2, admissions.student_name, admissions.mobile, admissions.aided_unaided, admissions.category, admissions.status, admissions.proposed_amount, admissions.additional_amount, admissions.concession_type, admissions.concession_fee, admissions.final_amount, transactions.mobile, transactions.aided_unaided, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.paid_amount, transactions.amount, transactions.balance_amount, transactions.remarks, transactions.transaction_status, created_by, created_on');
@@ -505,7 +553,7 @@ class Admin_model extends CI_Model
   }
   function transactionsdatewise($from, $to)
   {
-    $this->db->select('admissions.id, admissions.app_no,admissions.dept_id, admissions.adm_no, admissions.student_name, admissions.mobile,  admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.amount, transactions.remarks, transactions.transaction_status');
+    $this->db->select('admissions.id, admissions.app_no,admissions.dept_id, admissions.adm_no,admissions.academic_year, admissions.usn,admissions.student_name,admissions.quota,admissions.sub_quota,admissions.college_code, admissions.mobile,  admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.amount, transactions.remarks, transactions.transaction_status');
 
     $this->db->where('transactions.transaction_status', '1');
     $this->db->where('transactions.transaction_date>=', $from);
