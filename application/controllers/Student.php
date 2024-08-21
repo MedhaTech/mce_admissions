@@ -982,6 +982,7 @@ class Student extends CI_Controller
 			$data['menu'] = "fee_details";
 			$data['action'] = "student/pay_now";
 			$data['student'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
+			$data['voucher_types'] = $this->globals->voucher_types();
 			$data['fees'] = $this->admin_model->getDetailsbyfield($data['id'], 'student_id', 'fee_master')->row();
 			$data['transactionDetails'] = $this->admin_model->getDetailsbyfield($student_id, 'admissions_id', 'transactions')->result();
 			$data['paid_amount'] = $this->admin_model->paidfee('admissions_id', $student_id, 'transaction_status', '1', 'transactions');
