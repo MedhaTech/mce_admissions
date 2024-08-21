@@ -6194,7 +6194,7 @@ With good wishes";
 				foreach ($selectedFeesArray as $selected) {
 					$field = $newName = preg_replace('/_checkbox$/', '', $selected['name']);
 
-					$updateDetails[$field] = $selected['value'];
+					$updateDetails[$field] = $selected['newvalue'];
 
 					if ($field == 'corpus_fund') {
 						$updateDetails['type'] = 1;
