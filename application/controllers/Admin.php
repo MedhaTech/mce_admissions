@@ -6201,7 +6201,7 @@ With good wishes";
 					}
 				}
 				$updateDetails['voucher_type'] = $this->input->post('voucher_type');
-				if ($updateDetails['voucher_type'] == 5) {
+				if ($updateDetails['voucher_type'] == 5 || $updateDetails['voucher_type'] == 2) {
 
 					$updateDetails['dd_bank'] = $this->input->post('dd_bank');
 					$updateDetails['dd_number'] = $this->input->post('dd_number');
@@ -6575,7 +6575,10 @@ With good wishes";
 				['Year', $feeDetails->year],
 				['Quota', $admissionDetails->quota],
 				['College Code', $admissionDetails->college_code . ' - ' . $admissionDetails->sub_quota],
-				['Category', $admissionDetails->category_allotted]
+				['Category', $admissionDetails->category_allotted],
+				['DD No.', $voucherDetails->dd_number],
+				['DD Date', date('d-m-Y', strtotime($voucherDetails->dd_date))],
+				['Bank Name', $voucherDetails->dd_bank]
 			];
 
 			$fees = [
@@ -6672,11 +6675,11 @@ With good wishes";
 				$pdf->SetFont('Arial', '', 7);
 				$pdf->MultiCell(65, 4, "Paid into the credit of CANARA BANK M.C.E BRANCH,\nHASSAN -573202., CA A/C No. 14053070001574 of \nThe Principal Malnad College of Engineering, Hassan.");
 				$pdf->SetXY($x, $y + 52);
-				$pdf->SetFont('Arial', '', 7);
-				$pdf->MultiCell(65, 4, "Cash/D.D.No.________________________Dt________\n");
-				$pdf->SetXY($x, $y + 56);
-				$pdf->SetFont('Arial', '', 7);
-				$pdf->MultiCell(65, 4, "Bank_________________________________________");
+				// $pdf->SetFont('Arial', '', 7);
+				// $pdf->MultiCell(65, 4, "Cash/D.D.No.________________________Dt________\n");
+				// $pdf->SetXY($x, $y + 56);
+				// $pdf->SetFont('Arial', '', 7);
+				// $pdf->MultiCell(65, 4, "Bank_________________________________________");
 				$pdf->SetFont('Arial', '', 7);
 				$pdf->MultiCell(65, 4, "");
 				$tableY = $pdf->GetY(); // Get current Y position for the table
@@ -6716,9 +6719,9 @@ With good wishes";
 				generateCopy($i, $pdf, $startX + ($i * $spacingX), $startY, $collegeName, $affiliation, $contactInfo, $contactInfo1, $issuedOn, $programe, $chellan, $dept, $tableData, $voucherDetails, $copyData[$i]);
 			}
 
-			$pdf->Output();
-			// $fileName = $admissionDetails->student_name . '-Voucher.pdf';
-			// $pdf->output($fileName, 'D');
+			// $pdf->Output();
+			$fileName = $admissionDetails->student_name . '-Voucher.pdf';
+			$pdf->output($fileName, 'D');
 		} else {
 			redirect('admin/timeout');
 		}

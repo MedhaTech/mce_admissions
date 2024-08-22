@@ -52,21 +52,21 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-label">DD Date:</label>
-                                    <input type="date" class="form-control" placeholder="Enter Date" id="dd_date" name="dd_date" value="">
+                                    <input type="date" class="form-control" placeholder="Enter Date" id="dd_date" name="dd_date" value="<?=$voucherDetails->dd_date;?>">
                                     <span class="text-danger"><?php echo form_error('dd_date'); ?></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-label">DD Number:</label>
-                                    <input type="text" class="form-control" placeholder="Enter number" id="dd_number" name="dd_number" value="">
+                                    <input type="text" class="form-control" placeholder="Enter number" id="dd_number" name="dd_number" value="<?=$voucherDetails->dd_number;?>">
                                     <span class="text-danger"><?php echo form_error('dd_number'); ?></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-label">Bank Name :</label>
-                                    <input type="text" class="form-control" placeholder="Enter bank name" id="dd_bank" name="dd_bank" value="">
+                                    <input type="text" class="form-control" placeholder="Enter bank name" id="dd_bank" name="dd_bank" value="<?=$voucherDetails->dd_bank;?>">
                                     <span class="text-danger"><?php echo form_error('dd_bank'); ?></span>
                                 </div>
                             </div>
