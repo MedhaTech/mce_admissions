@@ -473,10 +473,10 @@
                                                   <input type="radio" name="voucher_type" id="voucher_type" value="1"> Cash
                                               </label>
                                               <label class="radio-inline mr-3">
-                                                  <input type="radio" name="voucher_type" id="voucher_type" value="2"> DD
+                                                  <input type="radio" name="voucher_type" id="voucher_type" value="2"> Bank DD
                                               </label>
                                               <label class="radio-inline mr-3">
-                                                  <input type="radio" name="voucher_type" id="voucher_type" value="5"> Bank DD
+                                                  <input type="radio" name="voucher_type" id="voucher_type" value="5">  DD
                                               </label>
                                               <label class="radio-inline mr-3">
                                                   <input type="radio" name="voucher_type" id="voucher_type" value="4"> Bank Transfer
@@ -544,7 +544,7 @@
 
           $('input[type=radio][name=voucher_type]').change(function() {
 
-              if (this.value == "5") {
+              if (this.value == "5" || this.value == "2" ) {
 
                   $("#dd_details").show();
 
