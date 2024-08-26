@@ -40,6 +40,7 @@
                                     <th class='text-center' width="15%">MGMT <br /> STATUS</th>
                                     <th class='text-center' width="15%">COMED-K <br /> STATUS</th>
                                     <th class='text-center' width="15%">KEA-CET <br /> STATUS</th>
+                                    <th class='text-center' width="15%">KEA-CET(LATERAL) <br /> STATUS</th>
                                     <th class='text-center' width="15%">SNQ <br /> STATUS</th>
                                     <th class='text-center' width="15%">GOI <br /> STATUS</th>
                                     <th class='text-center' width="15%">J&K <br /> STATUS</th>
@@ -50,7 +51,7 @@
 
                                 <?php $i=1;  
                                     // print_r($departments);
-									    echo "<tr><th class='bg-gray' colspan='9'>UG COURSES (AIDED)</th></tr>";
+									    echo "<tr><th class='bg-gray' colspan='10'>UG COURSES (AIDED)</th></tr>";
                                         foreach ($aided as $aided1) {
                                             $department_id = $aided1->department_id;
                                             $department_name = $aided1->department_name.' ['.$aided1->department_short_name.'] - ['.$aided1->stream_short_name.']';
@@ -67,22 +68,26 @@
                                             $KEA_AIDED = $this->admin_model->getAdmissionStats($department_id,'KEA-CET(GOVT)','Aided')->row()->cnt; 
                                             echo "<td>".$KEA_AIDED.'/'.$aided1->aided_kea_intake."</td>";
 
+                                            $KEALAT_AIDED = $this->admin_model->getAdmissionStats($department_id,'KEA-CET(LATERAL)','Aided')->row()->cnt; 
+                                            echo "<td>".$KEALAT_AIDED."</td>";
+
                                             $SNQ_AIDED = $this->admin_model->getAdmissionStats($department_id,'SNQ','Aided')->row()->cnt; 
                                             echo "<td>".$SNQ_AIDED.'/'.$aided1->aided_snq_intake."</td>";
 
+                   
                                             $JK_AIDED = $this->admin_model->getAdmissionStats($department_id,'J&K (Non Karnataka)','Aided')->row()->cnt; 
                                             echo "<td>".$JK_AIDED."</td>";
 
                                             $GOI_AIDED = $this->admin_model->getAdmissionStats($department_id,'GOI (Non Karnataka)','Aided')->row()->cnt; 
                                             echo "<td>".$GOI_AIDED."</td>";
 
-                                            $TOTAL_AIDED = $MGMT_AIDED + $COMEDK_AIDED + $KEA_AIDED + $SNQ_AIDED + $JK_AIDED + $GOI_AIDED;
+                                            $TOTAL_AIDED = $MGMT_AIDED + $COMEDK_AIDED + $KEA_AIDED + $SNQ_AIDED + $JK_AIDED + $GOI_AIDED + $KEALAT_AIDED;
                                             echo "<td class='text-center font-weight-bold'>".$TOTAL_AIDED.'/'.$aided1->aided_intake."</td>";
 
                                             echo "</tr>";
                                         } 
                                         $i=1;
-                                        echo "<tr><th class='bg-gray' colspan='9'>UG COURSES (UNAIDED)</th></tr>";
+                                        echo "<tr><th class='bg-gray' colspan='10'>UG COURSES (UNAIDED)</th></tr>";
                                         foreach ($unaided as $unaided1) {
                                             $department_id = $unaided1->department_id;
                                             $department_name = $unaided1->department_name.' ['.$unaided1->department_short_name.'] - ['.$unaided1->stream_short_name.']';
@@ -99,6 +104,8 @@
                                             $KEA_UNAIDED = $this->admin_model->getAdmissionStats($department_id,'KEA-CET(GOVT)','UnAided')->row()->cnt; 
                                             echo "<td>".$KEA_UNAIDED.'/'.$unaided1->unaided_kea_intake."</td>";
 
+                                            $KEALAT_UNAIDED = $this->admin_model->getAdmissionStats($department_id,'KEA-CET(LATERAL)','UnAided')->row()->cnt; 
+                                            echo "<td>".$KEALAT_UNAIDED."</td>";
                                             $SNQ_UNAIDED = $this->admin_model->getAdmissionStats($department_id,'SNQ','UnAided')->row()->cnt; 
                                             echo "<td>".$SNQ_UNAIDED.'/'.$unaided1->unaided_snq_intake."</td>";
 
@@ -108,7 +115,7 @@
                                             $GOI_UNAIDED = $this->admin_model->getAdmissionStats($department_id,'GOI (Non Karnataka)','UnAided')->row()->cnt; 
                                             echo "<td>".$GOI_UNAIDED."</td>";
 
-                                            $TOTAL_UNAIDED = $MGMT_UNAIDED + $COMEDK_UNAIDED + $KEA_UNAIDED + $SNQ_UNAIDED + $JK_UNAIDED + $GOI_UNAIDED;
+                                            $TOTAL_UNAIDED = $MGMT_UNAIDED + $COMEDK_UNAIDED + $KEA_UNAIDED + $SNQ_UNAIDED + $JK_UNAIDED + $GOI_UNAIDED + $KEA_UNAIDED;
                                             echo "<td class='text-center font-weight-bold'>".$TOTAL_UNAIDED.'/'.$unaided1->unaided_intake."</td>";
                                             echo "</tr>";
                                         } 
