@@ -617,6 +617,79 @@ class Admin_model extends CI_Model
     }
   }
 
+  public function checkFieldGreaterThanZero1($fee_structure_id,$field, $admission_id)
+{
+    // Step 1: Retrieve the top 3 rows for the given admission_id
+    $this->db->select($field);
+    $this->db->from('payment_structure');
+    $this->db->where('admission_id', $admission_id);
+    $this->db->where('status', 1);
+    $query = $this->db->get();
+    
+    // Check if there are rows retrieved
+    if ($query->num_rows() > 0) {
+        // Step 2: Calculate the sum of the given field
+        $rows = $query->result_array();
+        $sum = array_sum(array_column($rows, $field));
+        
+        // Step 3: Retrieve the corresponding value from the fee_structure table
+        $this->db->select($field);
+        $this->db->from('fee_structure');
+        $this->db->where('id', $fee_structure_id);
+        $fee_query = $this->db->get();
+        
+        // Check if there is a matching row in fee_structure
+        if ($fee_query->num_rows() > 0) {
+            $fee_row = $fee_query->row();
+            $fee_value = $fee_row->$field;
+            
+            // Step 4: Compare the sum with the value in fee_structure
+            if ($sum >= $fee_value) {
+                return 1; // Sum is less than the value in fee_structure
+            }
+        }
+    }
+    
+    // If any condition fails, return 0
+    return 0;
+}
+
+public function checkFieldGreaterThanZerovalue($fee_structure_id,$field, $admission_id)
+{
+    // Step 1: Retrieve the top 3 rows for the given admission_id
+    $this->db->select($field);
+    $this->db->from('payment_structure');
+    $this->db->where('admission_id', $admission_id);
+    $this->db->where('status', 1);
+    $query = $this->db->get();
+    
+    // Check if there are rows retrieved
+    if ($query->num_rows() > 0) {
+        // Step 2: Calculate the sum of the given field
+        $rows = $query->result_array();
+        $sum = array_sum(array_column($rows, $field));
+        
+        // Step 3: Retrieve the corresponding value from the fee_structure table
+        $this->db->select($field);
+        $this->db->from('fee_structure');
+        $this->db->where('id', $fee_structure_id);
+        $fee_query = $this->db->get();
+        
+        // Check if there is a matching row in fee_structure
+        if ($fee_query->num_rows() > 0) {
+            $fee_row = $fee_query->row();
+            $fee_value = $fee_row->$field;
+            
+            // Step 4: Compare the sum with the value in fee_structure
+          
+                return $sum; // Sum is less than the value in fee_structure
+            
+        }
+    }
+    
+    // If any condition fails, return 0
+    return 0;
+}
 
 public function getCountries() {
   $query = $this->db->get('countries');

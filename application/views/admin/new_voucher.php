@@ -17,13 +17,13 @@
 
                               <div class="card-body">
                                   <?php echo form_open_multipart($action, 'class="user"'); ?>
-                                  <div class="col-md-8 offset-1">
+                                  <div class="col-md-12">
 
 
                                       <div class="form-group row">
 
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">Select All</label>
-                                          <div class="col-md-6">
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">Select All</label>
+                                          <div class="col-md-2">
                                               <input type="checkbox" value="0" id="selectAllCheckbox">
                                           </div>
 
@@ -32,14 +32,51 @@
 
 
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">E
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">Fees</label>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  Final Amount
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  Already Paid
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  Balance Amount
+                                              </label>
+                                          </div>
+
+                                      </div>
+                                      <hr>
+
+                                      <div class="form-group row">
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">E
                                               Learning
                                               Fee</label>
-                                          <div class="col-md-6">
+
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo (set_value('e_learning_fee')) ? set_value('e_learning_fee') : $fee_structure->e_learning_fee; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'e_learning_fee', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="e_learning_fee" id="e_learning_fee" class="form-control" value="<?php echo (set_value('e_learning_fee')) ? set_value('e_learning_fee') : $fee_structure->e_learning_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
-                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('e_learning_fee', $stud_id);
+                                          <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'e_learning_fee', $stud_id);
 
                                             if ($readonlyvalue) {
                                                 $readonly = "disabled";
@@ -54,14 +91,26 @@
                                       </div>
 
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">Eligibility
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">Eligibility
                                               Fee</label>
-                                          <div class="col-md-6">
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->eligibility_fee; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'eligibility_fee', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="eligibility_fee" id="eligibility_fee" class="form-control" value="<?php echo (set_value('eligibility_fee')) ? set_value('eligibility_fee') : $fee_structure->eligibility_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('eligibility_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'eligibility_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -75,15 +124,27 @@
                                       </div>
 
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">e
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">e
                                               Consortium
                                               Fee</label>
-                                          <div class="col-md-6">
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->e_consortium_fee; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'e_consortium_fee', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="e_consortium_fee" id="e_consortium_fee" class="form-control" value="<?php echo (set_value('e_consortium_fee')) ? set_value('e_consortium_fee') : $fee_structure->e_consortium_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('e_consortium_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'e_consortium_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -96,14 +157,26 @@
                                           </div>
                                       </div>
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">Sport
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">Sport
                                               Fee</label>
-                                          <div class="col-md-6">
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->sport_fee; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'sport_fee', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="sport_fee" id="sport_fee" class="form-control" value="<?php echo (set_value('sport_fee')) ? set_value('sport_fee') : $fee_structure->sport_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('sport_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'sport_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -116,15 +189,27 @@
                                           </div>
                                       </div>
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">Sports
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">Sports
                                               Development
                                               fee</label>
-                                          <div class="col-md-6">
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->sports_development_fee; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'sports_development_fee', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="sports_development_fee" id="sports_development_fee" class="form-control" value="<?php echo (set_value('sports_development_fee')) ? set_value('sports_development_fee') : $fee_structure->sports_development_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('sports_development_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'sports_development_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -137,15 +222,27 @@
                                           </div>
                                       </div>
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">Career
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">Career
                                               Guidance &
                                               Counseling fee</label>
-                                          <div class="col-md-6">
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->career_guidance_counseling_fee; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'career_guidance_counseling_fee', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="career_guidance_counseling_fee" id="career_guidance_counseling_fee" class="form-control" value="<?php echo (set_value('career_guidance_counseling_fee')) ? set_value('career_guidance_counseling_fee') : $fee_structure->career_guidance_counseling_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('career_guidance_counseling_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'career_guidance_counseling_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -158,15 +255,27 @@
                                           </div>
                                       </div>
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">University
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">University
                                               Development
                                               fund</label>
-                                          <div class="col-md-6">
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->university_development_fund; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'university_development_fund', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="university_development_fund" id="university_development_fund" class="form-control" value="<?php echo (set_value('university_development_fund')) ? set_value('university_development_fund') : $fee_structure->university_development_fund; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('university_development_fund', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'university_development_fund', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -179,15 +288,27 @@
                                           </div>
                                       </div>
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">Promotion
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">Promotion
                                               of indian
                                               Cultural Activities Fee</label>
-                                          <div class="col-md-6">
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->promotion_of_indian_cultural_activities_fee; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'promotion_of_indian_cultural_activities_fee', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="promotion_of_indian_cultural_activities_fee" id="promotion_of_indian_cultural_activities_fee" class="form-control" value="<?php echo (set_value('promotion_of_indian_cultural_activities_fee')) ? set_value('promotion_of_indian_cultural_activities_fee') : $fee_structure->promotion_of_indian_cultural_activities_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('promotion_of_indian_cultural_activities_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'promotion_of_indian_cultural_activities_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -200,15 +321,27 @@
                                           </div>
                                       </div>
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">Teachers
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">Teachers
                                               Development
                                               Fee</label>
-                                          <div class="col-md-6">
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->teachers_development_fee; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'teachers_development_fee', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="teachers_development_fee" id="teachers_development_fee" class="form-control" value="<?php echo (set_value('teachers_development_fee')) ? set_value('teachers_development_fee') : $fee_structure->teachers_development_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('teachers_development_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'teachers_development_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -221,15 +354,27 @@
                                           </div>
                                       </div>
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">Student
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">Student
                                               Development
                                               Fee</label>
-                                          <div class="col-md-6">
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->student_development_fee; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'student_development_fee', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="student_development_fee" id="student_development_fee" class="form-control" value="<?php echo (set_value('student_development_fee')) ? set_value('student_development_fee') : $fee_structure->student_development_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('student_development_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'student_development_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -242,15 +387,27 @@
                                           </div>
                                       </div>
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">Indian
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">Indian
                                               Red Cross
                                               Membership Fee</label>
-                                          <div class="col-md-6">
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->indian_red_cross_membership_fee; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'indian_red_cross_membership_fee', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="indian_red_cross_membership_fee" id="indian_red_cross_membership_fee" class="form-control" value="<?php echo (set_value('indian_red_cross_membership_fee')) ? set_value('indian_red_cross_membership_fee') : $fee_structure->indian_red_cross_membership_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('indian_red_cross_membership_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'indian_red_cross_membership_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -263,15 +420,27 @@
                                           </div>
                                       </div>
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">Women
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">Women
                                               Cell
                                               Fee</label>
-                                          <div class="col-md-6">
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->women_cell_fee; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'women_cell_fee', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="women_cell_fee" id="women_cell_fee" class="form-control" value="<?php echo (set_value('women_cell_fee')) ? set_value('women_cell_fee') : $fee_structure->women_cell_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('women_cell_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'women_cell_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -284,14 +453,26 @@
                                           </div>
                                       </div>
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">NSS
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">NSS
                                               Fee</label>
-                                          <div class="col-md-6">
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->nss_fee; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'nss_fee', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="nss_fee" id="nss_fee" class="form-control" value="<?php echo (set_value('nss_fee')) ? set_value('nss_fee') : $fee_structure->nss_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('nss_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'nss_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -304,15 +485,27 @@
                                           </div>
                                       </div>
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">University
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">University
                                               Registration
                                               Fee</label>
-                                          <div class="col-md-6">
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->university_registration_fee; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'university_registration_fee', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="university_registration_fee" id="university_registration_fee" class="form-control" value="<?php echo (set_value('university_registration_fee')) ? set_value('university_registration_fee') : $fee_structure->university_registration_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('university_registration_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'university_registration_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -327,19 +520,31 @@
 
 
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-12 col-form-label text-right font-weight-bold">
+                                          <label for="staticEmail" class="col-md-12 col-form-label   font-weight-bold">
                                               <hr />
                                           </label>
                                       </div>
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">Admission
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">Admission
                                               fee</label>
-                                          <div class="col-md-6">
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->admission_fee; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'admission_fee', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="admission_fee" id="admission_fee" class="form-control" value="<?php echo (set_value('admission_fee')) ? set_value('admission_fee') : $fee_structure->admission_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('admission_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'admission_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -352,16 +557,28 @@
                                           </div>
                                       </div>
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">Processing
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">Processing
                                               Fee paid
                                               at
                                               KEA</label>
-                                          <div class="col-md-6">
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->processing_fee_paid_at_kea; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'processing_fee_paid_at_kea', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="processing_fee_paid_at_kea" id="processing_fee_paid_at_kea" class="form-control" value="<?php echo (set_value('processing_fee_paid_at_kea')) ? set_value('processing_fee_paid_at_kea') : $fee_structure->processing_fee_paid_at_kea; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('processing_fee_paid_at_kea', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'processing_fee_paid_at_kea', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -374,14 +591,26 @@
                                           </div>
                                       </div>
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">Tution
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">Tution
                                               Fee</label>
-                                          <div class="col-md-6">
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->tution_fee; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'tution_fee', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="tution_fee" id="tution_fee" class="form-control" value="<?php echo (set_value('tution_fee')) ? set_value('tution_fee') : $fee_structure->tution_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('tution_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'tution_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -394,14 +623,26 @@
                                           </div>
                                       </div>
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">College
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">College
                                               Other Fee</label>
-                                          <div class="col-md-6">
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->college_other_fee; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'college_other_fee', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="college_other_fee" id="college_other_fee" class="form-control" value="<?php echo (set_value('college_other_fee')) ? set_value('college_other_fee') : $fee_structure->college_other_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('college_other_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'college_other_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -414,14 +655,26 @@
                                           </div>
                                       </div>
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right font-weight-bold">Skill
+                                          <label for="staticEmail" class="col-md-4 col-form-label   font-weight-bold">Skill
                                               Development Fee</label>
-                                          <div class="col-md-6">
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->skill_development_fee; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'skill_development_fee', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="skill_development_fee" id="skill_development_fee" class="form-control" value="<?php echo (set_value('skill_development_fee')) ? set_value('skill_development_fee') : $fee_structure->skill_development_fee; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('skill_development_fee', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'skill_development_fee', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -436,14 +689,26 @@
 
 
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right font-weight-bold">CORPUS
+                                          <label for="staticEmail" class="col-md-4 col-form-label   font-weight-bold">CORPUS
                                               FUND</label>
-                                          <div class="col-md-6">
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->corpus_fund; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'corpus_fund', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
                                               <input type="text" readonly name="corpus_fund" id="corpus_fund" class="form-control" value="<?php echo (set_value('corpus_fund')) ? set_value('corpus_fund') : $fee_structure->corpus_fund; ?>">
                                               <span class="text-danger"></span>
                                           </div>
                                           <div class="col-md-1">
-                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero('corpus_fund', $stud_id);
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'corpus_fund', $stud_id);
 
                                                 if ($readonlyvalue) {
                                                     $readonly = "disabled";
@@ -458,7 +723,7 @@
                                       <hr />
 
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right font-weight-bold">TOTAL AMOUNT</label>
+                                          <label for="staticEmail" class="col-md-4 col-form-label   font-weight-bold">TOTAL AMOUNT</label>
                                           <div class="col-md-7">
                                               <input type="text" name="final_fee" id="final_fee" class="form-control" value="" readonly>
                                               <span class="text-danger"></span>
@@ -476,7 +741,7 @@
                                                   <input type="radio" name="voucher_type" id="voucher_type" value="2"> Bank DD
                                               </label>
                                               <label class="radio-inline mr-3">
-                                                  <input type="radio" name="voucher_type" id="voucher_type" value="5">  DD
+                                                  <input type="radio" name="voucher_type" id="voucher_type" value="5"> DD
                                               </label>
                                               <label class="radio-inline mr-3">
                                                   <input type="radio" name="voucher_type" id="voucher_type" value="4"> Bank Transfer
@@ -515,9 +780,9 @@
                               <div class="card-footer">
                                   <div class="row">
                                       <div class="col-md-6">
-                                          <?php echo anchor('admin/voucherDetail/' . base64_encode($stud_id), 'BACK', 'class="btn btn-dark btn-square" '); ?>
+                                          <?php echo anchor('admin/paymentDetail/' . base64_encode($stud_id), 'BACK', 'class="btn btn-dark btn-square" '); ?>
                                       </div>
-                                      <div class="col-md-6 text-right">
+                                      <div class="col-md-6  ">
                                           <button type="submit" class="btn btn-info btn-square" name="create" id="create"> CREATE </button>
                                       </div>
                                   </div>
@@ -544,7 +809,7 @@
 
           $('input[type=radio][name=voucher_type]').change(function() {
 
-              if (this.value == "5" || this.value == "2" ) {
+              if (this.value == "5" || this.value == "2") {
 
                   $("#dd_details").show();
 
