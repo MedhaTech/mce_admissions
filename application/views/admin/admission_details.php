@@ -133,8 +133,8 @@
                                     <img src="<?php echo base_url($student_photo); ?>" alt="Student Photo" style="width: 100%; height: 100%; object-fit: cover;">
                                 </div>
                             <?php else: ?>
-                                <!-- <img src="<?php echo base_url('assets/img/no_data.jpg'); ?>" alt="Student Photo" style="width: 100%; height: 100%; object-fit: cover;"> -->
-                                <p>No photo available.</p>
+                                <img src="<?php echo base_url('assets/img/no_image.jpeg'); ?>" alt="Student Photo" style="width: 100%; height: 100%; object-fit: cover;">
+                                <!-- <p>No photo available.</p> -->
                             <?php endif; ?>
                             </div>
                         </div>

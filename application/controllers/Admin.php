@@ -1645,8 +1645,14 @@ class Admin extends CI_Controller
 				$image_extensions = array('jpg', 'jpeg', 'png');
 				foreach ($files as $file) {
 					$ext = pathinfo($file, PATHINFO_EXTENSION);
-					if (in_array(strtolower($ext), $image_extensions)) {
-						$photo = $upload_path . $file;  // Use the first photo found
+					$filename = pathinfo($file, PATHINFO_FILENAME);
+
+					// Check if the file is an image and contains keywords like 'profile' or the student's ID
+					if (
+						in_array(strtolower($ext), $image_extensions) &&
+						(stripos($filename, 'profile') !== false)
+					) {
+						$photo = $upload_path . $file;  // Use the first matching photo found
 						break;
 					}
 				}
@@ -6201,11 +6207,15 @@ With good wishes";
 					}
 				}
 				$updateDetails['voucher_type'] = $this->input->post('voucher_type');
-				if ($updateDetails['voucher_type'] == 5) {
+				if ($updateDetails['voucher_type'] == 5 || $updateDetails['voucher_type'] == 2) {
 
 					$updateDetails['dd_bank'] = $this->input->post('dd_bank');
 					$updateDetails['dd_number'] = $this->input->post('dd_number');
-					$updateDetails['dd_date'] = date('Y-m-d', strtotime($this->input->post('dd_date')));
+					if ($this->input->post('dd_date') == '') {
+						$updateDetails['dd_date'] = '';
+					} else {
+						$updateDetails['dd_date'] = date('Y-m-d', strtotime($this->input->post('dd_date')));
+					}
 				}
 				if ($updateDetails['voucher_type'] == 3) {
 					$updateDetails['offline'] = 0;
@@ -6569,13 +6579,23 @@ With good wishes";
 			$bcopy = "BANK COPY";
 			$copyData = array('Bank Copy', 'Office Copy', 'S.A Copy', 'Student Copy');
 			// Define the data for the table
+			if ($voucherDetails->dd_date == '0000-00-00') {
+				$dddate = '';
+			} else {
+				$dddate = date('d-m-Y', strtotime($voucherDetails->dd_date));
+			}
+
+
 			$tableData = [
 				['Admission No.', $admissionDetails->adm_no],
 				['Name', $admissionDetails->student_name],
 				['Year', $feeDetails->year],
 				['Quota', $admissionDetails->quota],
 				['College Code', $admissionDetails->college_code . ' - ' . $admissionDetails->sub_quota],
-				['Category', $admissionDetails->category_allotted]
+				['Category', $admissionDetails->category_allotted],
+				['DD No.', $voucherDetails->dd_number],
+				['DD Date', $dddate],
+				['Bank Name', $voucherDetails->dd_bank]
 			];
 
 			$fees = [
@@ -6672,11 +6692,11 @@ With good wishes";
 				$pdf->SetFont('Arial', '', 7);
 				$pdf->MultiCell(65, 4, "Paid into the credit of CANARA BANK M.C.E BRANCH,\nHASSAN -573202., CA A/C No. 14053070001574 of \nThe Principal Malnad College of Engineering, Hassan.");
 				$pdf->SetXY($x, $y + 52);
-				$pdf->SetFont('Arial', '', 7);
-				$pdf->MultiCell(65, 4, "Cash/D.D.No.________________________Dt________\n");
-				$pdf->SetXY($x, $y + 56);
-				$pdf->SetFont('Arial', '', 7);
-				$pdf->MultiCell(65, 4, "Bank_________________________________________");
+				// $pdf->SetFont('Arial', '', 7);
+				// $pdf->MultiCell(65, 4, "Cash/D.D.No.________________________Dt________\n");
+				// $pdf->SetXY($x, $y + 56);
+				// $pdf->SetFont('Arial', '', 7);
+				// $pdf->MultiCell(65, 4, "Bank_________________________________________");
 				$pdf->SetFont('Arial', '', 7);
 				$pdf->MultiCell(65, 4, "");
 				$tableY = $pdf->GetY(); // Get current Y position for the table
@@ -6716,9 +6736,9 @@ With good wishes";
 				generateCopy($i, $pdf, $startX + ($i * $spacingX), $startY, $collegeName, $affiliation, $contactInfo, $contactInfo1, $issuedOn, $programe, $chellan, $dept, $tableData, $voucherDetails, $copyData[$i]);
 			}
 
-			$pdf->Output();
-			// $fileName = $admissionDetails->student_name . '-Voucher.pdf';
-			// $pdf->output($fileName, 'D');
+			// $pdf->Output();
+			$fileName = $admissionDetails->student_name . '-Voucher.pdf';
+			$pdf->output($fileName, 'D');
 		} else {
 			redirect('admin/timeout');
 		}
@@ -8338,14 +8358,14 @@ With good wishes";
 			$nameData = $data['admissionDetails']->student_name . " " . $salut . " " . $data['admissionDetails']->father_name;
 
 			$pdf->SetFont('Arial', '', 10);
-			$pdf->MultiCell(0, 5, '       ' . $nameData . ' has sought admission to the 1" Semester B.E course in ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ' branch at Malnad Colege of Engineering, Hassan for the year 2024-25.', 0, 1);
+			$pdf->MultiCell(0, 5, '       ' . $nameData . ' has sought admission to the 1" Semester B.E course in ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ' branch at Malnad College of Engineering, Hassan for the year 2024-25.', 0, 1);
 
 			$pdf->Ln(3);
 
-			$pdf->MultiCell(0, 5, "       There is likelihood of some soats remaining vacant from the COMED-K process and sO your request for admission will be considered. If for any reasons seats are filed up from the COMED-K, you have no right to seek admissions.");
+			$pdf->MultiCell(0, 5, "       There is likelihood of some seats remaining vacant from the COMED-K process and if so your request for admission will be considered. If for any reasons seats are filled up from the COMED-K, you have no right to seek admissions.");
 			$pdf->Ln(3);
 
-			$pdf->MultiCell(0, 5, "       In the meanwhile subject to the above conditions you are instructed to approach the Principal, Mainad College of Engineering, and to pay the required fee, produce the ceruficate in original and provisionally get admitted as per rules prescnibed by State Government and the Visweswaraiah Technological University, Belgaum.");
+			$pdf->MultiCell(0, 5, "       In the meanwhile subject to the above conditions you are instructed to approach the Principal, Malnad College of Engineering, and to pay the required fee, produce the certificate in original and provisionally get admitted as per rules prescribed by State Government and the Visweswaraiah Technological University, Belgaum.");
 			$pdf->Ln(3);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(0, 30, 'With Good wishes', 0, 1);
@@ -8752,7 +8772,7 @@ With good wishes";
 			// College Information
 			$collegeName = "MALNAD COLLEGE OF ENGINEERING, HASSAN";
 			$affiliation = "";
-			$contactInfo = "Payment made by NEFT/RTGS/IMPS ORany other online made,";
+			$contactInfo = "Payment made by NEFT/RTGS/IMPS or any other online mode,";
 			$contactInfo1 = "Fill all the below mentioned data with Seal & Signature of the Payee Bank Officlal,";
 			$contactInfo2 = "and Upload to E Mail swdcb@mcehassan.ac.in,";
 			$contactInfo3 = "Submit the herd copy to Fees Section, Dean (SA) Office";

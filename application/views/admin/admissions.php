@@ -21,7 +21,7 @@
                             if (count($admissions)) {
                                 $table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
                                 $this->table->set_template($table_setup);
-                                $print_fields = array('S.NO','App No','Applicant Name', 'Mobile', 'Course', 'Quota', 'Sub Quota','Status');
+                                $print_fields = array('S.NO','App No','USN','Applicant Name', 'Mobile', 'Course', 'Quota', 'Sub Quota','Status');
                                 $this->table->set_heading($print_fields);
 
                                 $i = 1;
@@ -34,6 +34,7 @@
                                         $i++,
                                         //   $admissions1->app_no,
                                         anchor('admin/admissionDetails/'.$encryptId, $admissions1->app_no),
+                                        $admissions1->usn,
                                         $admissions1->student_name,
                                         $admissions1->mobile,
 
