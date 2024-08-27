@@ -45,9 +45,14 @@
 
                                               </label>
                                           </div>
-                                          <div class="col-md-2">
+                                          <div class="col-md-1">
                                               <label for="staticEmail" class="col-form-label  ">
                                                   Balance Amount
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+
                                               </label>
                                           </div>
 
@@ -65,12 +70,20 @@
 
                                               </label>
                                           </div>
+
                                           <div class="col-md-2">
                                               <label for="staticEmail" class="col-form-label  ">
                                                   <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'e_learning_fee', $stud_id); ?>
                                                   <?= $paid; ?>
                                               </label>
                                           </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->e_learning_fee - $paid; ?>
+                                              </label>
+                                          </div>
+                                         
 
                                           <div class="col-md-2">
                                               <input type="text" readonly name="e_learning_fee" id="e_learning_fee" class="form-control" value="<?php echo (set_value('e_learning_fee')) ? set_value('e_learning_fee') : $fee_structure->e_learning_fee; ?>">
@@ -103,6 +116,12 @@
                                               <label for="staticEmail" class="col-form-label  ">
                                                   <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'eligibility_fee', $stud_id); ?>
                                                   <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->eligibility_fee - $paid; ?>
                                               </label>
                                           </div>
                                           <div class="col-md-2">
@@ -139,6 +158,12 @@
                                                   <?= $paid; ?>
                                               </label>
                                           </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->e_consortium_fee - $paid; ?>
+                                              </label>
+                                          </div>
                                           <div class="col-md-2">
                                               <input type="text" readonly name="e_consortium_fee" id="e_consortium_fee" class="form-control" value="<?php echo (set_value('e_consortium_fee')) ? set_value('e_consortium_fee') : $fee_structure->e_consortium_fee; ?>">
                                               <span class="text-danger"></span>
@@ -169,6 +194,12 @@
                                               <label for="staticEmail" class="col-form-label  ">
                                                   <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'sport_fee', $stud_id); ?>
                                                   <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->sport_fee - $paid; ?>
                                               </label>
                                           </div>
                                           <div class="col-md-2">
@@ -204,6 +235,12 @@
                                                   <?= $paid; ?>
                                               </label>
                                           </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->sports_development_fee - $paid; ?>
+                                              </label>
+                                          </div>
                                           <div class="col-md-2">
                                               <input type="text" readonly name="sports_development_fee" id="sports_development_fee" class="form-control" value="<?php echo (set_value('sports_development_fee')) ? set_value('sports_development_fee') : $fee_structure->sports_development_fee; ?>">
                                               <span class="text-danger"></span>
@@ -235,6 +272,12 @@
                                               <label for="staticEmail" class="col-form-label  ">
                                                   <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'career_guidance_counseling_fee', $stud_id); ?>
                                                   <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->career_guidance_counseling_fee - $paid; ?>
                                               </label>
                                           </div>
                                           <div class="col-md-2">
@@ -270,6 +313,12 @@
                                                   <?= $paid; ?>
                                               </label>
                                           </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->university_development_fund - $paid; ?>
+                                              </label>
+                                          </div>
                                           <div class="col-md-2">
                                               <input type="text" readonly name="university_development_fund" id="university_development_fund" class="form-control" value="<?php echo (set_value('university_development_fund')) ? set_value('university_development_fund') : $fee_structure->university_development_fund; ?>">
                                               <span class="text-danger"></span>
@@ -301,6 +350,12 @@
                                               <label for="staticEmail" class="col-form-label  ">
                                                   <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'promotion_of_indian_cultural_activities_fee', $stud_id); ?>
                                                   <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->promotion_of_indian_cultural_activities_fee - $paid; ?>
                                               </label>
                                           </div>
                                           <div class="col-md-2">
@@ -336,6 +391,12 @@
                                                   <?= $paid; ?>
                                               </label>
                                           </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->teachers_development_fee - $paid; ?>
+                                              </label>
+                                          </div>
                                           <div class="col-md-2">
                                               <input type="text" readonly name="teachers_development_fee" id="teachers_development_fee" class="form-control" value="<?php echo (set_value('teachers_development_fee')) ? set_value('teachers_development_fee') : $fee_structure->teachers_development_fee; ?>">
                                               <span class="text-danger"></span>
@@ -367,6 +428,12 @@
                                               <label for="staticEmail" class="col-form-label  ">
                                                   <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'student_development_fee', $stud_id); ?>
                                                   <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->student_development_fee - $paid; ?>
                                               </label>
                                           </div>
                                           <div class="col-md-2">
@@ -402,6 +469,12 @@
                                                   <?= $paid; ?>
                                               </label>
                                           </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->indian_red_cross_membership_fee - $paid; ?>
+                                              </label>
+                                          </div>
                                           <div class="col-md-2">
                                               <input type="text" readonly name="indian_red_cross_membership_fee" id="indian_red_cross_membership_fee" class="form-control" value="<?php echo (set_value('indian_red_cross_membership_fee')) ? set_value('indian_red_cross_membership_fee') : $fee_structure->indian_red_cross_membership_fee; ?>">
                                               <span class="text-danger"></span>
@@ -433,6 +506,12 @@
                                               <label for="staticEmail" class="col-form-label  ">
                                                   <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'women_cell_fee', $stud_id); ?>
                                                   <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->women_cell_fee - $paid; ?>
                                               </label>
                                           </div>
                                           <div class="col-md-2">
@@ -467,6 +546,12 @@
                                                   <?= $paid; ?>
                                               </label>
                                           </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->nss_fee - $paid; ?>
+                                              </label>
+                                          </div>
                                           <div class="col-md-2">
                                               <input type="text" readonly name="nss_fee" id="nss_fee" class="form-control" value="<?php echo (set_value('nss_fee')) ? set_value('nss_fee') : $fee_structure->nss_fee; ?>">
                                               <span class="text-danger"></span>
@@ -498,6 +583,12 @@
                                               <label for="staticEmail" class="col-form-label  ">
                                                   <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'university_registration_fee', $stud_id); ?>
                                                   <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->university_registration_fee - $paid; ?>
                                               </label>
                                           </div>
                                           <div class="col-md-2">
@@ -539,6 +630,12 @@
                                                   <?= $paid; ?>
                                               </label>
                                           </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->admission_fee - $paid; ?>
+                                              </label>
+                                          </div>
                                           <div class="col-md-2">
                                               <input type="text" readonly name="admission_fee" id="admission_fee" class="form-control" value="<?php echo (set_value('admission_fee')) ? set_value('admission_fee') : $fee_structure->admission_fee; ?>">
                                               <span class="text-danger"></span>
@@ -573,6 +670,12 @@
                                                   <?= $paid; ?>
                                               </label>
                                           </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->processing_fee_paid_at_kea - $paid; ?>
+                                              </label>
+                                          </div>
                                           <div class="col-md-2">
                                               <input type="text" readonly name="processing_fee_paid_at_kea" id="processing_fee_paid_at_kea" class="form-control" value="<?php echo (set_value('processing_fee_paid_at_kea')) ? set_value('processing_fee_paid_at_kea') : $fee_structure->processing_fee_paid_at_kea; ?>">
                                               <span class="text-danger"></span>
@@ -603,6 +706,12 @@
                                               <label for="staticEmail" class="col-form-label  ">
                                                   <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'tution_fee', $stud_id); ?>
                                                   <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->tution_fee - $paid; ?>
                                               </label>
                                           </div>
                                           <div class="col-md-2">
@@ -637,6 +746,12 @@
                                                   <?= $paid; ?>
                                               </label>
                                           </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->college_other_fee - $paid; ?>
+                                              </label>
+                                          </div>
                                           <div class="col-md-2">
                                               <input type="text" readonly name="college_other_fee" id="college_other_fee" class="form-control" value="<?php echo (set_value('college_other_fee')) ? set_value('college_other_fee') : $fee_structure->college_other_fee; ?>">
                                               <span class="text-danger"></span>
@@ -667,6 +782,12 @@
                                               <label for="staticEmail" class="col-form-label  ">
                                                   <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'skill_development_fee', $stud_id); ?>
                                                   <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->skill_development_fee - $paid; ?>
                                               </label>
                                           </div>
                                           <div class="col-md-2">
@@ -701,6 +822,12 @@
                                               <label for="staticEmail" class="col-form-label  ">
                                                   <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'corpus_fund', $stud_id); ?>
                                                   <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->corpus_fund - $paid; ?>
                                               </label>
                                           </div>
                                           <div class="col-md-2">
