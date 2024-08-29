@@ -1,7 +1,7 @@
 <div class="login-box">
     <div class="login-logo">
-        <h2 class='text-white'> Malnad College of Engineering <br /> <span class="h4 text-uppercase">Student Panel
-            </span></h2>
+        <h4 class='text-white text-uppercase'> Malnad College of Engineering <br /> <span class="h4 text-uppercase">Student Panel
+            </span></h4>
     </div>
     <!-- /.login-logo -->
     <div class="card">
