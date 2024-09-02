@@ -534,7 +534,9 @@ class Admin_model extends CI_Model
       $this->db->where('admissions.dept_id', $course);
     }
     $this->db->where('admissions.status !=', '7');
+    if ($year != '') {
     $this->db->where('fee_master.year', $year); 
+    }
     $query = $this->db->get();
     return $query;
   }

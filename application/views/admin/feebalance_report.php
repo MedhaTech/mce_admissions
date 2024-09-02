@@ -46,7 +46,7 @@
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                               <label class="label font-13">Student studying year<span class="text-danger">*</span></label>
-                                  <?php $Syear =array(""=>"Select Student studying year","I"=>"I","II"=>"II","III"=>"IIII","IV"=>"IV");
+                                  <?php $Syear =array("0"=>"Select Student studying year","I"=>"I","II"=>"II","III"=>"IIII","IV"=>"IV");
                                         echo form_dropdown('year', $Syear, (set_value('year')) ? set_value('year') : 'year', 'class="form-control form-control-md" id="year"'); 
                                     ?>
                               </div>
