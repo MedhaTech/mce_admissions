@@ -3361,7 +3361,7 @@ With good wishes";
 			// $table_setup = array ('table_open'=> '<table class="table table-bordered font14" border="1" id="dataTable" >');
 			// $this->table->set_template($table_setup);
 
-			$print_fields = array('S.No', 'Academic Year', 'Course', 'Student Name', 'Usn', 'Quota', 'Sub Quota', 'College Code', 'Studying Year', 'Mobile', 'Father Number','Caste',  'Alloted Category' , 'claimed Category', 'Admit. Date', 'Balance amount', 
+			$print_fields = array('S.No', 'Academic Year', 'Course', 'Student Name', 'Usn', 'Quota', 'Sub Quota', 'College Code', 'Studying Year', 'Mobile', 'Father Number','Caste',  'Alloted Category' , 'claimed Category', 'Admit. Date', 
 			'Total University Other Fee','College Fee Demand', 'College Fee Paid', 'College Fee Balance', 'Corpus Fee Demand','Corpus Fee Paid','Corpus Fee Balance',  'Remarks');
 
 			$this->table->set_heading($print_fields);
@@ -3413,7 +3413,7 @@ With good wishes";
 					($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
 					// number_format($fees_data->final_fee, 0),
 					// number_format($feeDetails[$admissions1->id], 0),
-					number_format($balance_amount_data, 0),
+					// number_format($balance_amount_data, 0),
 					number_format($fees_data->total_university_fee, 0),
 					number_format($fees_data->total_college_fee, 0),
 						number_format($feeDetails22[$admissions1->id], 0),
@@ -3474,11 +3474,6 @@ With good wishes";
 				$admissions = $this->admin_model->FeebalanceReport($currentAcademicYear,$course='',$year='')->result();
 			}
 			
-			
-			
-
-
-			$currentAcademicYear = $this->globals->currentAcademicYear();
 			
 
 			 $fees = $this->admin_model->feeDetails()->result();
