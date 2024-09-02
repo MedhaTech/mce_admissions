@@ -41,6 +41,16 @@
                                   <span class="text-danger"><?php echo form_error('admission_status'); ?></span>
                               </div>
                           </div>
+                          <div class="col-md-4 col-sm-12">
+                              <div class="form-group">
+                                  <label class="label font-13">&nbsp;</label>
+                                  <label class="form-control" style="
+    border: none;
+"><?php
+                            echo $admissions;
+                            ?> </label>
+                              </div>
+                          </div>
                       </div>
 
 
@@ -54,11 +64,11 @@
                       </div>
 
                       </form>
-                      <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                      <!-- <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
                           <?php
                             echo $admissions;
                             ?>
-                      </div>
+                      </div> -->
                   </div>
               </div>
           </div>
