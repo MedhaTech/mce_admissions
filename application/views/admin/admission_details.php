@@ -9,7 +9,7 @@
                     </h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
-                            <!-- <li class="nav-item">
+                            <li class="nav-item">
                                 <?php 
                                 $encryptId = base64_encode($admissionDetails->id);
                                 echo anchor(
@@ -18,7 +18,7 @@
                                     ['class' => 'btn btn-danger btn-sm', 'target' => '_blank']
                                 ); 
                                 ?>
-                            </li> -->
+                            </li>
                             <li class="nav-item">
                                 <?php $encryptId = base64_encode($admissionDetails->id);
                                 echo anchor('admin/updateadmissiondetails/'.$encryptId, '<i class="fas fa-edit fa-sm fa-fw"></i> Edit ', 'class="btn btn-dark btn-sm"'); ?>
