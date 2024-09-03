@@ -7200,14 +7200,29 @@ With good wishes";
 			$pdf->SetFont('Arial', 'BU', 12);
 			$pdf->Cell(60, 10, 'DOCUMENTS PRODUCED ', 0, 1, 'C');
 
+			$totalHeight = 60; 
+			$rowHeight = 6; 
+	
 			$pdf->SetFont('Arial', '', 10);
 			$slno = 1;
+			$pdf->SetY($pdf->GetY()); 
+	
 			foreach ($file_doc as $file) {
 				$document_type = substr($file, 0, strpos($file, '.'));
-				$pdf->SetX(15, $topGap + 9);
-				$pdf->Cell(60, 6, $slno . ') ' . $document_type, 0);
-				$pdf->Cell(0, 6, '', 0, 'C');
+				
+				$pdf->SetX(15);
+				
+	
+				$pdf->Cell(60, $rowHeight, $slno . ') ' . $document_type, 0, 1);
+				
 				$slno++;
+			}
+			$currentY = $pdf->GetY();
+			$remainingHeight = $totalHeight - ($currentY - 10);
+	
+			if ($remainingHeight > 0) {
+				$pdf->SetX(15); 
+				$pdf->Cell(60, $remainingHeight, '', 0, 1);
 			}
 			// $pdf->SetX(15, $topGap + 9);
 			// $pdf->Cell(60, 6, '2) P.U.C. marks card', 0);
