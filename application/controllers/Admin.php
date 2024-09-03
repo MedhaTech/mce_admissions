@@ -3499,7 +3499,7 @@ With good wishes";
 			$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2">');
 			$this->table->set_template($table_setup);
 
-			$print_fields = array('S.No', 'Usn', 'Student Name', 'Stream','Course', 'Quota', 'Sub Quota', 'College Code', 'Studying Year', 'Mobile','Alloted Category' , 'claimed Category', 'Admit. Date', 'Balance amount', 
+			$print_fields = array('S.No', 'Usn', 'Student Name', 'Stream','Course', 'Quota', 'Sub Quota', 'College Code', 'Studying Year', 'Mobile','Alloted Category' , 'claimed Category', 'Admit. Date', 
 			'College Fee Demand', 'College Fee Paid', 'College Fee Balance', 'Corpus Fee Demand','Corpus Fee Paid','Corpus Fee Balance', 'Remarks');
 			$this->table->set_heading($print_fields);
 
@@ -3541,7 +3541,7 @@ With good wishes";
 						$admissions1->category_allotted,
 						$admissions1->category_claimed,
 						($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
-						number_format($balance_amount_data, 0),
+						// number_format($balance_amount_data, 0),
 						number_format($fees_data->total_college_fee, 0),
 						number_format($feeDetails22[$admissions1->id], 0),
 						number_format($college_bal, 0),
