@@ -7143,40 +7143,19 @@ With good wishes";
 			$pdf->Cell(60, 6, 'CET AT No.', 0);
 			$pdf->SetFont('Arial', 'B', 10);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->entrance_reg_no, 0, 'C');
-			// $pdf->Cell(60, 10, 'CET AT No. :', 0);
-			// $pdf->Cell(130, 10, '123', 0);
+
 			$pdf->SetX(15, $topGap + 9);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(60, 6, 'Rank No.', 0);
 			$pdf->SetFont('Arial', 'B', 10);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->entrance_rank, 0, 'C');
+
 			$pdf->SetX(15, $topGap + 9);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(60, 6, 'Name of the candidate.', 0);
 			$pdf->SetFont('Arial', 'B', 10);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->student_name, 0, 'C');
-			$pdf->SetX(15, $topGap + 9);
-			$pdf->SetFont('Arial', '', 10);
-			// $pdf->Cell(0, 6, 'Board from which the candidate has passed his/her qualifying Examination Marks secured in below subjects : ', 0, 1);
-			// $pdf->SetFont('Arial', 'B', 10);
-			// // var_dump($edu->inst_board); die();
-			// foreach ($educations_details as $edu) {
-			// $pdf->Cell(0, 6, '' . $edu->inst_board, 0, 'C');
-			// }
 
-			// $pdf->SetFont('Arial', '', 10);
-			// $pdf->Cell(60, 6, 'PHYSICS : 79', 0, 1);
-			// $pdf->Cell(60, 6, 'MATHEMATICS : 98', 0, 1);
-
-
-			// // Marks
-			// $pdf->SetFont('Arial', '', 10);
-			// // $pdf->Cell(60, 10, 'PHYSICS : 79', 0, 0);
-			// // $pdf->Cell(60, 10, 'MATHEMATICS : 98', 0, 1);
-			// $pdf->Cell(0, 6, 'Total 177 / 200 Percentage of PCM: 85.00', 0, 1, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 7, 'Total marks in all subjects', 0);
-			// $pdf->Cell(0, 6, ': 536 / 600', 0, 'C');
 			$pdf->SetX(15, $topGap + 9);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(60, 6, 'Date of Birth and Age', 0);
@@ -7186,82 +7165,44 @@ With good wishes";
 			}
 			$combinedValue = $admissionDetails->date_of_birth . ' ' . $age;
 			$pdf->Cell(0, 6, ': ' . $combinedValue, 0, 'C');
+
 			$pdf->SetX(15, $topGap + 9);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(60, 6, 'Category Claimed', 0);
 			$pdf->SetFont('Arial', 'B', 9);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->category_claimed, 0, 'C');
+
 			$pdf->SetX(15, $topGap + 9);
-			$pdf->SetFont('Arial', '', 10);
+			$pdf->SetFont('Arial', '', 10); // Updated font style for Category Allotted
 			$pdf->Cell(60, 6, 'Category Allotted', 0);
-			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->SetFont('Arial', 'B', 9);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->category_allotted, 0, 'C');
 
 			$pdf->SetFont('Arial', 'BU', 12);
 			$pdf->Cell(60, 10, 'DOCUMENTS PRODUCED ', 0, 1, 'C');
 
-			$totalHeight = 60; 
-			$rowHeight = 6; 
-	
+			$totalHeight = 60;
+			$rowHeight = 6;
+
 			$pdf->SetFont('Arial', '', 10);
 			$slno = 1;
-			$pdf->SetY($pdf->GetY()); 
-	
+			$pdf->SetY($pdf->GetY());
+
 			foreach ($file_doc as $file) {
 				$document_type = substr($file, 0, strpos($file, '.'));
-				
 				$pdf->SetX(15);
-				
-	
 				$pdf->Cell(60, $rowHeight, $slno . ') ' . $document_type, 0, 1);
-				
 				$slno++;
 			}
+
 			$currentY = $pdf->GetY();
 			$remainingHeight = $totalHeight - ($currentY - 10);
-	
+
 			if ($remainingHeight > 0) {
-				$pdf->SetX(15); 
+				$pdf->SetX(15);
 				$pdf->Cell(60, $remainingHeight, '', 0, 1);
 			}
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '2) P.U.C. marks card', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
 
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '3) S.S.L.C. marks card', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
-
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '4) Cumulative record', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '5) Proof of domicile', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '6) T.C. produced/T.C. form given', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '7) Medical Certificate', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '8) Three passport size photos', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '9) Eligibility Certificate', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '10) Conduct Certificate', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '11) Migration Certificate', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '12) Diploma / GT&TC marks card', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '13) Any other document', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
 			$pdf->SetX(15, $topGap + 9);
 			if ($admissionDetails->quota == 'KEA-CET(LATERAL)') {
 				$semester = 'semester 3';
@@ -7272,23 +7213,18 @@ With good wishes";
 			$pdf->MultiCell(0, 5, "For orders to admit the candidate to  $semester  $dep Provisionally pending approval of the Director of Technical Education, Karnataka and Visvesvaraya Technological University.");
 			$pdf->Cell(0, 10, "", 0, 1);
 
-			// $pdf->SetY($topGap + 5);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(0, 4, "'Verified by:", 0, 1, 'L');
-			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(0, 4, 'Name:', 0, 1, 'L');
-			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(0, 4, 'College fee reciept No. & Date with amount.', 0, 1, 'L');
 			$pdf->Cell(0, 4, 'Initial of Cashier.', 0, 1, 'L');
 
-
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(0, 4, 'Case Worker', 0, 1, 'R');
-			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(0, 4, 'Name:', 0, 1, 'R');
 
 			$pdf->SetFont('Arial', 'B', 10);
-			$pdf->Cell(0, 20, 'Principal', 0, 1, 'R');
+			$pdf->Cell(0, 20, 'Principal', 0, 1, 'R'); // Updated height for "Principal"
 
 			$pdf->AddPage('P', 'A4'); // 'P' for portrait orientation, 'A4' for A4 size (210x297 mm)
 
