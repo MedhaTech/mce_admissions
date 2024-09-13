@@ -374,8 +374,17 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('category', 'Category', 'required');
 			$this->form_validation->set_rules('sports', 'Sports', 'required');
 			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.aadhaar]');
-			$this->form_validation->set_rules('puc1_grade', 'PUC-I(10+1) Percentage/Grade', 'required');
 			$this->form_validation->set_rules('sslc_grade', 'SSLC Percentage/Grade', 'required');
+			$this->form_validation->set_rules('admission_based', 'Admission Based', 'required');
+			$this->form_validation->set_rules('puc1_grade', '1Puc Percentage');
+			$this->form_validation->set_rules('puc2_grade', '2Puc Percentage');
+			$this->form_validation->set_rules('diploma1_grade', 'Diploma1 Percentage');
+			$this->form_validation->set_rules('diploma2_grade', 'Diploma2 Percentage');
+			$this->form_validation->set_rules('diploma3_grade', 'Diploma3 Percentage');
+			$this->form_validation->set_rules('gttc1_grade', 'Gttc1 Percentage');
+			$this->form_validation->set_rules('gttc2_grade', 'Gttc2 Percentage');
+			$this->form_validation->set_rules('gttc3_grade', 'Gttc3 Percentage');
+			$this->form_validation->set_rules('gttc4_grade', 'Gttc4 Percentage');
 
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/newEnquiry';
@@ -396,8 +405,16 @@ class Admin extends CI_Controller
 				$data['category'] = $this->input->post('category');
 				$data['sports'] = $this->input->post('sports');
 				$data['sslc_grade'] = $this->input->post('sslc_grade');
+				$data['admission_based'] = $this->input->post('admission_based');
 				$data['puc1_grade'] = $this->input->post('puc1_grade');
-				$data['sslc_grade'] = $this->input->post('sslc_grade');
+				$data['puc2_grade'] = $this->input->post('puc2_grade');
+				$data['diploma1_grade'] = $this->input->post('diploma1_grade');
+				$data['diploma2_grade'] = $this->input->post('diploma2_grade');
+				$data['diploma3_grade'] = $this->input->post('diploma3_grade');
+				$data['gttc1_grade'] = $this->input->post('gttc1_grade');
+				$data['gttc2_grade'] = $this->input->post('gttc2_grade');
+				$data['gttc3_grade'] = $this->input->post('gttc3_grade');
+			    $data['gttc4_grade'] = $this->input->post('gttc4_grade');
 				$data['gender'] = $this->input->post('gender');
 				$data['aadhaar'] = $this->input->post('aadhaar');
 
@@ -430,8 +447,16 @@ class Admin extends CI_Controller
 					'gender' => $this->input->post('gender'),
 					'aadhaar' => $this->input->post('aadhaar'),
 					'sslc_grade' => $this->input->post('sslc_grade'),
-					'puc1_grade' => strtoupper($this->input->post('puc1_grade')),
+					'admission_based' => $this->input->post('admission_based'),
+					'puc1_grade' => $this->input->post('puc1_grade'),
 					'puc2_grade' => $this->input->post('puc2_grade'),
+					'diploma1_grade' => $this->input->post('diploma1_grade'),
+					'diploma2_grade' => $this->input->post('diploma2_grade'),
+					'diploma3_grade' => $this->input->post('diploma3_grade'),
+					'gttc1_grade' => $this->input->post('gttc1_grade'),
+					'gttc2_grade' => $this->input->post('gttc2_grade'),
+					'gttc3_grade' => $this->input->post('gttc3_grade'),
+					'gttc4_grade' => $this->input->post('gttc4_grade'),
 					'status' => '1',
 					'reg_date' => date('Y-m-d H:i:s'),
 					'reg_by' => $data['username']
