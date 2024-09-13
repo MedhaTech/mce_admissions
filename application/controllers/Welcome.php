@@ -38,8 +38,16 @@ class Welcome extends CI_Controller {
 				$this->form_validation->set_rules('par_mobile', 'Parent Mobile', 'required|regex_match[/^[0-9]{10}$/]|is_unique[enquiries.mobile]');
 				$this->form_validation->set_rules('par_email', 'Parent Email', 'required|valid_email');
 				$this->form_validation->set_rules('sslc_grade', 'Sslc Percentage', 'required');
-				$this->form_validation->set_rules('puc1_grade', '1Puc Percentage', 'required');
-				$this->form_validation->set_rules('puc2_grade', '2Puc Percentage', 'required');
+				$this->form_validation->set_rules('admission_based', 'Admission Based', 'required');
+				$this->form_validation->set_rules('puc1_grade', '1Puc Percentage');
+				$this->form_validation->set_rules('puc2_grade', '2Puc Percentage');
+				$this->form_validation->set_rules('diploma1_grade', 'Diploma1 Percentage');
+				$this->form_validation->set_rules('diploma2_grade', 'Diploma2 Percentage');
+				$this->form_validation->set_rules('diploma3_grade', 'Diploma3 Percentage');
+				$this->form_validation->set_rules('gttc1_grade', 'Gttc1 Percentage');
+				$this->form_validation->set_rules('gttc2_grade', 'Gttc2 Percentage');
+				$this->form_validation->set_rules('gttc3_grade', 'Gttc3 Percentage');
+				$this->form_validation->set_rules('gttc4_grade', 'Gttc4 Percentage');
 				$this->form_validation->set_rules('course', 'Course', 'required');
 				$this->form_validation->set_rules('course1', 'Course 1', 'required');
 				$this->form_validation->set_rules('course2', 'Course 2', 'required');
@@ -59,8 +67,16 @@ class Welcome extends CI_Controller {
 					$data['par_mobile'] = $this->input->post('par_mobile');
 					$data['par_email'] = $this->input->post('par_email');
 					$data['sslc_grade'] = $this->input->post('sslc_grade');
+					$data['admission_based'] = $this->input->post('admission_based');
 					$data['puc1_grade'] = $this->input->post('puc1_grade');
 					$data['puc2_grade'] = $this->input->post('puc2_grade');
+					$data['diploma1_grade'] = $this->input->post('diploma1_grade');
+					$data['diploma2_grade'] = $this->input->post('diploma2_grade');
+					$data['diploma3_grade'] = $this->input->post('diploma3_grade');
+					$data['gttc1_grade'] = $this->input->post('gttc1_grade');
+					$data['gttc2_grade'] = $this->input->post('gttc2_grade');
+					$data['gttc3_grade'] = $this->input->post('gttc3_grade');
+					$data['gttc4_grade'] = $this->input->post('gttc4_grade');
 					$data['course'] = $this->input->post('course');
 					$data['course1'] = $this->input->post('course1');
 					$data['course2'] = $this->input->post('course1');
@@ -93,8 +109,16 @@ class Welcome extends CI_Controller {
 						'par_mobile' => $this->input->post('par_mobile'),
 						'par_email' => strtolower($this->input->post('par_email')),
 						'sslc_grade' => $this->input->post('sslc_grade'),
+						'admission_based' => $this->input->post('admission_based'),
 						'puc1_grade' => $this->input->post('puc1_grade'),
 						'puc2_grade' => $this->input->post('puc2_grade'),
+						'diploma1_grade' => $this->input->post('diploma1_grade'),
+						'diploma2_grade' => $this->input->post('diploma2_grade'),
+						'diploma3_grade' => $this->input->post('diploma3_grade'),
+						'gttc1_grade' => $this->input->post('gttc1_grade'),
+						'gttc2_grade' => $this->input->post('gttc2_grade'),
+						'gttc3_grade' => $this->input->post('gttc3_grade'),
+						'gttc4_grade' => $this->input->post('gttc4_grade'),
 						'course_id' => $this->input->post('course'),
 						'course' => $course,
 						'course1' => $course1,
