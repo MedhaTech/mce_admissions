@@ -71,7 +71,7 @@
                       <div class="form-row">
 
 
-                          <div class="col-md-4 col-sm-12">
+                          <div class="col-md-6 col-sm-12">
                               <div class="form-group">
                                   <label for="exam_board">SSLC Percentage/Grade</label>
                                   <input type="text" name="sslc_grade" id="sslc_grade" class="form-control"
@@ -79,25 +79,114 @@
                                   <span class="text-danger"><?php echo form_error('sslc_grade'); ?></span>
                               </div>
                           </div>
-                          <div class="col-md-4 col-sm-12">
+                          <div class="col-md-6 col-sm-12">
                               <div class="form-group">
-                                  <label for="register_number">PUC-I(10+1) Percentage/Grade</label>
-                                  <input type="text" name="puc1_grade" id="puc1_grade" class="form-control"
-                                      value="<?php echo (set_value('puc1_grade')) ? set_value('puc1_grade') : $puc1_grade; ?>">
-                                  <span class="text-danger"><?php echo form_error('puc1_grade'); ?></span>
-                              </div>
-                          </div>
-
-                          <div class="col-md-4 col-sm-12">
-                              <div class="form-group">
-                                  <label for="register_number">PUC-II(10+2) Percentage/Grade</label>
-                                  <input type="text" name="puc2_grade" id="puc2_grade" class="form-control"
-                                      value="<?php echo (set_value('puc2_grade')) ? set_value('puc2_grade') : $puc2_grade; ?>">
-                                  <span class="text-danger"><?php echo form_error('puc2_grade'); ?></span>
+                                  <label for="admission_based">Admission Based on</label>
+                                  <?php $admission_options = array(" "=>"Select Admission Based On","PUC"=>"PUC","DIPLOMA"=>"DIPLOMA","GTTC"=>"GTTC"); 
+                                     echo form_dropdown('admission_based', $admission_options, (set_value('admission_based')) ? set_value('admission_based') : $admission_based , 'class="form-control " id="admission_based"'); 
+                                ?>
+                                  <span class="text-danger"><?php echo form_error('admission_based'); ?></span>
                               </div>
                           </div>
 
                       </div>
+
+                      <div class="row entyp">
+                        <div class="form-group col-md-4 col-sm-12">
+                            <label class="label font-13 entyp">PUC-I(10+1) Percentage<span
+                                    class="text-danger">*</span></label>
+                            <input type="number" class="form-control  entyp"
+                                id="puc1_grade"
+                                value="<?php echo (set_value('puc1_grade')) ? set_value('puc1_grade') : $puc1_grade; ?>"
+                                name="puc1_grade">
+                            <span
+                                class="text-danger"><?php echo form_error('puc1_grade'); ?></span>
+                        </div>
+                        <div class="form-group col-md-4 col-sm-12">
+                            <label class="label font-13 entyp">PUC-II(10+2) Percentage</label>
+                            <input type="number" class="form-control  entyp"
+                                id="puc2_grade"
+                                value="<?php echo (set_value('puc2_grade')) ? set_value('puc2_grade') : $puc2_grade; ?>"
+                                name="puc2_grade">
+                            <span
+                                class="text-danger"><?php echo form_error('puc2_grade'); ?></span>
+                        </div>
+                    </div>
+
+                    <div class="row dip">
+                        <div class="form-group col-md-4 col-sm-12">
+                            <label class="label font-13 dip">DIPLOMA-I Percentage<span
+                                    class="text-danger">*</span></label>
+                            <input type="number" class="form-control  dip"
+                                id="diploma1_grade"
+                                value="<?php echo (set_value('diploma1_grade')) ? set_value('diploma1_grade') : $diploma1_grade; ?>"
+                                name="diploma1_grade">
+                            <span
+                                class="text-danger"><?php echo form_error('diploma1_grade'); ?></span>
+                        </div>
+                        <div class="form-group col-md-4 col-sm-12">
+                            <label class="label font-13 dip">DIPLOMA-II Percentage<span
+                            class="text-danger">*</span></label>
+                            <input type="number" class="form-control  dip"
+                                id="diploma2_grade"
+                                value="<?php echo (set_value('diploma2_grade')) ? set_value('diploma2_grade') : $diploma2_grade; ?>"
+                                name="diploma2_grade">
+                            <span
+                                class="text-danger"><?php echo form_error('diploma2_grade'); ?></span>
+                        </div>
+                        <div class="form-group col-md-4 col-sm-12">
+                            <label class="label font-13 dip">DIPLOMA-III Percentage</label>
+                            <input type="number" class="form-control  dip"
+                                id="diploma3_grade"
+                                value="<?php echo (set_value('diploma3_grade')) ? set_value('diploma3_grade') : $diploma3_grade; ?>"
+                                name="diploma3_grade">
+                            <span
+                                class="text-danger"><?php echo form_error('diploma3_grade'); ?></span>
+                        </div>
+                    </div>
+
+                    <div class="row gtc">
+                        <div class="form-group col-md-3 col-sm-12">
+                            <label class="label font-13 gtc">GT & TC-I Percentage<span
+                                    class="text-danger">*</span></label>
+                            <input type="number" class="form-control  gtc"
+                                id="gttc1_grade"
+                                value="<?php echo (set_value('gttc1_grade')) ? set_value('gttc1_grade') : $gttc1_grade; ?>"
+                                name="gttc1_grade">
+                            <span
+                                class="text-danger"><?php echo form_error('gttc1_grade'); ?></span>
+                        </div>
+                        <div class="form-group col-md-3 col-sm-12">
+                            <label class="label font-13 gtc">GT & TC-II Percentage<span
+                            class="text-danger">*</span></label>
+                            <input type="number" class="form-control  gtc"
+                                id="gttc2_grade"
+                                value="<?php echo (set_value('gttc2_grade')) ? set_value('gttc2_grade') : $gttc2_grade; ?>"
+                                name="gttc2_grade">
+                            <span
+                                class="text-danger"><?php echo form_error('gttc2_grade'); ?></span>
+                        </div>
+                        <div class="form-group col-md-3 col-sm-12">
+                            <label class="label font-13 gtc">GT & TC-III Percentage<span
+                            class="text-danger">*</span></label>
+                            <input type="number" class="form-control  gtc"
+                                id="gttc3_grade"
+                                value="<?php echo (set_value('gttc3_grade')) ? set_value('gttc3_grade') : $gttc3_grade; ?>"
+                                name="gttc3_grade">
+                            <span
+                                class="text-danger"><?php echo form_error('gttc3_grade'); ?></span>
+                        </div>
+                        <div class="form-group col-md-3 col-sm-12">
+                            <label class="label font-13 gtc">GT & TC-IV Percentage</label>
+                            <input type="number" class="form-control  gtc"
+                                id="gttc4_grade"
+                                value="<?php echo (set_value('gttc4_grade')) ? set_value('gttc4_grade') : $gttc4_grade; ?>"
+                                name="gttc4_grade">
+                            <span
+                                class="text-danger"><?php echo form_error('gttc4_grade'); ?></span>
+                        </div>
+                    </div>
+
                       <div class="form-row">
                           <div class="col-md-4 col-sm-12">
                               <div class="form-group">
@@ -313,5 +402,32 @@ $(document).ready(function() {
 
         }
     });
+
+    $(".entyp").hide();
+    $(".dip").hide();
+    $(".gtc").hide();
+        $("#admission_based").change(function () {
+            if($("#admission_based").val() == "PUC") {
+                $(".entyp").show();
+                $(".dip").hide();
+                $(".gtc").hide();
+            }
+        })
+
+        $("#admission_based").change(function () {
+            if($("#admission_based").val() == "DIPLOMA") {
+                $(".dip").show();
+                $(".entyp").hide();
+                $(".gtc").hide();
+            }
+        })
+
+        $("#admission_based").change(function () {
+            if($("#admission_based").val() == "GTTC") {
+                $(".gtc").show();
+                $(".entyp").hide();
+                $(".dip").hide();
+            }
+        })
 });
   </script>
