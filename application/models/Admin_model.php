@@ -346,10 +346,18 @@ class Admin_model extends CI_Model
 
   function getAdmissionOverallStats($department_id)
   {
-    $this->db->select('quota, sub_quota, COUNT(*) as cnt');
-    $this->db->where('dept_id', $department_id);
-    $this->db->group_by('quota, sub_quota');
-    return $this->db->get('admissions');
+    if (empty($department_id)) {
+      $this->db->select('dept_id, quota, sub_quota, COUNT(*) as cnt');
+      $this->db->group_by('dept_id, quota, sub_quota');
+      $this->db->order_by('sub_quota, dept_id','ASC');
+      return $this->db->get('admissions');
+    } else {
+      $this->db->select('quota, sub_quota, COUNT(*) as cnt');
+      $this->db->where('dept_id', $department_id);
+      $this->db->group_by('quota, sub_quota');
+      return $this->db->get('admissions');
+    }
+
   }
 
   function getAdmissionStats($department_id, $quota, $sub_quota)
@@ -466,7 +474,7 @@ class Admin_model extends CI_Model
     return $this->db->get('transactions');
   }
 
-  function DCBReport($currentAcademicYear, $course = '', $year = '',$type='')
+  function DCBReport($currentAcademicYear, $course = '', $year = '', $type = '')
   {
     $this->db->select(
       '
@@ -490,7 +498,7 @@ class Admin_model extends CI_Model
     fee_master.remarks'
     );
     $this->db->from('admissions');
-    $this->db->join('fee_master', 'admissions.id = fee_master.student_id', 'left'); 
+    $this->db->join('fee_master', 'admissions.id = fee_master.student_id', 'left');
     $this->db->where('admissions.academic_year', $currentAcademicYear);
     if ($course != '') {
       $this->db->where('admissions.dept_id', $course);
@@ -501,7 +509,7 @@ class Admin_model extends CI_Model
     if ($type != '') {
       $this->db->where('admissions.sub_quota', $type);
     }
-   $this->db->where('admissions.status !=', '7');
+    $this->db->where('admissions.status !=', '7');
     $query = $this->db->get();
     return $query;
   }
@@ -528,14 +536,14 @@ class Admin_model extends CI_Model
     fee_master.remarks'
     );
     $this->db->from('admissions');
-    $this->db->join('fee_master', 'admissions.id = fee_master.student_id', 'left'); 
+    $this->db->join('fee_master', 'admissions.id = fee_master.student_id', 'left');
     $this->db->where('admissions.academic_year', $currentAcademicYear);
     if ($course != '') {
       $this->db->where('admissions.dept_id', $course);
     }
     $this->db->where('admissions.status !=', '7');
     if ($year != '') {
-    $this->db->where('fee_master.year', $year); 
+      $this->db->where('fee_master.year', $year);
     }
     $query = $this->db->get();
     return $query;

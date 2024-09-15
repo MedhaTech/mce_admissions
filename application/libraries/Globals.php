@@ -84,6 +84,15 @@ class Globals
         );
     }
 
+    public function admissionBased()
+    {
+        return array(
+            "PUC" => "PUC",
+            "DIPLOMA" => "DIPLOMA",
+            "GTTC" => "GT&TC"
+        );
+    }
+    
     public function quota()
     {
         return array(
@@ -95,6 +104,7 @@ class Globals
             "GOI (Non Karnataka)" => "GOI (Non Karnataka)",
             "KEA-CET(LATERAL)" => "KEA-CET(LATERAL)",
             "MGMT-COMEDK" => "MGMT-COMEDK",
+            "MGMT-LATERAL" => "MGMT-LATERAL",
         );
     }
 
