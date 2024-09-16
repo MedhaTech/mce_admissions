@@ -66,11 +66,15 @@
                     style="background-image:url('themes/images/bg/bg-image-11.jpg');">
                     <div class="container">
                         <div class="row">
-                            <div class="col-md-4 col-sm-12">
+                            <div class="col-md-4 col-sm-12 mb--100">
                                 <div class="inner">
                                     <h2 class="text-white">Take the first step towards success: <span
                                             class="text-warning">admissions are currently open in MCE.</span></h2>
                                     <!-- <span class="text-white">Choose From 20+ Specializations</span> -->
+                                    <!-- <a class="rn-button-style--2 btn_solid" href="contact.html" tabindex="0">Contact Us</a> -->
+                                    <?php
+                                        echo anchor('student','<span>Login</span>','class="rn-button-style--2 btn_solid"');
+                                    ?>
                                 </div>
                             </div>
                             <div class="col-md-8 col-sm-12">
@@ -96,7 +100,7 @@
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm" id="name"
                                                         value="<?php echo (set_value('name')) ? set_value('name') : $name; ?>"
-                                                        name="name" placeholder="Enter Student Name">
+                                                        name="name" placeholder="Enter Student Name" required>
                                                     <span class="text-danger"><?php echo form_error('name'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
@@ -105,7 +109,7 @@
                                                     <input type="text" class="form-control form-control-sm" id="mobile"
                                                         maxlength="10" minlength="10"
                                                         value="<?php echo (set_value('mobile')) ? set_value('mobile') : $mobile; ?>"
-                                                        name="mobile" placeholder="Enter Student Mobile">
+                                                        name="mobile" placeholder="Enter Student Mobile" required>
                                                     <span class="text-danger"><?php echo form_error('mobile'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
@@ -113,7 +117,7 @@
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm" id="email"
                                                         value="<?php echo (set_value('email')) ? set_value('email') : $email; ?>"
-                                                        name="email" placeholder="Enter Email Id">
+                                                        name="email" placeholder="Enter Email ID" required>
                                                     <span class="text-danger"><?php echo form_error('email'); ?></span>
                                                 </div>
                                             </div>
@@ -124,7 +128,7 @@
                                                     <input type="text" class="form-control form-control-sm"
                                                         id="par_name"
                                                         value="<?php echo (set_value('par_name')) ? set_value('par_name') : $par_name; ?>"
-                                                        name="par_name" placeholder="Enter Parent/Guardian Name*">
+                                                        name="par_name" placeholder="Enter Parent/Guardian Name*" required>
                                                     <span
                                                         class="text-danger"><?php echo form_error('par_name'); ?></span>
                                                 </div>
@@ -134,7 +138,7 @@
                                                     <input type="text" class="form-control form-control-sm"
                                                         id="par_mobile" maxlength="10" minlength="10"
                                                         value="<?php echo (set_value('par_mobile')) ? set_value('par_mobile') : $par_mobile; ?>"
-                                                        name="par_mobile" placeholder="Enter Parent/Guardian Mobile">
+                                                        name="par_mobile" placeholder="Enter Parent/Guardian Mobile" required>
                                                     <span
                                                         class="text-danger"><?php echo form_error('par_mobile'); ?></span>
                                                 </div>
@@ -149,52 +153,151 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="form-group col-md-4 col-sm-12">
+                                                <div class="form-group col-md-6 col-sm-12">
                                                     <label class="label font-13">SSLC Percentage<span
                                                             class="text-danger">*</span></label>
-                                                    <input type="number" class="form-control form-control-sm"
+                                                    <input type="text"
+                                                        class="form-control form-control-sm percentage-input"
                                                         id="sslc_grade"
                                                         value="<?php echo (set_value('sslc_grade')) ? set_value('sslc_grade') : $sslc_grade; ?>"
-                                                        name="sslc_grade" placeholder="Enter SSLC Percentage*">
+                                                        name="sslc_grade" placeholder="Enter SSLC Percentage" required>
                                                     <span
                                                         class="text-danger"><?php echo form_error('sslc_grade'); ?></span>
                                                 </div>
+                                                <div class="form-group col-md-6 col-sm-12">
+                                                    <label class="label font-13">Admission Based on<span
+                                                            class="text-danger">*</span></label>
+                                                    <?php $admission_options = array(" "=>"Select Admission Based On","PUC"=>"PUC","DIPLOMA"=>"DIPLOMA","GTTC"=>"GT & TC"); 
+                                                            echo form_dropdown('admission_based', $admission_options, (set_value('admission_based')) ? set_value('admission_based') : $admission_based , 'class="form-control form-control-sm" id="admission_based" required'); 
+                                                    ?>
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('admission_based'); ?></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row" id="pucFields">
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label font-13">PUC-I(10+1) Percentage<span
                                                             class="text-danger">*</span></label>
-                                                    <input type="number" class="form-control form-control-sm"
+                                                    <input type="text"
+                                                        class="form-control form-control-sm percentage-input"
                                                         id="puc1_grade"
                                                         value="<?php echo (set_value('puc1_grade')) ? set_value('puc1_grade') : $puc1_grade; ?>"
-                                                        name="puc1_grade"
-                                                        placeholder="Enter PUC-I(10+1) Percentage*">
+                                                        name="puc1_grade" placeholder="Enter PUC-I(10+1) Percentage"
+                                                       >
                                                     <span
                                                         class="text-danger"><?php echo form_error('puc1_grade'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label font-13">PUC-II(10+2) Percentage</label>
-                                                    <input type="number" class="form-control form-control-sm"
+                                                    <input type="text"
+                                                        class="form-control form-control-sm percentage-input"
                                                         id="puc2_grade"
                                                         value="<?php echo (set_value('puc2_grade')) ? set_value('puc2_grade') : $puc2_grade; ?>"
-                                                        name="puc2_grade"
-                                                        placeholder="Enter PUC-II(10+2) Percentage*">
+                                                        name="puc2_grade" placeholder="Enter PUC-II(10+2) Percentage">
                                                     <span
                                                         class="text-danger"><?php echo form_error('puc2_grade'); ?></span>
                                                 </div>
                                             </div>
+
+                                            <div class="row" id="diplomaFields">
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="label font-13">DIPLOMA-I Percentage<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text"
+                                                        class="form-control form-control-sm percentage-input"
+                                                        id="diploma1_grade"
+                                                        value="<?php echo (set_value('diploma1_grade')) ? set_value('diploma1_grade') : $diploma1_grade; ?>"
+                                                        name="diploma1_grade" placeholder="Enter DIPLOMA-I Percentage"
+                                                       >
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('diploma1_grade'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="label font-13">DIPLOMA-II Percentage<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text"
+                                                        class="form-control form-control-sm percentage-input"
+                                                        id="diploma2_grade"
+                                                        value="<?php echo (set_value('diploma2_grade')) ? set_value('diploma2_grade') : $diploma2_grade; ?>"
+                                                        name="diploma2_grade" placeholder="Enter DIPLOMA-II Percentage"
+                                                       >
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('diploma2_grade'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="label font-13">DIPLOMA-III Percentage</label>
+                                                    <input type="text"
+                                                        class="form-control form-control-sm percentage-input"
+                                                        id="diploma3_grade"
+                                                        value="<?php echo (set_value('diploma3_grade')) ? set_value('diploma3_grade') : $diploma3_grade; ?>"
+                                                        name="diploma3_grade" placeholder="Enter DIPLOMA-III Percentage">
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('diploma3_grade'); ?></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row" id="gttcFields">
+                                                <div class="form-group col-md-3 col-sm-12">
+                                                    <label class="label font-13">GT & TC-I Percentage<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text"
+                                                        class="form-control form-control-sm percentage-input"
+                                                        id="gttc1_grade"
+                                                        value="<?php echo (set_value('gttc1_grade')) ? set_value('gttc1_grade') : $gttc1_grade; ?>"
+                                                        name="gttc1_grade" placeholder="Enter GT & TC-I Percentage"
+                                                       >
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('gttc1_grade'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-3 col-sm-12">
+                                                    <label class="label font-13">GT & TC-II Percentage<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text"
+                                                        class="form-control form-control-sm percentage-input"
+                                                        id="gttc2_grade"
+                                                        value="<?php echo (set_value('gttc2_grade')) ? set_value('gttc2_grade') : $gttc2_grade; ?>"
+                                                        name="gttc2_grade" placeholder="Enter GT & TC-II Percentage"
+                                                       >
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('gttc2_grade'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-3 col-sm-12">
+                                                    <label class="label font-13">GT & TC-III Percentage<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text"
+                                                        class="form-control form-control-sm percentage-input"
+                                                        id="gttc3_grade"
+                                                        value="<?php echo (set_value('gttc3_grade')) ? set_value('gttc3_grade') : $gttc3_grade; ?>"
+                                                        name="gttc3_grade" placeholder="Enter GT & TC-III Percentage"
+                                                       >
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('gttc3_grade'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-3 col-sm-12">
+                                                    <label class="label font-13">GT & TC-IV Percentage</label>
+                                                    <input type="text"
+                                                        class="form-control form-control-sm percentage-input"
+                                                        id="gttc4_grade"
+                                                        value="<?php echo (set_value('gttc4_grade')) ? set_value('gttc4_grade') : $gttc4_grade; ?>"
+                                                        name="gttc4_grade" placeholder="Enter GT & TC-IV Percentage">
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('gttc4_grade'); ?></span>
+                                                </div>
+                                            </div>
+
                                             <div class="row">
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label font-13">Branch Preference-I<span
                                                             class="text-danger">*</span></label>
-                                                    <?php 
-                                                            echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control form-control-sm" id="course"'); 
-                                                        ?>
+                                                    <?php echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control form-control-sm" id="course" required'); ?>
                                                     <span class="text-danger"><?php echo form_error('course'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label font-13">Branch Preference-II<span
                                                             class="text-danger">*</span></label>
                                                     <?php 
-                                                            echo form_dropdown('course1', $course_options, (set_value('course1')) ? set_value('course1') : $course1, 'class="form-control form-control-sm" id="course1"'); 
+                                                            echo form_dropdown('course1', $course_options, (set_value('course1')) ? set_value('course1') : $course1, 'class="form-control form-control-sm" id="course1" required'); 
                                                         ?>
                                                     <span
                                                         class="text-danger"><?php echo form_error('course1'); ?></span>
@@ -202,9 +305,7 @@
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label font-13">Branch Preference-III<span
                                                             class="text-danger">*</span></label>
-                                                    <?php 
-                                                            echo form_dropdown('course2', $course_options, (set_value('course2')) ? set_value('course2') : $course2, 'class="form-control form-control-sm" id="course2"'); 
-                                                        ?>
+                                                    <?php  echo form_dropdown('course2', $course_options, (set_value('course2')) ? set_value('course2') : $course2, 'class="form-control form-control-sm" id="course2" required'); ?>
                                                     <span
                                                         class="text-danger"><?php echo form_error('course2'); ?></span>
                                                 </div>
@@ -214,9 +315,7 @@
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label font-13">State<span
                                                             class="text-danger">*</span></label>
-                                                    <?php 
-                                                            echo form_dropdown('state', $states, (set_value('state')) ? set_value('state') : $state, 'class="form-control form-control-sm" id="state"'); 
-                                                        ?>
+                                                    <?php echo form_dropdown('state', $states, (set_value('state')) ? set_value('state') : $state, 'class="form-control form-control-sm" id="state" required'); ?>
                                                     <span class="text-danger"><?php echo form_error('state'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
@@ -224,14 +323,14 @@
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm" id="city"
                                                         value="<?php echo (set_value('city')) ? set_value('city') : $city; ?>"
-                                                        name="city" placeholder="Enter City">
+                                                        name="city" placeholder="Enter City" required>
                                                     <span class="text-danger"><?php echo form_error('city'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label font-13">Sports/Cultural Activities<span
                                                             class="text-danger">*</span></label>
                                                     <?php $sports_options = array(" "=>"Select Sports","State Level"=>"State Level","National Level"=>"National Level","International Level"=>"International Level","Not Applicable"=>"Not Applicable");
-                                                            echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : 'sports', 'class="form-control form-control-sm" id="sports"'); 
+                                                            echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : 'sports', 'class="form-control form-control-sm" id="sports" required'); 
                                                         ?>
                                                     <span class="text-danger"><?php echo form_error('sports'); ?></span>
                                                 </div>
@@ -241,40 +340,48 @@
                                                     <input type="text" class="form-control form-control-sm" id="aadhaar"
                                                         maxlength="12" minlength="12"
                                                         value="<?php echo (set_value('aadhaar')) ? set_value('aadhaar') : $aadhaar; ?>"
-                                                        name="aadhaar" placeholder="Enter Aadhaar No">
-                                                    <span class="text-danger"><?php echo form_error('aadhaar'); ?></span>
+                                                        name="aadhaar" placeholder="Enter Aadhaar No" required>
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('aadhaar'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label font-13">Gender<span
                                                             class="text-danger">*</span></label>
                                                     <?php $gender_options = array(" "=>"Select Gender","Male"=>"Male","Female"=>"Female","Not Prefer to Say"=>"Not Prefer to Say");
-                                                            echo form_dropdown('gender', $gender_options, (set_value('gender')) ? set_value('gender') : 'gender', 'class="form-control form-control-sm" id="gender"'); 
+                                                            echo form_dropdown('gender', $gender_options, (set_value('gender')) ? set_value('gender') : 'gender', 'class="form-control form-control-sm" id="gender" required'); 
                                                         ?>
                                                     <span class="text-danger"><?php echo form_error('gender'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label font-13">Category<span
                                                             class="text-danger">*</span></label>
-                                                    <?php
-                                                             echo form_dropdown('category', $type_options, (set_value('category')) ? set_value('category') : $category, 'class="form-control form-control-sm" id="category"'); 
-                                                        ?>
+                                                    <?php echo form_dropdown('category', $type_options, (set_value('category')) ? set_value('category') : $category, 'class="form-control form-control-sm" id="category" required'); ?>
                                                     <span
                                                         class="text-danger"><?php echo form_error('category'); ?></span>
                                                 </div>
                                             </div>
 
                                             <div class="row">
-                                                <div class="form-group col-8">
-                                                    <input type="checkbox" class="form-check-input" id="applyCheck"
-                                                        onclick="enable()">&nbsp;&nbsp;
-                                                    <label class="form-check-label text-gray font--12" for="applyCheck">
-                                                        I agree to receive information regarding my
-                                                        enquiry*</label>
+                                                <!-- <div class="form-check col-md-8 mb-3">
+                                                    <input type="checkbox" class="form-check-input" id="acknowledge">
+                                                    <label class="form-check-label" for="acknowledge">
+                                                        I acknowledge that the information provided is accurate.
+                                                    </label>
+                                                </div> -->
+                                                <div class="form-check col-md-8">
+                                                    <div class="form-group ml-4">
+                                                        <input type="checkbox" class="form-check-input" id="acknowledge">
+                                                        <label class="form-check-label text-gray" for="acknowledge">
+                                                            I agree to receive information regarding my
+                                                            enquiry*</label>
+                                                    </div>
                                                 </div>
-                                                <div class="form-group col-4">
-                                                    <button class="rn-button-style--2 btn_solid btn-size-sm"
+                                                <div class="form-group col-md-4">
+                                                    <button type="submit" class="btn btn-danger btn_solid"
+                                                        id="submitBtn" disabled>Submit</button>
+                                                    <!-- <button class="rn-button-style--2 btn_solid btn-size-sm"
                                                         type="submit" value="submit" name="submit" id="submit"
-                                                        disabled="true">Submit</button>
+                                                        disabled="true">Submit</button> -->
 
                                                 </div>
                                             </div>
@@ -562,7 +669,6 @@
             </div>
             <!-- End Portfolio Area  -->
 
-
             <!-- Start Accordion Area  -->
             <div class="rn-accordion-area rn-section-gap" id="fees">
                 <div class="container">
@@ -584,7 +690,6 @@
             </div>
             <!-- End Accordion Area  -->
 
-
             <!-- Start Accordion Area  -->
             <div class="rn-accordion-area rn-section-gap bg_color--5" id="eligibility">
                 <div class="container">
@@ -604,7 +709,6 @@
                 </div>
             </div>
             <!-- End Accordion Area  -->
-
 
             <!-- Start Accordion Area  -->
             <div class="rn-accordion-area rn-section-gap" id="apply">
@@ -677,9 +781,9 @@
                                 <div class="inner">
                                     <!-- <h4 class="title">MTES-Office</h4>
                                     <p><a href="tel:+08172245317">08172-268371</a></p> -->
-                                    <p><b>MTES-Office</b>  <a href="tel:+08172268371">08172-268371</a></p>
-                                    <p><b>Principal's Office</b>  <a href="tel:+08172245317">08172-245317</a></p>
-                                    <p><b>Dean Student Affairs</b>  <a href="tel:+9449689093">9449689093</a></p>
+                                    <p><b>MTES-Office</b> <a href="tel:+08172268371">08172-268371</a></p>
+                                    <p><b>Principal's Office</b> <a href="tel:+08172245317">08172-245317</a></p>
+                                    <p><b>Dean Student Affairs</b> <a href="tel:+9449689093">9449689093</a></p>
                                 </div>
                             </div>
                         </div>
@@ -720,28 +824,34 @@
             </div>
             <!-- End Contact Address Area  -->
 
-<!-- Modal -->
-<div class="modal fade" id="autoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <!-- <h5 class="modal-title" id="exampleModalLabel">Welcome</h5> -->
-        <button type="button" class="close" data-dismiss="modal" id="customCloseButton" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body text-center">
-        <!-- Image inside the modal -->
-        <img src="<?= base_url('assets/img/Admission_doc_ (1).jpg') ?>" alt="Modal Image" class="img-fluid">
-      </div>
-      <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="customCloseButton1">Close</button>
-</div>
-    </div>
-  </div>
-</div>
+            <!-- Modal -->
+            <div class="modal fade" id="autoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <!-- <h5 class="modal-title" id="exampleModalLabel">Welcome</h5> -->
+                            <button type="button" class="close" data-dismiss="modal" id="customCloseButton"
+                                aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <!-- Image inside the modal -->
+                            <img src="<?= base_url('assets/img/Admission_doc_ (1).jpg') ?>" alt="Modal Image"
+                                class="img-fluid">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                id="customCloseButton1">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<!-- <script>
+    </div>
+
+    <!-- <script>
 $(document).ready(function() {
     // Show the modal when the page loads
     $('#autoModal').modal('show');
@@ -753,7 +863,7 @@ $(document).ready(function() {
 });
 </script> -->
 
-<!-- <script>
+    <!-- <script>
 $(document).ready(function() {
     // Show the modal when the page loads
     $('#autoModal').modal('show');
@@ -768,27 +878,173 @@ $(document).ready(function() {
 });
 </script> -->
 
-<script>
-$(document).ready(function() {
-    // Show the modal when the page loads
-    $('#autoModal').modal('show');
+    <script>
+    $(document).ready(function() {
+        // Show the modal when the page loads
+        // $('#autoModal').modal('show');
 
-    // Hide the page scrollbar when the modal is open
-    $('#autoModal').on('shown.bs.modal', function () {
-        $('body').css('overflow', 'hidden');
+        // const numberInput = document.getElementById('sslc_grade');
+        // const numberInput1 = document.getElementById('puc1_grade');
+        const inputs = document.querySelectorAll('.percentage-input');
+        inputs.forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                const char = String.fromCharCode(e.which);
+                const value = input.value + char;
+
+                // Allow digits and decimal point
+                if (!/[0-9.]/.test(char) || (char === '.' && input.value.includes('.'))) {
+                    e.preventDefault();
+                }
+
+                // Prevent entry if value will exceed the range or decimal format
+                if (parseFloat(value) > 100 || parseFloat(value) < 1) {
+                    e.preventDefault();
+                }
+            });
+
+            input.addEventListener('input', function() {
+                let value = input.value;
+
+                // Format input to one decimal place
+                if (value.includes('.')) {
+                    const [integerPart, decimalPart] = value.split('.');
+                    if (decimalPart.length > 1) {
+                        value = `${integerPart}.${decimalPart.slice(0, 1)}`;
+                    }
+                }
+
+                // Prevent values outside the range
+                if (isNaN(parseFloat(value))) {
+                    value = '';
+                } else if (parseFloat(value) > 100) {
+                    value = '100.0';
+                } else if (parseFloat(value) < 1 && value !== "") {
+                    value = '1.0';
+                }
+
+                // Update the input value
+                input.value = value;
+            });
+        });
+
+        // numberInput.addEventListener('keypress', function(e) {
+        //     const char = String.fromCharCode(e.which);
+        //     const value = numberInput.value + char;
+
+        //     // Allow only numeric characters or a single decimal point
+        //     if (!/[0-9.]/.test(char) || (char === '.' && numberInput.value.includes('.'))) {
+        //         e.preventDefault();
+        //     }
+
+        //     // Allow input only if the result is between 1 and 100 and has at most one decimal place
+        //     if (parseFloat(value) > 100 || parseFloat(value) < 1 || /^\d+\.\d{2,}$/.test(value)) {
+        //         e.preventDefault();
+        //     }
+        // });
+
+        // numberInput.addEventListener('input', function() {
+        //     const value = parseFloat(numberInput.value);
+
+        //     // Prevent input values above 100 or below 1
+        //     if (value > 100) {
+        //         numberInput.value = '100';
+        //     } else if (value < 1 && numberInput.value !== "") {
+        //         numberInput.value = '1';
+        //     }
+
+        //     // Limit to one decimal place
+        //     if (numberInput.value.includes('.')) {
+        //         const parts = numberInput.value.split('.');
+        //         if (parts[1].length > 1) {
+        //             numberInput.value = parts[0] + '.' + parts[1].slice(0, 1);
+        //         }
+        //     }
+        // });
+
+        // Hide the page scrollbar when the modal is open
+        $('#autoModal').on('shown.bs.modal', function() {
+            $('body').css('overflow', 'hidden');
+        });
+
+        // Restore the page scrollbar when the modal is closed
+        $('#autoModal').on('hidden.bs.modal', function() {
+            $('body').css('overflow', 'auto');
+        });
+
+        // Close the modal when the custom button is clicked
+        $('#customCloseButton, #customCloseButton1').on('click', function() {
+            $('#autoModal').modal('hide');
+        });
+
+
+        $("#pucFields").hide();
+        $("#diplomaFields").hide();
+        $("#gttcFields").hide();
+        $("#admission_based").change(function() {
+            if ($("#admission_based").val() == "PUC") {
+                $("#pucFields").show();
+                $("#diplomaFields").hide();
+                $("#gttcFields").hide();
+            } else if ($("#admission_based").val() == "DIPLOMA") {
+                $("#pucFields").hide();
+                $("#diplomaFields").show();
+                $("#gttcFields").hide();
+            } else if ($("#admission_based").val() == "GTTC") {
+                $("#pucFields").hide();
+                $("#diplomaFields").hide();
+                $("#gttcFields").show();
+            } else {
+                $("#pucFields").hide();
+                $("#diplomaFields").hide();
+                $("#gttcFields").hide();
+            }
+        })
+
+        $('input[required], select[required], #acknowledge').on('input change', function() {
+            checkFormValidity();
+        });
+
+        function checkFormValidity() {
+            let allFilled = true;
+            // Check if all required fields are filled
+            $('input[required], select[required]').each(function() {
+                if ($(this).val() === '') {
+                    allFilled = false;
+                    return false; // Break the loop if a field is empty
+                }
+            });
+
+            var qualification = document.getElementById('admission_based').value;
+            if(qualification == "PUC"){
+                if (!document.getElementById('puc1_grade').value) allFilled = false;
+                // if (!document.getElementById('puc2_grade').value) allFilled = false;
+            }
+
+            if(qualification == "DIPLOMA"){
+                if (!document.getElementById('diploma1_grade').value) allFilled = false;
+                if (!document.getElementById('diploma2_grade').value) allFilled = false;
+                // if (!document.getElementById('diploma3_grade').value) allFilled = false;
+            }
+            
+            if(qualification == "GTTC"){
+                if (!document.getElementById('gttc1_grade').value) allFilled = false;
+                if (!document.getElementById('gttc2_grade').value) allFilled = false;
+                if (!document.getElementById('gttc3_grade').value) allFilled = false;
+                // if (!document.getElementById('gttc4_grade').value) allFilled = false;
+            }
+            
+
+            
+            console.log(allFilled);
+            // Check if acknowledgment checkbox is checked
+            let checkboxChecked = $('#acknowledge').is(':checked');
+
+            // Enable/disable the submit button based on the conditions
+            if (allFilled && checkboxChecked) {
+                $('#submitBtn').prop('disabled', false);
+            } else {
+                $('#submitBtn').prop('disabled', true);
+            }
+        }
     });
-
-    // Restore the page scrollbar when the modal is closed
-    $('#autoModal').on('hidden.bs.modal', function () {
-        $('body').css('overflow', 'auto');
-    });
-
-    // Close the modal when the custom button is clicked
-    $('#customCloseButton, #customCloseButton1').on('click', function() {
-        $('#autoModal').modal('hide');
-    });
-});
-</script>
-
-
-
+    </script>

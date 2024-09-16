@@ -211,11 +211,10 @@ class Admin_model extends CI_Model
   }
   function getFee($course, $quota, $sub_quota)
   {
-    if($quota=="MGMT")
-    {
+    if ($quota == "MGMT") {
       $this->db->where('department_id', $course);
     }
-    
+
     $this->db->where('quota', $quota);
     $this->db->where('sub_quota', $sub_quota);
     return $this->db->get('fee_structure');
@@ -347,10 +346,18 @@ class Admin_model extends CI_Model
 
   function getAdmissionOverallStats($department_id)
   {
-    $this->db->select('quota, sub_quota, COUNT(*) as cnt');
-    $this->db->where('dept_id', $department_id);
-    $this->db->group_by('quota, sub_quota');
-    return $this->db->get('admissions');
+    if (empty($department_id)) {
+      $this->db->select('dept_id, quota, sub_quota, COUNT(*) as cnt');
+      $this->db->group_by('dept_id, quota, sub_quota');
+      $this->db->order_by('sub_quota, dept_id','ASC');
+      return $this->db->get('admissions');
+    } else {
+      $this->db->select('quota, sub_quota, COUNT(*) as cnt');
+      $this->db->where('dept_id', $department_id);
+      $this->db->group_by('quota, sub_quota');
+      return $this->db->get('admissions');
+    }
+
   }
 
   function getAdmissionStats($department_id, $quota, $sub_quota)
@@ -423,6 +430,24 @@ class Admin_model extends CI_Model
     return $this->db->get('transactions');
   }
 
+  function feeDetailscollege()
+  {
+    $this->db->select('admission_id, SUM(final_fee) as paid_amount');
+    $this->db->group_by('admission_id');
+    $this->db->where('status', '1');
+    $this->db->where('type', '0');
+    return $this->db->get('payment_structure');
+  }
+
+  function feeDetailscorpus()
+  {
+    $this->db->select('admission_id, SUM(final_fee) as paid_amount');
+    $this->db->group_by('admission_id');
+    $this->db->where('status', '1');
+    $this->db->where('type', '1');
+    return $this->db->get('payment_structure');
+  }
+
 
   function set_session($email, $mobile)
   {
@@ -449,36 +474,95 @@ class Admin_model extends CI_Model
     return $this->db->get('transactions');
   }
 
-  function DCBReport($currentAcademicYear)
+  function DCBReport($currentAcademicYear, $course = '', $year = '', $type = '')
   {
-    $this->db->select('id, app_no, adm_no, admit_date, dept_id, academic_year,student_name,usn,quota,sub_quota,college_code, mobile, fees_paid, status,remarks');
-    $this->db->where('academic_year', $currentAcademicYear);
-    $this->db->where('status != "7"');
-    return $this->db->get('admissions');
+    $this->db->select(
+      '
+    admissions.id, 
+    admissions.app_no, 
+    admissions.adm_no, 
+    admissions.admit_date, 
+    admissions.dept_id, 
+    admissions.academic_year, 
+    admissions.student_name, 
+    admissions.usn, 
+    admissions.quota, 
+    admissions.sub_quota, 
+    admissions.college_code, 
+    admissions.category_claimed, 
+    admissions.category_allotted, 
+     admissions.caste, 
+      admissions.father_mobile, 
+    admissions.mobile,
+    admissions.status, 
+    fee_master.remarks'
+    );
+    $this->db->from('admissions');
+    $this->db->join('fee_master', 'admissions.id = fee_master.student_id', 'left');
+    $this->db->where('admissions.academic_year', $currentAcademicYear);
+    if ($course != '') {
+      $this->db->where('admissions.dept_id', $course);
+    }
+    if ($year != '') {
+      $this->db->where('fee_master.year', $year);
+    }
+    if ($type != '') {
+      $this->db->where('admissions.sub_quota', $type);
+    }
+    $this->db->where('admissions.status !=', '7');
+    $query = $this->db->get();
+    return $query;
   }
 
-  function FeebalanceReport($currentAcademicYear)
+  function FeebalanceReport($currentAcademicYear, $course = '', $year = '')
   {
-    $this->db->select('id, app_no, adm_no, admit_date, dept_id, academic_year,student_name,usn,quota,sub_quota,college_code, mobile, fees_paid, status,remarks');
-    $this->db->where('academic_year', $currentAcademicYear);
-    $this->db->where('status != "7"');
-    return $this->db->get('admissions');
+    $this->db->select(
+      '
+    admissions.id, 
+    admissions.app_no, 
+    admissions.adm_no, 
+    admissions.admit_date, 
+    admissions.dept_id, 
+    admissions.academic_year, 
+    admissions.student_name, 
+    admissions.usn, 
+    admissions.quota, 
+    admissions.sub_quota, 
+    admissions.college_code, 
+    admissions.category_claimed, 
+    admissions.category_allotted, 
+    admissions.mobile,
+    admissions.status, 
+    fee_master.remarks'
+    );
+    $this->db->from('admissions');
+    $this->db->join('fee_master', 'admissions.id = fee_master.student_id', 'left');
+    $this->db->where('admissions.academic_year', $currentAcademicYear);
+    if ($course != '') {
+      $this->db->where('admissions.dept_id', $course);
+    }
+    $this->db->where('admissions.status !=', '7');
+    if ($year != '') {
+      $this->db->where('fee_master.year', $year);
+    }
+    $query = $this->db->get();
+    return $query;
   }
 
   function CorpusReport($currentAcademicYear)
   {
-      $this->db->select('admissions.id, admissions.app_no, admissions.adm_no, admissions.admit_date, admissions.dept_id, admissions.academic_year, admissions.student_name, admissions.usn, admissions.quota, admissions.sub_quota, admissions.college_code, admissions.mobile, admissions.fees_paid, admissions.status, fee_master.Corpus_fund, admissions.remarks');
-      $this->db->from('admissions');
-      $this->db->join('fee_master', 'fee_master.student_id = admissions.id');
-      $this->db->where('admissions.academic_year', $currentAcademicYear);
-      $this->db->where('admissions.status !=', '7');
-      $this->db->where('fee_master.Corpus_fund >', 0);
-      return $this->db->get();
-  }  
+    $this->db->select('admissions.id, admissions.app_no, admissions.adm_no, admissions.admit_date, admissions.dept_id, admissions.academic_year, admissions.student_name, admissions.usn, admissions.quota, admissions.sub_quota, admissions.college_code, admissions.mobile, admissions.fees_paid, admissions.status, fee_master.Corpus_fund, admissions.remarks');
+    $this->db->from('admissions');
+    $this->db->join('fee_master', 'fee_master.student_id = admissions.id');
+    $this->db->where('admissions.academic_year', $currentAcademicYear);
+    $this->db->where('admissions.status !=', '7');
+    $this->db->where('fee_master.Corpus_fund >', 0);
+    return $this->db->get();
+  }
 
   function CorpusBalanceReport($currentAcademicYear)
   {
-      $this->db->select('admissions.id, 
+    $this->db->select('admissions.id, 
                          admissions.app_no, 
                          admissions.adm_no, 
                          MAX(admissions.admit_date) AS admit_date, 
@@ -495,16 +579,16 @@ class Admin_model extends CI_Model
                          MAX(fee_master.Corpus_fund) AS Corpus_fund, 
                          MAX(admissions.remarks) AS remarks, 
                          (MAX(fee_master.Corpus_fund) - COALESCE(SUM(transactions.amount), 0)) AS Corpus_fund_balance');
-      $this->db->from('admissions');
-      $this->db->join('fee_master', 'fee_master.student_id = admissions.id');
-      $this->db->join('transactions', 'transactions.id = admissions.id', 'left'); 
-      $this->db->where('admissions.academic_year', $currentAcademicYear);
-      $this->db->where('admissions.status !=', '7');
-      $this->db->group_by('admissions.id'); 
-      $this->db->having('Corpus_fund_balance >', 0); 
-      return $this->db->get();
-  }  
-  
+    $this->db->from('admissions');
+    $this->db->join('fee_master', 'fee_master.student_id = admissions.id');
+    $this->db->join('transactions', 'transactions.id = admissions.id', 'left');
+    $this->db->where('admissions.academic_year', $currentAcademicYear);
+    $this->db->where('admissions.status !=', '7');
+    $this->db->group_by('admissions.id');
+    $this->db->having('Corpus_fund_balance >', 0);
+    return $this->db->get();
+  }
+
   function dayBookReport($from_date, $to_date)
   {
     $this->db->select('transactions.id as transaction_id, transactions.admissions_id, admissions.id, admissions.academic_year,admissions.app_no, admissions.adm_no, admissions.course, admissions.dsc_1, admissions.dsc_2, admissions.student_name, admissions.mobile, admissions.aided_unaided, admissions.category, admissions.status, admissions.proposed_amount, admissions.additional_amount, admissions.concession_type, admissions.concession_fee, admissions.final_amount, transactions.mobile, transactions.aided_unaided, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.paid_amount, transactions.amount, transactions.balance_amount, transactions.remarks, transactions.transaction_status, created_by, created_on');
@@ -553,7 +637,7 @@ class Admin_model extends CI_Model
   }
   function transactionsdatewise($from, $to)
   {
-    $this->db->select('admissions.id, admissions.app_no,admissions.dept_id, admissions.adm_no,admissions.academic_year, admissions.usn,admissions.student_name,admissions.quota,admissions.sub_quota,admissions.college_code, admissions.mobile,  admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.amount, transactions.remarks, transactions.transaction_status');
+    $this->db->select('admissions.id, admissions.app_no,admissions.dept_id,admissions.category_claimed,admissions.category_allotted, admissions.adm_no,admissions.academic_year, admissions.usn,admissions.student_name,admissions.quota,admissions.sub_quota,admissions.college_code, admissions.mobile,  admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.year, transactions.amount, transactions.remarks, transactions.transaction_status');
 
     $this->db->where('transactions.transaction_status', '1');
     $this->db->where('transactions.transaction_date>=', $from);
@@ -617,106 +701,111 @@ class Admin_model extends CI_Model
     }
   }
 
-  public function checkFieldGreaterThanZero1($fee_structure_id,$field, $admission_id)
-{
+  public function checkFieldGreaterThanZero1($fee_structure_id, $field, $admission_id)
+  {
     // Step 1: Retrieve the top 3 rows for the given admission_id
     $this->db->select($field);
     $this->db->from('payment_structure');
     $this->db->where('admission_id', $admission_id);
     $this->db->where('status', 1);
     $query = $this->db->get();
-    
+
     // Check if there are rows retrieved
     if ($query->num_rows() > 0) {
-        // Step 2: Calculate the sum of the given field
-        $rows = $query->result_array();
-        $sum = array_sum(array_column($rows, $field));
-        
-        // Step 3: Retrieve the corresponding value from the fee_structure table
-        $this->db->select($field);
-        $this->db->from('fee_structure');
-        $this->db->where('id', $fee_structure_id);
-        $fee_query = $this->db->get();
-        
-        // Check if there is a matching row in fee_structure
-        if ($fee_query->num_rows() > 0) {
-            $fee_row = $fee_query->row();
-            $fee_value = $fee_row->$field;
-            
-            // Step 4: Compare the sum with the value in fee_structure
-            if ($sum >= $fee_value) {
-                return 1; // Sum is less than the value in fee_structure
-            }
+      // Step 2: Calculate the sum of the given field
+      $rows = $query->result_array();
+      $sum = array_sum(array_column($rows, $field));
+
+      // Step 3: Retrieve the corresponding value from the fee_structure table
+      $this->db->select($field);
+      $this->db->from('fee_structure');
+      $this->db->where('id', $fee_structure_id);
+      $fee_query = $this->db->get();
+
+      // Check if there is a matching row in fee_structure
+      if ($fee_query->num_rows() > 0) {
+        $fee_row = $fee_query->row();
+        $fee_value = $fee_row->$field;
+
+        // Step 4: Compare the sum with the value in fee_structure
+        if ($sum >= $fee_value) {
+          return 1; // Sum is less than the value in fee_structure
         }
+      }
     }
-    
+
     // If any condition fails, return 0
     return 0;
-}
+  }
 
-public function checkFieldGreaterThanZerovalue($fee_structure_id,$field, $admission_id)
-{
+  public function checkFieldGreaterThanZerovalue($fee_structure_id, $field, $admission_id)
+  {
     // Step 1: Retrieve the top 3 rows for the given admission_id
     $this->db->select($field);
     $this->db->from('payment_structure');
     $this->db->where('admission_id', $admission_id);
     $this->db->where('status', 1);
     $query = $this->db->get();
-    
+
     // Check if there are rows retrieved
     if ($query->num_rows() > 0) {
-        // Step 2: Calculate the sum of the given field
-        $rows = $query->result_array();
-        $sum = array_sum(array_column($rows, $field));
-        
-        // Step 3: Retrieve the corresponding value from the fee_structure table
-        $this->db->select($field);
-        $this->db->from('fee_structure');
-        $this->db->where('id', $fee_structure_id);
-        $fee_query = $this->db->get();
-        
-        // Check if there is a matching row in fee_structure
-        if ($fee_query->num_rows() > 0) {
-            $fee_row = $fee_query->row();
-            $fee_value = $fee_row->$field;
-            
-            // Step 4: Compare the sum with the value in fee_structure
-          
-                return $sum; // Sum is less than the value in fee_structure
-            
-        }
+      // Step 2: Calculate the sum of the given field
+      $rows = $query->result_array();
+      $sum = array_sum(array_column($rows, $field));
+
+      // Step 3: Retrieve the corresponding value from the fee_structure table
+      $this->db->select($field);
+      $this->db->from('fee_structure');
+      $this->db->where('id', $fee_structure_id);
+      $fee_query = $this->db->get();
+
+      // Check if there is a matching row in fee_structure
+      if ($fee_query->num_rows() > 0) {
+        $fee_row = $fee_query->row();
+        $fee_value = $fee_row->$field;
+
+        // Step 4: Compare the sum with the value in fee_structure
+
+        return $sum; // Sum is less than the value in fee_structure
+
+      }
     }
-    
+
     // If any condition fails, return 0
     return 0;
-}
+  }
 
-public function getCountries() {
-  $query = $this->db->get('countries');
-  return $query->result();
-}
+  public function getCountries()
+  {
+    $query = $this->db->get('countries');
+    return $query->result();
+  }
 
-public function get_states() {
-  $query = $this->db->get('states');
-  return $query->result();
-}
+  public function get_states()
+  {
+    $query = $this->db->get('states');
+    return $query->result();
+  }
 
-public function get_city() {
-  $query = $this->db->get('cities');
-  return $query->result();
-}
+  public function get_city()
+  {
+    $query = $this->db->get('cities');
+    return $query->result();
+  }
 
-public function getStates($country_id) {
-  $this->db->where('country_id', $country_id);
-  $query = $this->db->get('states');
-  return $query->result();
-}
+  public function getStates($country_id)
+  {
+    $this->db->where('country_id', $country_id);
+    $query = $this->db->get('states');
+    return $query->result();
+  }
 
-public function getCities($state_id) {
-  $this->db->where('state_id', $state_id);
-  $query = $this->db->get('cities');
-  return $query->result();
-}
+  public function getCities($state_id)
+  {
+    $this->db->where('state_id', $state_id);
+    $query = $this->db->get('cities');
+    return $query->result();
+  }
 
   public function get_department_name($admission_id)
   {
@@ -735,14 +824,14 @@ public function getCities($state_id) {
     }
   }
 
-public function updateIntakeValues($department_id, $comedk_intake, $mgmt_intake, $moved) {
-  $data = array(
+  public function updateIntakeValues($department_id, $comedk_intake, $mgmt_intake, $moved)
+  {
+    $data = array(
       'unaided_comed_k_intake_new' => $comedk_intake,
       'unaided_mgmt_intake_new' => $mgmt_intake,
       'moved' => $moved
-  );
-  $this->db->where('department_id', $department_id);
-  $this->db->update('comedk_seats', $data);
-}
-
+    );
+    $this->db->where('department_id', $department_id);
+    $this->db->update('comedk_seats', $data);
+  }
 }

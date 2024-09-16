@@ -508,6 +508,10 @@ mark,
   content: "\2014\00A0";
 }
 
+.nodata {
+  opacity: 0.3;
+}
+
 .img-fluid {
   max-width: 100%;
   height: auto;
@@ -1971,7 +1975,7 @@ pre code {
 .table th,
 .table td {
   padding: 0.75rem;
-  vertical-align: top;
+  vertical-align: middle;
   border-top: 1px solid #dee2e6;
 }
 

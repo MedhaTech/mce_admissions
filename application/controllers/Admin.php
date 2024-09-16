@@ -128,7 +128,18 @@ class Admin extends CI_Controller
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
-			$departments = $this->admin_model->getActiveDepartments()->result();
+
+			$admissionStats = $this->admin_model->getAdmissionOverallStats(0)->result();
+			$aidedAdmitted = array();
+			$unaidedAdmitted = array();
+			// echo "<pre>";
+			$newArr = array("Aided" => array(), "UnAided" => array());
+			foreach ($admissionStats as $admissionStats1) {
+				$newArr[$admissionStats1->sub_quota][$admissionStats1->dept_id][$admissionStats1->quota] = $admissionStats1->cnt;
+			}
+			$data['newArr'] = $newArr; 
+
+ 			$departments = $this->admin_model->getActiveDepartments()->result();
 			$aided = array();
 			$unaided = array();
 			foreach ($departments as $departments1) {
@@ -374,8 +385,17 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('category', 'Category', 'required');
 			$this->form_validation->set_rules('sports', 'Sports', 'required');
 			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[enquiries.aadhaar]');
-			$this->form_validation->set_rules('puc1_grade', 'PUC-I(10+1) Percentage/Grade', 'required');
 			$this->form_validation->set_rules('sslc_grade', 'SSLC Percentage/Grade', 'required');
+			$this->form_validation->set_rules('admission_based', 'Admission Based', 'required');
+			$this->form_validation->set_rules('puc1_grade', '1Puc Percentage');
+			$this->form_validation->set_rules('puc2_grade', '2Puc Percentage');
+			$this->form_validation->set_rules('diploma1_grade', 'Diploma1 Percentage');
+			$this->form_validation->set_rules('diploma2_grade', 'Diploma2 Percentage');
+			$this->form_validation->set_rules('diploma3_grade', 'Diploma3 Percentage');
+			$this->form_validation->set_rules('gttc1_grade', 'Gttc1 Percentage');
+			$this->form_validation->set_rules('gttc2_grade', 'Gttc2 Percentage');
+			$this->form_validation->set_rules('gttc3_grade', 'Gttc3 Percentage');
+			$this->form_validation->set_rules('gttc4_grade', 'Gttc4 Percentage');
 
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/newEnquiry';
@@ -396,8 +416,16 @@ class Admin extends CI_Controller
 				$data['category'] = $this->input->post('category');
 				$data['sports'] = $this->input->post('sports');
 				$data['sslc_grade'] = $this->input->post('sslc_grade');
+				$data['admission_based'] = $this->input->post('admission_based');
 				$data['puc1_grade'] = $this->input->post('puc1_grade');
-				$data['sslc_grade'] = $this->input->post('sslc_grade');
+				$data['puc2_grade'] = $this->input->post('puc2_grade');
+				$data['diploma1_grade'] = $this->input->post('diploma1_grade');
+				$data['diploma2_grade'] = $this->input->post('diploma2_grade');
+				$data['diploma3_grade'] = $this->input->post('diploma3_grade');
+				$data['gttc1_grade'] = $this->input->post('gttc1_grade');
+				$data['gttc2_grade'] = $this->input->post('gttc2_grade');
+				$data['gttc3_grade'] = $this->input->post('gttc3_grade');
+				$data['gttc4_grade'] = $this->input->post('gttc4_grade');
 				$data['gender'] = $this->input->post('gender');
 				$data['aadhaar'] = $this->input->post('aadhaar');
 
@@ -430,8 +458,16 @@ class Admin extends CI_Controller
 					'gender' => $this->input->post('gender'),
 					'aadhaar' => $this->input->post('aadhaar'),
 					'sslc_grade' => $this->input->post('sslc_grade'),
-					'puc1_grade' => strtoupper($this->input->post('puc1_grade')),
+					'admission_based' => $this->input->post('admission_based'),
+					'puc1_grade' => $this->input->post('puc1_grade'),
 					'puc2_grade' => $this->input->post('puc2_grade'),
+					'diploma1_grade' => $this->input->post('diploma1_grade'),
+					'diploma2_grade' => $this->input->post('diploma2_grade'),
+					'diploma3_grade' => $this->input->post('diploma3_grade'),
+					'gttc1_grade' => $this->input->post('gttc1_grade'),
+					'gttc2_grade' => $this->input->post('gttc2_grade'),
+					'gttc3_grade' => $this->input->post('gttc3_grade'),
+					'gttc4_grade' => $this->input->post('gttc4_grade'),
 					'status' => '1',
 					'reg_date' => date('Y-m-d H:i:s'),
 					'reg_by' => $data['username']
@@ -467,7 +503,7 @@ class Admin extends CI_Controller
 			$data['menu'] = 'enquiries';
 
 			$data['course_options'] = array(" " => "Select") + $this->courses();
-			$data['quota_options'] = array(" " => "Select", "MGMT" => "MGMT", "MGMT-COMEDK" => "MGMT-COMEDK");
+			$data['quota_options'] = array(" " => "Select", "MGMT" => "MGMT", "MGMT-COMEDK" => "MGMT-COMEDK", "MGMT-LATERAL" => "MGMT-LATERAL");
 			$data['subquota_options'] = array(" " => "Select") + $this->globals->sub_quota();
 			$data['type_options'] = array(" " => "Select") + $this->globals->category();
 
@@ -542,22 +578,22 @@ class Admin extends CI_Controller
 				$data['student_name'] = $enquiryDetails->student_name;
 
 				$data['mobile'] = $enquiryDetails->mobile;
-				$data['email'] =  $enquiryDetails->email;
-				$data['par_name'] =  $enquiryDetails->par_name;
-				$data['par_mobile'] =  $enquiryDetails->par_mobile;
-				$data['par_email'] =  $enquiryDetails->par_email;
-				$data['course'] =  $enquiryDetails->course_id;
-				$data['course1'] =  $enquiryDetails->course_id;
-				$data['course2'] =  $enquiryDetails->course_id;
-				$data['gender'] =  $enquiryDetails->gender;
-				$data['aadhaar'] =  $enquiryDetails->aadhaar;
-				$data['state'] =  $enquiryDetails->state;
-				$data['city'] =  $enquiryDetails->city;
-				$data['category'] =  $enquiryDetails->category;
-				$data['sslc_grade'] =  $enquiryDetails->sslc_grade;
-				$data['puc1_grade'] =  $enquiryDetails->puc1_grade;
-				$data['puc2_grade'] =  $enquiryDetails->puc2_grade;
-				$data['exam_board'] =  $enquiryDetails->exam_board;
+				$data['email'] = $enquiryDetails->email;
+				$data['par_name'] = $enquiryDetails->par_name;
+				$data['par_mobile'] = $enquiryDetails->par_mobile;
+				$data['par_email'] = $enquiryDetails->par_email;
+				$data['course'] = $enquiryDetails->course_id;
+				$data['course1'] = $enquiryDetails->course_id;
+				$data['course2'] = $enquiryDetails->course_id;
+				$data['gender'] = $enquiryDetails->gender;
+				$data['aadhaar'] = $enquiryDetails->aadhaar;
+				$data['state'] = $enquiryDetails->state;
+				$data['city'] = $enquiryDetails->city;
+				$data['category'] = $enquiryDetails->category;
+				$data['sslc_grade'] = $enquiryDetails->sslc_grade;
+				$data['puc1_grade'] = $enquiryDetails->puc1_grade;
+				$data['puc2_grade'] = $enquiryDetails->puc2_grade;
+				$data['exam_board'] = $enquiryDetails->exam_board;
 				// $data['register_number'] =  $enquiryDetails->register_number;
 				// $data['register_grade'] = $enquiryDetails->register_grade;
 				$this->admin_template->show('admin/edit_enquiry', $data);
@@ -764,7 +800,8 @@ class Admin extends CI_Controller
 
 			$concession_type = $this->input->post('concession_type');
 			$concession_fee = $this->input->post('concession_fee');
-			$total_college_fee = $total_university_fee + $total_tution_fee - $concession_fee;
+			// $total_college_fee = $total_university_fee + $total_tution_fee - $concession_fee;
+			$total_college_fee = $this->input->post('total_college_fee');
 
 			$final_amount = $this->input->post('final_amount');
 
@@ -817,6 +854,8 @@ class Admin extends CI_Controller
 				'password' => md5($enquiryDetails->mobile),
 				'category_allotted' => $category_allotted,
 				'category_claimed' => $category_claimed,
+				'sports' => $enquiryDetails->sports,
+				'admission_based' => $enquiryDetails->admission_based,
 				'remarks' => $this->input->post('remarks'),
 				'status' => '1',
 				'admit_date' => date('Y-m-d h:i:s'),
@@ -973,15 +1012,15 @@ class Admin extends CI_Controller
 				}
 				if (array_key_exists($quota1, $feeDetails)) {
 					if (array_key_exists($fee1->sub_quota, $feeDetails[$quota1])) {
-						$category =  array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, "final_fee" => $fee1->final_fee, 'id' => $fee1->id);
+						$category = array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, "final_fee" => $fee1->final_fee, 'id' => $fee1->id);
 						array_push($feeDetails[$quota1][$fee1->sub_quota], $category);
 					} else {
-						$category =  array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, "final_fee" => $fee1->final_fee, 'id' => $fee1->id);
+						$category = array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, "final_fee" => $fee1->final_fee, 'id' => $fee1->id);
 						$feeDetails[$quota1][$fee1->sub_quota] = $category;
 					}
 				} else {
 					$category = array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, "final_fee" => $fee1->final_fee, 'id' => $fee1->id);
-					$sub_quota =  array($fee1->sub_quota => $category);
+					$sub_quota = array($fee1->sub_quota => $category);
 					$feeDetails[$quota1] = $sub_quota;
 				}
 			}
@@ -1137,7 +1176,7 @@ class Admin extends CI_Controller
 			if ($quota == "COMED-K") {
 				$result[] = '<option value="UnAided">' . $code_options['COMED-K'] . '</option>';
 			} else {
-				if (($quota != "MGMT") && ($quota != "MGMT-COMEDK")) {
+				if (($quota != "MGMT") && ($quota != "MGMT-COMEDK") && ($quota != "MGMT-LATERAL")) {
 					$dept = 0;
 				} else {
 					$dept = $dept;
@@ -1420,7 +1459,7 @@ class Admin extends CI_Controller
 
 
 			if ($download == 1) {
-				$response =  array(
+				$response = array(
 					'op' => 'ok',
 					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
 				);
@@ -1445,7 +1484,7 @@ class Admin extends CI_Controller
 
 			$data['page_title'] = 'Reports';
 			$data['menu'] = 'reports';
-			$data['report_type'] = $report;
+			$data['report_type'] = '';
 			$enquiryStatus = $this->globals->enquiryStatus();
 			$enquiryStatusColor = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
@@ -1489,7 +1528,7 @@ class Admin extends CI_Controller
 					$details = 'No student details found';
 				}
 				if ($download == 1) {
-					$response =  array(
+					$response = array(
 						'op' => 'ok',
 						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
 					);
@@ -1514,7 +1553,7 @@ class Admin extends CI_Controller
 
 			$data['page_title'] = 'Reports';
 			$data['menu'] = 'reports';
-			$data['report_type'] = $report;
+			$data['report_type'] = '';
 			$enquiryStatus = $this->globals->enquiryStatus();
 			$enquiryStatusColor = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
@@ -1557,7 +1596,7 @@ class Admin extends CI_Controller
 					$details = 'No student details found';
 				}
 				if ($download == 1) {
-					$response =  array(
+					$response = array(
 						'op' => 'ok',
 						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
 					);
@@ -1746,7 +1785,7 @@ class Admin extends CI_Controller
 				$data['college_code'] = $this->input->post('college_code');
 				$data['sports'] = $this->input->post('sports');
 				$data['sports_activity'] = $this->input->post('sports_activity');
-				$data['corpus'] = $this->input->post('corpus');
+				$data['corpus'] = $this->input->post('corpus_fee');
 
 				$data['total_tution_fee'] = $this->input->post('total_tution_fee');
 				$data['total_university_fee'] = $this->input->post('total_university_fee');
@@ -1767,14 +1806,14 @@ class Admin extends CI_Controller
 				$this->admin_template->show('admin/new_admission', $data);
 			} else {
 				$course = $this->input->post('course');
-				$corpus = $this->input->post('corpus');
+				$corpus = $this->input->post('corpus_fee');
 				$category_claimed = $this->input->post('category_claimed');
 				$category_allotted = $this->input->post('category_allotted');
 				$total_tution_fee = $this->input->post('total_tution_fee');
 				$total_university_fee = $this->input->post('total_university_fee');
 
-				// $total_college_fee = $this->input->post('total_college_fee');
-				$total_college_fee = $total_university_fee + $total_tution_fee - $concession_fee;
+				$total_college_fee = $this->input->post('total_college_fee');
+				// $total_college_fee = $total_university_fee + $total_tution_fee - $concession_fee;
 				$concession_type = $this->input->post('concession_type');
 				$concession_fee = $this->input->post('concession_fee');
 				$final_amount = $this->input->post('final_amount');
@@ -2137,7 +2176,7 @@ class Admin extends CI_Controller
 				$unaided_fee = 0;
 
 				if ($data['studentDetails']->aided_unaided === "Aided") {
-					if ($final_amount == $current_balance_amount) {
+					if ($final_fee == $current_balance_amount) {
 						if ($paying_amount >= $total_college_fee) {
 							$second_payment = $paying_amount - $total_college_fee;
 							if ($second_payment == 0) {
@@ -3318,12 +3357,20 @@ With good wishes";
 			$data['menu'] = 'DCBReport';
 
 			$data['download_action'] = 'admin/dcb_report';
-
+			$data['course_options'] = array("" => "Select") + $this->courses();
 			$currentAcademicYear = $this->globals->currentAcademicYear();
 			// $admissions = $this->admin_model->DCBReport($currentAcademicYear)->result();
 			$admissions = $this->admin_model->DCBReport($currentAcademicYear)->result();
 
-			// var_dump($admissions);
+			if ($_POST) {
+				$course = $this->input->post('course');
+				$syear = $this->input->post('year');
+				$type = $this->input->post('type');
+				$admissions = $this->admin_model->DCBReport($currentAcademicYear, $course, $syear, $type)->result();
+
+			} else {
+				$admissions = $this->admin_model->DCBReport($currentAcademicYear, $course = '', $year = '', $type = '')->result();
+			}
 
 			$fees = $this->admin_model->feeDetails()->result();
 			$feeDetails = array();
@@ -3331,12 +3378,49 @@ With good wishes";
 				$feeDetails[$fees1->admissions_id] = $fees1->paid_amount;
 			}
 
+			$fees1 = $this->admin_model->feeDetailscorpus()->result();
+			$feeDetails1 = array();
+			foreach ($fees1 as $fees11) {
+				$feeDetails1[$fees11->admissions_id] = $fees11->paid_amount;
+			}
+
+			$fees2 = $this->admin_model->feeDetailscollege()->result();
+			$feeDetails2 = array();
+			foreach ($fees2 as $fees22) {
+				$feeDetails22[$fees22->admissions_id] = $fees22->paid_amount;
+			}
+
+
 			$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 			$this->table->set_template($table_setup);
 			// $table_setup = array ('table_open'=> '<table class="table table-bordered font14" border="1" id="dataTable" >');
 			// $this->table->set_template($table_setup);
 
-			$print_fields = array('S.No', 'Academic Year', 'Course', 'Student Name', 'Usn', 'Quota', 'Sub Quota', 'College Code', 'Studying Year', 'Mobile', 'Admit. Date', 'Total Fee', 'Fees Paid', 'Balance amount',  'Remarks');
+			$print_fields = array(
+				'S.No',
+				'Academic Year',
+				'Course',
+				'Student Name',
+				'Usn',
+				'Quota',
+				'Sub Quota',
+				'College Code',
+				'Studying Year',
+				'Mobile',
+				'Father Number',
+				'Caste',
+				'Alloted Category',
+				'claimed Category',
+				'Admit. Date',
+				'Total University Other Fee',
+				'College Fee Demand',
+				'College Fee Paid',
+				'College Fee Balance',
+				'Corpus Fee Demand',
+				'Corpus Fee Paid',
+				'Corpus Fee Balance',
+				'Remarks'
+			);
 
 			$this->table->set_heading($print_fields);
 
@@ -3356,6 +3440,14 @@ With good wishes";
 				$balance_amount_data = $fees_data->final_fee - $feeDetails[$admissions1->id];
 				$paid_amount = (array_key_exists($admissions1->id, $feeDetails)) ? $feeDetails[$admissions1->id] : '0';
 				$balance_amount = $admissions1->final_fee - $paid_amount;
+				if ($admissions1->quota != 'KEA-CET(LATERAL)') {
+					$year = "I";
+				} else {
+					$year = "II";
+				}
+
+				$corpus_bal = $fees_data->corpus_fund - $feeDetails11[$admissions1->id];
+				$college_bal = $fees_data->total_college_fee - $feeDetails22[$admissions1->id];
 				$result_array = array(
 					$i++,
 					// $admissions1->academic_year,
@@ -3367,20 +3459,31 @@ With good wishes";
 					$admissions1->quota,
 					$admissions1->sub_quota,
 					$admissions1->college_code,
-					1,
+					$year,
 					$admissions1->mobile,
+					$admissions1->father_mobile,
+					$admissions1->caste,
+					$admissions1->category_allotted,
+					$admissions1->category_claimed,
 					($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
-					number_format($fees_data->final_fee, 0),
-					number_format($feeDetails[$admissions1->id], 0),
-					number_format($balance_amount_data, 0),
+					// number_format($fees_data->final_fee, 0),
+					// number_format($feeDetails[$admissions1->id], 0),
+					// number_format($balance_amount_data, 0),
+					number_format($fees_data->total_university_fee, 0),
+					number_format($fees_data->total_college_fee, 0),
+					number_format($feeDetails22[$admissions1->id], 0),
+					number_format($college_bal, 0),
+					number_format($fees_data->corpus_fund, 0),
+					number_format($feeDetails11[$admissions1->id], 0),
+					number_format($corpus_bal, 0),
 					// ($admissions1->next_due_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->next_due_date)) : '',
 					$admissions1->remarks
 				);
 				// var_dump($result_array);
 				$this->table->add_row($result_array);
 				$final_fee = $final_fee + $admissions1->total_college_fee;
-				$fees_paid =  $fees_paid + $paid_amount;
-				$balance_amount =  $balance_amount + $balance_amount;
+				$fees_paid = $fees_paid + $paid_amount;
+				$balance_amount = $balance_amount + $balance_amount;
 			}
 
 			$data['table'] = $this->table->generate();
@@ -3388,7 +3491,7 @@ With good wishes";
 			if (!$download) {
 				$this->admin_template->show('admin/dcb_report', $data);
 			} else {
-				$response =  array(
+				$response = array(
 					'op' => 'ok',
 					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
 				);
@@ -3409,24 +3512,67 @@ With good wishes";
 			$data['role'] = $session_data['role'];
 
 			$currentAcademicYear = $this->globals->currentAcademicYear();
-			$data['page_title'] = $currentAcademicYear . 'FEE BALANCE';
+			$data['page_title'] = $currentAcademicYear . ' FEE BALANCE';
 			$data['menu'] = 'FeebalanceReport';
+			$data['course_options'] = array("" => "Select") + $this->courses();
+			$data['action'] = 'admin/feebalance_report';
 
-			$data['download_action'] = 'admin/dcb_report';
+			if ($_POST) {
+				$course = $this->input->post('course');
+				$syear = $this->input->post('year');
+				$admissions = $this->admin_model->FeebalanceReport($currentAcademicYear, $course, $syear)->result();
 
-			$currentAcademicYear = $this->globals->currentAcademicYear();
-			$admissions = $this->admin_model->FeebalanceReport($currentAcademicYear)->result();
+			} else {
+				$admissions = $this->admin_model->FeebalanceReport($currentAcademicYear, $course = '', $year = '')->result();
+			}
+
+
 
 			$fees = $this->admin_model->feeDetails()->result();
+
 			$feeDetails = array();
 			foreach ($fees as $fees1) {
 				$feeDetails[$fees1->admissions_id] = $fees1->paid_amount;
 			}
 
+
+			$fees1 = $this->admin_model->feeDetailscorpus()->result();
+			$feeDetails1 = array();
+			foreach ($fees1 as $fees11) {
+				$feeDetails1[$fees11->admissions_id] = $fees11->paid_amount;
+			}
+
+			$fees2 = $this->admin_model->feeDetailscollege()->result();
+			$feeDetails2 = array();
+			foreach ($fees2 as $fees22) {
+				$feeDetails22[$fees22->admissions_id] = $fees22->paid_amount;
+			}
+
 			$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2">');
 			$this->table->set_template($table_setup);
 
-			$print_fields = array('S.No', 'Usn', 'Student Name', 'Course', 'Quota', 'Sub Quota', 'College Code', 'Studying Year', 'Mobile', 'Admit. Date', 'Balance amount', 'Remarks');
+			$print_fields = array(
+				'S.No',
+				'Usn',
+				'Student Name',
+				'Stream',
+				'Course',
+				'Quota',
+				'Sub Quota',
+				'College Code',
+				'Studying Year',
+				'Mobile',
+				'Alloted Category',
+				'claimed Category',
+				'Admit. Date',
+				'College Fee Demand',
+				'College Fee Paid',
+				'College Fee Balance',
+				'Corpus Fee Demand',
+				'Corpus Fee Paid',
+				'Corpus Fee Balance',
+				'Remarks'
+			);
 			$this->table->set_heading($print_fields);
 
 			$i = 1;
@@ -3441,18 +3587,36 @@ With good wishes";
 
 				// Only add students with a positive balance amount
 				if ($balance_amount_data > 0) {
+					if ($admissions1->quota != 'KEA-CET(LATERAL)') {
+						$year = "I";
+					} else {
+						$year = "II";
+					}
+
+					$corpus_bal = $fees_data->corpus_fund - $feeDetails11[$admissions1->id];
+					$college_bal = $fees_data->total_college_fee - $feeDetails22[$admissions1->id];
 					$result_array = array(
 						$i++,
 						$admissions1->usn,
 						$admissions1->student_name,
+						"BE",
 						$dmm,
 						$admissions1->quota,
 						$admissions1->sub_quota,
 						$admissions1->college_code,
-						1,
+
+						$year,
 						$admissions1->mobile,
+						$admissions1->category_allotted,
+						$admissions1->category_claimed,
 						($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
-						number_format($balance_amount_data, 0),
+						// number_format($balance_amount_data, 0),
+						number_format($fees_data->total_college_fee, 0),
+						number_format($feeDetails22[$admissions1->id], 0),
+						number_format($college_bal, 0),
+						number_format($fees_data->corpus_fund, 0),
+						number_format($feeDetails11[$admissions1->id], 0),
+						number_format($corpus_bal, 0),
 						$admissions1->remarks
 					);
 
@@ -3660,8 +3824,8 @@ With good wishes";
 			$table .= '<thead>';
 
 			// Include From Date and To Date in the header
-			$table .= '<tr><th colspan="11" class="font20">' . $currentAcademicYear . ' Day Book Report</th></tr>';
-			$table .= '<tr><th colspan="11" class="font20">From: ' . date('d-m-Y', strtotime($from)) . ' To: ' . date('d-m-Y', strtotime($to)) . '</th></tr>';
+			$table .= '<tr><th colspan="18" class="font20">' . $currentAcademicYear . ' Day Book Report</th></tr>';
+			$table .= '<tr><th colspan="18" class="font20">From: ' . date('d-m-Y', strtotime($from)) . ' To: ' . date('d-m-Y', strtotime($to)) . '</th></tr>';
 
 			$table .= '<tr><th>S.No</th>
 						   <th>Academic Year</th>
@@ -3670,6 +3834,9 @@ With good wishes";
 						   <th>Quota</th>
 						   <th>Sub Quota</th>
 						   <th>College Code</th>
+						   <th>Studying Year</th>
+						   <th>Category claimed</th>
+						   <th>Category allocated</th>
 						   <th>Department Name</th>
 						   <th>Receipt No.</th>
 						   <th>Mode of Payment</th>
@@ -3693,6 +3860,9 @@ With good wishes";
 				$table .= '<td>' . $transactions1->quota . '</td>';
 				$table .= '<td>' . $transactions1->sub_quota . '</td>';
 				$table .= '<td>' . $transactions1->college_code . '</td>';
+				$table .= '<td>' . $transactions1->year . '</td>';
+				$table .= '<td>' . $transactions1->category_claimed . '</td>';
+				$table .= '<td>' . $transactions1->category_allotted . '</td>';
 				$table .= '<td>' . $this->admin_model->get_dept_by_id($transactions1->dept_id)["department_name"] . '</td>';
 				$table .= '<td>\'' . htmlspecialchars($transactions1->receipt_no) . '</td>';
 				$table .= '<td>' . $transactionTypes[$transactions1->transaction_type] . '</td>';
@@ -3946,7 +4116,7 @@ With good wishes";
 				$data['selected_values'] = $selectedValues;
 				// Var_dump($this->db->last_query()); 
 				if ($download == 1) {
-					$response =  array(
+					$response = array(
 						'op' => 'ok',
 						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
 					);
@@ -4036,7 +4206,7 @@ With good wishes";
 			if (!$download) {
 				$this->admin_template->show('admin/admissionscroll_report', $data);
 			} else {
-				$response =  array(
+				$response = array(
 					'op' => 'ok',
 					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
 				);
@@ -4105,7 +4275,7 @@ With good wishes";
 					$details = 'No student details found';
 				}
 				if ($download == 1) {
-					$response =  array(
+					$response = array(
 						'op' => 'ok',
 						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
 					);
@@ -4135,6 +4305,7 @@ With good wishes";
 			$data['course_options'] = array(" " => "Select Branch") + $this->courses();
 			$data['type_options'] = array(" " => "Select") + $this->globals->category();
 			$data['category_options'] = array(" " => "Select") + $this->globals->category_claimed();
+			$data['admissionBased_options'] = array(" " => "Select") + $this->globals->admissionBased();
 
 			$id = base64_decode($encryptId);
 
@@ -4158,6 +4329,7 @@ With good wishes";
 			// $this->form_validation->set_rules('college_code', 'College Code', 'required');
 			$this->form_validation->set_rules('sports', 'Sports', 'required');
 			$this->form_validation->set_rules('usn', 'Usn', 'required');
+			$this->form_validation->set_rules('admission_based', 'Admission Based On', 'required');
 
 			if ($this->form_validation->run() === FALSE) {
 
@@ -4165,7 +4337,7 @@ With good wishes";
 
 				$admissionDetails = $this->admin_model->getDetails('admissions', $id)->row();
 
-				$data['student_name'] =  $admissionDetails->student_name;
+				$data['student_name'] = $admissionDetails->student_name;
 				$data['mobile'] = $admissionDetails->mobile;
 				$data['email'] = $admissionDetails->email;
 				$data['aadhaar'] = $admissionDetails->aadhaar;
@@ -4177,6 +4349,7 @@ With good wishes";
 				// $data['college_code'] = $admissionDetails->college_code;
 				$data['sports'] = $admissionDetails->sports;
 				$data['usn'] = $admissionDetails->usn;
+				$data['admission_based'] = $admissionDetails->admission_based;
 				$this->admin_template->show('admin/updateadmissiondetails', $data);
 			} else {
 				$updateDetails = array(
@@ -4192,6 +4365,7 @@ With good wishes";
 					// 'college_code' => $this->input->post('college_code'),
 					'sports' => $this->input->post('sports'),
 					'usn' => $this->input->post('usn'),
+					'admission_based' => $this->input->post('admission_based')
 				);
 				// print_r($updateDetails);
 				// die();
@@ -4207,7 +4381,7 @@ With good wishes";
 					$this->session->set_flashdata('status', 'alert-warning');
 				}
 
-				redirect('admin/updateadmissiondetails/' . $encryptId, 'refresh');
+				redirect('admin/admissionDetails/' . $encryptId, 'refresh');
 			}
 		} else {
 			redirect('admin', 'refresh');
@@ -4292,7 +4466,7 @@ With good wishes";
 					$this->session->set_flashdata('status', 'alert-warning');
 				}
 
-				redirect('admin/updateentranceexamdetails/' . $encryptId, 'refresh');
+				redirect('admin/admissionDetails/' . $encryptId, 'refresh');
 			}
 		} else {
 			redirect('admin', 'refresh');
@@ -4344,7 +4518,7 @@ With good wishes";
 			$this->form_validation->set_rules('economically_backward', 'Economically Backward', 'required');
 			$this->form_validation->set_rules('domicile_of_state', 'Domicile of State', 'required');
 			$this->form_validation->set_rules('hobbies', 'Hobbies', 'required');
-			$this->form_validation->set_rules('admission_based', 'Admission Based On');
+			// $this->form_validation->set_rules('admission_based', 'Admission Based On');
 			$this->form_validation->set_rules('current_address', 'Current Address', 'required');
 			$this->form_validation->set_rules('current_city', 'Current City', 'required');
 			$this->form_validation->set_rules('current_district', 'Current District', 'required');
@@ -4381,8 +4555,8 @@ With good wishes";
 				$data['economically_backward'] = $personalDetails->economically_backward;
 				$data['domicile_of_state'] = $personalDetails->domicile_of_state;
 				$data['hobbies'] = $personalDetails->hobbies;
-				$data['admission_based'] = $personalDetails->admission_based;
-				$data['lateral_entry'] = $personalDetails->lateral_entry;
+				// $data['admission_based'] = $personalDetails->admission_based;
+				// $data['lateral_entry'] = $personalDetails->lateral_entry;
 				$data['current_address'] = $personalDetails->current_address;
 				$data['current_city'] = $personalDetails->current_city;
 				$data['current_district'] = $personalDetails->current_district;
@@ -4413,8 +4587,8 @@ With good wishes";
 					'economically_backward' => $this->input->post('economically_backward'),
 					'domicile_of_state' => $this->input->post('domicile_of_state'),
 					'hobbies' => $this->input->post('hobbies'),
-					'lateral_entry' => $this->input->post('lateral_entry'),
-					'admission_based' => $this->input->post('admission_based'),
+					// 'lateral_entry' => $this->input->post('lateral_entry'),
+					// 'admission_based' => $this->input->post('admission_based'),
 					'current_address' => $this->input->post('current_address'),
 					'current_city' => $this->input->post('current_city'),
 					'current_district' => $this->input->post('current_district'),
@@ -4444,7 +4618,7 @@ With good wishes";
 					$this->session->set_flashdata('status', 'alert-warning');
 				}
 
-				redirect('admin/updatepersonaldetails/' . $encryptId, 'refresh');
+				redirect('admin/admissionDetails/' . $encryptId, 'refresh');
 			}
 		} else {
 			redirect('admin', 'refresh');
@@ -5125,7 +5299,7 @@ With good wishes";
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $student_id)->row();
 			// $data['paymentDetail'] = $this->admin_model->getDetailsbyfield($student_id, 'admission_id', 'payment_structure')->result();
-			$data['paymentDetail'] = $this->admin_model->getDetailsbyfield($student_id, 'admission_id',  'payment_structure')->result();
+			$data['paymentDetail'] = $this->admin_model->getDetailsbyfield($student_id, 'admission_id', 'payment_structure')->result();
 			$data['transactionDetails'] = $this->admin_model->getDetailsbyfield($student_id, 'admissions_id', 'transactions')->result();
 			$data['paid_amount'] = $this->admin_model->paidfee('admissions_id', $student_id, 'transaction_status', '1', 'transactions');
 			$admissionSingle = $this->admin_model->getDetails('admissions', $student_id)->row();
@@ -5183,7 +5357,8 @@ With good wishes";
 				}
 
 				$updateDetails['admission_id'] = $id;
-				$updateDetails['mobile'] = $data['admissionDetails']->mobile;;
+				$updateDetails['mobile'] = $data['admissionDetails']->mobile;
+				;
 				$updateDetails['final_fee'] = $this->input->post('final_fee');
 				$updateDetails['requested_by'] = $data['full_name'];
 				$updateDetails['requested_on'] = date('Y-m-d h:i:s');
@@ -5735,7 +5910,7 @@ With good wishes";
 
 			$data['page_title'] = 'Course wise Student Admitted Count';
 			$data['menu'] = 'reports';
-			$data['report_type'] = $report;
+			$data['report_type'] = 'reports';
 			$admissionStatus = $this->globals->admissionStatus();
 			$admissionStatusColor = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
@@ -5789,13 +5964,14 @@ With good wishes";
 				$data['selected_values'] = $selectedValues;
 				// Var_dump($this->db->last_query()); 
 				if ($download == 1) {
-					$response =  array(
+					$response = array(
 						'op' => 'ok',
 						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
 					);
 					die(json_encode($response));
 				} else {
-					$data['admissions'] = $details;
+					$data['admissions1'] = $details;
+					$data['admissions'] = "Count : " . count($admissions);
 					$this->admin_template->show('admin/CoursewiseStudentAdmittedCount', $data);
 				}
 			}
@@ -5815,7 +5991,7 @@ With good wishes";
 			$status = null;
 			$data['admissionStatus'] = $this->globals->admissionStatus();
 			$admissionStatus = $this->globals->admissionStatus();
-			$data['page_title'] =  'Admission Year Book';
+			$data['page_title'] = 'Admission Year Book';
 			$data['menu'] = 'admissions';
 
 			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
@@ -6225,7 +6401,8 @@ With good wishes";
 
 
 				$updateDetails['admission_id'] = $id;
-				$updateDetails['mobile'] = $data['admissionDetails']->mobile;;
+				$updateDetails['mobile'] = $data['admissionDetails']->mobile;
+				;
 				$updateDetails['final_fee'] = $this->input->post('final_fee');
 				$updateDetails['requested_by'] = $data['full_name'];
 				$updateDetails['requested_on'] = date('Y-m-d h:i:s');
@@ -6714,7 +6891,7 @@ With good wishes";
 				$tableY += 9;
 				$pdf->SetFont('Arial', '', 7.5);
 				$pdf->SetXY($x, $tableY);
-				$pdf->MultiCell(65, 4, "Amount (In Words) : Rs."  . convert_number_to_words($voucherDetails->final_fee) . " Only");
+				$pdf->MultiCell(65, 4, "Amount (In Words) : Rs." . convert_number_to_words($voucherDetails->final_fee) . " Only");
 				$pdf->SetXY($x, $tableY + 14);
 				$pdf->Cell(32.5, 4, ' ', 0, 0, 'L');
 				$pdf->Cell(32.5, 4, "Signature of Remitter", 0, 1, 'R');
@@ -6977,7 +7154,7 @@ With good wishes";
 			$data['page_title'] = 'Admission Form';
 			$data['menu'] = 'admissionsfrom';
 
-			$id =  base64_decode($encryptId);
+			$id = base64_decode($encryptId);
 			$data['student_id'] = $encryptId;
 
 			$data['admissionStatus'] = $this->globals->admissionStatus();
@@ -7041,40 +7218,19 @@ With good wishes";
 			$pdf->Cell(60, 6, 'CET AT No.', 0);
 			$pdf->SetFont('Arial', 'B', 10);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->entrance_reg_no, 0, 'C');
-			// $pdf->Cell(60, 10, 'CET AT No. :', 0);
-			// $pdf->Cell(130, 10, '123', 0);
+
 			$pdf->SetX(15, $topGap + 9);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(60, 6, 'Rank No.', 0);
 			$pdf->SetFont('Arial', 'B', 10);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->entrance_rank, 0, 'C');
+
 			$pdf->SetX(15, $topGap + 9);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(60, 6, 'Name of the candidate.', 0);
 			$pdf->SetFont('Arial', 'B', 10);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->student_name, 0, 'C');
-			$pdf->SetX(15, $topGap + 9);
-			$pdf->SetFont('Arial', '', 10);
-			// $pdf->Cell(0, 6, 'Board from which the candidate has passed his/her qualifying Examination Marks secured in below subjects : ', 0, 1);
-			// $pdf->SetFont('Arial', 'B', 10);
-			// // var_dump($edu->inst_board); die();
-			// foreach ($educations_details as $edu) {
-			// $pdf->Cell(0, 6, '' . $edu->inst_board, 0, 'C');
-			// }
 
-			// $pdf->SetFont('Arial', '', 10);
-			// $pdf->Cell(60, 6, 'PHYSICS : 79', 0, 1);
-			// $pdf->Cell(60, 6, 'MATHEMATICS : 98', 0, 1);
-
-
-			// // Marks
-			// $pdf->SetFont('Arial', '', 10);
-			// // $pdf->Cell(60, 10, 'PHYSICS : 79', 0, 0);
-			// // $pdf->Cell(60, 10, 'MATHEMATICS : 98', 0, 1);
-			// $pdf->Cell(0, 6, 'Total 177 / 200 Percentage of PCM: 85.00', 0, 1, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 7, 'Total marks in all subjects', 0);
-			// $pdf->Cell(0, 6, ': 536 / 600', 0, 'C');
 			$pdf->SetX(15, $topGap + 9);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(60, 6, 'Date of Birth and Age', 0);
@@ -7084,67 +7240,44 @@ With good wishes";
 			}
 			$combinedValue = $admissionDetails->date_of_birth . ' ' . $age;
 			$pdf->Cell(0, 6, ': ' . $combinedValue, 0, 'C');
+
 			$pdf->SetX(15, $topGap + 9);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(60, 6, 'Category Claimed', 0);
 			$pdf->SetFont('Arial', 'B', 9);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->category_claimed, 0, 'C');
+
 			$pdf->SetX(15, $topGap + 9);
-			$pdf->SetFont('Arial', '', 10);
+			$pdf->SetFont('Arial', '', 10); // Updated font style for Category Allotted
 			$pdf->Cell(60, 6, 'Category Allotted', 0);
-			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->SetFont('Arial', 'B', 9);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->category_allotted, 0, 'C');
 
 			$pdf->SetFont('Arial', 'BU', 12);
 			$pdf->Cell(60, 10, 'DOCUMENTS PRODUCED ', 0, 1, 'C');
 
+			$totalHeight = 60;
+			$rowHeight = 6;
+
 			$pdf->SetFont('Arial', '', 10);
 			$slno = 1;
+			$pdf->SetY($pdf->GetY());
+
 			foreach ($file_doc as $file) {
 				$document_type = substr($file, 0, strpos($file, '.'));
-				$pdf->SetX(15, $topGap + 9);
-				$pdf->Cell(60, 6, $slno . ') ' . $document_type, 0);
-				$pdf->Cell(0, 6, '', 0, 'C');
+				$pdf->SetX(15);
+				$pdf->Cell(60, $rowHeight, $slno . ') ' . $document_type, 0, 1);
 				$slno++;
 			}
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '2) P.U.C. marks card', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
 
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '3) S.S.L.C. marks card', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			$currentY = $pdf->GetY();
+			$remainingHeight = $totalHeight - ($currentY - 10);
 
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '4) Cumulative record', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '5) Proof of domicile', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '6) T.C. produced/T.C. form given', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '7) Medical Certificate', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '8) Three passport size photos', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '9) Eligibility Certificate', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '10) Conduct Certificate', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '11) Migration Certificate', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '12) Diploma / GT&TC marks card', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
-			// $pdf->SetX(15, $topGap + 9);
-			// $pdf->Cell(60, 6, '13) Any other document', 0);
-			// $pdf->Cell(0, 6, ': Yes No', 0, 'C');
+			if ($remainingHeight > 0) {
+				$pdf->SetX(15);
+				$pdf->Cell(60, $remainingHeight, '', 0, 1);
+			}
+
 			$pdf->SetX(15, $topGap + 9);
 			if ($admissionDetails->quota == 'KEA-CET(LATERAL)') {
 				$semester = 'semester 3';
@@ -7155,23 +7288,18 @@ With good wishes";
 			$pdf->MultiCell(0, 5, "For orders to admit the candidate to  $semester  $dep Provisionally pending approval of the Director of Technical Education, Karnataka and Visvesvaraya Technological University.");
 			$pdf->Cell(0, 10, "", 0, 1);
 
-			// $pdf->SetY($topGap + 5);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(0, 4, "'Verified by:", 0, 1, 'L');
-			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(0, 4, 'Name:', 0, 1, 'L');
-			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(0, 4, 'College fee reciept No. & Date with amount.', 0, 1, 'L');
 			$pdf->Cell(0, 4, 'Initial of Cashier.', 0, 1, 'L');
 
-
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(0, 4, 'Case Worker', 0, 1, 'R');
-			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(0, 4, 'Name:', 0, 1, 'R');
 
 			$pdf->SetFont('Arial', 'B', 10);
-			$pdf->Cell(0, 20, 'Principal', 0, 1, 'R');
+			$pdf->Cell(0, 20, 'Principal', 0, 1, 'R'); // Updated height for "Principal"
 
 			$pdf->AddPage('P', 'A4'); // 'P' for portrait orientation, 'A4' for A4 size (210x297 mm)
 
@@ -7181,7 +7309,7 @@ With good wishes";
 
 			$pdf->SetFont('Arial', '', 9);
 			$pdf->SetXY(15, $topGap + 9);
-			$pdf->Cell(0, 5, 'Sl.no:'  . $admissionDetails->app_no, 0, 1, 'L');
+			$pdf->Cell(0, 5, 'Sl.no:' . $admissionDetails->app_no, 0, 1, 'L');
 
 			$pdf->SetFont('Arial', '', 9);
 			$pdf->SetXY(-30, $topGap + 9);
@@ -7265,7 +7393,7 @@ With good wishes";
 			// Concatenate two dynamic values
 			$combinedValue = $admissionDetails->admission_order_no . ' ' . $admissionDetails->admission_order_date;
 			$pdf->SetFont('Arial', 'B', 9);
-			$pdf->Cell($cellWidth * 1.5, $cellHeight,  $combinedValue, 0, 0, 'L', true);
+			$pdf->Cell($cellWidth * 1.5, $cellHeight, $combinedValue, 0, 0, 'L', true);
 
 			// Category Alloted
 			$pdf->SetFont('Arial', '', 9);
@@ -7902,7 +8030,7 @@ With good wishes";
 			printStudent($pdf, "Email ID ", $admissionDetails->email, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			printStudent($pdf, "Mobile Number ", $admissionDetails->mobile, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			printStudent($pdf, "Category Claimed ", $admissionDetails->category_claimed, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
-			printStudent($pdf, "Quota ",  $admissionDetails->quota, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+			printStudent($pdf, "Quota ", $admissionDetails->quota, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			printStudent($pdf, "College Code ", $admissionDetails->college_code, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			printStudent($pdf, "Gender ", $admissionDetails->gender, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			printStudent($pdf, "Year ", $feeDetails->year, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
@@ -8253,7 +8381,7 @@ With good wishes";
 			$data['page_title'] = "ADMISSION DETAILS";
 			$data['menu'] = "admissiondetails";
 			$encryptId = $this->input->post('id');
-			$id =  base64_decode($encryptId);
+			$id = base64_decode($encryptId);
 			$corpus = $this->input->post('corpus');
 			$remarks = $this->input->post('remarks');
 

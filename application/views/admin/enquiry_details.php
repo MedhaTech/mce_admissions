@@ -139,13 +139,50 @@
                               <td><?= $enquiryDetails->sslc_grade.'%'; ?></td>
                           </tr>
                           <tr>
-                              <th>PUC-I(10+1) Percentage/Grade</th>
-                              <td><?= $enquiryDetails->puc1_grade.'%'; ?></td>
-                          </tr>
-                          <tr>
-                              <th>PUC-II(10+2) Percentage/Grade</th>
-                              <td><?= $enquiryDetails->puc2_grade.'%'; ?></td>
-                          </tr>
+                            <th>Admission Based On</th>
+                            <td><?= $enquiryDetails->admission_based; ?></td>
+                        </tr>
+
+                         <?php if ($enquiryDetails->admission_based == 'PUC'): ?>
+                            <tr>
+                                <th>PUC-I (10+1) Percentage/Grade</th>
+                                <td><?= $enquiryDetails->puc1_grade . '%'; ?></td>
+                            </tr>
+                            <tr>
+                                <th>PUC-II (10+2) Percentage/Grade</th>
+                                <td><?= $enquiryDetails->puc2_grade . '%'; ?></td>
+                            </tr>
+                          <?php elseif ($enquiryDetails->admission_based == 'DIPLOMA'): ?>
+                            <tr>
+                                <th>DIPLOMA-I Percentage</th>
+                                <td><?= $enquiryDetails->diploma1_grade . '%'; ?></td>
+                            </tr>
+                            <tr>
+                                <th>DIPLOMA-II Percentage</th>
+                                <td><?= $enquiryDetails->diploma2_grade . '%'; ?></td>
+                            </tr>
+                            <tr>
+                                <th>DIPLOMA-III Percentage</th>
+                                <td><?= $enquiryDetails->diploma3_grade . '%'; ?></td>
+                            </tr>
+                         <?php elseif ($enquiryDetails->admission_based == 'GTTC'): ?>
+                            <tr>
+                                <th>GT & TC-I Percentage</th>
+                                <td><?= $enquiryDetails->gttc1_grade . '%'; ?></td>
+                            </tr>
+                            <tr>
+                                <th>GT & TC-II Percentage</th>
+                                <td><?= $enquiryDetails->gttc2_grade . '%'; ?></td>
+                            </tr>
+                            <tr>
+                                <th>GT & TC-III Percentage</th>
+                                <td><?= $enquiryDetails->gttc3_grade . '%'; ?></td>
+                            </tr>
+                            <tr>
+                                <th>GT & TC-IV Percentage</th>
+                                <td><?= $enquiryDetails->gttc4_grade . '%'; ?></td>
+                            </tr>
+                        <?php endif; ?>
                       </table>
                   </div>
                   <div class="card-footer">
