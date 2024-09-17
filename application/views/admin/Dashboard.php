@@ -37,16 +37,17 @@
                                     <th width="5%">S.NO</th>
                                     <!-- <th width="20%">Stream</th> -->
                                     <th width="25%">DEPARTMENT</th>
-                                    <th class='text-center' width="7%">MGMT <br /> STATUS</th>
+                                    <th class='text-center' width="7%">MGMT (ENDORSEMNT ISSUED) <br /> STATUS</th>
                                     <th class='text-center' width="7%">MGMT-COMEDK <br /> STATUS</th>
-                                    <th class='text-center' width="7%">MGMT-LATERAL <br /> STATUS</th>
                                     <th class='text-center' width="7%">COMED-K <br /> STATUS</th>
                                     <th class='text-center' width="7%">KEA-CET <br /> STATUS</th>
-                                    <th class='text-center' width="7%">KEA-CET(LATERAL) <br /> STATUS</th>
                                     <th class='text-center' width="7%">KEA-SNQ <br /> STATUS</th>
                                     <th class='text-center' width="7%">GOI <br /> STATUS</th>
                                     <th class='text-center' width="7%">J&K <br /> STATUS</th>
                                     <th class='text-center' width="7%">TOTAL <br /> STATUS</th>
+                                    <th class='text-center' width="7%">MGMT-LATERAL <br /> STATUS</th>
+                                    <th class='text-center' width="7%">KEA-CET(LATERAL) <br /> STATUS</th>
+                                    <th class='text-center' width="7%">LATERAL TOTAL </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,7 +55,7 @@
                                 <?php $i = 1;
                                 // echo "<pre>";
                                 $aidedAdmitted = $newArr['Aided'];
-                                echo "<tr><th class='bg-gray' colspan='12'>UG COURSES (AIDED)</th></tr>";
+                                echo "<tr><th class='bg-gray' colspan='13'>UG COURSES (AIDED)</th></tr>";
                                 foreach ($aided as $aided1) {
                                     $department_id = $aided1->department_id;
                                     $department_name = $aided1->department_name . '[' . $aided1->department_short_name . ']';
@@ -68,18 +69,13 @@
                                     $MGMT_COMEDK_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("MGMT-COMEDK", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["MGMT-COMEDK"] : 0 : 0);
                                     echo "<td class='bg-gray-light'>" . $MGMT_COMEDK_AIDED . "</td>";
 
-                                    $MGMT_LATERAL_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("MGMT-LATERAL", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["MGMT-LATERAL"] : 0 : 0);
-                                    echo "<td class='bg-gray-light'>" . $MGMT_LATERAL_AIDED . "</td>";
-
                                     $COMEDK_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("COMED-K", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["COMED-K"] : 0 : 0);
                                     echo "<td>" . $COMEDK_AIDED . '/' . $aided1->aided_comed_k_intake . "</td>";
 
                                     $KEA_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("KEA-CET(GOVT)", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["KEA-CET(GOVT)"] : 0 : 0);
                                     echo "<td>" . $KEA_AIDED . '/' . $aided1->aided_kea_intake . "</td>";
 
-                                    $KEALAT_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("KEA-CET(LATERAL)", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["KEA-CET(LATERAL)"] : 0 : 0);
-                                    echo "<td>" . $KEALAT_AIDED . "</td>";
-
+                                    
                                     $SNQ_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("SNQ", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["SNQ"] : 0 : 0);
                                     echo "<td>" . $SNQ_AIDED . '/' . $aided1->aided_snq_intake . "</td>";
 
@@ -89,8 +85,18 @@
                                     $GOI_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("GOI (Non Karnataka)", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["GOI (Non Karnataka)"] : 0 : 0);
                                     echo "<td>" . $GOI_AIDED . "</td>";
 
-                                    $TOTAL_AIDED = $MGMT_AIDED + $MGMT_LATERAL_AIDED + $MGMT_COMEDK_AIDED + $COMEDK_AIDED + $KEA_AIDED + $SNQ_AIDED + $KEALAT_AIDED + $JK_AIDED + $GOI_AIDED;
-                                    echo "<td class='text-center font-weight-bold'>" . $TOTAL_AIDED . '/' . $aided1->aided_intake . "</td>";
+                                    // $TOTAL_AIDED = $MGMT_AIDED + $MGMT_LATERAL_AIDED + $MGMT_COMEDK_AIDED + $COMEDK_AIDED + $KEA_AIDED + $SNQ_AIDED + $KEALAT_AIDED + $JK_AIDED + $GOI_AIDED;
+                                    $TOTAL_AIDED = $MGMT_AIDED + $MGMT_COMEDK_AIDED + $COMEDK_AIDED + $KEA_AIDED + $SNQ_AIDED + $JK_AIDED + $GOI_AIDED;
+                                    echo "<td class='bg-success-light text-center font-weight-bold'>" . $TOTAL_AIDED . '/' . $aided1->aided_intake . "</td>";
+
+                                    $MGMT_LATERAL_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("MGMT-LATERAL", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["MGMT-LATERAL"] : 0 : 0);
+                                    echo "<td class='bg-danger-light'>" . $MGMT_LATERAL_AIDED . "</td>";
+
+                                    $KEALAT_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("KEA-CET(LATERAL)", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["KEA-CET(LATERAL)"] : 0 : 0);
+                                    echo "<td class='bg-danger-light'>" . $KEALAT_AIDED . "</td>";
+
+                                    $TOTAL_LATERAL_AIDED = $MGMT_LATERAL_AIDED + $KEALAT_AIDED;
+                                    echo "<td class='bg-danger-light text-center font-weight-bold'>" . $TOTAL_LATERAL_AIDED . "</td>";
 
                                     echo "</tr>";
                                 }
@@ -98,7 +104,7 @@
                                 $unaidedAdmitted = $newArr['UnAided'];
                                 $unaidedAdmitted_total = 0;
                                 $unaidedAdmitted_intake_total = 0;
-                                echo "<tr><th class='bg-gray' colspan='12'>UG COURSES (UNAIDED)</th></tr>";
+                                echo "<tr><th class='bg-gray' colspan='13'>UG COURSES (UNAIDED)</th></tr>";
                                 foreach ($unaided as $unaided1) {
                                     $department_id = $unaided1->department_id;
                                     $department_name = $unaided1->department_name . '[' . $unaided1->department_short_name . ']';
@@ -112,17 +118,12 @@
                                     $MGMT_COMEDK_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("MGMT-COMEDK", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["MGMT-COMEDK"] : 0 : 0);
                                     echo "<td class='bg-gray-light'>" . $MGMT_COMEDK_UNAIDED . "</td>";
 
-                                    $MGMT_LATERAL_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("MGMT-LATERAL", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["MGMT-LATERAL"] : 0 : 0);
-                                    echo "<td class='bg-gray-light'>" . $MGMT_LATERAL_UNAIDED . "</td>";
-
                                     $COMEDK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'COMED-K', 'UnAided')->row()->cnt;
                                     echo "<td>" . $COMEDK_UNAIDED . '/' . $unaided1->unaided_comed_k_intake . "</td>";
 
                                     $KEA_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'KEA-CET(GOVT)', 'UnAided')->row()->cnt;
                                     echo "<td>" . $KEA_UNAIDED . '/' . $unaided1->unaided_kea_intake . "</td>";
-
-                                    $KEALAT_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'KEA-CET(LATERAL)', 'UnAided')->row()->cnt;
-                                    echo "<td>" . $KEALAT_UNAIDED . "</td>";
+                                
                                     $SNQ_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'SNQ', 'UnAided')->row()->cnt;
                                     echo "<td>" . $SNQ_UNAIDED . '/' . $unaided1->unaided_snq_intake . "</td>";
 
@@ -132,17 +133,27 @@
                                     $GOI_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'GOI (Non Karnataka)', 'UnAided')->row()->cnt;
                                     echo "<td>" . $GOI_UNAIDED . "</td>";
 
-                                    $TOTAL_UNAIDED = $MGMT_UNAIDED + $MGMT_COMEDK_UNAIDED + $MGMT_LATERAL_UNAIDED + $COMEDK_UNAIDED + $KEA_UNAIDED + $SNQ_UNAIDED + $JK_UNAIDED + $GOI_UNAIDED + $KEA_UNAIDED;
-                                    echo "<td class='text-center font-weight-bold'>" . $TOTAL_UNAIDED . '/' . $unaided1->unaided_intake . "</td>";
+                                    $TOTAL_UNAIDED = $MGMT_UNAIDED + $MGMT_COMEDK_UNAIDED + $COMEDK_UNAIDED + $KEA_UNAIDED + $SNQ_UNAIDED + $JK_UNAIDED + $GOI_UNAIDED;
+                                    echo "<td class='bg-success-light text-center font-weight-bold'>" . $TOTAL_UNAIDED . '/' . $unaided1->unaided_intake . "</td>";
+
+                                    $MGMT_LATERAL_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("MGMT-LATERAL", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["MGMT-LATERAL"] : 0 : 0);
+                                    echo "<td class='bg-danger-light'>" . $MGMT_LATERAL_UNAIDED . "</td>";
+                                
+                                    $KEALAT_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'KEA-CET(LATERAL)', 'UnAided')->row()->cnt;
+                                    echo "<td class='bg-danger-light'>" . $KEALAT_UNAIDED . "</td>";
+
+                                    $TOTAL_LATERAL_UNAIDED = $MGMT_LATERAL_UNAIDED + $KEALAT_UNAIDED;
+                                    echo "<td class='bg-danger-light text-center font-weight-bold'>" . $TOTAL_LATERAL_UNAIDED . "</td>";
+
                                     echo "</tr>";
 
                                     $unaidedAdmitted_total = $TOTAL_UNAIDED + $unaidedAdmitted_total;
                                     $unaidedAdmitted_intake_total = $unaidedAdmitted_intake_total + $unaided1->unaided_intake;
                                 }
 
-                                echo "<tr>";
-                                echo "<td>".$unaidedAdmitted_total.'/'.$unaidedAdmitted_intake_total."</td>";
-                                echo "</tr>";
+                                // echo "<tr>";
+                                // echo "<td>" . $unaidedAdmitted_total . '/' . $unaidedAdmitted_intake_total . "</td>";
+                                // echo "</tr>";
                                 // $department_id = $details1->department_id;
                                 // $department_name = $details1->department_name.' ['.$details1->department_short_name.'] - ['.$details1->stream_short_name.']';
                                 
