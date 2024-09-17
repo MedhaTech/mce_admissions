@@ -16,6 +16,11 @@
                     </h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
+                            <li class="nav-item"><?php if ($admissionDetails->updated_on != '') {
+                                                        $timestamp = strtotime($admissionDetails->updated_on);
+                                                        $new_date_format = date('d-m-Y H:i:s', $timestamp);
+                                                        echo "Submitted On : " . $new_date_format . " ";
+                                                    } ?></li>
                             <li class="nav-item">
                                 <?php
                                 $encryptId = base64_encode($admissionDetails->id);
@@ -36,7 +41,7 @@
                                         <?php $encryptId = base64_encode($admissionDetails->id);
                                         echo anchor('admin/admissionsletter/' . $encryptId, '<i class="fas fa-download fa-sm fa-fw"></i> Admit Letter ', 'class="btn btn-danger btn-sm"'); ?>
                                     </li>
-                                <?php }
+                            <?php }
                             } ?>
                             <?php if ((in_array($role, array(1)))) {
                                 if ($admissionDetails->quota == "MGMT-COMEDK") { ?>
@@ -44,7 +49,7 @@
                                         <?php $encryptId = base64_encode($admissionDetails->id);
                                         echo anchor('admin/admissionslettermgmtcomedk/' . $encryptId, '<i class="fas fa-download fa-sm fa-fw"></i> Admit Letter ', 'class="btn btn-danger btn-sm"'); ?>
                                     </li>
-                                <?php }
+                            <?php }
                             } ?>
 
 
@@ -1088,7 +1093,7 @@
                             <table class="table" border="1">
                                 <?php
                                 if (($edu->education_level == 'SSLC') || ($edu->education_level == 'PUC')) {
-                                    ?>
+                                ?>
                                     <thead>
                                         <tr>
                                             <th>Subject Name</th>
@@ -1117,7 +1122,7 @@
                                         $obtained_marks = $edu->{"subject_" . $i . "_obtained_marks"};
 
                                         if ($subject_name != '') {
-                                            ?>
+                                    ?>
                                             <tr>
                                                 <td>
                                                     <?= $subject_name; ?>
@@ -1132,7 +1137,7 @@
                                                     <?= $obtained_marks; ?>
                                                 </td>
                                             </tr>
-                                        <?php }
+                                    <?php }
                                     } ?>
 
                                 </tbody>
@@ -1140,7 +1145,7 @@
                             </table>
                             <hr>
 
-                        <?php }
+                    <?php }
                     } else {
                         echo "<div class='text-center'><img src='" . base_url() . "assets/img/no_data.jpg' class='nodata'></div>";
                     } ?>
@@ -1172,7 +1177,7 @@
                                 $result_array = array(
                                     $i++,
                                     //   $admissions1->app_no,
-                        
+
 
                                     $document_type,
 
