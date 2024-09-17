@@ -137,9 +137,9 @@ class Admin extends CI_Controller
 			foreach ($admissionStats as $admissionStats1) {
 				$newArr[$admissionStats1->sub_quota][$admissionStats1->dept_id][$admissionStats1->quota] = $admissionStats1->cnt;
 			}
-			$data['newArr'] = $newArr; 
+			$data['newArr'] = $newArr;
 
- 			$departments = $this->admin_model->getActiveDepartments()->result();
+			$departments = $this->admin_model->getActiveDepartments()->result();
 			$aided = array();
 			$unaided = array();
 			foreach ($departments as $departments1) {
@@ -3367,7 +3367,6 @@ With good wishes";
 				$syear = $this->input->post('year');
 				$type = $this->input->post('type');
 				$admissions = $this->admin_model->DCBReport($currentAcademicYear, $course, $syear, $type)->result();
-
 			} else {
 				$admissions = $this->admin_model->DCBReport($currentAcademicYear, $course = '', $year = '', $type = '')->result();
 			}
@@ -3521,7 +3520,6 @@ With good wishes";
 				$course = $this->input->post('course');
 				$syear = $this->input->post('year');
 				$admissions = $this->admin_model->FeebalanceReport($currentAcademicYear, $course, $syear)->result();
-
 			} else {
 				$admissions = $this->admin_model->FeebalanceReport($currentAcademicYear, $course = '', $year = '')->result();
 			}
@@ -5357,8 +5355,7 @@ With good wishes";
 				}
 
 				$updateDetails['admission_id'] = $id;
-				$updateDetails['mobile'] = $data['admissionDetails']->mobile;
-				;
+				$updateDetails['mobile'] = $data['admissionDetails']->mobile;;
 				$updateDetails['final_fee'] = $this->input->post('final_fee');
 				$updateDetails['requested_by'] = $data['full_name'];
 				$updateDetails['requested_on'] = date('Y-m-d h:i:s');
@@ -6401,8 +6398,7 @@ With good wishes";
 
 
 				$updateDetails['admission_id'] = $id;
-				$updateDetails['mobile'] = $data['admissionDetails']->mobile;
-				;
+				$updateDetails['mobile'] = $data['admissionDetails']->mobile;;
 				$updateDetails['final_fee'] = $this->input->post('final_fee');
 				$updateDetails['requested_by'] = $data['full_name'];
 				$updateDetails['requested_on'] = date('Y-m-d h:i:s');
@@ -8666,7 +8662,6 @@ With good wishes";
 
 	public function cashvoucher($encryptId, $transaction_id)
 	{
-
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
 			$data['id'] = $session_data['id'];
@@ -8681,23 +8676,16 @@ With good wishes";
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $admission_id)->row();
 
 			$admissionDetails = $this->admin_model->getDetails('admissions', $admission_id)->row();
-
 			$studentfeeDetails = $this->admin_model->getDetailsbyfield($admission_id, 'student_id', 'fee_master')->row();
-
-
 			$fees = $this->admin_model->getDetailsbyfield($admission_id, 'student_id', 'fee_master')->row();
-
 			$voucherDetails = $this->admin_model->getDetails('payment_structure', $transaction_id)->row();
 			$feeDetails = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'fee_master')->row();
-
 
 			$this->load->library('fpdf'); // Load library
 			ini_set("session.auto_start", 0);
 			ini_set('memory_limit', '-1');
 			define('FPDF_FONTPATH', 'plugins/font');
 			$pdf = new FPDF();
-
-
 
 			$collegeName = "MALNAD COLLEGE OF ENGINEERING";
 			$collegeName1 = "Autonomous Institute Affiliated to the VTU";
@@ -8714,6 +8702,7 @@ With good wishes";
 			$dept = "Dept. :" . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"];
 			$bcopy = "BANK COPY";
 			$copyData = array('S.A Copy', 'Office Copy');
+
 			// Define the data for the table
 			$tableData = [
 				['Admission No.', $admissionDetails->adm_no],
@@ -8723,6 +8712,7 @@ With good wishes";
 				['College Code', $admissionDetails->college_code . ' - ' . $admissionDetails->sub_quota],
 				['Category', $admissionDetails->category_allotted]
 			];
+
 			if ($voucherDetails->voucher_type == 1) {
 				$tableData[] = ['Payment Mode', 'Cash'];
 			} elseif ($voucherDetails->voucher_type == 5) {
@@ -8731,7 +8721,6 @@ With good wishes";
 				$tableData[] = ['DD. Date', date('d-m-Y', strtotime($voucherDetails->dd_date))];
 				$tableData[] = ['Bank Name', $voucherDetails->dd_bank];
 			}
-
 
 			$fees = [
 				'E-Learning Fee' => $voucherDetails->e_learning_fee,
@@ -8781,87 +8770,83 @@ With good wishes";
 				$contactInfo1 = "SALAGAME ROAD HASSAN";
 				$contactInfo2 = "State Name : Karnataka";
 				$contactInfo = "UG (AY-2024-2025)";
-				$pdf->Rect($x - 2, $y, 69, 90 + 70);
+				$pdf->Rect($x - 2, $y, 90, 200); // Increase the size of each copy
 				$pdf->SetXY($x, $y);
+				$pdf->SetFont('Arial', 'B', 10);
+				$pdf->Cell(85, 5, $collegeName, 0, 1, 'C');
+				$pdf->SetX($x);
+				$pdf->SetFont('Arial', '', 9);
+				$pdf->Cell(85, 4, $collegeName1, 0, 1, 'C');
+				$pdf->SetX($x);
+				$pdf->SetFont('Arial', '', 9);
+				$pdf->Cell(85, 4, $collegeName2, 0, 1, 'C');
+				$pdf->SetX($x);
+				$pdf->SetFont('Arial', '', 9);
+				$pdf->Cell(85, 4, $collegeName3, 0, 1, 'C');
+				$pdf->SetX($x);
+				$pdf->SetFont('Arial', '', 8);
+				$pdf->Cell(85, 4, $contactInfo1, 0, 1, 'C');
+				$pdf->SetX($x);
+				$pdf->Cell(85, 4, $contactInfo2, 0, 1, 'C');
+				$pdf->SetX($x);
 				$pdf->SetFont('Arial', 'B', 8);
-				$pdf->Cell(65, 4, $collegeName, 0, 1, 'C');
+				$pdf->Cell(85, 5, $affiliation, 0, 1, 'C');
 				$pdf->SetX($x);
 				$pdf->SetFont('Arial', '', 7);
-				$pdf->Cell(65, 3, $collegeName1, 0, 1, 'C');
-				$pdf->SetX($x);
-				$pdf->SetFont('Arial', '', 7);
-				$pdf->Cell(65, 3, $collegeName2, 0, 1, 'C');
-				$pdf->SetX($x);
-				$pdf->SetFont('Arial', '', 7);
-				$pdf->Cell(65, 3, $collegeName3, 0, 1, 'C');
-				$pdf->SetX($x);
-				$pdf->SetFont('Arial', '', 6);
-				$pdf->Cell(65, 3, $contactInfo1, 0, 1, 'C');
-				$pdf->SetX($x);
-				$pdf->Cell(65, 3, $contactInfo2, 0, 1, 'C');
-				$pdf->SetX($x);
-				$pdf->SetFont('Arial', 'B', 6);
-				$pdf->Cell(65, 4, $affiliation, 0, 1, 'C');
-				$pdf->SetX($x);
-				$pdf->SetFont('Arial', '', 5);
-				$pdf->Cell(65, 4, $contactInfo, 0, 1, 'C');
-
+				$pdf->Cell(85, 5, $contactInfo, 0, 1, 'C');
 
 				// Draw a line
 				$pdf->SetLineWidth(0.2);
-				$pdf->Line($x, $y + 23, $x + 65, $y + 23);
-				$pdf->Ln(3);
+				$pdf->Line($x, $y + 30, $x + 87, $y + 30);
+				$pdf->Ln(5);
 				$pdf->SetLineWidth(0.2);
-				$pdf->Line($x, $y + 27, $x + 65, $y + 27);
-				$pdf->Ln(3);
-				$pdf->SetFont('Arial', '', 6);
-				$pdf->SetXY($x, $y + 28);
-				$pdf->Cell(65, 4, $issuedOn, 0, 0, 'L');
-				$pdf->SetXY($x, $y + 28);
-				$pdf->Cell(65, 4, $programe, 0, 1, 'R');
-				$pdf->SetXY($x, $y + 31);
-				$pdf->Cell(65, 4, $chellan, 0, 0, 'L');
-				$pdf->SetXY($x, $y + 31);
-				$pdf->Cell(65, 4, $dept, 0, 1, 'R');
-				$pdf->SetXY($x, $y + 36);
-				$pdf->SetFont('Arial', '', 7);
-				$pdf->MultiCell(65, 3, "");
-				// $pdf->SetXY($x, $y + 46);
-				// $pdf->SetFont('Arial', '', 7);
-				// $pdf->MultiCell(65, 4, "Cash/D.D.No.____________Dt_________Bank_______");
-				$pdf->SetFont('Arial', '', 6);
+				$pdf->Line($x, $y + 35, $x + 87, $y + 35);
+				$pdf->Ln(5);
+				$pdf->SetFont('Arial', '', 8);
+				$pdf->SetXY($x, $y + 40);
+				$pdf->Cell(85, 5, $issuedOn, 0, 0, 'L');
+				$pdf->SetXY($x, $y + 40);
+				$pdf->Cell(85, 5, $programe, 0, 1, 'R');
+				$pdf->SetXY($x, $y + 45);
+				$pdf->Cell(85, 5, $chellan, 0, 0, 'L');
+				$pdf->SetXY($x, $y + 45);
+				$pdf->Cell(85, 5, $dept, 0, 1, 'R');
+				$pdf->SetXY($x, $y + 50);
+				$pdf->SetFont('Arial', '', 8);
+				$pdf->MultiCell(85, 5, "");
 
 				$tableY = $pdf->GetY(); // Get current Y position for the table
 				foreach ($tableData as $row) {
 					$pdf->SetXY($x, $tableY);
-					$pdf->Cell(32.5, 4, $row[0], 1, 0, 'C');
-					$pdf->Cell(32.5, 4, $row[1], 1, 1, 'C');
-					$tableY += 4; // Move Y position down for the next row
+					$pdf->Cell(42.5, 7, $row[0], 1, 0, 'C');
+					$pdf->Cell(42.5, 7, $row[1], 1, 1, 'C');
+					$tableY += 7; // Move Y position down for the next row
 				}
-				$pdf->SetFont('Arial', 'B', 6);
+				$pdf->SetFont('Arial', 'B', 7);
 				$pdf->SetXY($x, $tableY);
-				$pdf->Cell(32.5, 4, "TOTAL", 1, 0, 'C');
-				$pdf->Cell(32.5, 4, $voucherDetails->final_fee, 1, 1, 'C');
-				$tableY += 6;
-				$pdf->SetFont('Arial', '', 7);
-				$pdf->SetXY($x, $tableY);
-				$pdf->MultiCell(65, 4, "Amount (In Words) : " . convert_number_to_words($voucherDetails->final_fee) . " Only");
-				$pdf->SetXY($x, $tableY + 10);
-				$pdf->Cell(32.5, 4, ' ', 0, 0, 'L');
-				$pdf->Cell(32.5, 4, "Signature of Remitter", 0, 1, 'R');
-				$pdf->SetXY($x, $tableY + 30);
+				$pdf->Cell(42.5, 5, "TOTAL", 1, 0, 'C');
+				$pdf->Cell(42.5, 5, $voucherDetails->final_fee, 1, 1, 'C');
+				$tableY += 8;
 				$pdf->SetFont('Arial', '', 8);
-				$pdf->Cell(65, 4, $copy, 0, 1, 'C');
+				$pdf->SetXY($x, $tableY);
+				$pdf->MultiCell(85, 5, "Amount (In Words) : " . convert_number_to_words($voucherDetails->final_fee) . " Only");
+				$pdf->SetXY($x, $tableY + 25);
+				$pdf->Cell(42.5, 5, ' ', 0, 0, 'L');
+				$pdf->Cell(42.5, 5, "Signature of Remitter", 0, 1, 'R');
+				$pdf->SetXY($x, $tableY + 60);
+				$pdf->SetFont('Arial', '', 8);
+				$pdf->Cell(85, 5, $copy, 0, 1, 'C');
 			}
 
 			// Add page and set margins
-			$pdf->AddPage('L', 'A4'); // 'L' for landscape orientation, 'A4' for A4 size (210x297 mm)
+			$pdf->AddPage('P', 'A4'); // 'L' for landscape orientation, 'A4' for A4 size (210x297 mm)
 			$pdf->SetMargins(10, 10, 10);
 
-			// Generate four copies horizontally
+			// Generate two copies horizontally
 			$startX = 10;
 			$startY = 10;
-			$spacingX = 70; // Adjust this spacing to fit the copies horizontally
+			$spacingX = 100; // Adjust this spacing to fit the copies horizontally
+			$spacingY = 120; // Adjust this spacing to fit the copies vertically
 
 			for ($i = 0; $i < 2; $i++) {
 				generateCopy($i, $pdf, $startX + ($i * $spacingX), $startY, $collegeName, $affiliation, $contactInfo, $contactInfo1, $issuedOn, $programe, $chellan, $dept, $tableData, $voucherDetails, $copyData[$i]);
@@ -8874,6 +8859,9 @@ With good wishes";
 			redirect('admin/timeout');
 		}
 	}
+
+
+
 	public function onlinevoucher($encryptId, $id)
 	{
 
