@@ -12,7 +12,7 @@
                         <ul class="nav nav-pills ml-auto">
                             <li class="nav-item">
                                 <?php
-                                    if($role == 1 || $role == 2){
+                                    if($role == 3){
                                         echo anchor('admin/dashboard2', '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Back ', 'class="btn btn-warning btn-sm"');
                                     }
                                 ?>
@@ -31,9 +31,10 @@
                                 <tr>
                                     <th width="5%">S.NO</th>
                                     <th class='text-center' width="10%">DEPARTMENT</th>
-                                    <th class='text-center' width="5%">NUMBER OF MOVED SEATS</th>
+                                    <th class='text-center' width="5%">NUMBER OF SEATS TO BE MOVED  TO MGMT</th>
                                     <th class='text-center' width="5%">COMED-K <br /> INTAKE</th>
-                                    <th class='text-center' width="5%">COMED-K UNFILLED<br /> SEATS</th>
+                                    <th class='text-center' width="5%">COMED-K <br />MGMT INTAKE</th>
+                                    <th class='text-center' width="5%">COMED-K TOTAL<br />UNFILLED SEATS</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -52,7 +53,11 @@
 
                                         // $MGMT_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'MGMT', 'UnAided')->row()->cnt;
                                         $MGMT=$unaidedmgmt1->unaided_comed_k_intake_new - $COMEDK_UNAIDED;
-                                        echo "<td class='mgmt-intake' data-dept-id='" . $department_id . "'>" . $MGMT . "</td>";
+                                        echo "<td class='comedk-intake' data-dept-id='" . $department_id . "'>" . $unaidedmgmt1->moved . '/' . $MGMT . "</td>";
+
+                                        // $MGMT_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'MGMT', 'UnAided')->row()->cnt;
+                                        $MGMTG=$MGMT - $unaidedmgmt1->moved;
+                                        echo "<td class='mgmt-intake' data-dept-id='" . $department_id . "'>" . $MGMTG . "</td>";
 
                                         echo "<input type='hidden' name='comedk_intakes[]' class='comedk-intake-input' value='" . $unaidedmgmt1->unaided_comed_k_intake . "'>";
                                         echo "<input type='hidden' name='mgmt_intakes[]' class='mgmt-intake-input' value='" . $unaidedmgmt1->unaided_mgmt_intake . "'>";
