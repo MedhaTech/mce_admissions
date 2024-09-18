@@ -230,8 +230,8 @@ class Admin extends CI_Controller
 
 				foreach ($department_ids as $index => $department_id) {
 					$moved = $moved_seats[$index];
-					$comedk_intake = $comedk_intakes[$index] - $moved;
-					$mgmt_intake = $mgmt_intakes[$index] + $moved;
+					$comedk_intake = $comedk_intakes[$index];
+					$mgmt_intake = $mgmt_intakes[$index];
 
 					// Update database with new values
 					$result = $this->admin_model->updateIntakeValues($department_id, $comedk_intake, $mgmt_intake, $moved);
