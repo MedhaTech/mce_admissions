@@ -12,7 +12,7 @@
                         <ul class="nav nav-pills ml-auto">
                             <li class="nav-item">
                                 <?php
-                                if ($role == 3) {
+                                if ($role == 3 && $username=="principal@mcehassan.ac.in") {
                                     echo anchor('admin/updatedashboard2', ' <i class="fas fa-edit"></i>  Edit ', 'class="btn btn-primary btn-sm"');
                                 } 
 

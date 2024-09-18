@@ -34,7 +34,8 @@
 										$users1->full_name,
 										$users1->username,
 										$users1->mobile,
-										$userTypes[$users1->role],
+                                        $users1->designation,
+										// $userTypes[$users1->role],
 										anchor('admin/reset_password/'.$encryptTxt,'Reset Password','class="btn btn-outline-danger btn-sm"')
 									);
 									$this->table->add_row($result_array);
