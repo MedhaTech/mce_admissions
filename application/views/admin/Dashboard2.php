@@ -12,23 +12,12 @@
                         <ul class="nav nav-pills ml-auto">
                             <li class="nav-item">
                                 <?php
-                                if ($role == 1 || $role == 3) {
+                                if ($role == 3) {
                                     echo anchor('admin/updatedashboard2', ' <i class="fas fa-edit"></i>  Edit ', 'class="btn btn-primary btn-sm"');
-                                } ?>
-                                <?php
-                                if (file_exists('assets/seats/mgmt_comed-k_seat.pdf')) {
-                                    $file_exist = 1;
-                                } else {
-                                    $file_exist = 0;
-                                }
-                                if ($role == 1 || $role == 2 || $role == 3) {
-                                    if ($file_exist == 1) {
-
-                                        echo anchor('assets/seats/mgmt_comed-k_seat.pdf', '<span class="icon"><i class="fas fa-file-o"></i></span> <span class="text">Download</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm" target="_blank"');
-                                    }
+                                } 
 
                                     echo anchor('admin/dashboard', ' <i class="fas fa-list"></i>  OVERALL DASHBAORD ', 'class="btn btn-warning btn-sm"');
-                                } ?>
+                                 ?>
                             </li>
                             <!-- <li class="nav-item">
                                   <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
@@ -45,10 +34,13 @@
                                     <th width="5%">S.NO</th>
                                     <!-- <th width="20%">Stream</th> -->
                                     <th width="35%">DEPARTMENT</th>
+                                    <th class='text-center' width="25%">NUMBER OF UNFILLED SEATS MOVED <br />  FROM PRINCIPAL LOGIN</th>
                                     <th class='text-center' width="15%">COMED-K <br /> INTAKE</th>
-                                    <th class='text-center' width="15%">MGMT COMED-K<br /> INTAKE COUNT</th>
+                                    <th class='text-center' width="5%">COMED-K SEATS<br /> FILLED</th>
                                     <!-- <th class='text-center' width="15%">MOVED <br /> INTAKE COUNT</th> -->
-                                    <th class='text-center' width="15%">UPDATED COMEDK <br /> INTAKE</th>
+                                    <th class='text-center' width="15%">COMED-K MGMT<br /> INTAKE</th>
+                                    <th class='text-center' width="15%">COMEDK UNFILLED<br /> SEATS (ADMITTED)</th>
+                                    <th class='text-center' width="5%">COMED-K TOTAL<br />UNFILLED SEATS</th>
                                     <!-- <th class='text-center' width="15%">UPDATED MGMT <br /> INTAKE</th> -->
                                 </tr>
                             </thead>
@@ -65,17 +57,41 @@
 
                                     // echo "<td>".$unaidedmgmt1->unaided_mgmt_intake."</td>";
 
-                                    echo "<td>" . $unaidedmgmt1->unaided_comed_k_intake . "</td>";
-
                                     echo "<td class='bg-gray-light'>" . $unaidedmgmt1->moved . "</td>";
 
-                                    echo "<td>" . $unaidedmgmt1->unaided_comed_k_intake_new . "</td>";
+                                    echo "<td>" . $unaidedmgmt1->unaided_comed_k_intake . "</td>";
+
+                                    // echo "<td class='bg-gray-light'>" . $unaidedmgmt1->moved . "</td>";
+
+                                    $COMEDK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'COMED-K', 'UnAided')->row()->cnt;
+                                    echo "<td>" . $COMEDK_UNAIDED . "</td>";
+
+                                    $MGMT=$unaidedmgmt1->unaided_comed_k_intake_new - $COMEDK_UNAIDED;
+                                    echo "<td>" . $MGMT . "</td>";
+
+                                    echo "<td>" . $unaidedmgmt1->moved . "</td>";
+
+                                    $MGMTG=$MGMT - $unaidedmgmt1->moved;
+                                    echo "<td>" . $MGMTG . "</td>";
 
                                     // echo "<td>".$unaidedmgmt1->unaided_mgmt_intake_new."</td>";
                                     echo "</tr>";
                                 }
                                 ?>
                         </table>
+                        <?php
+                        if (file_exists('assets/seats/mgmt_comed-k_seat.pdf')) {
+                            $file_exist = 1;
+                        } else {
+                            $file_exist = 0;
+                        }
+                        if ($role == 1 || $role == 2 || $role == 3) {
+                            if ($file_exist == 1) {
+
+                                echo anchor('assets/seats/mgmt_comed-k_seat.pdf', '<span class="icon"><i class="fas fa-file-o"></i></span> <span class="text">Download</span>', 'class="btn btn-danger btn-sm btn-icon-split d-none d-sm-inline-block shadow-sm" target="_blank"');
+                            }
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
