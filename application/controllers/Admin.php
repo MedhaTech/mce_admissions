@@ -740,7 +740,7 @@ class Admin extends CI_Controller
 			$data['full_name'] = $session_data['full_name'];
 			$data['role'] = $session_data['role'];
 
-			if ($this->input->post('quota') == "MGMT") {
+			if ($this->input->post('quota') == "MGMT" || $this->input->post('quota') == "MGMT-LATERAL" || $this->input->post('quota') == "MGMT-COMEDK") {
 
 				$course = $this->input->post('course');
 			} else {

@@ -211,7 +211,7 @@ class Admin_model extends CI_Model
   }
   function getFee($course, $quota, $sub_quota)
   {
-    if ($quota == "MGMT") {
+    if ($quota == "MGMT" || $quota == "MGMT-LATERAL" || $quota == "MGMT-COMEDK") {
       $this->db->where('department_id', $course);
     }
 
