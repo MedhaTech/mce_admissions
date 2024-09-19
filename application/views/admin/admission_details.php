@@ -21,16 +21,16 @@
                                                         $new_date_format = date('d-m-Y H:i:s', $timestamp);
                                                         echo "Submitted On : " . $new_date_format . " ";
                                                     } ?></li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <?php
-                                $encryptId = base64_encode($admissionDetails->id);
-                                echo anchor(
-                                    'admin/admissionform/' . $encryptId,
-                                    '<i class="fas fa-download fa-sm fa-fw"></i> Download ',
-                                    ['class' => 'btn btn-danger btn-sm', 'target' => '_blank']
-                                );
+                                // $encryptId = base64_encode($admissionDetails->id);
+                                // echo anchor(
+                                //     'admin/admissionform/' . $encryptId,
+                                //     '<i class="fas fa-download fa-sm fa-fw"></i> Download ',
+                                //     ['class' => 'btn btn-danger btn-sm', 'target' => '_blank']
+                                // );
                                 ?>
-                            </li>
+                            </li> -->
                             <li class="nav-item">
                                 <?php $encryptId = base64_encode($admissionDetails->id);
                                 echo anchor('admin/updateadmissiondetails/' . $encryptId, '<i class="fas fa-edit fa-sm fa-fw"></i> Edit ', 'class="btn btn-dark btn-sm"'); ?>
