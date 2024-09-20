@@ -35,15 +35,15 @@
                                 <?php $encryptId = base64_encode($admissionDetails->id);
                                 echo anchor('admin/updateadmissiondetails/' . $encryptId, '<i class="fas fa-edit fa-sm fa-fw"></i> Edit ', 'class="btn btn-dark btn-sm"'); ?>
                             </li>
-                            <?php if ((in_array($role, array(1)))) {
-                                if ($admissionDetails->quota == "MGMT") { ?>
+                            <?php if ((in_array($role, array(1,2)))) {
+                                if ($admissionDetails->quota == "MGMT" || $admissionDetails->quota == "MGMT-LATERAL") { ?>
                                     <li class="nav-item">
                                         <?php $encryptId = base64_encode($admissionDetails->id);
                                         echo anchor('admin/admissionsletter/' . $encryptId, '<i class="fas fa-download fa-sm fa-fw"></i> Admit Letter ', 'class="btn btn-danger btn-sm"'); ?>
                                     </li>
                             <?php }
                             } ?>
-                            <?php if ((in_array($role, array(1)))) {
+                            <?php if ((in_array($role, array(1,2)))) {
                                 if ($admissionDetails->quota == "MGMT-COMEDK") { ?>
                                     <li class="nav-item">
                                         <?php $encryptId = base64_encode($admissionDetails->id);

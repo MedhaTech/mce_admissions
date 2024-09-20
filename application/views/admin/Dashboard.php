@@ -4,6 +4,8 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="card card-dark shadow mb-4">
+
+            <?php if((in_array($role, array(1,2,3,7)))){ ?>
                 <div class="card-header">
                     <div class="card-title">
                         <h6 class="m-0">MCE ADMISSION STATUS</h6>
@@ -205,6 +207,8 @@
                         </table>
                     </div>
                 </div>
+
+                <?php }?>
             </div>
         </div>
     </div>
