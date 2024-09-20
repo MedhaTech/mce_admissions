@@ -42,13 +42,15 @@
                               <div class="card-body">
                                   <ul>
 
-
+                                  <?php if((in_array($role, array(1,2,3,6,7)))){ ?>
                                       <li><?php echo anchor('admin/daybook_report', 'Day Book Report'); ?> </li>
+                                      <?php }?>
+                                      <?php if((in_array($role, array(1,2,3,7)))){ ?>
                                       <li><?php echo anchor('admin/dcb_report', 'DCB Report'); ?> </li>
                                       <li><?php echo anchor('admin/feebalance_report', 'Fee Balance Report'); ?> </li>
                                       <li><?php echo anchor('admin/corpusoverall_report', 'Corpus Fund Overall Fee Report'); ?> </li>
                                       <li><?php echo anchor('admin/corpusbalance_report', 'Corpus Fund Balance Fee Report'); ?> </li>
-
+                                      <?php }?>
 
                                   </ul>
                               </div>
