@@ -57,7 +57,9 @@
                                     echo "<td>" . $COMEDK_UNAIDED . '/' . $unaidedmgmt1->unaided_comed_k_intake . "</td>";
                                     echo "<td>" . $unaidedmgmt1->unaided_comed_k_intake - $COMEDK_UNAIDED . "</td>";
                                     
-                                    echo "<td>" . $unaidedmgmt1->moved . "</td>";
+                                    // echo "<td>" . $unaidedmgmt1->moved . "</td>";
+                                    $MOVED = "--";
+                                    echo "<td>" . $MOVED . "</td>";
 
                                     $MGMT_COMEDK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'MGMT-COMEDK', 'UnAided')->row()->cnt;
                                     echo "<td>" . $MGMT_COMEDK_UNAIDED . "</td>";
