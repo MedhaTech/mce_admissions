@@ -192,6 +192,7 @@
                                         $KEA_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'KEA-CET(GOVT)', 'UnAided')->row()->cnt;
                                         echo "<td>" . $KEA_UNAIDED . '/' . $unaided1->unaided_kea_intake . "</td>";
                                         $KEA_UNAIDED_TOTAL = $KEA_UNAIDED_TOTAL + $KEA_UNAIDED;
+                                        $UNAIDED_KEA_INTAKE_TOTAL = $UNAIDED_KEA_INTAKE_TOTAL + $unaided1->unaided_kea_intake;
 
                                         $SNQ_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'SNQ', 'UnAided')->row()->cnt;
                                         echo "<td>" . $SNQ_UNAIDED . '/' . $unaided1->unaided_snq_intake . "</td>";
@@ -241,20 +242,20 @@
                                     echo "<td>" . $TOTAL_LATERAL_UNAIDED_TOTAL . "</td>";
                                     echo "</tr>";
 
-                                    echo "<tr class='bg-dark text-bold'>";
-                                    echo "<td colspan='2'>OVERALL</td>";
-                                    echo "<td>" . $MGMT_AIDED_TOTAL + $MGMT_UNAIDED_TOTAL . '/' . $AIDED_MGMT_INTAKE_TOTAL + $UNAIDED_MGMT_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $MGMT_COMEDK_AIDED_TOTAL + $MGMT_COMEDK_UNAIDED_TOTAL . "</td>";
-                                    echo "<td>" . $COMEDK_AIDED_TOTAL + $COMEDK_UNAIDED_TOTAL . '/' . $AIDED_COMEDK_INTAKE_TOTAL + $UNAIDED_COMEDK_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $KEA_AIDED_TOTAL + $KEA_UNAIDED_TOTAL . '/' . $AIDED_KEA_INTAKE_TOTAL + $UNAIDED_KEA_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $SNQ_AIDED_TOTAL + $SNQ_UNAIDED_TOTAL . '/' . $AIDED_SNQ_INTAKE_TOTAL + $UNAIDED_SNQ_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $JK_AIDED_TOTAL + $JK_UNAIDED_TOTAL . "</td>";
-                                    echo "<td>" . $GOI_AIDED_TOTAL + $GOI_UNAIDED_TOTAL . "</td>";
-                                    echo "<td>" . $TOTAL_AIDED_TOTAL + $TOTAL_UNAIDED_TOTAL . '/' . $AIDED_INTAKE_TOTAL + $UNAIDED_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $MGMT_LATERAL_AIDED_TOTAL + $MGMT_LATERAL_UNAIDED_TOTAL . "</td>";
-                                    echo "<td>" . $KEALAT_AIDED_TOTAL + $KEALAT_UNAIDED_TOTAL . "</td>";
-                                    echo "<td>" . $TOTAL_LATERAL_AIDED_TOTAL + $TOTAL_LATERAL_UNAIDED_TOTAL . "</td>";
-                                    echo "</tr>";
+                                    // echo "<tr class='bg-dark text-bold'>";
+                                    // echo "<td colspan='2'>OVERALL </td>";
+                                    // echo "<td>" . $MGMT_AIDED_TOTAL + $MGMT_UNAIDED_TOTAL . '/' . $AIDED_MGMT_INTAKE_TOTAL + $UNAIDED_MGMT_INTAKE_TOTAL . "</td>";
+                                    // echo "<td>" . $MGMT_COMEDK_AIDED_TOTAL + $MGMT_COMEDK_UNAIDED_TOTAL . "</td>";
+                                    // echo "<td>" . $COMEDK_AIDED_TOTAL + $COMEDK_UNAIDED_TOTAL . '/' . $AIDED_COMEDK_INTAKE_TOTAL + $UNAIDED_COMEDK_INTAKE_TOTAL . "</td>";
+                                    // echo "<td>" . $KEA_AIDED_TOTAL + $KEA_UNAIDED_TOTAL . '/' . $AIDED_KEA_INTAKE_TOTAL + $UNAIDED_KEA_INTAKE_TOTAL . "</td>";
+                                    // echo "<td>" . $SNQ_AIDED_TOTAL + $SNQ_UNAIDED_TOTAL . '/' . $AIDED_SNQ_INTAKE_TOTAL + $UNAIDED_SNQ_INTAKE_TOTAL . "</td>";
+                                    // echo "<td>" . $JK_AIDED_TOTAL + $JK_UNAIDED_TOTAL . "</td>";
+                                    // echo "<td>" . $GOI_AIDED_TOTAL + $GOI_UNAIDED_TOTAL . "</td>";
+                                    // echo "<td>" . $TOTAL_AIDED_TOTAL + $TOTAL_UNAIDED_TOTAL . '/' . $AIDED_INTAKE_TOTAL + $UNAIDED_INTAKE_TOTAL . "</td>";
+                                    // echo "<td>" . $MGMT_LATERAL_AIDED_TOTAL + $MGMT_LATERAL_UNAIDED_TOTAL . "</td>";
+                                    // echo "<td>" . $KEALAT_AIDED_TOTAL + $KEALAT_UNAIDED_TOTAL . "</td>";
+                                    // echo "<td>" . $TOTAL_LATERAL_AIDED_TOTAL + $TOTAL_LATERAL_UNAIDED_TOTAL . "</td>";
+                                    // echo "</tr>";
 
                                     // $department_id = $details1->department_id;
                                     // $department_name = $details1->department_name.' ['.$details1->department_short_name.'] - ['.$details1->stream_short_name.']';
