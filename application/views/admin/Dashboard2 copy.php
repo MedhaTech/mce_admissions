@@ -12,12 +12,12 @@
                         <ul class="nav nav-pills ml-auto">
                             <li class="nav-item">
                                 <?php
-                                if ($role == 3 && $username == "principal@mcehassan.ac.in") {
+                                if ($role == 3 && $username=="principal@mcehassan.ac.in") {
                                     echo anchor('admin/updatedashboard2', ' <i class="fas fa-edit"></i>  Edit ', 'class="btn btn-primary btn-sm"');
-                                }
+                                } 
 
-                                echo anchor('admin/dashboard', ' <i class="fas fa-list"></i>  OVERALL DASHBAORD ', 'class="btn btn-warning btn-sm"');
-                                ?>
+                                    echo anchor('admin/dashboard', ' <i class="fas fa-list"></i>  OVERALL DASHBAORD ', 'class="btn btn-warning btn-sm"');
+                                 ?>
                             </li>
                             <!-- <li class="nav-item">
                                   <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
@@ -34,36 +34,45 @@
                                     <th width="5%">S.NO</th>
                                     <!-- <th width="20%">Stream</th> -->
                                     <th width="35%">DEPARTMENT</th>
-                                    <!-- <th class='text-center' width="25%">NUMBER OF UNFILLED SEATS MOVED <br />  FROM PRINCIPAL LOGIN</th> -->
-                                    <th class='text-center' width="12%">COMED-K <br /> STATUS</th>
-                                    <th class='text-center' width="12%">COMED-K <br /> VACANT</th>
-                                    <th class='text-center' width="12%">MGMT-COMEDK  <br /> INTAKE</th>
-                                    <th class='text-center' width="12%">MGMT-COMEDK  <br /> ADMITTED</th>
-                                    <th class='text-center' width="12%">MGMT-COMEDK  <br /> VACANT</th>
+                                    <th class='text-center' width="25%">NUMBER OF UNFILLED SEATS MOVED <br />  FROM PRINCIPAL LOGIN</th>
+                                    <th class='text-center' width="15%">COMED-K <br /> INTAKE</th>
+                                    <th class='text-center' width="5%">COMED-K SEATS<br /> FILLED</th>
+                                    <!-- <th class='text-center' width="15%">MOVED <br /> INTAKE COUNT</th> -->
+                                    <th class='text-center' width="15%">COMED-K MGMT<br /> INTAKE</th>
+                                    <th class='text-center' width="15%">COMEDK UNFILLED<br /> SEATS (ADMITTED)</th>
+                                    <th class='text-center' width="5%">COMED-K TOTAL<br />UNFILLED SEATS</th>
+                                    <!-- <th class='text-center' width="15%">UPDATED MGMT <br /> INTAKE</th> -->
                                 </tr>
-                            </thead>   
+                            </thead>
                             <tbody>
                                 <?php $i = 1;
                                 echo "<tr><th class='bg-gray' colspan='9'>UG COURSES (UNAIDED)</th></tr>";
-                                // echo "<pre>"; print_r($unaidedmgmt); 
+                                // var_dump($unaidedmgmt); die();
                                 foreach ($unaidedmgmt as $unaidedmgmt1) {
                                     $department_id = $unaidedmgmt1->department_id;
                                     $department_name = $unaidedmgmt1->department_name . ' [' . $unaidedmgmt1->department_short_name . '] - [' . $unaidedmgmt1->stream_short_name . ']';
                                     echo "<tr>";
                                     echo "<td>" . $i++ . ".</td>";
                                     echo "<td class='text-left'>" . $department_name . "</td>";
-                                
-                                    $COMEDK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'COMED-K', 'UnAided')->row()->cnt;
-                                    echo "<td>" . $COMEDK_UNAIDED . '/' . $unaidedmgmt1->unaided_comed_k_intake . "</td>";
-                                    echo "<td>" . $unaidedmgmt1->unaided_comed_k_intake - $COMEDK_UNAIDED . "</td>";
-                                    
+
+                                    // echo "<td>".$unaidedmgmt1->unaided_mgmt_intake."</td>";
+
                                     echo "<td class='bg-gray-light'>" . $unaidedmgmt1->moved . "</td>";
 
-                                    $MGMT_COMEDK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'MGMT-COMEDK', 'UnAided')->row()->cnt;
-                                    echo "<td>" . $MGMT_COMEDK_UNAIDED . "</td>";
+                                    echo "<td>" . $unaidedmgmt1->unaided_comed_k_intake . "</td>";
 
-                                    $MGMT_COMEDK_VACANT = $unaidedmgmt1->moved - $MGMT_COMEDK_UNAIDED;
-                                    echo "<td>" . $MGMT_COMEDK_VACANT . "</td>";
+                                    // echo "<td class='bg-gray-light'>" . $unaidedmgmt1->moved . "</td>";
+
+                                    $COMEDK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'COMED-K', 'UnAided')->row()->cnt;
+                                    echo "<td>" . $COMEDK_UNAIDED . "</td>";
+
+                                    $MGMT=$unaidedmgmt1->unaided_comed_k_intake_new - $COMEDK_UNAIDED;
+                                    echo "<td>" . $MGMT . "</td>";
+
+                                    echo "<td>" . $unaidedmgmt1->moved . "</td>";
+
+                                    $MGMTG=$MGMT - $unaidedmgmt1->moved;
+                                    echo "<td>" . $MGMTG . "</td>";
 
                                     // echo "<td>".$unaidedmgmt1->unaided_mgmt_intake_new."</td>";
                                     echo "</tr>";
