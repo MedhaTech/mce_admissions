@@ -74,7 +74,7 @@
 
                                     $MGMT_COMEDK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'MGMT-COMEDK', 'UnAided')->row()->cnt;
                                     echo "<td>" . $MGMT_COMEDK_UNAIDED . "</td>";
-                                    $MGMT_COMEDK_UNAIDED_TOTAL = $$MGMT_COMEDK_UNAIDED_TOTAL + $MGMT_COMEDK_UNAIDED;
+                                    $MGMT_COMEDK_UNAIDED_TOTAL = $MGMT_COMEDK_UNAIDED_TOTAL + $MGMT_COMEDK_UNAIDED;
 
                                     $MGMT_COMEDK_VACANT = $unaidedmgmt1->moved - $MGMT_COMEDK_UNAIDED;
                                     echo "<td>" . $MGMT_COMEDK_VACANT . "</td>";
