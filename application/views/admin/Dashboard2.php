@@ -37,11 +37,11 @@
                                     <!-- <th class='text-center' width="25%">NUMBER OF UNFILLED SEATS MOVED <br />  FROM PRINCIPAL LOGIN</th> -->
                                     <th class='text-center' width="12%">COMED-K <br /> STATUS</th>
                                     <th class='text-center' width="12%">COMED-K <br /> VACANT</th>
-                                    <th class='text-center' width="12%">MGMT-COMEDK  <br /> INTAKE</th>
-                                    <th class='text-center' width="12%">MGMT-COMEDK  <br /> ADMITTED</th>
-                                    <th class='text-center' width="12%">MGMT-COMEDK  <br /> VACANT</th>
+                                    <th class='text-center' width="12%">MGMT-COMEDK <br /> INTAKE</th>
+                                    <th class='text-center' width="12%">MGMT-COMEDK <br /> ADMITTED</th>
+                                    <th class='text-center' width="12%">MGMT-COMEDK <br /> VACANT</th>
                                 </tr>
-                            </thead>   
+                            </thead>
                             <tbody>
                                 <?php $i = 1;
                                 echo "<tr><th class='bg-gray' colspan='9'>UG COURSES (UNAIDED)</th></tr>";
@@ -52,13 +52,15 @@
                                     echo "<tr>";
                                     echo "<td>" . $i++ . ".</td>";
                                     echo "<td class='text-left'>" . $department_name . "</td>";
-                                
+
                                     $COMEDK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'COMED-K', 'UnAided')->row()->cnt;
                                     echo "<td>" . $COMEDK_UNAIDED . '/' . $unaidedmgmt1->unaided_comed_k_intake . "</td>";
-                                    echo "<td>" . $unaidedmgmt1->unaided_comed_k_intake - $COMEDK_UNAIDED . "</td>";
-                                    
+
+                                    $COMEDK_VACANT = $unaidedmgmt1->unaided_comed_k_intake - $COMEDK_UNAIDED;
+                                    echo "<td>" . $COMEDK_VACANT . "</td>";
+
                                     // echo "<td>" . $unaidedmgmt1->moved . "</td>";
-                                    $MOVED = "--";
+                                    $MOVED = $unaidedmgmt1->moved;
                                     echo "<td>" . $MOVED . "</td>";
 
                                     $MGMT_COMEDK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'MGMT-COMEDK', 'UnAided')->row()->cnt;
