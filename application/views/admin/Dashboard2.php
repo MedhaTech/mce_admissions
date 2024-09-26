@@ -90,8 +90,8 @@
                                 echo "<th>" . $COMEDK_UNAIDED_TOTAL . '/' . $COMEDK_UNAIDED_INTAKE_TOTAL . "</th>";
                                 echo "<th>" . $COMEDK_VACANT_TOTAL . "</th>";
                                 echo "<th class='bg-gray-light'>" . $MOVED_TOTAL . "</th>";
-                                echo "<th>" . $MGMT_COMEDK_UNAIDED_TOTAL . "</th>";
-                                echo "<tH>" . $MGMT_COMEDK_VACANT_TOTAL . "</th>";
+                                echo "<th class='bg-success-light'>" . $MGMT_COMEDK_UNAIDED_TOTAL . "</th>";
+                                echo "<th class='bg-warning-light'>" . $MGMT_COMEDK_VACANT_TOTAL . "</th>";
                                 echo "</tr>";
                                 ?>
                         </table>
