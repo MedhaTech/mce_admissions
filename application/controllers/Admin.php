@@ -174,8 +174,15 @@ class Admin extends CI_Controller
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			
+			$admissionStats = $this->admin_model->getAdmissionOverallStats(0)->result();
+			$aidedAdmitted = array();
+			$unaidedAdmitted = array();
+			// echo "<pre>";
 			$depart = $this->admin_model->getActiveComedk()->result();
-			// var_dump($depart); die();
+			
+			// echo "<pre>";
+			// print_r($depart); die();
 			$unaidedmgmt = array();
 			$unaidedcomed = array();
 			foreach ($depart as $depart1) {
