@@ -129,7 +129,7 @@
                         <?php if((in_array($role, array(1,2,3,4,5,6,7,8,9)))){ ?>
                         <li class="nav-header">ADMISSIONS</li>
                         <?php } ?>
-                        <?php if((in_array($role, array(1,2,3,5,7)))){ ?>
+                        <?php if((in_array($role, array(1,2,3,5,7,9)))){ ?>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/admissions"
                                 class="nav-link <?= $menu_active = ($menu == "admissions") ? 'active' : ''; ?>">
