@@ -31,15 +31,16 @@
                         <table class="table table-hover text-center table-sm">
                             <thead>
                                 <tr>
-                                    <th width="5%">S.NO</th>
+                                    <th width="5%" class="align-middle">S.NO</th>
                                     <!-- <th width="20%">Stream</th> -->
-                                    <th width="35%">DEPARTMENT</th>
+                                    <th width="35%" class="align-middle">DEPARTMENT</th>
                                     <!-- <th class='text-center' width="25%">NUMBER OF UNFILLED SEATS MOVED <br />  FROM PRINCIPAL LOGIN</th> -->
-                                    <th class='text-center' width="12%">COMED-K <br /> STATUS</th>
-                                    <th class='text-center' width="12%">COMED-K <br /> VACANT</th>
-                                    <th class='text-center' width="12%">MGMT-COMEDK <br /> INTAKE</th>
-                                    <th class='text-center' width="12%">MGMT-COMEDK <br /> ADMITTED</th>
-                                    <th class='text-center' width="12%">MGMT-COMEDK <br /> VACANT</th>
+                                    <th class='text-center align-middle' width="12%">COMED-K <br /> STATUS</th>
+                                    <th class='text-center align-middle' width="12%">COMED-K <br /> UNFILLED</th>
+                                    <th class='text-center align-middle' width="12%">MGMT-COMEDK <br /> INTAKE </br><span style="font-size: 9px;">(MOVED FROM PRINCIPAL LOGIN)</span></th>
+                                    <!-- <span style="font-size: 10px;">(NUMBER OF UNFILLED SEATS MOVED FROM PRINCIPAL LOGIN)</span> -->
+                                    <th class='text-center align-middle' width="12%">MGMT-COMEDK <br /> ADMITTED</th>
+                                    <th class='text-center align-middle' width="12%">MGMT-COMEDK <br /> UNFILLED</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -73,11 +74,11 @@
                                     $MOVED_TOTAL = $MOVED_TOTAL + $MOVED;
 
                                     $MGMT_COMEDK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'MGMT-COMEDK', 'UnAided')->row()->cnt;
-                                    echo "<td>" . $MGMT_COMEDK_UNAIDED . "</td>";
+                                    echo "<td class='bg-success-light'>" . $MGMT_COMEDK_UNAIDED . "</td>";
                                     $MGMT_COMEDK_UNAIDED_TOTAL = $MGMT_COMEDK_UNAIDED_TOTAL + $MGMT_COMEDK_UNAIDED;
 
                                     $MGMT_COMEDK_VACANT = $unaidedmgmt1->moved - $MGMT_COMEDK_UNAIDED;
-                                    echo "<td>" . $MGMT_COMEDK_VACANT . "</td>";
+                                    echo "<td class='bg-warning-light'>" . $MGMT_COMEDK_VACANT . "</td>";
 
                                     $MGMT_COMEDK_VACANT_TOTAL = $MGMT_COMEDK_VACANT_TOTAL + $MGMT_COMEDK_VACANT;
 
@@ -90,8 +91,8 @@
                                 echo "<th>" . $COMEDK_UNAIDED_TOTAL . '/' . $COMEDK_UNAIDED_INTAKE_TOTAL . "</th>";
                                 echo "<th>" . $COMEDK_VACANT_TOTAL . "</th>";
                                 echo "<th class='bg-gray-light'>" . $MOVED_TOTAL . "</th>";
-                                echo "<th>" . $MGMT_COMEDK_UNAIDED_TOTAL . "</th>";
-                                echo "<tH>" . $MGMT_COMEDK_VACANT_TOTAL . "</th>";
+                                echo "<th class='bg-success-light'>" . $MGMT_COMEDK_UNAIDED_TOTAL . "</th>";
+                                echo "<th class='bg-warning-light'>" . $MGMT_COMEDK_VACANT_TOTAL . "</th>";
                                 echo "</tr>";
                                 ?>
                         </table>
