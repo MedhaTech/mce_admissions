@@ -134,20 +134,20 @@
 
                                         echo "</tr>";
                                     }
-                                    echo "<tr class='bg-primary-light text-bold'>";
-                                    echo "<td colspan='2'>TOTAL AIDED</td>";
-                                    echo "<td>" . $MGMT_AIDED_TOTAL . '/' . $AIDED_MGMT_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $MGMT_COMEDK_AIDED_TOTAL . "</td>";
-                                    echo "<td>" . $COMEDK_AIDED_TOTAL . '/' . $AIDED_COMEDK_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $KEA_AIDED_TOTAL . '/' . $AIDED_KEA_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $SNQ_AIDED_TOTAL . '/' . $AIDED_SNQ_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $JK_AIDED_TOTAL . "</td>";
-                                    echo "<td>" . $GOI_AIDED_TOTAL . "</td>";
-                                    echo "<td>" . $TOTAL_AIDED_TOTAL . '/' . $AIDED_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $MGMT_LATERAL_AIDED_TOTAL . "</td>";
-                                    echo "<td>" . $KEALAT_AIDED_TOTAL . "</td>";
-                                    echo "<td>" . $TOTAL_LATERAL_AIDED_TOTAL . "</td>";
-                                    echo "</tr>";
+                                    // echo "<tr class='bg-primary-light text-bold'>";
+                                    // echo "<td colspan='2'>TOTAL AIDED</td>";
+                                    // echo "<td>" . $MGMT_AIDED_TOTAL . '/' . $AIDED_MGMT_INTAKE_TOTAL . "</td>";
+                                    // echo "<td>" . $MGMT_COMEDK_AIDED_TOTAL . "</td>";
+                                    // echo "<td>" . $COMEDK_AIDED_TOTAL . '/' . $AIDED_COMEDK_INTAKE_TOTAL . "</td>";
+                                    // echo "<td>" . $KEA_AIDED_TOTAL . '/' . $AIDED_KEA_INTAKE_TOTAL . "</td>";
+                                    // echo "<td>" . $SNQ_AIDED_TOTAL . '/' . $AIDED_SNQ_INTAKE_TOTAL . "</td>";
+                                    // echo "<td>" . $JK_AIDED_TOTAL . "</td>";
+                                    // echo "<td>" . $GOI_AIDED_TOTAL . "</td>";
+                                    // echo "<td>" . $TOTAL_AIDED_TOTAL . '/' . $AIDED_INTAKE_TOTAL . "</td>";
+                                    // echo "<td>" . $MGMT_LATERAL_AIDED_TOTAL . "</td>";
+                                    // echo "<td>" . $KEALAT_AIDED_TOTAL . "</td>";
+                                    // echo "<td>" . $TOTAL_LATERAL_AIDED_TOTAL . "</td>";
+                                    // echo "</tr>";
 
                                     $i = 1;
                                     $unaidedAdmitted = $newArr['UnAided'];
