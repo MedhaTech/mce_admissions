@@ -8893,6 +8893,11 @@ With good wishes";
 			$contactInfo1 = "Fill all the below mentioned data with Seal & Signature of the Payee Bank Officlal,";
 			$contactInfo2 = "and Upload to E Mail swdcb@mcehassan.ac.in,";
 			$contactInfo3 = "Submit the herd copy to Fees Section, Dean (SA) Office";
+			if ($admissionDetails->sub_quota == 'Aided') {
+				$contactInfo4 = "ACCOUNT NUMBER -  120030893500 IFSC -CNRB0011405";
+			} else {
+				$contactInfo4 = "UA ACCOUNT NUMBER -  14053070001574 IFSC -CNRB0011405";
+			}
 			$issuedOn = "Date : " . date("m-d-Y ");
 			$programe = "PROGRAME : B.E";
 			$chellan = "Chellan : TF24-25/" . $voucherDetails->id;
@@ -8932,10 +8937,11 @@ With good wishes";
 			$pdf->Cell(0, 4, $contactInfo1, 0, 1, 'C');
 			$pdf->Cell(0, 4, $contactInfo2, 0, 1, 'C');
 			$pdf->Cell(0, 4, $contactInfo3, 0, 1, 'C');
+			$pdf->Cell(0, 4, $contactInfo4, 0, 1, 'C');
 			$x1 = 17;  // Starting point x-coordinate
-			$y1 = 37;  // Starting point y-coordinate
+			$y1 = 41;  // Starting point y-coordinate
 			$x2 = 198; // Ending point x-coordinate
-			$y2 = 37;  // Ending point y-coordinate
+			$y2 = 41;  // Ending point y-coordinate
 
 
 			// Set line width
