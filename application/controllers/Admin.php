@@ -138,7 +138,8 @@ class Admin extends CI_Controller
 				$newArr[$admissionStats1->sub_quota][$admissionStats1->dept_id][$admissionStats1->quota] = $admissionStats1->cnt;
 			}
 			$data['newArr'] = $newArr;
-
+			// echo "<pre>";
+			// print_r($newArr); die;
 			$departments = $this->admin_model->getActiveDepartments()->result();
 			$aided = array();
 			$unaided = array();
