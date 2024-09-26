@@ -46,6 +46,11 @@
                                 <?php $i = 1;
                                 echo "<tr><th class='bg-gray' colspan='9'>UG COURSES (UNAIDED)</th></tr>";
                                 // echo "<pre>"; print_r($unaidedmgmt); 
+                                $COMEDK_UNAIDED_TOTAL = 0;
+                                $COMEDK_UNAIDED_INTAKE_TOTAL = 0;
+                                $COMEDK_VACANT_TOTAL = 0;
+                                $MOVED_TOTAL = 0;
+                                $MGMT_COMEDK_UNAIDED_TOTAL = 0;
                                 foreach ($unaidedmgmt as $unaidedmgmt1) {
                                     $department_id = $unaidedmgmt1->department_id;
                                     $department_name = $unaidedmgmt1->department_name . ' [' . $unaidedmgmt1->department_short_name . '] - [' . $unaidedmgmt1->stream_short_name . ']';
@@ -55,23 +60,39 @@
 
                                     $COMEDK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'COMED-K', 'UnAided')->row()->cnt;
                                     echo "<td>" . $COMEDK_UNAIDED . '/' . $unaidedmgmt1->unaided_comed_k_intake . "</td>";
+                                    $COMEDK_UNAIDED_TOTAL = $COMEDK_UNAIDED_TOTAL + $COMEDK_UNAIDED;
+                                    $COMEDK_UNAIDED_INTAKE_TOTAL = $unaidedmgmt1->unaided_comed_k_intake + $COMEDK_UNAIDED_INTAKE_TOTAL;
 
                                     $COMEDK_VACANT = $unaidedmgmt1->unaided_comed_k_intake - $COMEDK_UNAIDED;
                                     echo "<td>" . $COMEDK_VACANT . "</td>";
+                                    $COMEDK_VACANT_TOTAL = $COMEDK_VACANT_TOTAL + $COMEDK_VACANT;
 
                                     // echo "<td>" . $unaidedmgmt1->moved . "</td>";
                                     $MOVED = $unaidedmgmt1->moved;
-                                    echo "<td>" . $MOVED . "</td>";
+                                    echo "<td class='bg-gray-light'>" . $MOVED . "</td>";
+                                    $MOVED_TOTAL = $MOVED_TOTAL + $MOVED;
 
                                     $MGMT_COMEDK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'MGMT-COMEDK', 'UnAided')->row()->cnt;
                                     echo "<td>" . $MGMT_COMEDK_UNAIDED . "</td>";
+                                    $MGMT_COMEDK_UNAIDED_TOTAL = $$MGMT_COMEDK_UNAIDED_TOTAL + $MGMT_COMEDK_UNAIDED;
 
                                     $MGMT_COMEDK_VACANT = $unaidedmgmt1->moved - $MGMT_COMEDK_UNAIDED;
                                     echo "<td>" . $MGMT_COMEDK_VACANT . "</td>";
 
+                                    $MGMT_COMEDK_VACANT_TOTAL = $MGMT_COMEDK_VACANT_TOTAL + $MGMT_COMEDK_VACANT;
+
                                     // echo "<td>".$unaidedmgmt1->unaided_mgmt_intake_new."</td>";
                                     echo "</tr>";
                                 }
+
+                                echo "<tr>";
+                                echo "<th colspan='2' class='text-bold'>OVERALL</th>";
+                                echo "<th>" . $COMEDK_UNAIDED_TOTAL . '/' . $COMEDK_UNAIDED_INTAKE_TOTAL . "</th>";
+                                echo "<th>" . $COMEDK_VACANT_TOTAL . "</th>";
+                                echo "<th class='bg-gray-light'>" . $MOVED_TOTAL . "</th>";
+                                echo "<th>" . $MGMT_COMEDK_UNAIDED_TOTAL . "</th>";
+                                echo "<tH>" . $MGMT_COMEDK_VACANT_TOTAL . "</th>";
+                                echo "</tr>";
                                 ?>
                         </table>
                         <?php
