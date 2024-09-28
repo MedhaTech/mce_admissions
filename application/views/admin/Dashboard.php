@@ -101,7 +101,7 @@
                                         $KEA_AIDED_TOTAL = $KEA_AIDED_TOTAL + $KEA_AIDED;
                                         $AIDED_KEA_INTAKE_TOTAL = $AIDED_KEA_INTAKE_TOTAL + $aided1->aided_kea_intake;
 
-                                        $SNQ_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("SNQ", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["SNQ"] : 0 : 0);
+                                        $SNQ_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("KEA-SNQ", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["SNQ"] : 0 : 0);
                                         echo "<td>" . $SNQ_AIDED . '/' . $aided1->aided_snq_intake . "</td>";
                                         $SNQ_AIDED_TOTAL = $SNQ_AIDED_TOTAL + $SNQ_AIDED;
                                         $AIDED_SNQ_INTAKE_TOTAL = $AIDED_SNQ_INTAKE_TOTAL + $aided1->aided_snq_intake;
