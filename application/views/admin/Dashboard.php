@@ -101,7 +101,7 @@
                                         $KEA_AIDED_TOTAL = $KEA_AIDED_TOTAL + $KEA_AIDED;
                                         $AIDED_KEA_INTAKE_TOTAL = $AIDED_KEA_INTAKE_TOTAL + $aided1->aided_kea_intake;
 
-                                        $SNQ_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("KEA-SNQ", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["SNQ"] : 0 : 0);
+                                        $SNQ_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("KEA-SNQ", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["KEA-SNQ"] : 0 : 0);
                                         echo "<td>" . $SNQ_AIDED . '/' . $aided1->aided_snq_intake . "</td>";
                                         $SNQ_AIDED_TOTAL = $SNQ_AIDED_TOTAL + $SNQ_AIDED;
                                         $AIDED_SNQ_INTAKE_TOTAL = $AIDED_SNQ_INTAKE_TOTAL + $aided1->aided_snq_intake;
@@ -168,6 +168,7 @@
                                     $KEALAT_UNAIDED_TOTAL = 0;
                                     $TOTAL_LATERAL_UNAIDED_TOTAL = 0;
                                     echo "<tr><th class='bg-gray' colspan='13'>UG COURSES (UNAIDED)</th></tr>";
+                                    
                                     foreach ($unaided as $unaided1) {
                                         $department_id = $unaided1->department_id;
                                         $department_name = $unaided1->department_name . '[' . $unaided1->department_short_name . ']';
@@ -184,26 +185,31 @@
                                         echo "<td class='bg-gray-light'>" . $MGMT_COMEDK_UNAIDED . "</td>";
                                         $MGMT_COMEDK_UNAIDED_TOTAL = $MGMT_COMEDK_UNAIDED_TOTAL + $MGMT_COMEDK_UNAIDED;
 
-                                        $COMEDK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'COMED-K', 'UnAided')->row()->cnt;
+                                        $COMEDK_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("COMED-K", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["COMED-K"] : 0 : 0);
+                                        // $COMEDK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'COMED-K', 'UnAided')->row()->cnt;
                                         echo "<td>" . $COMEDK_UNAIDED . '/' . $unaided1->unaided_comed_k_intake . "</td>";
                                         $COMEDK_UNAIDED_TOTAL = $COMEDK_UNAIDED_TOTAL + $COMEDK_UNAIDED;
                                         $UNAIDED_COMEDK_INTAKE_TOTAL = $UNAIDED_COMEDK_INTAKE_TOTAL + $unaided1->unaided_comed_k_intake;
 
-                                        $KEA_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'KEA-CET(GOVT)', 'UnAided')->row()->cnt;
+                                        $KEA_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("KEA-CET(GOVT)", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["KEA-CET(GOVT)"] : 0 : 0);
+                                        // $KEA_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'KEA-CET(GOVT)', 'UnAided')->row()->cnt;
                                         echo "<td>" . $KEA_UNAIDED . '/' . $unaided1->unaided_kea_intake . "</td>";
                                         $KEA_UNAIDED_TOTAL = $KEA_UNAIDED_TOTAL + $KEA_UNAIDED;
                                         $UNAIDED_KEA_INTAKE_TOTAL = $UNAIDED_KEA_INTAKE_TOTAL + $unaided1->unaided_kea_intake;
 
-                                        $SNQ_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'SNQ', 'UnAided')->row()->cnt;
+                                        $SNQ_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("KEA-SNQ", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["KEA-SNQ"] : 0 : 0);
+                                        // $SNQ_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'KEA-SNQ', 'UnAided')->row()->cnt;
                                         echo "<td>" . $SNQ_UNAIDED . '/' . $unaided1->unaided_snq_intake . "</td>";
                                         $SNQ_UNAIDED_TOTAL = $SNQ_UNAIDED_TOTAL + $SNQ_UNAIDED;
                                         $UNAIDED_SNQ_INTAKE_TOTAL = $UNAIDED_SNQ_INTAKE_TOTAL + $unaided1->unaided_snq_intake;
 
-                                        $JK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'J&K (Non Karnataka)', 'UnAided')->row()->cnt;
+                                        $JK_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("J&K (Non Karnataka)", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["J&K (Non Karnataka)"] : 0 : 0);
+                                        // $JK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'J&K (Non Karnataka)', 'UnAided')->row()->cnt;
                                         echo "<td>" . $JK_UNAIDED . "</td>";
                                         $JK_UNAIDED_TOTAL = $JK_UNAIDED_TOTAL + $JK_UNAIDED;
 
-                                        $GOI_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'GOI (Non Karnataka)', 'UnAided')->row()->cnt;
+                                        $GOI_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("GOI (Non Karnataka)", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["GOI (Non Karnataka)"] : 0 : 0);
+                                        // $GOI_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'GOI (Non Karnataka)', 'UnAided')->row()->cnt;
                                         echo "<td>" . $GOI_UNAIDED . "</td>";
                                         $GOI_UNAIDED_TOTAL = $GOI_UNAIDED_TOTAL + $GOI_UNAIDED;
 
@@ -216,7 +222,8 @@
                                         echo "<td class='bg-danger-light'>" . $MGMT_LATERAL_UNAIDED . "</td>";
                                         $MGMT_LATERAL_UNAIDED_TOTAL = $MGMT_LATERAL_UNAIDED + $MGMT_LATERAL_UNAIDED_TOTAL;
 
-                                        $KEALAT_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'KEA-CET(LATERAL)', 'UnAided')->row()->cnt;
+                                        $KEALAT_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("KEA-CET(LATERAL)", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["KEA-CET(LATERAL)"] : 0 : 0);
+                                        // $KEALAT_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'KEA-CET(LATERAL)', 'UnAided')->row()->cnt;
                                         echo "<td class='bg-danger-light'>" . $KEALAT_UNAIDED . "</td>";
                                         $KEALAT_UNAIDED_TOTAL = $KEALAT_UNAIDED_TOTAL + $KEALAT_UNAIDED;
 
