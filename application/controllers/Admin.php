@@ -9213,6 +9213,6 @@ With good wishes";
 		}
 
 
-		return $response_array;
+		print_r($response_array) ;
 	}
 }
