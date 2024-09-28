@@ -9152,4 +9152,67 @@ With good wishes";
 			redirect('admin/timeout');
 		}
 	}
+	public function getTransactionDetails($order_id)
+	{
+		require_once APPPATH . 'libraries/Jwt.php';
+		$this->load->library('logger');
+
+
+		$billdesk_URL_retrive = "https://api.billdesk.com/payments/ve1_2/transactions/get";
+		$trace_id = rand(1000000000, 9999999999);
+		$servertime = time();
+		$headers = array("alg" => "HS256", "clientid" => "cnbmlndegc", "kid" => "HMAC");
+		$payload = array(
+			"mercid" => 'CNBMLNDEGC',
+			"orderid" => $order_id,
+		);
+		$curl_payload = JWT::encode($payload, 'WHjXW5WHk27mr50KetSh75vyapmO14IT', 'HS256', $headers);
+		$message = "BillDesk retrieve payload - " . $curl_payload . "\n";
+		$this->logger->write('billdesk', 'debug', $message);
+		$ch = curl_init($billdesk_URL_retrive);
+		$ch_headers = array(
+			"Content-Type: application/jose",
+			"accept: application/jose",
+			"BD-Traceid: $trace_id",
+			"BD-Timestamp: $servertime"
+		);
+
+		$message = "BillDesk retrieve curl header - " . json_encode($ch_headers) . "\n";
+		$this->logger->write('billdesk', 'debug', $message);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $ch_headers);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $curl_payload);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$response = curl_exec($ch);
+
+		$message = "Billdesk retrieve order response - " . $response;
+		$this->logger->write('billdesk', 'debug', $message);
+		curl_close($ch);
+		$result_decoded = JWT::decode($response, 'WHjXW5WHk27mr50KetSh75vyapmO14IT', 'HS256');
+		$response_array = (array) $result_decoded;
+		$message = "Billdesk retrieve order response decoded - " . json_encode($response_array);
+		$this->logger->write('billdesk', 'debug', $message);
+		$res['status'] = 3;
+		$res['reason'] = "UNKNOWN";
+
+		if ($response_array['transactionid']) {
+
+			if ($response_array['auth_status'] == '0300') {
+				$res['status'] = 5;
+				$res['txn_id'] = $response_array['transactionid'];
+				$res['reason'] = 'success';
+			} else if ($response_array['auth_status'] == '0002') {
+				$res['status'] = 2;
+				$res['reason'] = 'pending';
+			} else if ($response_array['auth_status'] == '0399') {
+				$res['status'] = 6;
+				$res['reason'] = 'fail';
+			}
+
+			$res['amount'] = (int)$response_array['amount'];
+		}
+
+
+		return $response_array;
+	}
 }
