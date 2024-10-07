@@ -82,7 +82,7 @@
                           <div class="col-md-6 col-sm-12">
                               <div class="form-group">
                                   <label for="admission_based">Admission Based on</label>
-                                  <?php $admission_options = array(" "=>"Select Admission Based On","PUC"=>"PUC","DIPLOMA"=>"DIPLOMA","GTTC"=>"GTTC"); 
+                                  <?php $admission_options = array(" "=>"Select Admission Based On","PUC"=>"PUC","DIPLOMA"=>"DIPLOMA","GTTC"=>"GTTC","BE"=>"BE"); 
                                      echo form_dropdown('admission_based', $admission_options, (set_value('admission_based')) ? set_value('admission_based') : $admission_based , 'class="form-control " id="admission_based"'); 
                                 ?>
                                   <span class="text-danger"><?php echo form_error('admission_based'); ?></span>
@@ -184,6 +184,55 @@
                                 name="gttc4_grade">
                             <span
                                 class="text-danger"><?php echo form_error('gttc4_grade'); ?></span>
+                        </div>
+                    </div>
+
+                    <div class="row be">
+                        <div class="form-group col-md-3 col-sm-12">
+                            <label class="label font-13 be">BE-I Percentage<span
+                                    class="text-danger">*</span></label>
+                            <input type="text"
+                                class="form-control be"
+                                id="degree1_grade"
+                                value="<?php echo (set_value('degree1_grade')) ? set_value('degree1_grade') : $degree1_grade; ?>"
+                                name="degree1_grade"
+                            >
+                            <span
+                                class="text-danger"><?php echo form_error('degree1_grade'); ?></span>
+                        </div>
+                        <div class="form-group col-md-3 col-sm-12">
+                            <label class="label font-13 be">BE-II Percentage<span
+                                    class="text-danger">*</span></label>
+                            <input type="text"
+                                class="form-control be"
+                                id="degree2_grade"
+                                value="<?php echo (set_value('degree2_grade')) ? set_value('degree2_grade') : $degree2_grade; ?>"
+                                name="degree2_grade"
+                            >
+                            <span
+                                class="text-danger"><?php echo form_error('degree2_grade'); ?></span>
+                        </div>
+                        <div class="form-group col-md-3 col-sm-12">
+                            <label class="label font-13 be">BE-III Percentage<span
+                                    class="text-danger">*</span></label>
+                            <input type="text"
+                                class="form-control be"
+                                id="degree3_grade"
+                                value="<?php echo (set_value('degree3_grade')) ? set_value('degree3_grade') : $degree3_grade; ?>"
+                                name="degree3_grade"
+                            >
+                            <span
+                                class="text-danger"><?php echo form_error('degree3_grade'); ?></span>
+                        </div>
+                        <div class="form-group col-md-3 col-sm-12">
+                            <label class="label font-13 be">BE-IV Percentage</label>
+                            <input type="text"
+                                class="form-control be"
+                                id="degree4_grade"
+                                value="<?php echo (set_value('degree4_grade')) ? set_value('degree4_grade') : $degree4_grade; ?>"
+                                name="degree4_grade">
+                            <span
+                                class="text-danger"><?php echo form_error('degree4_grade'); ?></span>
                         </div>
                     </div>
 
@@ -406,11 +455,13 @@ $(document).ready(function() {
     $(".entyp").hide();
     $(".dip").hide();
     $(".gtc").hide();
+    $(".be").hide();
         $("#admission_based").change(function () {
             if($("#admission_based").val() == "PUC") {
                 $(".entyp").show();
                 $(".dip").hide();
                 $(".gtc").hide();
+                $(".be").hide();
             }
         })
 
@@ -419,6 +470,7 @@ $(document).ready(function() {
                 $(".dip").show();
                 $(".entyp").hide();
                 $(".gtc").hide();
+                $(".be").hide();
             }
         })
 
@@ -427,6 +479,16 @@ $(document).ready(function() {
                 $(".gtc").show();
                 $(".entyp").hide();
                 $(".dip").hide();
+                $(".be").hide();
+            }
+        })
+
+        $("#admission_based").change(function () {
+            if($("#admission_based").val() == "BE") {
+                $(".gtc").hide();
+                $(".entyp").hide();
+                $(".dip").hide();
+                $(".be").show();
             }
         })
 });
