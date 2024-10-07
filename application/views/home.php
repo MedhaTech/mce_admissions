@@ -91,7 +91,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
 
-                                            <h5 class="text-danger">B.E Admissions Open for 2024-25 <span
+                                            <h5 class="text-danger">B.E/P.G Admissions Open for 2024-25 <span
                                                     class="h6 text-primary">(for management quota seats fill
                                                     details carefully)</span></h5>
                                             <div class="row">
@@ -167,7 +167,7 @@
                                                 <div class="form-group col-md-6 col-sm-12">
                                                     <label class="label font-13">Admission Based on<span
                                                             class="text-danger">*</span></label>
-                                                    <?php $admission_options = array(" "=>"Select Admission Based On","PUC"=>"PUC","DIPLOMA"=>"DIPLOMA","GTTC"=>"GT & TC"); 
+                                                    <?php $admission_options = array(" "=>"Select Admission Based On","PUC"=>"PUC","DIPLOMA"=>"DIPLOMA","GTTC"=>"GT & TC","BE"=>"BE"); 
                                                             echo form_dropdown('admission_based', $admission_options, (set_value('admission_based')) ? set_value('admission_based') : $admission_based , 'class="form-control form-control-sm" id="admission_based" required'); 
                                                     ?>
                                                     <span
@@ -286,18 +286,67 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row">
+                                            <div class="row" id="beFields">
+                                                <div class="form-group col-md-3 col-sm-12">
+                                                    <label class="label font-13">BE-I Percentage<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text"
+                                                        class="form-control form-control-sm percentage-input"
+                                                        id="degree1_grade"
+                                                        value="<?php echo (set_value('degree1_grade')) ? set_value('degree1_grade') : $degree1_grade; ?>"
+                                                        name="degree1_grade" placeholder="Enter BE-I Percentage"
+                                                       >
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('degree1_grade'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-3 col-sm-12">
+                                                    <label class="label font-13">BE-II Percentage<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text"
+                                                        class="form-control form-control-sm percentage-input"
+                                                        id="degree2_grade"
+                                                        value="<?php echo (set_value('degree2_grade')) ? set_value('degree2_grade') : $degree2_grade; ?>"
+                                                        name="degree2_grade" placeholder="Enter BE-II Percentage"
+                                                       >
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('degree2_grade'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-3 col-sm-12">
+                                                    <label class="label font-13">BE-III Percentage<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text"
+                                                        class="form-control form-control-sm percentage-input"
+                                                        id="degree3_grade"
+                                                        value="<?php echo (set_value('degree3_grade')) ? set_value('degree3_grade') : $degree3_grade; ?>"
+                                                        name="degree3_grade" placeholder="Enter BE-III Percentage"
+                                                       >
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('degree3_grade'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-3 col-sm-12">
+                                                    <label class="label font-13">BE-IV Percentage</label>
+                                                    <input type="text"
+                                                        class="form-control form-control-sm percentage-input"
+                                                        id="degree4_grade"
+                                                        value="<?php echo (set_value('degree4_grade')) ? set_value('degree4_grade') : $degree4_grade; ?>"
+                                                        name="degree4_grade" placeholder="Enter BE-IV Percentage">
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('degree4_grade'); ?></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row" id="ugcourse">
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label font-13">Branch Preference-I<span
                                                             class="text-danger">*</span></label>
-                                                    <?php echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control form-control-sm" id="course" required'); ?>
+                                                    <?php echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control form-control-sm" id="course" '); ?>
                                                     <span class="text-danger"><?php echo form_error('course'); ?></span>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label font-13">Branch Preference-II<span
                                                             class="text-danger">*</span></label>
                                                     <?php 
-                                                            echo form_dropdown('course1', $course_options, (set_value('course1')) ? set_value('course1') : $course1, 'class="form-control form-control-sm" id="course1" required'); 
+                                                            echo form_dropdown('course1', $course_options, (set_value('course1')) ? set_value('course1') : $course1, 'class="form-control form-control-sm" id="course1" '); 
                                                         ?>
                                                     <span
                                                         class="text-danger"><?php echo form_error('course1'); ?></span>
@@ -305,11 +354,36 @@
                                                 <div class="form-group col-md-4 col-sm-12">
                                                     <label class="label font-13">Branch Preference-III<span
                                                             class="text-danger">*</span></label>
-                                                    <?php  echo form_dropdown('course2', $course_options, (set_value('course2')) ? set_value('course2') : $course2, 'class="form-control form-control-sm" id="course2" required'); ?>
+                                                    <?php  echo form_dropdown('course2', $course_options, (set_value('course2')) ? set_value('course2') : $course2, 'class="form-control form-control-sm" id="course2" '); ?>
                                                     <span
                                                         class="text-danger"><?php echo form_error('course2'); ?></span>
                                                 </div>
                                             </div>
+
+                                            <!-- <div class="row" id="pgcourse">
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="label font-13">Branch Preference-I<span
+                                                            class="text-danger">*</span></label>
+                                                    <?php echo form_dropdown('course', $courses_dropdown, (set_value('course')) ? set_value('course') : $course, 'class="form-control form-control-sm" id="course" '); ?>
+                                                    <span class="text-danger"><?php echo form_error('course'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="label font-13">Branch Preference-II<span
+                                                            class="text-danger">*</span></label>
+                                                    <?php 
+                                                            echo form_dropdown('course1', $courses_dropdown, (set_value('course1')) ? set_value('course1') : $course1, 'class="form-control form-control-sm" id="course1" '); 
+                                                        ?>
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('course1'); ?></span>
+                                                </div>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="label font-13">Branch Preference-III<span
+                                                            class="text-danger">*</span></label>
+                                                    <?php  echo form_dropdown('course2', $courses_dropdown, (set_value('course2')) ? set_value('course2') : $course2, 'class="form-control form-control-sm" id="course2" '); ?>
+                                                    <span
+                                                        class="text-danger"><?php echo form_error('course2'); ?></span>
+                                                </div>
+                                            </div> -->
 
                                             <div class="row">
                                                 <div class="form-group col-md-4 col-sm-12">
@@ -379,10 +453,6 @@
                                                 <div class="form-group col-md-4">
                                                     <button type="submit" class="btn btn-danger btn_solid"
                                                         id="submitBtn" disabled>Submit</button>
-                                                    <!-- <button class="rn-button-style--2 btn_solid btn-size-sm"
-                                                        type="submit" value="submit" name="submit" id="submit"
-                                                        disabled="true">Submit</button> -->
-
                                                 </div>
                                             </div>
 
@@ -878,7 +948,7 @@ $(document).ready(function() {
 });
 </script> -->
 
-    <script>
+<script>
     $(document).ready(function() {
         // Show the modal when the page loads
         // $('#autoModal').modal('show');
@@ -976,27 +1046,46 @@ $(document).ready(function() {
             $('#autoModal').modal('hide');
         });
 
-
         $("#pucFields").hide();
         $("#diplomaFields").hide();
         $("#gttcFields").hide();
+        $("#beFields").hide();
+        $("#pgcourse").hide();
         $("#admission_based").change(function() {
             if ($("#admission_based").val() == "PUC") {
                 $("#pucFields").show();
                 $("#diplomaFields").hide();
                 $("#gttcFields").hide();
+                $("#beFields").hide();
+                $("#ugcourse").show();
+                $("#pgcourse").hide();
             } else if ($("#admission_based").val() == "DIPLOMA") {
                 $("#pucFields").hide();
                 $("#diplomaFields").show();
                 $("#gttcFields").hide();
+                $("#beFields").hide();
+                $("#ugcourse").show();
+                $("#pgcourse").hide();
             } else if ($("#admission_based").val() == "GTTC") {
                 $("#pucFields").hide();
                 $("#diplomaFields").hide();
                 $("#gttcFields").show();
+                $("#beFields").hide();
+                $("#ugcourse").show();
+                $("#pgcourse").hide();
+            } else if ($("#admission_based").val() == "BE") {
+                $("#pucFields").hide();
+                $("#diplomaFields").hide();
+                $("#gttcFields").hide();
+                $("#beFields").show();
+                $("#pgcourse").show();
+                $("#ugcourse").show();
             } else {
                 $("#pucFields").hide();
                 $("#diplomaFields").hide();
                 $("#gttcFields").hide();
+                $("#beFields").hide();
+                $("#pgcourse").hide();
             }
         })
 
@@ -1032,7 +1121,13 @@ $(document).ready(function() {
                 if (!document.getElementById('gttc3_grade').value) allFilled = false;
                 // if (!document.getElementById('gttc4_grade').value) allFilled = false;
             }
-            
+
+            if(qualification == "BE"){
+                if (!document.getElementById('degree1_grade').value) allFilled = false;
+                if (!document.getElementById('degree2_grade').value) allFilled = false;
+                if (!document.getElementById('degree3_grade').value) allFilled = false;
+                // if (!document.getElementById('degree4_grade').value) allFilled = false;
+            }
 
             
             console.log(allFilled);

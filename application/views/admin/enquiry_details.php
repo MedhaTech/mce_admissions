@@ -182,6 +182,23 @@
                                 <th>GT & TC-IV Percentage</th>
                                 <td><?= $enquiryDetails->gttc4_grade . '%'; ?></td>
                             </tr>
+                            <?php elseif ($enquiryDetails->admission_based == 'BE'): ?>
+                            <tr>
+                                <th>BE-I Percentage</th>
+                                <td><?= $enquiryDetails->degree1_grade . '%'; ?></td>
+                            </tr>
+                            <tr>
+                                <th>BE-II Percentage</th>
+                                <td><?= $enquiryDetails->degree2_grade . '%'; ?></td>
+                            </tr>
+                            <tr>
+                                <th>BE-III Percentage</th>
+                                <td><?= $enquiryDetails->degree3_grade . '%'; ?></td>
+                            </tr>
+                            <tr>
+                                <th>BE-IV Percentage</th>
+                                <td><?= $enquiryDetails->degree4_grade . '%'; ?></td>
+                            </tr>
                         <?php endif; ?>
                       </table>
                   </div>

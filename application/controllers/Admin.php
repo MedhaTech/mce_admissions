@@ -371,7 +371,8 @@ class Admin extends CI_Controller
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['academicYear'] = $this->globals->academicYear();
 
-			$data['course_options'] = array(" " => "Select") + $this->courses();
+			// $data['course_options'] = array(" " => "Select") + $this->courses();
+			$data['course_options'] = array("" => "Select Branch") + $this->getAllCourses();
 			$data['type_options'] = array(" " => "Select") + $this->globals->category();
 			$data['states'] = array(" " => "Select State") + $this->globals->states();
 
@@ -404,6 +405,10 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('gttc2_grade', 'Gttc2 Percentage');
 			$this->form_validation->set_rules('gttc3_grade', 'Gttc3 Percentage');
 			$this->form_validation->set_rules('gttc4_grade', 'Gttc4 Percentage');
+			$this->form_validation->set_rules('degree1_grade', 'BE-I Percentage');
+			$this->form_validation->set_rules('degree2_grade', 'BE-II Percentage');
+			$this->form_validation->set_rules('degree3_grade', 'BE-III Percentage');
+			$this->form_validation->set_rules('degree4_grade', 'BE-IV Percentage');
 
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/newEnquiry';
@@ -434,6 +439,10 @@ class Admin extends CI_Controller
 				$data['gttc2_grade'] = $this->input->post('gttc2_grade');
 				$data['gttc3_grade'] = $this->input->post('gttc3_grade');
 				$data['gttc4_grade'] = $this->input->post('gttc4_grade');
+				$data['degree1_grade'] = $this->input->post('degree1_grade');
+				$data['degree2_grade'] = $this->input->post('degree2_grade');
+				$data['degree3_grade'] = $this->input->post('degree3_grade');
+				$data['degree4_grade'] = $this->input->post('degree4_grade');
 				$data['gender'] = $this->input->post('gender');
 				$data['aadhaar'] = $this->input->post('aadhaar');
 
@@ -476,6 +485,10 @@ class Admin extends CI_Controller
 					'gttc2_grade' => $this->input->post('gttc2_grade'),
 					'gttc3_grade' => $this->input->post('gttc3_grade'),
 					'gttc4_grade' => $this->input->post('gttc4_grade'),
+					'degree1_grade' => $this->input->post('degree1_grade'),
+					'degree2_grade' => $this->input->post('degree2_grade'),
+					'degree3_grade' => $this->input->post('degree3_grade'),
+					'degree4_grade' => $this->input->post('degree4_grade'),
 					'status' => '1',
 					'reg_date' => date('Y-m-d H:i:s'),
 					'reg_by' => $data['username']
@@ -496,6 +509,31 @@ class Admin extends CI_Controller
 		} else {
 			redirect('admin', 'refresh');
 		}
+	}
+
+		function getAllCourses()
+	{
+		$detailsUG = $this->admin_model->getDetailsbyfield('1', 'status', 'departments')->result();
+
+		$detailsPG = $this->admin_model->getDetailsbyfield('2', 'stream_id', 'departments')->result();
+
+		$result = array();
+
+		foreach ($detailsUG as $details1) {
+			$row = $this->admin_model->get_stream_by_id($details1->stream_id);
+			if ($row) {
+				$result[$details1->department_id] = $row['stream_short_name'] . ' - ' . $details1->department_name . ' (UG)';
+			}
+		}
+
+		foreach ($detailsPG as $details2) {
+			$row = $this->admin_model->get_stream_by_id($details2->stream_id);
+			if ($row) {
+				$result[$details2->department_id] = $row['stream_short_name'] . ' - ' . $details2->department_name . ' (PG)';
+			}
+		}
+
+		return $result;
 	}
 
 	public function enquiryDetails($id)
