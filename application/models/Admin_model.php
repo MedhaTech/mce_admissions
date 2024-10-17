@@ -834,4 +834,12 @@ class Admin_model extends CI_Model
     $this->db->where('department_id', $department_id);
     $this->db->update('comedk_seats', $data);
   }
+
+  public function getDepartmentsByStream($stream_id)
+{
+    $this->db->where('stream_id', $stream_id);
+    $query = $this->db->get('departments');
+    return $query->result_array();  // Return as an array of department data
+}
+
 }

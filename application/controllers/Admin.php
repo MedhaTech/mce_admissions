@@ -1798,12 +1798,22 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]');
 			$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[admissions.email]');
 			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[admissions.aadhaar]');
+			$this->form_validation->set_rules('stream', 'Stream', 'required');
 			$this->form_validation->set_rules('course', 'Department', 'required');
 			$this->form_validation->set_rules('quota', 'Quota', 'required');
 			$this->form_validation->set_rules('subquota', 'College quota', 'required');
 			$this->form_validation->set_rules('category_allotted', 'Category Allocated', 'required');
 			$this->form_validation->set_rules('category_claimed', 'Category Claimed', 'required');
 			// $this->form_validation->set_rules('college_code', 'College Code', 'required');
+
+			$stream = $this->input->post('stream');
+
+			// Apply validation rules only for PhD students (stream_id = 3)
+			if ($stream == '3') {
+				$this->form_validation->set_rules('batch', 'Batch', 'required');
+				$this->form_validation->set_rules('degree_level', 'Degree Level', 'required');
+			}
+			
 			$this->form_validation->set_rules('sports', 'Sports', 'required');
 			$this->form_validation->set_rules('entrance_type', 'Entrance Type', 'required');
 			$this->form_validation->set_rules('entrance_reg_no', 'Entrance Registration Number', 'required');
@@ -1822,6 +1832,7 @@ class Admin extends CI_Controller
 
 				$data['mobile'] = $this->input->post('mobile');
 				$data['email'] = $this->input->post('email');
+				$data['stream'] = $this->input->post('stream');
 				$data['course'] = $this->input->post('course');
 				$data['aadhaar'] = $this->input->post('aadhaar');
 				$data['quota'] = $this->input->post('quota');
@@ -1831,6 +1842,8 @@ class Admin extends CI_Controller
 				$data['college_code'] = $this->input->post('college_code');
 				$data['sports'] = $this->input->post('sports');
 				$data['sports_activity'] = $this->input->post('sports_activity');
+				$data['batch'] = $this->input->post('batch');
+				$data['degree_level'] = $this->input->post('degree_level');
 				$data['corpus'] = $this->input->post('corpus_fee');
 
 				$data['total_tution_fee'] = $this->input->post('total_tution_fee');
@@ -1890,6 +1903,7 @@ class Admin extends CI_Controller
 					'academic_year' => $currentAcademicYear,
 					'enq_id' => '0',
 					'app_no' => $app_no,
+					'stream_id' => $stream,
 					'dept_id' => $course,
 					'adm_no' => $app_no,
 					'usn' => $usn,
@@ -1897,6 +1911,7 @@ class Admin extends CI_Controller
 					'mobile' => $this->input->post('mobile'),
 					'email' => strtolower($this->input->post('email')),
 					'aadhaar' => $this->input->post('aadhaar'),
+					'stream_id' => $this->input->post('stream'),
 					'dept_id' => $this->input->post('course'),
 					'quota' => $this->input->post('quota'),
 					'sub_quota' => $this->input->post('subquota'),
@@ -1905,6 +1920,8 @@ class Admin extends CI_Controller
 					'college_code' => $this->input->post('college_code'),
 					'sports' => $this->input->post('sports'),
 					'sports_activity' => $this->input->post('sports_activity'),
+					'batch' => $this->input->post('batch'),
+					'degree_level' => $this->input->post('degree_level'),
 					'password' => md5($this->input->post('mobile')),
 					'entrance_type' => $this->input->post('entrance_type'),
 					'entrance_reg_no' => $this->input->post('entrance_reg_no'),
@@ -1919,6 +1936,7 @@ class Admin extends CI_Controller
 					'admit_date' => date('Y-m-d h:i:s'),
 					'admit_by' => $data['username']
 				);
+				// var_dump($insertDetails); die(); 
 
 				$result = $this->admin_model->insertDetails('admissions', $insertDetails);
 
@@ -9253,4 +9271,13 @@ With good wishes";
 
 		print_r($response_array) ;
 	}
+
+	public function getDepartmentsByStream()
+{
+    $stream_id = $this->input->post('stream_id');
+    $departments = $this->admin_model->getDepartmentsByStream($stream_id);
+
+    echo json_encode($departments);  // return departments as JSON
+}
+
 }
