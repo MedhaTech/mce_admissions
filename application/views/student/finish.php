@@ -177,6 +177,35 @@
                             </div>
                         </div>
                     </div>
+
+                    <?php if ($admissionDetails->stream_id == '3'): ?>
+                    <div class="row">
+                          <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Batch (pass out year)</label><br>
+                                    <?php
+                                    if ($admissionDetails->batch != NULL) {
+                                        echo $admissionDetails->batch;
+                                    } else {
+                                        echo "--";
+                                    }
+                                    ?>
+                            </div>
+                          </div>
+                           <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="form-label mb-0">Degree Level</label><br>
+                                    <?php
+                                    if ($admissionDetails->degree_level != NULL) {
+                                        echo $admissionDetails->degree_level;
+                                    } else {
+                                        echo "--";
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                    </div>
+                    <?php endif; ?>
                 </div>
 
             </div>

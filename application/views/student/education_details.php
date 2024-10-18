@@ -1053,6 +1053,430 @@
                           </div>
                       <?php } ?>
 
+                      <?php if ($personalDetails->admission_based == "BE") { ?>
+                          <div class="card-body" id="card2">
+
+
+                              <h3>BE</h3>
+
+                              <div class="form-row">
+                                  <div class="col-md-4 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Level</label>
+                                          <?php $level_options = array("BE" => "BE");
+                                            echo form_dropdown('deg_education_level', $level_options, (set_value('deg_education_level')) ? set_value('deg_education_level') : 'deg_education_level', 'class="form-control " id="deg_education_level"');
+                                            ?>
+                                          <span class="text-danger"><?php echo form_error('deg_education_level'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Board / University</label>
+                                          <input type="text" name="deg_inst_board" id="deg_inst_board" value="<?php echo (set_value('deg_inst_board')) ? set_value('deg_inst_board') : $deg_inst_board; ?>" class="form-control" placeholder="Enter Institution Board">
+                                          <span class="text-danger"><?php echo form_error('deg_inst_board'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Institution Name</label>
+                                          <input type="text" name="deg_inst_name" id="deg_inst_name" value="<?php echo (set_value('deg_inst_name')) ? set_value('deg_inst_name') : $deg_inst_name; ?>" class="form-control" placeholder="Enter Institution Name">
+                                          <span class="text-danger"><?php echo form_error('deg_inst_name'); ?></span>
+                                      </div>
+                                  </div>
+
+
+
+                              </div>
+
+                              <div class="form-row">
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Institution Address</label>
+                                          <input type="text" name="deg_inst_address" id="deg_inst_address" value="<?php echo (set_value('deg_inst_address')) ? set_value('deg_inst_address') : $deg_inst_address; ?>" class="form-control" placeholder="Enter Institution Address">
+                                          <span class="text-danger"><?php echo form_error('deg_inst_address'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+
+                                          <label class="label">Institution Country</label>
+
+                                          <select name="deg_inst_country" id="deg_inst_country" class="form-control input-lg select2">
+                                              <option selected="">Select Country</option>
+                                              <?php foreach ($countries as $country) : ?>
+                                                  <option data-id="<?= $country->id ?>" value="<?= $country->name ?>"><?= $country->name ?></option>
+                                              <?php endforeach; ?>
+                                          </select>
+                                          <span class="text-danger"><?php echo form_error('deg_inst_country'); ?></span>
+
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Institution State</label>
+
+                                          <!-- <input type="text" name="gt_inst_state" id="gt_inst_state" class="form-control" placeholder="Enter Institution State"> -->
+                                          <select name="deg_inst_state" id="deg_inst_state" class="form-control input-lg select2">
+                                              <option value="">Select State</option>
+                                          </select>
+
+                                          <span class="text-danger"><?php echo form_error('deg_inst_state'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+
+                                          <label class="label">Institution City</label>
+                                          <select name="deg_inst_city" id="deg_inst_city" class="form-control input-lg select2">
+                                              <option value="">Select City</option>
+                                          </select>
+                                          <span class="text-danger"><?php echo form_error('deg_inst_city'); ?></span>
+
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="form-row">
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Medium of Instruction</label>
+
+                                          <?php
+
+                                            // $instruction_options= array(" " => "Select Medium of instruction") + $this->globals->gt_medium_of_instruction();
+                                            echo form_dropdown('deg_medium_of_instruction', $instruction_options, (set_value('deg_medium_of_instruction')) ? set_value('deg_medium_of_instruction') : $deg_medium_of_instruction, 'class="form-control form-control" id="deg_medium_of_instruction"');
+                                            ?>
+
+                                          <span class="text-danger"><?php echo form_error('deg_medium_of_instruction'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Register Number</label>
+                                          <input type="text" name="deg_register_number" value="<?php echo (set_value('deg_register_number')) ? set_value('deg_register_number') : $deg_register_number; ?>" id="deg_register_number" class="form-control" placeholder="Enter Register Number">
+                                          <span class="text-danger"><?php echo form_error('deg_register_number'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Year of Passing</label>
+                                          <input type="month" name="deg_year_of_passing" value="<?php echo (set_value('deg_year_of_passing')) ? set_value('deg_year_of_passing') : $deg_year_of_passing; ?>" id="deg_year_of_passing" class="form-control" placeholder="Enter School Year">
+                                          <span class="text-danger"><?php echo form_error('deg_year_of_passing'); ?></span>
+                                      </div>
+                                  </div>
+                              </div>
+
+
+                              <table class="table" border="1">
+                                  <thead>
+                                      <tr>
+                                          <th></th>
+                                          <th>Obtained Marks</th>
+                                          <th>Maximum Marks</th>
+                                          <th>Percentage%</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <!-- Subject 1 -->
+                                      <tr>
+                                          <th><input type="text" name="deg_subject_1_name" id="deg_subject_1_name" class="form-control font-weight-bold" placeholder="I year" value="I year" readonly></th>
+                                          <td>
+                                              <input type="number" name="deg_subject_1_obtained_marks" id="deg_subject_1_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('deg_subject_1_obtained_marks')) ? set_value('deg_subject_1_obtained_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('deg_subject_1_obtained_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="number" name="deg_subject_1_max_marks" id="deg_subject_1_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('deg_subject_1_max_marks')) ? set_value('deg_subject_1_max_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('deg_subject_1_max_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="text" readonly name="deg_subject_1_min_marks" id="deg_subject_1_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('deg_subject_1_min_marks')) ? set_value('deg_subject_1_min_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('deg_subject_1_min_marks'); ?></span>
+                                          </td>
+                                      </tr>
+                                      <!-- Subject 2 -->
+                                      <tr>
+                                          <th><input type="text" name="deg_subject_2_name" id="deg_subject_2_name" class="form-control font-weight-bold" placeholder="II year" value="II year" readonly></th>
+                                          <td>
+                                              <input type="number" name="deg_subject_2_obtained_marks" id="deg_subject_2_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('deg_subject_2_obtained_marks')) ? set_value('deg_subject_2_obtained_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('deg_subject_2_obtained_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="number" name="deg_subject_2_max_marks" id="deg_subject_2_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('deg_subject_2_max_marks')) ? set_value('deg_subject_2_max_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('deg_subject_2_max_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="text" readonly name="deg_subject_2_min_marks" id="deg_subject_2_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('deg_subject_2_min_marks')) ? set_value('deg_subject_2_min_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('deg_subject_2_min_marks'); ?></span>
+                                          </td>
+                                      </tr>
+                                      <!-- Subject 3 -->
+                                      <tr>
+                                          <th><input type="text" name="deg_subject_3_name" id="deg_subject_3_name" class="form-control font-weight-bold" placeholder="III year" value="III year" readonly></th>
+                                          <td>
+                                              <input type="number" name="deg_subject_3_obtained_marks" id="deg_subject_3_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('deg_subject_3_obtained_marks')) ? set_value('deg_subject_3_obtained_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('deg_subject_3_obtained_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="number" name="deg_subject_3_max_marks" id="deg_subject_3_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('deg_subject_3_max_marks')) ? set_value('deg_subject_3_max_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('deg_subject_3_max_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="text" readonly name="deg_subject_3_min_marks" id="deg_subject_3_min_marks" class="form-control" placeholder="Enter Percentage" value="<?php echo (set_value('deg_subject_3_min_marks')) ? set_value('deg_subject_3_min_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('deg_subject_3_min_marks'); ?></span>
+                                          </td>
+                                      </tr>
+                                      <!-- Subject 4 -->
+                                      <tr>
+                                          <th><input type="text" name="deg_subject_4_name" id="deg_subject_4_name" class="form-control font-weight-bold" placeholder="IV year" value="IV year" readonly></th>
+                                          <td>
+                                              <input type="number" name="deg_subject_4_obtained_marks" id="deg_subject_4_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('deg_subject_4_obtained_marks')) ? set_value('deg_subject_4_obtained_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('deg_subject_4_obtained_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="number" name="deg_subject_4_max_marks" id="deg_subject_4_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('deg_subject_4_max_marks')) ? set_value('deg_subject_4_max_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('deg_subject_4_max_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="text" readonly name="deg_subject_4_min_marks" id="deg_subject_4_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('deg_subject_4_min_marks')) ? set_value('deg_subject_4_min_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('deg_subject_4_min_marks'); ?></span>
+                                          </td>
+                                      </tr>
+                                  </tbody>
+                                  <!-- <tfoot>
+                                      <tr>
+                                          <th>Total/Aggregate</th>
+                                          <th><input type="text" name="gt_total_min_marks" id="gt_total_min_marks" class="form-control" value="" readonly></th>
+                                          <th><input type="text" name="gt_total_max_marks" id="gt_total_max_marks" class="form-control" value="" readonly></th>
+                                          <th><input type="text" name="gt_aggregate" id="gt_aggregate" class="form-control" value="" readonly></th>
+                                      </tr>
+
+                                  </tfoot> -->
+                              </table>
+                              <div class="form-row">
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Obtained Marks</label>
+                                          <input type="text" name="deg_total_obtained_marks" value="<?php echo (set_value('deg_total_obtained_marks')) ? set_value('deg_total_obtained_marks') : ''; ?>" id="deg_total_obtained_marks" class="form-control" readonly>
+
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Maximum Marks</label>
+                                          <input type="text" name="deg_total_max_marks" value="<?php echo (set_value('deg_total_max_marks')) ? set_value('deg_total_max_marks') : ''; ?>" id="deg_total_max_marks" class="form-control" readonly>
+
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Aggregate Percentage</label>
+                                          <input type="text" name="deg_aggregate" value="<?php echo (set_value('deg_aggregate')) ? set_value('deg_aggregate') : ''; ?>" id="deg_aggregate" class="form-control" readonly>
+
+                                      </div>
+                                  </div>
+
+                              </div>
+
+
+
+                          </div>
+                      <?php } ?>
+
+                      <?php if ($personalDetails->admission_based == "MTech") { ?>
+                          <div class="card-body" id="card2">
+
+
+                              <h3>MTech</h3>
+
+                              <div class="form-row">
+
+                                  <div class="col-md-4 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Level</label>
+                                          <?php $level_options = array("MTech" => "MTech");
+                                            echo form_dropdown('mtech_education_level', $level_options, (set_value('mtech_education_level')) ? set_value('mtech_education_level') : 'mtech_education_level', 'class="form-control " id="mtech_education_level"');
+                                            ?>
+                                          <span class="text-danger"><?php echo form_error('mtech_education_level'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Board / University</label>
+                                          <input type="text" name="mtech_inst_board" id="mtech_inst_board" value="<?php echo (set_value('mtech_inst_board')) ? set_value('mtech_inst_board') : $mtech_inst_board; ?>" class="form-control" placeholder="Enter Institution Board">
+                                          <span class="text-danger"><?php echo form_error('mtech_inst_board'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Institution Name</label>
+                                          <input type="text" name="mtech_inst_name" id="mtech_inst_name" value="<?php echo (set_value('mtech_inst_name')) ? set_value('mtech_inst_name') : $mtech_inst_name; ?>" class="form-control" placeholder="Enter Institution Name">
+                                          <span class="text-danger"><?php echo form_error('mtech_inst_name'); ?></span>
+                                      </div>
+                                  </div>
+
+
+
+                              </div>
+
+                              <div class="form-row">
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Institution Address</label>
+                                          <input type="text" name="mtech_inst_address" id="mtech_inst_address" value="<?php echo (set_value('mtech_inst_address')) ? set_value('mtech_inst_address') : $mtech_inst_address; ?>" class="form-control" placeholder="Enter Institution Address">
+                                          <span class="text-danger"><?php echo form_error('mtech_inst_address'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+
+                                          <label class="label">Institution Country</label>
+
+                                          <select name="mtech_inst_country" id="mtech_inst_country" class="form-control input-lg select2">
+                                              <option selected="">Select Country</option>
+                                              <?php foreach ($countries as $country) : ?>
+                                                  <option data-id="<?= $country->id ?>" value="<?= $country->name ?>"><?= $country->name ?></option>
+                                              <?php endforeach; ?>
+                                          </select>
+                                          <span class="text-danger"><?php echo form_error('mtech_inst_country'); ?></span>
+
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Institution State</label>
+
+                                          <!-- <input type="text" name="diploma_inst_state" id="diploma_inst_state" class="form-control" placeholder="Enter Institution State"> -->
+                                          <select name="mtech_inst_state" id="mtech_inst_state" class="form-control input-lg select2">
+                                              <option value="">Select State</option>
+                                          </select>
+
+                                          <span class="text-danger"><?php echo form_error('mtech_inst_state'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+
+                                          <label class="label">Institution City</label>
+                                          <select name="mtech_inst_city" id="mtech_inst_city" class="form-control input-lg select2">
+                                              <option value="">Select City</option>
+                                          </select>
+                                          <span class="text-danger"><?php echo form_error('mtech_inst_city'); ?></span>
+
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="form-row">
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Medium of Instruction</label>
+
+                                          <?php
+
+                                            // $instruction_options= array(" " => "Select Medium of instruction") + $this->globals->diploma_medium_of_instruction();
+                                            echo form_dropdown('mtech_medium_of_instruction', $instruction_options, (set_value('mtech_medium_of_instruction')) ? set_value('mtech_medium_of_instruction') : $mtech_medium_of_instruction, 'class="form-control form-control" id="mtech_medium_of_instruction"');
+                                            ?>
+
+                                          <span class="text-danger"><?php echo form_error('mtech_medium_of_instruction'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Register Number</label>
+                                          <input type="text" name="mtech_register_number" value="<?php echo (set_value('mtech_register_number')) ? set_value('mtech_register_number') : $mtech_register_number; ?>" id="mtech_register_number" class="form-control" placeholder="Enter Register Number">
+                                          <span class="text-danger"><?php echo form_error('mtech_register_number'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Year of Passing</label>
+                                          <input type="month" name="mtech_year_of_passing" value="<?php echo (set_value('mtech_year_of_passing')) ? set_value('mtech_year_of_passing') : $mtech_year_of_passing; ?>" id="mtech_year_of_passing" class="form-control" placeholder="Enter School Year">
+                                          <span class="text-danger"><?php echo form_error('mtech_year_of_passing'); ?></span>
+                                      </div>
+                                  </div>
+                              </div>
+                              <table class="table" border="1">
+                                  <thead>
+                                      <tr>
+                                          <th></th>
+                                          <th>Obtained Marks</th>
+                                          <th>Maximum Marks</th>
+                                          <th>Percentage%</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <!-- Subject 1 -->
+                                      <tr>
+                                          <th><input type="text" name="mtech_subject_1_name" id="mtech_subject_1_name" class="form-control font-weight-bold" placeholder="I year" value="I year" readonly></th>
+                                          <td>
+                                              <input type="number" name="mtech_subject_1_obtained_marks" id="mtech_subject_1_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('mtech_subject_1_obtained_marks')) ? set_value('mtech_subject_1_obtained_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('mtech_subject_1_obtained_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="number" name="mtech_subject_1_max_marks" id="mtech_subject_1_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('mtech_subject_1_max_marks')) ? set_value('mtech_subject_1_max_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('mtech_subject_1_max_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="text" readonly name="mtech_subject_1_min_marks" id="mtech_subject_1_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('mtech_subject_1_min_marks')) ? set_value('mtech_subject_1_min_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('mtech_subject_1_min_marks'); ?></span>
+                                          </td>
+                                      </tr>
+                                      <!-- Subject 2 -->
+                                      <tr>
+                                          <th><input type="text" name="mtech_subject_2_name" id="mtech_subject_2_name" class="form-control font-weight-bold" placeholder="II year" value="II year" readonly></th>
+                                          <td>
+                                              <input type="number" name="mtech_subject_2_obtained_marks" id="mtech_subject_2_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('mtech_subject_2_obtained_marks')) ? set_value('mtech_subject_2_obtained_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('mtech_subject_2_obtained_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="number" name="mtech_subject_2_max_marks" id="mtech_subject_2_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('mtech_subject_2_max_marks')) ? set_value('mtech_subject_2_max_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('diploma_subject_2_max_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="text" readonly name="mtech_subject_2_min_marks" id="mtech_subject_2_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('mtech_subject_2_min_marks')) ? set_value('mtech_subject_2_min_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('mtech_subject_2_min_marks'); ?></span>
+                                          </td>
+                                      </tr>
+                                      <!-- Subject 3 -->
+
+                                  </tbody>
+                                  <!-- <tfoot>
+                                      <tr>
+                                          <th>Total/Aggregate</th>
+                                          <th><input type="text" name="diploma_total_min_marks" id="diploma_total_min_marks" class="form-control" value="" readonly></th>
+                                          <th><input type="text" name="diploma_total_max_marks" id="diploma_total_max_marks" class="form-control" value="" readonly></th>
+                                          <th><input type="text" name="diploma_aggregate" id="diploma_aggregate" class="form-control" value="" readonly></th>
+                                      </tr>
+
+                                  </tfoot> -->
+                              </table>
+                              <div class="form-row">
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Obtained Marks</label>
+                                          <input type="text" name="mtech_total_obtained_marks" value="<?php echo (set_value('mtech_total_obtained_marks')) ? set_value('mtech_total_obtained_marks') : ''; ?>" id="mtech_total_obtained_marks" class="form-control" readonly>
+
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Maximum Marks</label>
+                                          <input type="text" name="mtech_total_max_marks" value="<?php echo (set_value('mtech_total_max_marks')) ? set_value('mtech_total_max_marks') : ''; ?>" id="mtech_total_max_marks" class="form-control" readonly>
+
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Aggregate Percentage</label>
+                                          <input type="text" name="mtech_aggregate" value="<?php echo (set_value('mtech_aggregate')) ? set_value('mtech_aggregate') : ''; ?>" id="mtech_aggregate" class="form-control" readonly>
+
+                                      </div>
+                                  </div>
+
+                              </div>
+
+
+                          </div>
+                      <?php } ?>
+
                   <?php } ?>
                   <div class="card-footer">
                       <div class="row">
@@ -1220,12 +1644,93 @@
 
           }
 
+          function calculateTotals4() {
+              let totalObtainedMarks = 0;
+              let totalMaxMarks = 0;
+
+
+              // Iterate through each subject row in the table
+              // Iterate through each subject row in the table
+              for (let i = 1; i <= 4; i++) { // Assuming you have 6 subjects as per your example
+                  // Get obtained marks and max marks for each subject
+                  let obtainedMarksInput = document.getElementById(`deg_subject_${i}_obtained_marks`);
+                  let maxMarksInput = document.getElementById(`deg_subject_${i}_max_marks`);
+                  let minMarksInput = document.getElementById(`deg_subject_${i}_min_marks`);
+                  // Check if inputs exist before accessing their values
+                  if (obtainedMarksInput && maxMarksInput) {
+                      let obtainedMarks = parseFloat(obtainedMarksInput.value) || 0;
+                      let maxMarks = parseFloat(maxMarksInput.value) || 0;
+                      let percent = (obtainedMarks / maxMarks) * 100;
+
+                    
+                      // Update the percentage field for the subject
+                      minMarksInput.value = percent.toFixed(2) + '%';
+                      // Add to cumulative totals
+                      totalObtainedMarks += obtainedMarks;
+                      totalMaxMarks += maxMarks;
+                  }
+              }
+              // Calculate aggregate percentage
+              let aggregatePercentage = (totalObtainedMarks / totalMaxMarks) * 100;
+
+              // Update total fields
+
+              $('#deg_total_max_marks').val(totalMaxMarks);
+              $('#deg_total_obtained_marks').val(totalObtainedMarks);
+
+              // Calculate aggregate percentage
+
+              $('#deg_aggregate').val(aggregatePercentage.toFixed(2) + '%');
+
+          }
+
+          function calculateTotals5() {
+              let totalObtainedMarks = 0;
+              let totalMaxMarks = 0;
+
+
+              // Iterate through each subject row in the table
+              // Iterate through each subject row in the table
+              for (let i = 1; i <= 4; i++) { // Assuming you have 6 subjects as per your example
+                  // Get obtained marks and max marks for each subject
+                  let obtainedMarksInput = document.getElementById(`mtech_subject_${i}_obtained_marks`);
+                  let maxMarksInput = document.getElementById(`mtech_subject_${i}_max_marks`);
+                  let minMarksInput = document.getElementById(`mtech_subject_${i}_min_marks`);
+                  // Check if inputs exist before accessing their values
+                  if (obtainedMarksInput && maxMarksInput) {
+                      let obtainedMarks = parseFloat(obtainedMarksInput.value) || 0;
+                      let maxMarks = parseFloat(maxMarksInput.value) || 0;
+                      let percent = (obtainedMarks / maxMarks) * 100;
+
+                    
+                      // Update the percentage field for the subject
+                      minMarksInput.value = percent.toFixed(2) + '%';
+                      // Add to cumulative totals
+                      totalObtainedMarks += obtainedMarks;
+                      totalMaxMarks += maxMarks;
+                  }
+              }
+              // Calculate aggregate percentage
+              let aggregatePercentage = (totalObtainedMarks / totalMaxMarks) * 100;
+
+              // Update total fields
+
+              $('#mtech_total_max_marks').val(totalMaxMarks);
+              $('#mtech_total_obtained_marks').val(totalObtainedMarks);
+
+              // Calculate aggregate percentage
+
+              $('#mtech_aggregate').val(aggregatePercentage.toFixed(2) + '%');
+
+          }
 
           // Calculate totals on input change
           $('input[type="number"]').on('input', calculateTotals);
           $('input[type="number"]').on('input', calculateTotals1);
           $('input[type="number"]').on('input', calculateTotals2);
           $('input[type="number"]').on('input', calculateTotals3);
+          $('input[type="number"]').on('input', calculateTotals4);
+          $('input[type="number"]').on('input', calculateTotals5);
 
           $('#inst_country').change(function() {
               var country_id = $(this).find(':selected').data('id');
@@ -1447,6 +1952,118 @@
                   }
               });
           });
+          $('#deg_inst_country').change(function() {
+              var country_id = $(this).find(':selected').data('id');
+
+
+              // AJAX call to get states
+              $.ajax({
+                  url: '<?php echo base_url('student/get_states'); ?>',
+                  type: 'post',
+                  data: {
+                      country_id: country_id
+                  },
+                  dataType: 'json',
+                  success: function(response) {
+                      var len = response.length;
+                      $('#deg_inst_state').empty();
+                      $('#deg_inst_state').show();
+                      $('#deg_inst_city').show(); // Hide city dropdown if visible
+                      $('#deg_inst_city').empty(); // Clear city dropdown
+
+                      $('#deg_inst_state').append("<option value=''>Select State</option>");
+                      for (var i = 0; i < len; i++) {
+                          var id = response[i]['id'];
+                          var name = response[i]['name'];
+                          $('#deg_inst_state').append("<option data-id='" + id + "' value='" + name + "'>" + name + "</option>");
+                      }
+                  }
+              });
+          });
+
+          // AJAX request when a state is selected
+          $('#deg_inst_state').change(function() {
+              var state_id = $(this).find(':selected').data('id');
+
+              // AJAX call to get cities
+              $.ajax({
+                  url: '<?php echo base_url('student/get_cities'); ?>',
+                  type: 'post',
+                  data: {
+                      state_id: state_id
+                  },
+                  dataType: 'json',
+                  success: function(response) {
+                      var len = response.length;
+                      $('#deg_inst_city').empty();
+                      $('#deg_inst_city').show();
+
+                      $('#deg_inst_city').append("<option value=''>Select City</option>");
+                      for (var i = 0; i < len; i++) {
+                          var id = response[i]['id'];
+                          var name = response[i]['name'];
+                          $('#deg_inst_city').append("<option value='" + name + "'>" + name + "</option>");
+                      }
+                  }
+              });
+          });
+
+          $('#mtech_inst_country').change(function() {
+              var country_id = $(this).find(':selected').data('id');
+
+
+              // AJAX call to get states
+              $.ajax({
+                  url: '<?php echo base_url('student/get_states'); ?>',
+                  type: 'post',
+                  data: {
+                      country_id: country_id
+                  },
+                  dataType: 'json',
+                  success: function(response) {
+                      var len = response.length;
+                      $('#mtech_inst_state').empty();
+                      $('#mtech_inst_state').show();
+                      $('#mtech_inst_city').show(); // Hide city dropdown if visible
+                      $('#mtech_inst_city').empty(); // Clear city dropdown
+
+                      $('#mtech_inst_state').append("<option value=''>Select State</option>");
+                      for (var i = 0; i < len; i++) {
+                          var id = response[i]['id'];
+                          var name = response[i]['name'];
+                          $('#mtech_inst_state').append("<option data-id='" + id + "' value='" + name + "'>" + name + "</option>");
+                      }
+                  }
+              });
+          });
+
+          // AJAX request when a state is selected
+          $('#mtech_inst_state').change(function() {
+              var state_id = $(this).find(':selected').data('id');
+
+              // AJAX call to get cities
+              $.ajax({
+                  url: '<?php echo base_url('student/get_cities'); ?>',
+                  type: 'post',
+                  data: {
+                      state_id: state_id
+                  },
+                  dataType: 'json',
+                  success: function(response) {
+                      var len = response.length;
+                      $('#mtech_inst_city').empty();
+                      $('#mtech_inst_city').show();
+
+                      $('#mtech_inst_city').append("<option value=''>Select City</option>");
+                      for (var i = 0; i < len; i++) {
+                          var id = response[i]['id'];
+                          var name = response[i]['name'];
+                          $('#mtech_inst_city').append("<option value='" + name + "'>" + name + "</option>");
+                      }
+                  }
+              });
+          });
+
           document.getElementById('cardSelector').addEventListener('change', function() {
               const selectedValue = this.value;
 

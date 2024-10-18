@@ -630,6 +630,32 @@ class Student extends CI_Controller
 				$this->form_validation->set_rules('gt_register_number', 'Register Number', 'required');
 				$this->form_validation->set_rules('gt_year_of_passing', 'Year of Passing', 'required');
 			}
+			if ($personalDetails->admission_based == "BE") {
+				$this->form_validation->set_rules('deg_education_level', 'Education Level', 'required');
+				// $this->form_validation->set_rules('puc_inst_type', 'Institution Type', 'required');
+				$this->form_validation->set_rules('deg_inst_board', 'Board / University', 'required');
+				$this->form_validation->set_rules('deg_inst_name', 'Institution Name', 'required');
+				$this->form_validation->set_rules('deg_inst_address', 'Institution Address', 'required');
+				$this->form_validation->set_rules('deg_inst_city', 'Institution City');
+				$this->form_validation->set_rules('deg_inst_state', 'Institution State', 'required');
+				$this->form_validation->set_rules('deg_inst_country', 'Institution Country', 'required');
+				$this->form_validation->set_rules('deg_medium_of_instruction', 'Medium of Instruction', 'required');
+				$this->form_validation->set_rules('deg_register_number', 'Register Number', 'required');
+				$this->form_validation->set_rules('deg_year_of_passing', 'Year of Passing', 'required');
+			}
+			if ($personalDetails->admission_based == "MTech") {
+				$this->form_validation->set_rules('mtech_education_level', 'Education Level', 'required');
+				// $this->form_validation->set_rules('puc_inst_type', 'Institution Type', 'required');
+				$this->form_validation->set_rules('mtech_inst_board', 'Board / University', 'required');
+				$this->form_validation->set_rules('mtech_inst_name', 'Institution Name', 'required');
+				$this->form_validation->set_rules('mtech_inst_address', 'Institution Address', 'required');
+				$this->form_validation->set_rules('mtech_inst_city', 'Institution City');
+				$this->form_validation->set_rules('mtech_inst_state', 'Institution State', 'required');
+				$this->form_validation->set_rules('mtech_inst_country', 'Institution Country', 'required');
+				$this->form_validation->set_rules('mtech_medium_of_instruction', 'Medium of Instruction', 'required');
+				$this->form_validation->set_rules('mtech_register_number', 'Register Number', 'required');
+				$this->form_validation->set_rules('mtech_year_of_passing', 'Year of Passing', 'required');
+			}
 
 			if ($this->form_validation->run() === FALSE) {
 
@@ -751,6 +777,68 @@ class Student extends CI_Controller
 							$data['gt_subject_' . $i . '_min_marks'] = $min_marks;
 							$data['gt_subject_' . $i . '_max_marks'] = $max_marks;
 							$data['gt_subject_' . $i . '_obtained_marks'] = $obtained_marks;
+						}
+					}
+				}
+
+				if ($personalDetails->admission_based == "BE") {
+
+					$data = array(
+						'deg_education_level' => $this->input->post('deg_education_level'),
+						'deg_inst_type' => $this->input->post('deg_inst_type'),
+						'deg_inst_board' => $this->input->post('deg_inst_board'),
+						'deg_inst_name' => $this->input->post('deg_inst_name'),
+						'deg_inst_address' => $this->input->post('deg_inst_address'),
+						'deg_inst_city' => $this->input->post('deg_inst_city'),
+						'deg_inst_state' => $this->input->post('deg_inst_state'),
+						'deg_inst_country' => $this->input->post('deg_inst_country'),
+						'deg_medium_of_instruction' => $this->input->post('deg_medium_of_instruction'),
+						'deg_register_number' => $this->input->post('deg_register_number'),
+						'deg_year_of_passing' => $this->input->post('deg_year_of_passing')
+					);
+					for ($i = 1; $i <= 3; $i++) {
+						$subject_name = $this->input->post('deg_subject_' . $i . '_name');
+						$min_marks = $this->input->post('deg_subject_' . $i . '_min_marks');
+						$max_marks = $this->input->post('deg_subject_' . $i . '_max_marks');
+						$obtained_marks = $this->input->post('deg_subject_' . $i . '_obtained_marks');
+
+						// Only add subject if name is not empty
+						if (!empty($subject_name)) {
+							$data['deg_subject_' . $i . '_name'] = $subject_name;
+							$data['deg_subject_' . $i . '_min_marks'] = $min_marks;
+							$data['deg_subject_' . $i . '_max_marks'] = $max_marks;
+							$data['deg_subject_' . $i . '_obtained_marks'] = $obtained_marks;
+						}
+					}
+				}
+
+				if ($personalDetails->admission_based == "MTech") {
+
+					$data = array(
+						'mtech_education_level' => $this->input->post('mtech_education_level'),
+						'mtech_inst_type' => $this->input->post('mtech_inst_type'),
+						'mtech_inst_board' => $this->input->post('mtech_inst_board'),
+						'mtech_inst_name' => $this->input->post('mtech_inst_name'),
+						'mtech_inst_address' => $this->input->post('mtech_inst_address'),
+						'mtech_inst_city' => $this->input->post('mtech_inst_city'),
+						'mtech_inst_state' => $this->input->post('mtech_inst_state'),
+						'mtech_inst_country' => $this->input->post('mtech_inst_country'),
+						'mtech_medium_of_instruction' => $this->input->post('mtech_medium_of_instruction'),
+						'mtech_register_number' => $this->input->post('mtech_register_number'),
+						'mtech_year_of_passing' => $this->input->post('mtech_year_of_passing')
+					);
+					for ($i = 1; $i <= 3; $i++) {
+						$subject_name = $this->input->post('mtech_subject_' . $i . '_name');
+						$min_marks = $this->input->post('mtech_subject_' . $i . '_min_marks');
+						$max_marks = $this->input->post('mtech_subject_' . $i . '_max_marks');
+						$obtained_marks = $this->input->post('mtech_subject_' . $i . '_obtained_marks');
+
+						// Only add subject if name is not empty
+						if (!empty($subject_name)) {
+							$data['mtech_subject_' . $i . '_name'] = $subject_name;
+							$data['mtech_subject_' . $i . '_min_marks'] = $min_marks;
+							$data['mtech_subject_' . $i . '_max_marks'] = $max_marks;
+							$data['mtech_subject_' . $i . '_obtained_marks'] = $obtained_marks;
 						}
 					}
 				}
@@ -928,6 +1016,84 @@ class Student extends CI_Controller
 
 					
 					$result = $this->admin_model->insertDetails('student_education_details', $insertDetails1);
+				}
+
+				if ($personalDetails->admission_based == "BE") {
+					$insertDetails4 = array(
+						'student_id' => $student_id,
+						'education_level' => $this->input->post('deg_education_level'),
+						'inst_type' => $this->input->post('deg_inst_type'),
+						'inst_board' => $this->input->post('deg_inst_board'),
+						'inst_name' => $this->input->post('deg_inst_name'),
+						'inst_address' => $this->input->post('deg_inst_address'),
+						'inst_city' => $this->input->post('deg_inst_city'),
+						'inst_state' => $this->input->post('deg_inst_state'),
+						'inst_country' => $this->input->post('deg_inst_country'),
+						'medium_of_instruction' => $this->input->post('deg_medium_of_instruction'),
+						'register_number' => $this->input->post('deg_register_number'),
+						'year_of_passing' => $this->input->post('deg_year_of_passing'),
+						'aggregate' => $this->input->post('deg_aggregate'),
+						'obtained' => $this->input->post('deg_total_obtained_marks'),
+						'maximum' => $this->input->post('deg_total_max_marks'),
+						'updated_on' => date('Y-m-d h:i:s'),
+						'updated_by' => $data['student_name']
+					);
+
+					// Insert subject fields
+					for ($i = 1; $i <= 3; $i++) {
+						$subject_name = $this->input->post('deg_subject_' . $i . '_name');
+						$min_marks = $this->input->post('deg_subject_' . $i . '_min_marks');
+						$max_marks = $this->input->post('deg_subject_' . $i . '_max_marks');
+						$obtained_marks = $this->input->post('deg_subject_' . $i . '_obtained_marks');
+
+						// Only add subject if name is not empty
+						if (!empty($min_marks)) {
+							$insertDetails4['subject_' . $i . '_name'] = $subject_name;
+							$insertDetails4['subject_' . $i . '_min_marks'] = $min_marks;
+							$insertDetails4['subject_' . $i . '_max_marks'] = $max_marks;
+							$insertDetails4['subject_' . $i . '_obtained_marks'] = $obtained_marks;
+						}
+					}
+					$result = $this->admin_model->insertDetails('student_education_details', $insertDetails4);
+				}
+
+				if ($personalDetails->admission_based == "MTech") {
+					$insertDetails5 = array(
+						'student_id' => $student_id,
+						'education_level' => $this->input->post('mtech_education_level'),
+						'inst_type' => $this->input->post('mtech_inst_type'),
+						'inst_board' => $this->input->post('mtech_inst_board'),
+						'inst_name' => $this->input->post('mtech_inst_name'),
+						'inst_address' => $this->input->post('mtech_inst_address'),
+						'inst_city' => $this->input->post('mtech_inst_city'),
+						'inst_state' => $this->input->post('mtech_inst_state'),
+						'inst_country' => $this->input->post('mtech_inst_country'),
+						'medium_of_instruction' => $this->input->post('mtech_medium_of_instruction'),
+						'register_number' => $this->input->post('mtech_register_number'),
+						'year_of_passing' => $this->input->post('mtech_year_of_passing'),
+						'aggregate' => $this->input->post('mtech_aggregate'),
+						'obtained' => $this->input->post('mtech_total_obtained_marks'),
+						'maximum' => $this->input->post('mtech_total_max_marks'),
+						'updated_on' => date('Y-m-d h:i:s'),
+						'updated_by' => $data['student_name']
+					);
+
+					// Insert subject fields
+					for ($i = 1; $i <= 3; $i++) {
+						$subject_name = $this->input->post('mtech_subject_' . $i . '_name');
+						$min_marks = $this->input->post('mtech_subject_' . $i . '_min_marks');
+						$max_marks = $this->input->post('mtech_subject_' . $i . '_max_marks');
+						$obtained_marks = $this->input->post('mtech_subject_' . $i . '_obtained_marks');
+
+						// Only add subject if name is not empty
+						if (!empty($min_marks)) {
+							$insertDetails5['subject_' . $i . '_name'] = $subject_name;
+							$insertDetails5['subject_' . $i . '_min_marks'] = $min_marks;
+							$insertDetails5['subject_' . $i . '_max_marks'] = $max_marks;
+							$insertDetails5['subject_' . $i . '_obtained_marks'] = $obtained_marks;
+						}
+					}
+					$result = $this->admin_model->insertDetails('student_education_details', $insertDetails5);
 				}
 
 
