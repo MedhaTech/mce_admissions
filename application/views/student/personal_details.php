@@ -176,7 +176,7 @@
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Admission Based On<span class="text-danger">*</span></label>
-                                <?php $level_options = array(" " => "Select Level","PUC" => "PUC", "Diploma" => "Diploma");
+                                <?php $level_options = array(" " => "Select Level","PUC" => "PUC", "Diploma" => "Diploma", "BE" => "BE", "MTech" => "MTech");
                                     echo form_dropdown('admission_based', $level_options, (set_value('admission_based')) ? set_value('admission_based') : $admission_based, 'class="form-control " id="admission_based"');
                                   ?>
                                
@@ -372,6 +372,18 @@
 
         $("#admission_based").change(function () {
             if($("#admission_based").val() == "PUC") {
+                $(".latclass").hide();
+            }
+        });
+
+        $("#admission_based").change(function () {
+            if($("#admission_based").val() == "BE") {
+                $(".latclass").hide();
+            }
+        });
+
+        $("#admission_based").change(function () {
+            if($("#admission_based").val() == "MTech") {
                 $(".latclass").hide();
             }
         });

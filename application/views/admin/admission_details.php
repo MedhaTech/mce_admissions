@@ -137,6 +137,18 @@
                                         ?>
                                     </div>
                                 </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="form-label mb-0">Stream Name</label><br>
+                                        <?php
+                                        if ($this->admin_model->get_stream_by_id($admissionDetails->stream_id)["stream_name"] != NULL) {
+                                            echo $this->admin_model->get_stream_by_id($admissionDetails->stream_id)["stream_name"];
+                                        } else {
+                                            echo "--";
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="form-label mb-0">Department</label><br>
@@ -161,7 +173,7 @@
                                         ?>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <label class="form-label mb-0">Sub Quota</label><br>
                                         <?php
@@ -235,6 +247,33 @@
                                         ?>
                                     </div>
                                 </div>
+                                <?php if ($admissionDetails->stream_id == '3'): ?>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="form-label mb-0">Batch (pass out year)</label><br>
+                                            <?php
+                                            if ($admissionDetails->batch != NULL) {
+                                                echo $admissionDetails->batch;
+                                            } else {
+                                                echo "--";
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="form-label mb-0">Degree Level</label><br>
+                                            <?php
+                                            if ($admissionDetails->degree_level != NULL) {
+                                                echo $admissionDetails->degree_level;
+                                            } else {
+                                                echo "--";
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <div class="col-md-2">
