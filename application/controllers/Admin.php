@@ -9280,4 +9280,17 @@ With good wishes";
     echo json_encode($departments);  // return departments as JSON
 }
 
+public function addComment($encryptedId) {
+	$id = base64_decode($encryptedId);  
+	$comment = $this->input->post('comment');  
+	$data = array(
+		'comments' => $comment  
+	);
+
+	$this->db->where('id', $id);
+	$this->db->update('admissions', $data);
+
+	$this->session->set_flashdata('success', 'Comment added successfully.');
+	redirect('admin/admissiondetails/' . $encryptedId);
+}	
 }
