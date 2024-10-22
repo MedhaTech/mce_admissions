@@ -9316,4 +9316,439 @@ With good wishes";
 			redirect('admin/timeout');
 		}
 	}
+
+	public function phddaybook_report()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'PhD Day Book Report';
+			$data['menu'] = 'PPhDdayBookReport';
+
+			$data['feeStructure'] = $this->globals->courseFees();
+
+			// var_dump($data['feeStructure']);
+			// echo "<pre>";
+			// print_r($data['feeStructure']); die;
+
+			$data['admissionStatus'] = $this->globals->admissionStatus();
+			$data['courses'] = array("all" => "All") + $this->globals->courses();
+			$data['academicYears'] = array(" " => "Select") + $this->globals->academicYear();
+
+			$this->admin_template->show('admin/phddaybook_report', $data);
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function phddayBookReportDownload()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Day Book Report';
+			$data['menu'] = 'dayBookReport';
+
+			$to = $this->input->post('to_date');
+			$from = $this->input->post('from_date');
+
+			$transactions = $this->admin_model->phdtransactionsdatewise($from, $to)->result();
+			$transactionTypes = $this->globals->transactionTypes();
+
+			$table = "<table class='table table-bordered' border='1' id='example2'>";
+
+			$table .= '<thead>';
+
+			// Include From Date and To Date in the header
+			$table .= '<tr><th colspan="18" class="font20">' . $currentAcademicYear . ' Day Book Report</th></tr>';
+			$table .= '<tr><th colspan="18" class="font20">From: ' . date('d-m-Y', strtotime($from)) . ' To: ' . date('d-m-Y', strtotime($to)) . '</th></tr>';
+
+			$table .= '<tr><th>S.No</th>
+						   <th>Academic Year</th>
+						   <th>Usn</th>
+						   <th>Student Name</th>
+						   <th>Quota</th>
+						   <th>Sub Quota</th>
+						   <th>College Code</th>
+						   <th>Studying Year</th>
+						   <th>Category claimed</th>
+						   <th>Category allocated</th>
+						   <th>Department Name</th>
+						   <th>Receipt No.</th>
+						   <th>Mode of Payment</th>
+						   <th>Reference No.</th>
+						   <th>Reference Date</th>
+						   <th>Bank Name</th>
+						   <th>Amount</th>
+						   <th>Transaction Date</th>
+					  </tr>';
+
+			$table .= '</thead>';
+			$table .= '<tbody>';
+
+			$i = 1;
+			foreach ($transactions as $transactions1) {
+				$table .= '<tr>';
+				$table .= '<td>' . $i++ . '</td>';
+				$table .= '<td>' . $transactions1->academic_year . '</td>';
+				$table .= '<td>' . $transactions1->usn . '</td>';
+				$table .= '<td>' . $transactions1->student_name . '</td>';
+				$table .= '<td>' . $transactions1->quota . '</td>';
+				$table .= '<td>' . $transactions1->sub_quota . '</td>';
+				$table .= '<td>' . $transactions1->college_code . '</td>';
+				$table .= '<td>' . $transactions1->year . '</td>';
+				$table .= '<td>' . $transactions1->category_claimed . '</td>';
+				$table .= '<td>' . $transactions1->category_allotted . '</td>';
+				$table .= '<td>' . $this->admin_model->get_dept_by_id($transactions1->dept_id)["department_name"] . '</td>';
+				$table .= '<td>\'' . htmlspecialchars($transactions1->receipt_no) . '</td>';
+				$table .= '<td>' . $transactionTypes[$transactions1->transaction_type] . '</td>';
+				$table .= '<td>' . htmlspecialchars($transactions1->reference_no) . '</td>';
+				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->reference_date)) . '</td>';
+				$table .= '<td>' . $transactions1->bank_name . '</td>';
+				$table .= '<td>' . number_format($transactions1->amount, 0) . '</td>';
+				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->transaction_date)) . '</td>';
+				$table .= '</tr>';
+			}
+			$table .= '</tbody>';
+			$table .= '</table>';
+			$data['table'] = $table;
+
+			$response = array(
+				'op' => 'ok',
+				'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+			);
+			die(json_encode($response));
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function phddcb_report($download = 0)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$data['page_title'] = $currentAcademicYear . ' PhD REPORT DEMAND COLLECTION BALANCE (DCB)';
+			$data['menu'] = 'DCBReport';
+
+			$data['download_action'] = 'admin/dcb_report';
+			$data['course_options'] = array("" => "Select") + $this->phdcourses();
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			// $admissions = $this->admin_model->DCBReport($currentAcademicYear)->result();
+			$admissions = $this->admin_model->PhdDCBReport($currentAcademicYear)->result();
+
+			if ($_POST) {
+				$course = $this->input->post('course');
+				$syear = $this->input->post('year');
+				$type = $this->input->post('type');
+				$admissions = $this->admin_model->PhdDCBReport($currentAcademicYear, $course, $syear, $type)->result();
+			} else {
+				$admissions = $this->admin_model->PhdDCBReport($currentAcademicYear, $course = '', $year = '', $type = '')->result();
+			}
+
+			$fees = $this->admin_model->feeDetails()->result();
+			$feeDetails = array();
+			foreach ($fees as $fees1) {
+				$feeDetails[$fees1->admissions_id] = $fees1->paid_amount;
+			}
+
+			$fees1 = $this->admin_model->feeDetailscorpus()->result();
+			$feeDetails1 = array();
+			foreach ($fees1 as $fees11) {
+				$feeDetails1[$fees11->admissions_id] = $fees11->paid_amount;
+			}
+
+			$fees2 = $this->admin_model->feeDetailscollege()->result();
+			$feeDetails2 = array();
+			foreach ($fees2 as $fees22) {
+				$feeDetails22[$fees22->admissions_id] = $fees22->paid_amount;
+			}
+
+
+			$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+			$this->table->set_template($table_setup);
+			// $table_setup = array ('table_open'=> '<table class="table table-bordered font14" border="1" id="dataTable" >');
+			// $this->table->set_template($table_setup);
+
+			$print_fields = array(
+				'S.No',
+				'Academic Year',
+				'Course',
+				'Student Name',
+				'Usn',
+				'Quota',
+				'Sub Quota',
+				'College Code',
+				'Studying Year',
+				'Mobile',
+				'Batch(Passed Out Year)',
+				'Degree Level',
+				'Father Number',
+				'Caste',
+				'Alloted Category',
+				'claimed Category',
+				'Admit. Date',
+				'Total University Other Fee',
+				'College Fee Demand',
+				'College Fee Paid',
+				'College Fee Balance',
+				'Corpus Fee Demand',
+				'Corpus Fee Paid',
+				'Corpus Fee Balance',
+				'Remarks'
+			);
+
+			$this->table->set_heading($print_fields);
+
+			$i = 1;
+			$final_fee = 0;
+			$fees_paid = 0;
+			$balance_amount = 0;
+			foreach ($admissions as $admissions1) {
+				$dmm = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+
+				// if($admissions1->dsc_1 == $admissions1->dsc_2){
+				//     $combination = $admissions1->dsc_1;
+				// }else{
+				//     $combination = $admissions1->dsc_1.' - '.$admissions1->dsc_2;
+				// }
+				$fees_data = $this->admin_model->getDetailsbyfield($admissions1->id, 'student_id', 'fee_master')->row();
+				$balance_amount_data = $fees_data->final_fee - $feeDetails[$admissions1->id];
+				$paid_amount = (array_key_exists($admissions1->id, $feeDetails)) ? $feeDetails[$admissions1->id] : '0';
+				$balance_amount = $admissions1->final_fee - $paid_amount;
+				// if ($admissions1->quota = 'KEA-CET(GOVT)') {
+				// 	$year = "I";
+				// }
+				$year = "I";
+
+				$corpus_bal = $fees_data->corpus_fund - $feeDetails11[$admissions1->id];
+				$college_bal = $fees_data->total_college_fee - $feeDetails22[$admissions1->id];
+				$result_array = array(
+					$i++,
+					// $admissions1->academic_year,
+					// $admissions1->reg_no,
+					$admissions1->academic_year,
+					$dmm,
+					$admissions1->student_name,
+					$admissions1->usn,
+					$admissions1->quota,
+					$admissions1->sub_quota,
+					$admissions1->college_code,
+					$year, // Use the determined studying year here
+					$admissions1->mobile,
+					$admissions1->batch,
+					$admissions1->degree_level,
+					$admissions1->father_mobile,
+					$admissions1->caste,
+					$admissions1->category_allotted,
+					$admissions1->category_claimed,
+					($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
+					// number_format($fees_data->final_fee, 0),
+					// number_format($feeDetails[$admissions1->id], 0),
+					// number_format($balance_amount_data, 0),
+					number_format($fees_data->total_university_fee, 0),
+					number_format($fees_data->total_college_fee, 0),
+					number_format($feeDetails22[$admissions1->id], 0),
+					number_format($college_bal, 0),
+					number_format($fees_data->corpus_fund, 0),
+					number_format($feeDetails11[$admissions1->id], 0),
+					number_format($corpus_bal, 0),
+					// ($admissions1->next_due_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->next_due_date)) : '',
+					$admissions1->remarks
+				);
+				// var_dump($result_array);
+				$this->table->add_row($result_array);
+				$final_fee = $final_fee + $admissions1->total_college_fee;
+				$fees_paid = $fees_paid + $paid_amount;
+				$balance_amount = $balance_amount + $balance_amount;
+			}
+
+			$data['table'] = $this->table->generate();
+			// var_dump($data['table']); die();
+			if (!$download) {
+				$this->admin_template->show('admin/phddcb_report', $data);
+			} else {
+				$response = array(
+					'op' => 'ok',
+					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+				);
+				die(json_encode($response));
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function phdfeebalance_report($download = 0)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$data['page_title'] = $currentAcademicYear . ' FEE BALANCE';
+			$data['menu'] = 'FeebalanceReport';
+			$data['course_options'] = array("" => "Select") + $this->phdcourses();
+			$data['action'] = 'admin/phdfeebalance_report';
+
+			if ($_POST) {
+				$course = $this->input->post('course');
+				$syear = $this->input->post('year');
+				$admissions = $this->admin_model->PhdFeebalanceReport($currentAcademicYear, $course, $syear)->result();
+			} else {
+				$admissions = $this->admin_model->PhdFeebalanceReport($currentAcademicYear, $course = '', $year = '')->result();
+			}
+
+			$fees = $this->admin_model->feeDetails()->result();
+
+			$feeDetails = array();
+			foreach ($fees as $fees1) {
+				$feeDetails[$fees1->admissions_id] = $fees1->paid_amount;
+			}
+
+
+			$fees1 = $this->admin_model->feeDetailscorpus()->result();
+			$feeDetails1 = array();
+			foreach ($fees1 as $fees11) {
+				$feeDetails1[$fees11->admissions_id] = $fees11->paid_amount;
+			}
+
+			$fees2 = $this->admin_model->feeDetailscollege()->result();
+			$feeDetails2 = array();
+			foreach ($fees2 as $fees22) {
+				$feeDetails22[$fees22->admissions_id] = $fees22->paid_amount;
+			}
+
+			$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2">');
+			$this->table->set_template($table_setup);
+
+			$print_fields = array(
+				'S.No',
+				'Usn',
+				'Student Name',
+				'Stream',
+				'Course',
+				'Quota',
+				'Sub Quota',
+				'College Code',
+				'Studying Year',
+				'Mobile',
+				'Alloted Category',
+				'claimed Category',
+				'Admit. Date',
+				'College Fee Demand',
+				'College Fee Paid',
+				'College Fee Balance',
+				'Corpus Fee Demand',
+				'Corpus Fee Paid',
+				'Corpus Fee Balance',
+				'Remarks'
+			);
+			$this->table->set_heading($print_fields);
+
+			$i = 1;
+			$final_fee = 0;
+			$fees_paid = 0;
+			$balance_amount = 0;
+			foreach ($admissions as $admissions1) {
+				$dmm = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+
+				$fees_data = $this->admin_model->getDetailsbyfield($admissions1->id, 'student_id', 'fee_master')->row();
+				$balance_amount_data = $fees_data->final_fee - (isset($feeDetails[$admissions1->id]) ? $feeDetails[$admissions1->id] : 0);
+
+				// Only add students with a positive balance amount
+				if ($balance_amount_data > 0) {
+					// if ($admissions1->quota != 'KEA-CET(LATERAL)') {
+					// 	$year = "I";
+					// } else {
+					// 	$year = "II";
+					// }
+					$year = "I";
+					
+					$corpus_bal = $fees_data->corpus_fund - $feeDetails11[$admissions1->id];
+					$college_bal = $fees_data->total_college_fee - $feeDetails22[$admissions1->id];
+					$result_array = array(
+						$i++,
+						$admissions1->usn,
+						$admissions1->student_name,
+						"PhD",
+						$dmm,
+						$admissions1->quota,
+						$admissions1->sub_quota,
+						$admissions1->college_code,
+						$year,
+						$admissions1->mobile,
+						$admissions1->category_allotted,
+						$admissions1->category_claimed,
+						($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
+						// number_format($balance_amount_data, 0),
+						number_format($fees_data->total_college_fee, 0),
+						number_format($feeDetails22[$admissions1->id], 0),
+						number_format($college_bal, 0),
+						number_format($fees_data->corpus_fund, 0),
+						number_format($feeDetails11[$admissions1->id], 0),
+						number_format($corpus_bal, 0),
+						$admissions1->remarks
+					);
+
+					$this->table->add_row($result_array);
+					$balance_amount += $balance_amount_data;
+				}
+			}
+
+			$data['table'] = $this->table->generate();
+			// var_dump($data['table']); die();
+
+			if (!$download) {
+				$this->admin_template->show('admin/phdfeebalance_report', $data);
+			} else {
+				$response = array(
+					'op' => 'ok',
+					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+				);
+				die(json_encode($response));
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	function phdcourses()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$details = $this->admin_model->getDetailsbyfield('3', 'stream_id', 'departments')->result();
+
+			$result = array();
+			foreach ($details as $details1) {
+				$row = $this->admin_model->get_stream_by_id($details1->stream_id);
+				$result[$details1->department_id] = $row['stream_short_name'] . ' - ' . $details1->department_name;
+			}
+
+			return $result;
+		} else {
+			redirect('admin/timeout');
+		}
+	}
 }
