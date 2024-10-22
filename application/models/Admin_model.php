@@ -219,6 +219,16 @@ class Admin_model extends CI_Model
     $this->db->where('sub_quota', $sub_quota);
     return $this->db->get('fee_structure');
   }
+  function getFee_new($course, $quota, $sub_quota, $stream)
+  {
+    if ($quota == "MGMT" || $quota == "MGMT-LATERAL" || $quota == "MGMT-COMEDK") {
+      $this->db->where('department_id', $course);
+    }
+    $this->db->where('stream_id', $stream);
+    $this->db->where('quota', $quota);
+    $this->db->where('sub_quota', $sub_quota);
+    return $this->db->get('fee_structure');
+  }
 
 
   function getsubquota($id, $dept)

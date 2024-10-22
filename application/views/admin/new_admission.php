@@ -89,7 +89,7 @@
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="form-label">Quota </label>
-                                  <?php $state_options = array("" => "Select");
+                                  <?php 
                                     echo form_dropdown('quota', $quota_options, (set_value('quota')) ? set_value('quota') : '', 'class="form-control" id="quota" disabled'); ?>
                                   <span class="text-danger"><?php echo form_error('quota'); ?></span>
                               </div>
@@ -402,16 +402,44 @@ $(document).ready(function() {
         event.preventDefault();
 
         var course = $("#course").val();
-        if (course != " ") {
-            $('#quota').val(' ');
-            $('#subquota').val(' ');
+        var stream = $("#stream").val();
+        $('#subquota').prop("disabled", true);
+        if (course == ' ') {
+            alert("Please Select Course");
             $('#quota').prop("disabled", false);
+            $('#subquota').prop("disabled", true);
         } else {
-            $('#quota').val(' ');
-            $('#quota').prop("disabled", true);
-            $('#subquota').val(' ');
+            $.ajax({
+                'type': 'POST',
+                'url': base_url + 'admin/quotaDropdown',
+                'data': {
+                    
+                    'course':course,
+                    'stream':stream,
+                    'flag': 'S'
+                },
+                'dataType': 'text',
+                'cache': false,
+                'success': function(data) {
+                    $('select[name="quota"]').empty();
+                    $('select[name="quota"]').append(data);
+                    $('select[name="quota"]').removeAttr("disabled");
+
+                }
+            });
             $('#subquota').prop("disabled", true);
         }
+
+        // if (course != " ") {
+        //     $('#quota').val(' ');
+        //     $('#subquota').val(' ');
+        //     $('#quota').prop("disabled", false);
+        // } else {
+        //     $('#quota').val(' ');
+        //     $('#quota').prop("disabled", true);
+        //     $('#subquota').val(' ');
+        //     $('#subquota').prop("disabled", true);
+        // }
        
     });
 
@@ -420,6 +448,7 @@ $(document).ready(function() {
 
         var course = $("#course").val();
         var quota = $("#quota").val();
+        var stream = $("#stream").val();
         // alert(quota);die;
 
         if (quota == ' ') {
@@ -431,7 +460,8 @@ $(document).ready(function() {
                 'data': {
                     'quota': quota,
                     'course':course,
-                    'flag': 'S'
+                    'flag': 'S',
+                    'stream': stream
                 },
                 'dataType': 'text',
                 'cache': false,
@@ -454,7 +484,7 @@ $(document).ready(function() {
         var course = $("#course").val();
         var subquota = $("#subquota").val();
         var quota = $("#quota").val();
-
+        var stream = $("#stream").val();
 
         if (subquota != "" && quota != '') {
             var page = base_url + 'admin/getFee';
@@ -464,7 +494,8 @@ $(document).ready(function() {
                 'data': {
                     'course': course,
                     'quota': quota,
-                    'subquota': subquota
+                    'subquota': subquota,
+                    'stream': stream
                 },
                 'dataType': 'json',
                 'cache': false,

@@ -174,13 +174,13 @@ class Admin extends CI_Controller
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
-			
+
 			$admissionStats = $this->admin_model->getAdmissionOverallStats(0)->result();
 			$aidedAdmitted = array();
 			$unaidedAdmitted = array();
 			// echo "<pre>";
 			$depart = $this->admin_model->getActiveComedk()->result();
-			
+
 			// echo "<pre>";
 			// print_r($depart); die();
 			$unaidedmgmt = array();
@@ -511,7 +511,7 @@ class Admin extends CI_Controller
 		}
 	}
 
-		function getAllCourses()
+	function getAllCourses()
 	{
 		$detailsUG = $this->admin_model->getDetailsbyfield('1', 'status', 'departments')->result();
 
@@ -794,9 +794,10 @@ class Admin extends CI_Controller
 			}
 
 			$quota = $this->input->post('quota');
+			$stream = $this->input->post('stream');
 			$sub_quota = $this->input->post('subquota');
 
-			$details = $this->admin_model->getFee($course, $quota, $sub_quota)->row();
+			$details = $this->admin_model->getFee_new($course, $quota, $sub_quota,$stream)->row();
 			// var_dump($this->db->last_query());
 			// $details = [
 			// 	"aided_unaided" => "Aided",
@@ -1051,12 +1052,20 @@ class Admin extends CI_Controller
 
 				if ($fee1->department_id) {
 					$dept_name = $this->admin_model->getDetailsbyfield($fee1->department_id, 'department_id', 'departments')->row();
+					$stream_name = $this->admin_model->getDetailsbyfield($fee1->stream_id, 'stream_id', 'streams')->row();
+					// $dept_name = $this->admin_model->getDetailsbyfield2('department_id',$fee1->department_id, 'stream_id',$fee1->stream_id, 'departments')->row();
+
 					$dept_name = $dept_name->department_name;
-					$quota1 = $fee1->quota . ' - ' . $dept_name;
+					$stream_name = $stream_name->stream_name;
+					$quota1 = $fee1->quota . ' - ' . $stream_name . ' - ' . $dept_name;
 				} else {
-					$quota1 = $fee1->quota . ' - All Depts.';
+					$stream_name = $this->admin_model->getDetailsbyfield($fee1->stream_id, 'stream_id', 'streams')->row();
+					$stream_name = $stream_name->stream_name;
+					$quota1 = $fee1->quota . ' - ' . $stream_name . ' - All Depts.';
 				}
+
 				if (array_key_exists($quota1, $feeDetails)) {
+
 					if (array_key_exists($fee1->sub_quota, $feeDetails[$quota1])) {
 						$category = array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, "final_fee" => $fee1->final_fee, 'id' => $fee1->id);
 						array_push($feeDetails[$quota1][$fee1->sub_quota], $category);
@@ -1065,10 +1074,13 @@ class Admin extends CI_Controller
 						$feeDetails[$quota1][$fee1->sub_quota] = $category;
 					}
 				} else {
+
 					$category = array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, "final_fee" => $fee1->final_fee, 'id' => $fee1->id);
 					$sub_quota = array($fee1->sub_quota => $category);
 					$feeDetails[$quota1] = $sub_quota;
 				}
+				// var_dump($feeDetails);
+				// die();
 			}
 			$data['feeDetails'] = $feeDetails;
 			// print_r($feeDetails);
@@ -1090,63 +1102,33 @@ class Admin extends CI_Controller
 			$data['menu'] = "feestructure";
 
 			$data['fee_structure'] = $this->admin_model->get_details_by_id($id, 'id', 'fee_structure');
+			// var_dump($data['fee_structure']['stream_id']);
+			$stream = $data['fee_structure']['stream_id'];
+			if ($stream == 3) {
+				$rules = $this->globals->get_phd_fields();
+			} else {
+				$rules = $this->globals->get_ug_pg_fields();
+			}
 
-			$this->form_validation->set_rules('e_learning_fee', 'E Learning Fee', 'numeric|required');
-			$this->form_validation->set_rules('eligibility_fee', 'Eligibility Fee', 'numeric|required');
-			$this->form_validation->set_rules('e_consortium_fee', 'e Consortium Fee', 'numeric|required');
-			$this->form_validation->set_rules('sport_fee', 'Sport Fee', 'numeric|required');
-			$this->form_validation->set_rules('sports_development_fee', 'Sports Development Fee', 'numeric|required');
-			$this->form_validation->set_rules('career_guidance_counseling_fee', 'Career Guidance & Counseling fee', 'numeric|required');
-			$this->form_validation->set_rules('university_development_fund', 'University Development Fund', 'numeric|required');
-			$this->form_validation->set_rules('promotion_of_indian_cultural_activities_fee', 'Promotion of Indian Cultural Activities Fee', 'numeric|required');
-			$this->form_validation->set_rules('teachers_development_fee', 'Teachers Development Fee', 'numeric|required');
-			$this->form_validation->set_rules('student_development_fee', 'Student Development Fee', 'numeric|required');
-			$this->form_validation->set_rules('indian_red_cross_membership_fee', 'Indian Red Cross Membership Fee', 'numeric|required');
-			$this->form_validation->set_rules('women_cell_fee', 'Women Cell Fee', 'numeric|required');
-			$this->form_validation->set_rules('nss_fee', 'NSS Fee', 'numeric|required');
-			$this->form_validation->set_rules('university_registration_fee', 'University Registration Fee', 'numeric|required');
-			$this->form_validation->set_rules('total_university_fee', 'TOTAL UNIVERSITY FEE', 'numeric|required');
-			$this->form_validation->set_rules('admission_fee', 'Admission Fee', 'numeric|required');
-			$this->form_validation->set_rules('processing_fee_paid_at_kea', 'Processing Fee paid at KEA', 'numeric|required');
-			$this->form_validation->set_rules('tution_fee', 'Tution Fee', 'numeric|required');
-			$this->form_validation->set_rules('college_other_fee', 'COLLEGE OTHER FEE', 'numeric|required');
-			$this->form_validation->set_rules('total_tution_fee', 'TOTAL TUTION FEE', 'numeric|required');
-			$this->form_validation->set_rules('total_college_fee', 'TOTAL COLLEGE FEE', 'numeric|required');
-			$this->form_validation->set_rules('skill_development_fee', 'Skill Development Fee', 'numeric|required');
-			$this->form_validation->set_rules('corpus_fund', 'Corpus Fund', 'numeric|required');
+			foreach ($rules as $rule) {
+				$this->form_validation->set_rules($rule['field'], $rule['label'], 'numeric|required');
+			}
+
 
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/editFeeStructure/' . $id;
-				$this->admin_template->show('admin/editFeeStructure', $data);
+				if ($stream == 3) {
+					$this->admin_template->show('admin/editFeeStructure_phd', $data);
+				} else {
+					$this->admin_template->show('admin/editFeeStructure', $data);
+				}
 			} else {
 
-				$updateDetails = array(
-					'e_learning_fee' => $this->input->post('e_learning_fee'),
-					'eligibility_fee' => $this->input->post('eligibility_fee'),
-					'e_consortium_fee' => strtolower($this->input->post('e_consortium_fee')),
-					'sport_fee' => $this->input->post('sport_fee'),
-					'sports_development_fee' => $this->input->post('sports_development_fee'),
-					'career_guidance_counseling_fee' => $this->input->post('career_guidance_counseling_fee'),
-					'university_development_fund' => strtoupper($this->input->post('university_development_fund')),
-					'promotion_of_indian_cultural_activities_fee' => $this->input->post('promotion_of_indian_cultural_activities_fee'),
-					'teachers_development_fee' => $this->input->post('teachers_development_fee'),
-					'student_development_fee' => $this->input->post('student_development_fee'),
-					'indian_red_cross_membership_fee' => $this->input->post('indian_red_cross_membership_fee'),
-					'women_cell_fee' => $this->input->post('women_cell_fee'),
-					'nss_fee' => $this->input->post('nss_fee'),
-					'university_registration_fee' => $this->input->post('university_registration_fee'),
-					'total_university_fee' => $this->input->post('total_university_fee'),
-					'admission_fee' => $this->input->post('admission_fee'),
-					'processing_fee_paid_at_kea' => $this->input->post('processing_fee_paid_at_kea'),
-					'tution_fee' => $this->input->post('tution_fee'),
-					'college_other_fee' => $this->input->post('college_other_fee'),
-					'total_tution_fee' => $this->input->post('total_tution_fee'),
-					'total_college_fee' => $this->input->post('total_college_fee'),
-					'skill_development_fee' => $this->input->post('skill_development_fee'),
-					'corpus_fund' => $this->input->post('corpus_fund'),
-					'final_fee' => $this->input->post('final_fee'),
-				);
+				foreach ($rules as $rule) {
+					$updateDetails[$rule['field']] = $this->input->post($rule['field']);
+				}
 
+				$updateDetails['final_fee'] = $this->input->post('final_fee');
 				$result = $this->admin_model->updateDetails($id, $updateDetails, 'fee_structure');
 				// var_dump($this->db->last_query());
 				// die();
@@ -1213,28 +1195,31 @@ class Admin extends CI_Controller
 
 			$quota = $this->input->post('quota');
 			$dept = $this->input->post('course');
+			$stream = $this->input->post('stream');
 
 			$code_options = array(" " => "Select") + $this->globals->college_codes();
 
 			$result = array();
 			$result[] = '<option value=" ">Select</option>';
-
-			if ($quota == "COMED-K") {
-				$result[] = '<option value="UnAided">' . $code_options['COMED-K'] . '</option>';
+			if ($stream == 3) {
+				$result[] = '<option value="UnAided">' . $code_options['UnAided'] . '</option>';
 			} else {
-				if (($quota != "MGMT") && ($quota != "MGMT-COMEDK") && ($quota != "MGMT-LATERAL")) {
-					$dept = 0;
+				if ($quota == "COMED-K") {
+					$result[] = '<option value="UnAided">' . $code_options['COMED-K'] . '</option>';
 				} else {
-					$dept = $dept;
-				}
+					if (($quota != "MGMT") && ($quota != "MGMT-COMEDK") && ($quota != "MGMT-LATERAL")) {
+						$dept = 0;
+					} else {
+						$dept = $dept;
+					}
 
 
-				$details = $this->admin_model->getsubquota($quota, $dept)->result();
-				foreach ($details as $details1) {
-					$result[] = '<option value="' . $details1->sub_quota . '">' . $code_options[$details1->sub_quota] . '</option>';
+					$details = $this->admin_model->getsubquota($quota, $dept)->result();
+					foreach ($details as $details1) {
+						$result[] = '<option value="' . $details1->sub_quota . '">' . $code_options[$details1->sub_quota] . '</option>';
+					}
 				}
 			}
-
 			print_r($result);
 		} else {
 			redirect('admin/timeout');
@@ -1813,7 +1798,7 @@ class Admin extends CI_Controller
 				$this->form_validation->set_rules('batch', 'Batch', 'required');
 				$this->form_validation->set_rules('degree_level', 'Degree Level', 'required');
 			}
-			
+
 			$this->form_validation->set_rules('sports', 'Sports', 'required');
 			$this->form_validation->set_rules('entrance_type', 'Entrance Type', 'required');
 			$this->form_validation->set_rules('entrance_reg_no', 'Entrance Registration Number', 'required');
@@ -9269,28 +9254,66 @@ With good wishes";
 		}
 
 
-		print_r($response_array) ;
+		print_r($response_array);
 	}
 
 	public function getDepartmentsByStream()
-{
-    $stream_id = $this->input->post('stream_id');
-    $departments = $this->admin_model->getDepartmentsByStream($stream_id);
+	{
+		$stream_id = $this->input->post('stream_id');
+		$departments = $this->admin_model->getDepartmentsByStream($stream_id);
 
-    echo json_encode($departments);  // return departments as JSON
-}
+		echo json_encode($departments);  // return departments as JSON
+	}
 
-public function addComment($encryptedId) {
-	$id = base64_decode($encryptedId);  
-	$comment = $this->input->post('comment');  
-	$data = array(
-		'comments' => $comment  
-	);
+	public function addComment($encryptedId)
+	{
+		$id = base64_decode($encryptedId);
+		$comment = $this->input->post('comment');
+		$data = array(
+			'comments' => $comment
+		);
 
-	$this->db->where('id', $id);
-	$this->db->update('admissions', $data);
+		$this->db->where('id', $id);
+		$this->db->update('admissions', $data);
 
-	$this->session->set_flashdata('success', 'Comment added successfully.');
-	redirect('admin/admissiondetails/' . $encryptedId);
-}	
+		$this->session->set_flashdata('success', 'Comment added successfully.');
+		redirect('admin/admissiondetails/' . $encryptedId);
+	}
+	function quotaDropdown()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+
+			$stream = $this->input->post('stream');
+			if ($stream == 3) {
+				$quota_options = array(" " => "Select") + $this->globals->phdquota();
+			} else {
+				$quota_options = array(" " => "Select") + $this->globals->quota();
+				unset($quota_options['MGMT']);
+			}
+
+
+			$result = array();
+
+
+
+
+
+			foreach ($quota_options as $details1) {
+
+				$result[] = '<option value="' . $details1 . '">' . $details1 . '</option>';
+			}
+
+
+
+			print_r($result);
+		} else {
+			redirect('admin/timeout');
+		}
+	}
 }
