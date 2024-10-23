@@ -103,6 +103,24 @@
                           </div>
 
                       </div>
+                      <div class="col-lg-6">
+                          <div class="card">
+                              <div class="card-header">
+                                  <h3 class="card-title">
+                                      PhD Admissions Report
+                                  </h3>
+                              </div>
+                              <div class="card-body">
+                                  <ul>
+
+                                      <li><?php echo anchor('admin/phdCoursewiseStudentAdmittedCount', 'Course wise Student Admitted Count'); ?> </li>
+                                      <li><?php echo anchor('admin/phdstudentdetails_report', 'Students Details Report'); ?> </li>
+                                     
+                                  </ul>
+                              </div>
+                          </div>
+
+                      </div>
                   </div>
               </div>
           </div>

@@ -955,5 +955,15 @@ function PhdFeebalanceReport($currentAcademicYear, $course = '', $year = '')
     return $query;
   }
 
+  function getphdAdmissions_course($academic_year, $course, $status)
+  {
+    $this->db->where('academic_year', $academic_year);
+    $this->db->where('admissions.stream_id', '3');
+    $this->db->where('dept_id', $course);
+    $this->db->where('status', $status);
+    $this->db->order_by('admit_date', 'DESC');
+    return $this->db->get('admissions');
+  }
+
 
 }

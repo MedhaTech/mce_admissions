@@ -9751,4 +9751,329 @@ With good wishes";
 			redirect('admin/timeout');
 		}
 	}
+
+	public function phdCoursewiseStudentAdmittedCount($download = '')
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Course wise Student Admitted Count';
+			$data['menu'] = 'reports';
+			$data['report_type'] = 'reports';
+			$admissionStatus = $this->globals->admissionStatus();
+			$admissionStatusColor = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissionStatus'] = array(" " => "Select Admission Status") + $this->globals->admissionStatus();
+			$data['course_options'] = array(" " => "Select") + $this->phdcourses();
+			$data['action'] = 'admin/phdCoursewiseStudentAdmittedCount';
+			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			if ($this->form_validation->run() === FALSE) {
+
+				$this->admin_template->show('admin/phdCoursewiseStudentAdmittedCount', $data);
+			} else {
+				$data['course'] = $this->input->post('course');
+				$data['status'] = $this->input->post('admission_status');
+
+
+
+				$admissions = $this->admin_model->getphdAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+
+				if (count($admissions)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'College Code', 'Status', 'Admit. Date');
+
+
+
+					$this->table->set_heading($table_headings);
+
+					$i = 1;
+					foreach ($admissions as $admissions1) {
+						$dmp = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$admissions1->student_name,
+							$admissions1->mobile,
+							$dmp,
+							$admissions1->aadhaar,
+							$admissions1->quota,
+							$admissions1->sub_quota,
+							'<strong class="text-' . $admissionStatusColor[$admissions1->status] . '">' . $admissionStatus[$admissions1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($admissions1->admit_date))
+						);
+
+
+						$this->table->add_row($result_array);
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+				$data['selected_values'] = $selectedValues;
+				// Var_dump($this->db->last_query()); 
+				if ($download == 1) {
+					$response = array(
+						'op' => 'ok',
+						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
+					);
+					die(json_encode($response));
+				} else {
+					$data['admissions1'] = $details;
+					$data['admissions'] = "Count : " . count($admissions);
+					$this->admin_template->show('admin/phdCoursewiseStudentAdmittedCount', $data);
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function phdstudentdetails_report($download = '')
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Student Details Report';
+			$data['menu'] = 'reports';
+			$data['report_type'] = $report;
+			$admissionStatus = $this->globals->admissionStatus();
+			$admissionStatusColor = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissionStatus'] = array(" " => "Select Admission Status") + $this->globals->admissionStatus();
+			$data['course_options'] = array(" " => "Select") + $this->phdcourses();
+			$data['action'] = 'admin/phdstudentdetails_report';
+			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			if ($this->form_validation->run() === FALSE) {
+
+				$this->admin_template->show('admin/phdstudentdetails_report', $data);
+			} else {
+				$data['course'] = $this->input->post('course');
+				$data['status'] = $this->input->post('admission_status');
+
+
+
+				$admissions = $this->admin_model->getphdAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+
+				if (count($admissions)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
+
+
+					$selectedValues = $this->input->post('selectedValues');
+					if ($selectedValues) {
+						foreach ($selectedValues as $selectedValues1) {
+							if ($selectedValues1 == "date_place_of_birth") {
+								$select = $select . ",date_of_birth, place_of_birth";
+								$table_headings[] = 'Date of Birth';
+								$table_headings[] = 'Place of Birth';
+							}
+							if ($selectedValues1 == "caste_category") {
+								$select = $select . ",caste, category_claimed";
+								$table_headings[] = 'Caste';
+								$table_headings[] = 'Category';
+							}
+							if ($selectedValues1 == "nationality") {
+								$select = $select . ",nationality";
+								$table_headings[] = 'Nationality';
+							}
+							if ($selectedValues1 == "religion") {
+								$select = $select . ",religion";
+								$table_headings[] = 'Religion';
+							}
+							if ($selectedValues1 == "aadhar") {
+								$select = $select . ",aadhar";
+								$table_headings[] = 'Aadhar';
+							}
+
+							if ($selectedValues1 == "current_address") {
+								$select = $select . ",current_address,current_city,current_district,current_state,current_pincode";
+								$table_headings[] = 'Current Location';
+								$table_headings[] = 'Current City';
+								$table_headings[] = 'Current District';
+								$table_headings[] = 'Current State';
+								$table_headings[] = 'Current Pincode';
+							}
+
+							if ($selectedValues1 == "present_address") {
+								$select = $select . ",present_address,present_city,present_district,present_state,present_pincode";
+								$table_headings[] = 'Present Location';
+								$table_headings[] = 'Present City';
+								$table_headings[] = 'Present District';
+								$table_headings[] = 'Present State';
+								$table_headings[] = 'Present Pincode';
+							}
+
+							if ($selectedValues1 == "father_details") {
+								$select = $select . ",father_name, father_occupation, father_mobile, father_email, father_annual_income";
+								$table_headings[] = 'Father Name';
+								$table_headings[] = 'Father Occupation';
+								$table_headings[] = 'Father Mobile';
+								$table_headings[] = 'Father Email';
+								$table_headings[] = 'Father Annual Income';
+							}
+
+							if ($selectedValues1 == "mother_details") {
+								$select = $select . ",mother_name, mother_occupation, mother_mobile, mother_email, mother_annual_income";
+								$table_headings[] = 'Mother Name';
+								$table_headings[] = 'Mother Occupation';
+								$table_headings[] = 'Mother Mobile';
+								$table_headings[] = 'Mother Email';
+								$table_headings[] = 'Mother Annual Income';
+							}
+
+							if ($selectedValues1 == "guardian_details") {
+								$select = $select . ",guardian_name, guardian_occupation, guardian_mobile, guardian_email, guardian_annual_income";
+								$table_headings[] = 'Guardian Name';
+								$table_headings[] = 'Guardian Occupation';
+								$table_headings[] = 'Guardian Mobile';
+								$table_headings[] = 'Guardian Email';
+								$table_headings[] = 'Guardian Annual Income';
+							}
+
+							if ($selectedValues1 == "previous_exam_details") {
+								$select = $select . ",entrance_type, entrance_reg_no, entrance_rank, admission_order_no, admission_order_date";
+								$table_headings[] = 'Entrance Type';
+								$table_headings[] = 'Entrance Register Number';
+								$table_headings[] = 'Entrance Rank';
+								$table_headings[] = 'Admission Order Number';
+								$table_headings[] = 'Admission Order Date';
+							}
+
+							if ($selectedValues1 == "other_details") {
+								$select = $select . ",sports,ncc,nss";
+								$table_headings[] = 'Sports';
+								$table_headings[] = 'NCC';
+								$table_headings[] = 'NSS';
+							}
+						}
+					}
+
+					$this->table->set_heading($table_headings);
+
+					$i = 1;
+					foreach ($admissions as $admissions1) {
+						$dmp = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$admissions1->student_name,
+							$admissions1->mobile,
+							$dmp,
+							$admissions1->aadhaar,
+							$admissions1->quota,
+							$admissions1->sub_quota,
+							'<strong class="text-' . $admissionStatusColor[$admissions1->status] . '">' . $admissionStatus[$admissions1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($admissions1->admit_date))
+						);
+
+
+						if ($selectedValues) {
+							foreach ($selectedValues as $selectedValues1) {
+								if ($selectedValues1 == "date_place_of_birth") {
+									$result_array[] = $admissions1->date_of_birth;
+									$result_array[] = $admissions1->place_of_birth;
+								}
+								if ($selectedValues1 == "caste_category") {
+									$result_array[] = $admissions1->caste;
+									$result_array[] = $admissions1->category_claimed;
+								}
+								if ($selectedValues1 == "nationality") {
+									$result_array[] = $admissions1->nationality;
+								}
+								if ($selectedValues1 == "religion") {
+									$result_array[] = $admissions1->religion;
+								}
+								if ($selectedValues1 == "aadhar") {
+									$result_array[] = $admissions1->aadhar;
+								}
+
+								if ($selectedValues1 == "current_address") {
+									$result_array[] = $admissions1->current_address;
+									$result_array[] = $admissions1->current_city;
+									$result_array[] = $admissions1->current_district;
+									$result_array[] = $admissions1->current_state;
+									$result_array[] = $admissions1->current_pincode;
+								}
+
+								if ($selectedValues1 == "present_address") {
+									$result_array[] = $admissions1->present_address;
+									$result_array[] = $admissions1->present_city;
+									$result_array[] = $admissions1->present_district;
+									$result_array[] = $admissions1->present_state;
+									$result_array[] = $admissions1->present_pincode;
+								}
+
+								if ($selectedValues1 == "father_details") {
+									$result_array[] = $admissions1->father_name;
+									$result_array[] = $admissions1->father_occupation;
+									$result_array[] = $admissions1->father_mobile;
+									$result_array[] = $admissions1->father_email;
+									$result_array[] = $admissions1->father_annual_income;
+								}
+
+								if ($selectedValues1 == "mother_details") {
+									$result_array[] = $admissions1->mother_name;
+									$result_array[] = $admissions1->mother_occupation;
+									$result_array[] = $admissions1->mother_mobile;
+									$result_array[] = $admissions1->mother_email;
+									$result_array[] = $admissions1->mother_annual_income;
+								}
+
+								if ($selectedValues1 == "guardian_details") {
+									$result_array[] = $admissions1->guardian_name;
+									$result_array[] = $admissions1->guardian_occupation;
+									$result_array[] = $admissions1->guardian_mobile;
+									$result_array[] = $admissions1->guardian_email;
+									$result_array[] = $admissions1->guardian_annual_income;
+								}
+
+								if ($selectedValues1 == "previous_exam_details") {
+									$result_array[] = $admissions1->entrance_type;
+									$result_array[] = $admissions1->entrance_reg_no;
+									$result_array[] = $admissions1->entrance_rank;
+									$result_array[] = $admissions1->admission_order_no;
+									$result_array[] = $admissions1->admission_order_date;
+								}
+
+
+								if ($selectedValues1 == "other_details") {
+									$result_array[] = $admissions1->sports;
+									$result_array[] = $admissions1->ncc;
+									$result_array[] = $admissions1->nss;
+								}
+							}
+						}
+						$this->table->add_row($result_array);
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+				$data['selected_values'] = $selectedValues;
+				// Var_dump($this->db->last_query()); 
+				if ($download == 1) {
+					$response = array(
+						'op' => 'ok',
+						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
+					);
+					die(json_encode($response));
+				} else {
+					$data['admissions'] = $details;
+					$this->admin_template->show('admin/phdstudentdetails_report', $data);
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
 }
