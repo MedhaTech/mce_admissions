@@ -20,16 +20,15 @@
                       </div>
                   </div>
                   <div class="card-body">
-
                       <?php echo form_open_multipart($action, 'class="user" id="enquiry_list"'); ?>
 
                       <div class="form-row">
-                          <div class="col-md-3 col-sm-12">
+                          <div class="col-md-2 col-sm-12">
                               <div class="form-group">
 
                                   <label class="label font-13">Stream</label>
-                                  <?php $Stream =array(""=>"Select Stream","PhD"=>"PhD");
-                                        echo form_dropdown('Stream', $Stream, (set_value('Stream')) ? set_value('Stream') : 'Stream', 'class="form-control form-control-md" id="Stream"'); 
+                                  <?php $Stream = array("" => "Select Stream", "Mtech" => "Mtech");
+                                    echo form_dropdown('Stream', $Stream, (set_value('Stream')) ? set_value('Stream') : 'Stream', 'class="form-control form-control-md" id="Stream"');
                                     ?>
                               </div>
                           </div>
@@ -45,17 +44,25 @@
                           </div>
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
-                              <label class="label font-13">Student studying year<span class="text-danger">*</span></label>
-                                  <?php $Syear =array("0"=>"Select Student studying year","I"=>"I","II"=>"II");
-                                        echo form_dropdown('year', $Syear, (set_value('year')) ? set_value('year') : 'year', 'class="form-control form-control-md" id="year"'); 
+                                  <label class="label font-13">Student studying year<span class="text-danger">*</span></label>
+                                  <?php $Syear = array("" => "Select Student studying year", "I" => "I", "II" => "II");
+                                    echo form_dropdown('year', $Syear, (set_value('Syear')) ? set_value('year') : 'Syear', 'class="form-control form-control-md" id="year"');
                                     ?>
                               </div>
                           </div>
-                          <div class="col-md-3 col-sm-12">
+                          <div class="col-md-2 col-sm-12">
                               <div class="form-group">
-                              <label class="label font-13">Academic year</label>
-                                  <?php $Syear =array(""=>"Select Academic year","2024-2025"=>"2024-2025");
-                                        echo form_dropdown('Syear', $Syear, (set_value('Syear')) ? set_value('Syear') : 'Syear', 'class="form-control form-control-md" id="Syear"'); 
+                                  <label class="label font-13">Academic year</label>
+                                  <?php $Syear = array("" => "Select Academic year", "2024-2025" => "2024-2025");
+                                    echo form_dropdown('Syear', $Syear, (set_value('Syear')) ? set_value('Syear') : 'Syear', 'class="form-control form-control-md" id="Syear"');
+                                    ?>
+                              </div>
+                          </div>
+                          <div class="col-md-2 col-sm-12">
+                              <div class="form-group">
+                                  <label class="label font-13">Type</label>
+                                  <?php $type = array("" => "Select Type", "Aided" => "Aided", "UnAided" => "UnAided");
+                                    echo form_dropdown('type', $type, (set_value('type')) ? set_value('type') : 'type', 'class="form-control form-control-md" id="type"');
                                     ?>
                               </div>
                           </div>
@@ -66,7 +73,7 @@
                       <div class="form-group row">
                           <div class="col-sm-2"> &nbsp;</div>
                           <div class="col-sm-10 text-right">
-                             
+
                               <button type="submit" class="btn btn-danger btn-sm" name="Update" id="Update"><i class="fas fa-edit"></i> Filter </button>
                           </div>
                       </div>
@@ -98,6 +105,7 @@
               var admissions = $("#admissions").val();
               var course = $("#course").val();
               var year = $("#year").val();
+              var type = $("#type").val();
 
               $("#get_details").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Downloading...');
               $("#get_details").prop('disabled', true);
@@ -109,16 +117,17 @@
 
               $.ajax({
                   'type': 'POST',
-                  'url': base_url + 'admin/phdfeebalance_report/1',
+                  'url': base_url + 'admin/mtechdcb_report/1',
                   'data': {
-                    
-                      'course': course,
-                      'year': year
+                    'course': course,
+                    'year': year,
+                    'type': type
+
                   },
                   'dataType': 'json',
                   'cache': false,
                   'success': function(data) {
-                      var filename = "PhD Fee Balance Report.xls";
+                      var filename = "Mtech Dcb Report.xls";
                       var $a = $("<a>");
                       $a.attr("href", data.file);
                       $("body").append($a);

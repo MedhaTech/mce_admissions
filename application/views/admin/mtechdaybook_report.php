@@ -78,7 +78,7 @@
     
                   $.ajax({
                       'type': 'POST',
-                      'url': base_url + 'admin/phddayBookReportDownload/',
+                      'url': base_url + 'admin/mtechdayBookReportDownload/',
                       'data': {
                           'to_date': to_date,
                           'from_date': from_date
@@ -86,7 +86,7 @@
                       'dataType': 'json',
                       'cache': false,
                       'success': function(data) {
-                          var filename = "PhD Day Book Report.xls";
+                          var filename = "Mtech Day Book Report.xls";
                           var $a = $("<a>");
                           $a.attr("href", data.file);
                           $("body").append($a);

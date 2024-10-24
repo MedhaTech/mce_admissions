@@ -121,6 +121,28 @@
                           </div>
 
                       </div>
+                      <div class="col-lg-6">
+                          <div class="card">
+                              <div class="card-header">
+                                  <h3 class="card-title">
+                                      Mtech Accounts Report
+                                  </h3>
+                              </div>
+                              <div class="card-body">
+                                  <ul>
+
+                                     <?php if((in_array($role, array(1,2,3,6,7)))){ ?>
+                                      <li><?php echo anchor('admin/mtechdaybook_report', 'Day Book Report'); ?> </li>
+                                      <?php }?>
+                                      <?php if((in_array($role, array(1,2,3,7)))){ ?>
+                                      <li><?php echo anchor('admin/mtechdcb_report', 'DCB Report'); ?> </li>
+                                      <li><?php echo anchor('admin/mtechfeebalance_report', 'Fee Balance Report'); ?> </li>
+                                      <?php }?>
+                                  </ul>
+                              </div>
+                          </div>
+
+                      </div>
                   </div>
               </div>
           </div>
