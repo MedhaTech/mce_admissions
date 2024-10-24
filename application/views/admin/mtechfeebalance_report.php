@@ -28,7 +28,7 @@
                               <div class="form-group">
 
                                   <label class="label font-13">Stream</label>
-                                  <?php $Stream =array(""=>"Select Stream","PhD"=>"PhD");
+                                  <?php $Stream =array(""=>"Select Stream","Mtech"=>"Mtech");
                                         echo form_dropdown('Stream', $Stream, (set_value('Stream')) ? set_value('Stream') : 'Stream', 'class="form-control form-control-md" id="Stream"'); 
                                     ?>
                               </div>
@@ -109,7 +109,7 @@
 
               $.ajax({
                   'type': 'POST',
-                  'url': base_url + 'admin/phdfeebalance_report/1',
+                  'url': base_url + 'admin/mtechfeebalance_report/1',
                   'data': {
                     
                       'course': course,
@@ -118,7 +118,7 @@
                   'dataType': 'json',
                   'cache': false,
                   'success': function(data) {
-                      var filename = "PhD Fee Balance Report.xls";
+                      var filename = "Mtech Fee Balance Report.xls";
                       var $a = $("<a>");
                       $a.attr("href", data.file);
                       $("body").append($a);
