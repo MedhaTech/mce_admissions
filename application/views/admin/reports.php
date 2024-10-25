@@ -137,7 +137,47 @@
                                       <?php if((in_array($role, array(1,2,3,7)))){ ?>
                                       <li><?php echo anchor('admin/mtechdcb_report', 'DCB Report'); ?> </li>
                                       <li><?php echo anchor('admin/mtechfeebalance_report', 'Fee Balance Report'); ?> </li>
+                                      <li><?php echo anchor('admin/mtechcorpusoverall_report', 'Corpus Fund Overall Fee Report'); ?> </li>
+                                      <li><?php echo anchor('admin/mtechcorpusbalance_report', 'Corpus Fund Balance Fee Report'); ?> </li>
                                       <?php }?>
+                                  </ul>
+                              </div>
+                          </div>
+
+                      </div>
+                      <div class="col-lg-6">
+                          <div class="card">
+                              <div class="card-header">
+                                  <h3 class="card-title">
+                                      Mtech Admissions Report
+                                  </h3>
+                              </div>
+                              <div class="card-body">
+                                  <ul>
+                                      <li><?php echo anchor('admin/mtechCoursewiseStudentAdmittedCount', 'Course wise Student Admitted Count'); ?> </li>
+                                      <li><?php echo anchor('admin/mtechstudentdetails_report', 'Students Details Report'); ?> </li>
+                                      <li><?php echo anchor('admin/mtechadmissionscroll_report', 'Admission Scroll Report'); ?> </li>
+                                      <li><?php echo anchor('admin/mtechcategory_admissions_report', 'Category wise Admissions Report'); ?> </li>
+                                      <li><?php echo anchor('admin/mtechadmissionsyearbook', 'Admission Year Book'); ?> </li>
+                                  </ul>
+                              </div>
+                          </div>
+
+                      </div>
+                      <div class="col-lg-6">
+                          <div class="card">
+                              <div class="card-header">
+                                  <h3 class="card-title">
+                                     Mtech Enquiries Report
+                                  </h3>
+                              </div>
+                              <div class="card-body">
+                                  <ul>
+                                      <li><?php echo anchor('admin/mtechreport/7', 'All Enquiries'); ?> </li>
+                                      <li><?php echo anchor('admin/mtechreport_department', '⁠Interested Course wise Report'); ?> </li>
+                                      <li><?php echo anchor('admin/mtechreport/8', '⁠Non-Karnataka Enquires List'); ?> </li>
+                                      <li><?php echo anchor('admin/report/mtechreport_category', '⁠Category wise Enquires List'); ?> </li>
+                                      <li><?php echo anchor('admin/mtechreport/9', '⁠Sports Quota Enquires List'); ?> </li>
                                   </ul>
                               </div>
                           </div>

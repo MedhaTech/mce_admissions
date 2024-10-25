@@ -97,12 +97,12 @@
 
               $.ajax({
                   'type': 'POST',
-                  'url': base_url + 'admin/phdCoursewiseStudentAdmittedCount/1',
+                  'url': base_url + 'admin/mtechCoursewiseStudentAdmittedCount/1',
                   data: form.serialize(),
                   'dataType': 'json',
                   'cache': false,
                   'success': function(data) {
-                      var filename = "PhD Course Wise Student Report.xls";
+                      var filename = "Mtech Course Wise Student Report.xls";
                       var $a = $("<a>");
                       $a.attr("href", data.file);
                       $("body").append($a);

@@ -158,12 +158,12 @@
 
               $.ajax({
                   'type': 'POST',
-                  'url': base_url + 'admin/phdstudentdetails_report/1',
+                  'url': base_url + 'admin/mtechstudentdetails_report/1',
                   data: form.serialize(),
                   'dataType': 'json',
                   'cache': false,
                   'success': function(data) {
-                      var filename = "Phd Student Detail Report.xls";
+                      var filename = "Mtech Student Detail Report.xls";
                       var $a = $("<a>");
                       $a.attr("href", data.file);
                       $("body").append($a);
