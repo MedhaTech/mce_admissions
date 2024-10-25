@@ -125,7 +125,16 @@
                                           </div>
                                       </div>
 
-                                    
+                                      <div class="form-group row">
+                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">Application Fee & Admission
+                                              fee</label>
+                                          <div class="col-md-7">
+                                              <input type="text" name="admission_fee" id="admission_fee"
+                                                  class="form-control"
+                                                  value="<?php echo (set_value('admission_fee'))?set_value('admission_fee'):$fee_structure['admission_fee'];?>">
+                                              <span class="text-danger"></span>
+                                          </div>
+                                      </div>
 
                                       <div class="form-group row">
                                           <label for="staticEmail"
@@ -146,17 +155,16 @@
                                               <hr />
                                           </label>
                                       </div>
+                                     
                                       <div class="form-group row">
-                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">Application Fee & Admission
-                                              fee</label>
+                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">Tution
+                                              Fee</label>
                                           <div class="col-md-7">
-                                              <input type="text" name="admission_fee" id="admission_fee"
-                                                  class="form-control"
-                                                  value="<?php echo (set_value('admission_fee'))?set_value('admission_fee'):$fee_structure['admission_fee'];?>">
+                                              <input type="text" name="tution_fee" id="tution_fee" class="form-control"
+                                                  value="<?php echo (set_value('tution_fee'))?set_value('tution_fee'):$fee_structure['tution_fee'];?>">
                                               <span class="text-danger"></span>
                                           </div>
                                       </div>
-                                  
                                       <div class="form-group row">
                                           <label for="staticEmail" class="col-md-5 col-form-label text-right">College
                                               Other Fee</label>
@@ -267,7 +275,10 @@ $(document).ready(function() {
         calFeeTotal();
     });
 
-    
+    $("#tution_fee").change(function() {
+        event.preventDefault();
+        calFeeTotal();
+    });
 
     $("#college_other_fee").change(function() {
         event.preventDefault();
@@ -285,18 +296,18 @@ $(document).ready(function() {
         var university_development_fund = parseInt($('#university_development_fund').val());
         var promotion_of_indian_cultural_activities_fee = parseInt($(
             '#promotion_of_indian_cultural_activities_fee').val());
-       
+        var tution_fee = parseInt($('#tution_fee').val());
         var university_registration_fee = parseInt($('#university_registration_fee').val());
-
-        var total_university_fee =  e_consortium_fee + library_fee +career_guidance_counseling_fee + university_development_fund +
-            promotion_of_indian_cultural_activities_fee +  university_registration_fee;
-
         var admission_fee = parseInt($('#admission_fee').val());
+        var total_university_fee =  e_consortium_fee + library_fee +career_guidance_counseling_fee + university_development_fund +
+            promotion_of_indian_cultural_activities_fee +  university_registration_fee + admission_fee;
+
+      
       
         var college_other_fee = parseInt($('#college_other_fee').val());
        
 
-        var total_tution_fee = admission_fee + college_other_fee ;
+        var total_tution_fee =  college_other_fee + tution_fee ;
 
       
 
