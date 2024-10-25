@@ -354,16 +354,18 @@ class Admin_model extends CI_Model
     return $this->db->get('admissions');
   }
 
-  function getAdmissionOverallStats($department_id)
+  function getAdmissionOverallStats($department_id,$stream)
   {
     if (empty($department_id)) {
       $this->db->select('dept_id, quota, sub_quota, COUNT(*) as cnt');
+      $this->db->where('stream_id', $stream);
       $this->db->group_by('dept_id, quota, sub_quota');
       $this->db->order_by('sub_quota, dept_id','ASC');
       return $this->db->get('admissions');
     } else {
       $this->db->select('quota, sub_quota, COUNT(*) as cnt');
       $this->db->where('dept_id', $department_id);
+      $this->db->where('stream_id', $stream);
       $this->db->group_by('quota, sub_quota');
       return $this->db->get('admissions');
     }
