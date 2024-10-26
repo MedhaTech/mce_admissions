@@ -73,6 +73,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $active_group = 'default';
 
+print_r($_SERVER);
+
 if($_SERVER['HTTP_HOST']=="127.0.0.1" || $_SERVER['HTTP_HOST']=="localhost"){
 	$active_group = 'default';
 }
@@ -87,6 +89,7 @@ if($_SERVER['HTTP_HOST']=="admissions.mcehassan.ac.in"){
 
 $query_builder = TRUE;
 
+print_r($active_group);
 
 $db['default'] = array(
 	'dsn'	=> '',
