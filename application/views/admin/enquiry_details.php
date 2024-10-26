@@ -182,6 +182,23 @@
                                 <th>GT & TC-IV Percentage</th>
                                 <td><?= $enquiryDetails->gttc4_grade . '%'; ?></td>
                             </tr>
+                            <?php elseif ($enquiryDetails->admission_based == 'BE'): ?>
+                            <tr>
+                                <th>BE-I Percentage</th>
+                                <td><?= $enquiryDetails->degree1_grade . '%'; ?></td>
+                            </tr>
+                            <tr>
+                                <th>BE-II Percentage</th>
+                                <td><?= $enquiryDetails->degree2_grade . '%'; ?></td>
+                            </tr>
+                            <tr>
+                                <th>BE-III Percentage</th>
+                                <td><?= $enquiryDetails->degree3_grade . '%'; ?></td>
+                            </tr>
+                            <tr>
+                                <th>BE-IV Percentage</th>
+                                <td><?= $enquiryDetails->degree4_grade . '%'; ?></td>
+                            </tr>
                         <?php endif; ?>
                       </table>
                   </div>
@@ -274,6 +291,7 @@
                                   <div class="col">
                                       <div class="form-group">
                                           <label class="form-label">Department</label>
+                                          <input type="hidden" class="form-control" id="stream" name="stream" value="<?= $stream;?>">
                                           <?php echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control" id="course"');  ?>
                                           <span class="text-danger"><?php echo form_error('course'); ?></span>
                                       </div>
@@ -415,6 +433,8 @@
                                   <div class="col">
                                       <div class="form-group">
                                           <label class="form-label">Department</label>
+                                          <input type="hidden" class="form-control" id="stream" name="stream" value="<?= $stream;?>">
+                                         
                                           <?php echo form_dropdown('course1', $course_options, (set_value('course1')) ? set_value('course1') : $course, 'class="form-control" id="course1"');  ?>
                                           <span class="text-danger"><?php echo form_error('course1'); ?></span>
                                       </div>
@@ -507,6 +527,7 @@ $(document).ready(function() {
         var course = $("#course").val();
         var subquota = $("#subquota").val();
         var quota = $("#quota").val();
+        var stream = $("#stream").val();
 
         if (subquota != " " && quota != ' ' && course != " ") {
             var page = base_url + 'admin/getFee';
@@ -516,7 +537,8 @@ $(document).ready(function() {
                 'data': {
                     'course': course,
                     'quota': quota,
-                    'subquota': subquota
+                    'subquota': subquota,
+                    'stream': stream
                 },
                 'dataType': 'json',
                 'cache': false,

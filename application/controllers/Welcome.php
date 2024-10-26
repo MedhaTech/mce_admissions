@@ -19,9 +19,11 @@ class Welcome extends CI_Controller
 	public function index()
 	{
 
-		$data['pageTitle'] = "B.E Admissions Open 2024-25 | Malnad College of Engineering";
+		$data['pageTitle'] = "B.E/P.G Admissions Open 2024-25 | Malnad College of Engineering";
 		$data['activeMenu'] = "home";
-		$data['course_options'] = array("" => "Select Branch") + $this->courses();
+		// $data['course_options'] = array("" => "Select Branch") + $this->courses();
+		$data['course_options'] = array("" => "Select Branch") + $this->getAllCourses();
+		// $data['pg_options'] = array("" => "Select Branch") + $this->getCoursesByStreamId();
 		$data['states'] = array("" => "Select State") + $this->globals->states();
 		$data['type_options'] = array("" => "Select") + $this->globals->category();
 
@@ -60,6 +62,13 @@ class Welcome extends CI_Controller
 			$this->form_validation->set_rules('gttc4_grade', 'GT&TC-IV Percentage');
 		}
 
+		if ($admission_based == "BE") {
+			$this->form_validation->set_rules('degree1_grade', 'BE-I Percentage', 'required');
+			$this->form_validation->set_rules('degree2_grade', 'BE-II Percentage', 'required');
+			$this->form_validation->set_rules('degree3_grade', 'BE-III Percentage', 'required');
+			$this->form_validation->set_rules('degree4_grade', 'BE-IV Percentage');
+		}
+
 		$this->form_validation->set_rules('course', 'Course', 'required');
 		$this->form_validation->set_rules('course1', 'Course 1', 'required');
 		$this->form_validation->set_rules('course2', 'Course 2', 'required');
@@ -89,6 +98,10 @@ class Welcome extends CI_Controller
 			$data['gttc2_grade'] = $this->input->post('gttc2_grade');
 			$data['gttc3_grade'] = $this->input->post('gttc3_grade');
 			$data['gttc4_grade'] = $this->input->post('gttc4_grade');
+			$data['degree1_grade'] = $this->input->post('degree1_grade');
+			$data['degree2_grade'] = $this->input->post('degree2_grade');
+			$data['degree3_grade'] = $this->input->post('degree3_grade');
+			$data['degree4_grade'] = $this->input->post('degree4_grade');
 			$data['course'] = $this->input->post('course');
 			$data['course1'] = $this->input->post('course1');
 			$data['course2'] = $this->input->post('course1');
@@ -131,6 +144,10 @@ class Welcome extends CI_Controller
 				'gttc2_grade' => $this->input->post('gttc2_grade'),
 				'gttc3_grade' => $this->input->post('gttc3_grade'),
 				'gttc4_grade' => $this->input->post('gttc4_grade'),
+				'degree1_grade' => $this->input->post('degree1_grade'),
+				'degree2_grade' => $this->input->post('degree2_grade'),
+				'degree3_grade' => $this->input->post('degree3_grade'),
+				'degree4_grade' => $this->input->post('degree4_grade'),
 				'course_id' => $this->input->post('course'),
 				'course' => $course,
 				'course1' => $course1,
@@ -199,4 +216,29 @@ class Welcome extends CI_Controller
 		return $result;
 
 	}
+
+function getAllCourses()
+{
+    $detailsUG = $this->admin_model->getDetailsbyfield('1', 'status', 'departments')->result();
+
+    $detailsPG = $this->admin_model->getDetailsbyfield('2', 'stream_id', 'departments')->result();
+
+    $result = array();
+
+    foreach ($detailsUG as $details1) {
+        $row = $this->admin_model->get_stream_by_id($details1->stream_id);
+        if ($row) {
+            $result[$details1->department_id] = $row['stream_short_name'] . ' - ' . $details1->department_name . ' (UG)';
+        }
+    }
+
+    foreach ($detailsPG as $details2) {
+        $row = $this->admin_model->get_stream_by_id($details2->stream_id);
+        if ($row) {
+            $result[$details2->department_id] = $row['stream_short_name'] . ' - ' . $details2->department_name . ' (PG)';
+        }
+    }
+
+    return $result;
+}
 }

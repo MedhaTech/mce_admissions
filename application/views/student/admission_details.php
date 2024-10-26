@@ -56,11 +56,10 @@
 
                             <div class="col-md-4 col-sm-12">
                                 <div class="form-group">
-                                    <label class="label">Aadhaar Number<span class="text-danger">*</span></label>
-                                    <input type="text" name="aadhaar" id="aadhaar"
-                                        value="<?php echo (set_value('aadhaar')) ? set_value('aadhaar') : $aadhaar; ?>"
-                                        class="form-control" placeholder="Enter Aadhaar Number" readonly>
-                                    <span class="text-danger"><?php echo form_error('aadhaar'); ?></span>
+                                    <label class="label">Stream<span class="text-danger">*</span></label>
+                                    <input type="text" value="<?= $this->admin_model->get_stream_by_id($admissionDetails->stream_id)["stream_name"]; ?>"
+                                        class="form-control" placeholder="Enter Department Id" readonly>
+                                    <span class="text-danger"><?php echo form_error('dept_id'); ?></span>
                                 </div>
                             </div>
                             <div class="col-md-4 col-sm-12">
@@ -136,7 +135,40 @@
                                           echo form_dropdown('sports', $sports_options, (set_value('sports')) ? set_value('sports') : $sports, 'class="form-control" id="sports"'); ?> -->
                                 <span class="text-danger"><?php echo form_error('sports'); ?></span>
                             </div>
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label class="label">Aadhaar Number<span class="text-danger">*</span></label>
+                                    <input type="text" name="aadhaar" id="aadhaar"
+                                        value="<?php echo (set_value('aadhaar')) ? set_value('aadhaar') : $aadhaar; ?>"
+                                        class="form-control" placeholder="Enter Aadhaar Number" readonly>
+                                    <span class="text-danger"><?php echo form_error('aadhaar'); ?></span>
+                                </div>
+                            </div>
                         </div>
+
+                        <?php if ($admissionDetails->stream_id == 3): ?>
+                            <div class="form-row">
+                                <!-- Batch Input Field -->
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="label">Batch (pass out year)<span class="text-danger">*</span></label>
+                                        <input type="text" name="batch" id="batch" class="form-control"
+                                            value="<?php echo (set_value('batch')) ? set_value('batch') : $admissionDetails->batch; ?>"
+                                            placeholder="Enter Batch" readonly>
+                                        <span class="text-danger"><?php echo form_error('batch'); ?></span>
+                                    </div>
+                                </div>
+
+                                <!-- Degree Level Input Field -->
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label class="label">Degree Level<span class="text-danger">*</span></label>
+                                    <input type="text" name="degree_level" id="degree_level" class="form-control"
+                                        value="<?php echo (set_value('degree_level')) ? set_value('degree_level') : $admissionDetails->degree_level; ?>"
+                                        placeholder="Enter Degree Level" readonly>
+                                    <span class="text-danger"><?php echo form_error('degree_level'); ?></span>
+                                </div>
+                            </div>
+                        <?php endif; ?>
 
                         <?php echo form_close(); ?>
                     </div>

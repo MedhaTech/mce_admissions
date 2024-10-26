@@ -4,10 +4,25 @@
         <div class="container-fluid">
 
             <?php if ($this->session->flashdata('message')) { ?>
-                <div class="alert <?= $this->session->flashdata('status'); ?>" id="msg">
-                    <?php echo $this->session->flashdata('message') ?>
-                </div>
+            <div class="alert <?= $this->session->flashdata('status'); ?>" id="msg">
+                <?php echo $this->session->flashdata('message') ?>
+            </div>
             <?php } ?>
+
+            <!-- <?php if($this->session->flashdata('success')): ?>
+                <div class="alert alert-success">
+                    <?php echo $this->session->flashdata('success'); ?>
+                </div>
+            <?php endif; ?> -->
+
+            <?php if ($this->session->flashdata('success')): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?php echo $this->session->flashdata('success'); ?>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            <?php endif; ?>
 
             <div class="card m-2 shadow card-info">
                 <div class="card-header ">
@@ -31,32 +46,120 @@
                                 // );
                                 ?>
                             </li> -->
+
+                            <li class="nav-item">
+                                <?php $encryptId = base64_encode($admissionDetails->id); ?>
+                                <button type="button" class="btn btn-dark btn-sm" data-toggle="modal"
+                                    data-target="#commentModal">
+                                    <i class="fas fa-comment fa-sm fa-fw"></i> Comment
+                                </button>
+                            </li>
+
+                            <!-- Modal for Comment -->
+                            <div class="modal fade" id="commentModal" tabindex="-1" role="dialog"
+                                aria-labelledby="commentModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="commentModalLabel">Add Comment</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form method="POST"
+                                            action="<?php echo base_url('admin/addComment/' . $encryptId); ?>">
+                                            <div class="modal-body">
+                                                <textarea name="comment" class="form-control"
+                                                    placeholder="Write your comment here..." rows="5"
+                                                    required></textarea>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-dark btn-sm"
+                                                    data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-danger btn-sm">Save
+                                                    Comment</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <?php
+                        // Encoding the admission ID and sanitizing it for use in HTML id
+                        $encryptId = base64_encode($admissionDetails->id);
+                        $cleanEncryptId = str_replace(['+', '/', '='], ['-', '_', ''], $encryptId);
+                        ?>
+
+                            <!-- View Comments Button -->
+                            <button type="button" class="btn btn-dark btn-sm" data-toggle="modal"
+                                data-target="#viewCommentsModal_<?php echo $cleanEncryptId; ?>">
+                                <i class="fas fa-eye fa-sm fa-fw"></i> View Comments
+                            </button>
+
+                            <!-- View Comments Modal -->
+                            <div class="modal fade" id="viewCommentsModal_<?php echo $cleanEncryptId; ?>" tabindex="-1"
+                                aria-labelledby="viewCommentsModalLabel_<?php echo $cleanEncryptId; ?>"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title"
+                                                id="viewCommentsModalLabel_<?php echo $cleanEncryptId; ?>">Comments</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- Display Comments in the Modal -->
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="form-label mb-0">Comments</label><br>
+                                                    <span class="text-dark">
+                                                        <?php
+                                                if (!empty($admissionDetails->comments)) {
+                                                    echo $admissionDetails->comments;
+                                                } else {
+                                                    echo "--";
+                                                }
+                                                ?>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn btn-dark btn-sm"
+                                                data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <li class="nav-item">
                                 <?php $encryptId = base64_encode($admissionDetails->id);
                                 echo anchor('admin/updateadmissiondetails/' . $encryptId, '<i class="fas fa-edit fa-sm fa-fw"></i> Edit ', 'class="btn btn-dark btn-sm"'); ?>
                             </li>
                             <?php if ((in_array($role, array(1,2)))) {
                                 if ($admissionDetails->quota == "MGMT") { ?>
-                                    <li class="nav-item">
-                                        <?php $encryptId = base64_encode($admissionDetails->id);
+                            <li class="nav-item">
+                                <?php $encryptId = base64_encode($admissionDetails->id);
                                         echo anchor('admin/admissionsletter/' . $encryptId, '<i class="fas fa-download fa-sm fa-fw"></i> Admit Letter ', 'class="btn btn-danger btn-sm"'); ?>
-                                    </li>
+                            </li>
                             <?php }
                             } ?>
-                             <?php if ((in_array($role, array(1,2)))) {
+                            <?php if ((in_array($role, array(1,2)))) {
                                 if ($admissionDetails->quota == "MGMT-LATERAL") { ?>
-                                    <li class="nav-item">
-                                        <?php $encryptId = base64_encode($admissionDetails->id);
+                            <li class="nav-item">
+                                <?php $encryptId = base64_encode($admissionDetails->id);
                                         echo anchor('admin/admissionsletterlateral/' . $encryptId, '<i class="fas fa-download fa-sm fa-fw"></i> Admit Letter ', 'class="btn btn-danger btn-sm"'); ?>
-                                    </li>
+                            </li>
                             <?php }
                             } ?>
                             <?php if ((in_array($role, array(1,2)))) {
                                 if ($admissionDetails->quota == "MGMT-COMEDK") { ?>
-                                    <li class="nav-item">
-                                        <?php $encryptId = base64_encode($admissionDetails->id);
+                            <li class="nav-item">
+                                <?php $encryptId = base64_encode($admissionDetails->id);
                                         echo anchor('admin/admissionslettermgmtcomedk/' . $encryptId, '<i class="fas fa-download fa-sm fa-fw"></i> Admit Letter ', 'class="btn btn-danger btn-sm"'); ?>
-                                    </li>
+                            </li>
                             <?php }
                             } ?>
 
@@ -137,6 +240,18 @@
                                         ?>
                                     </div>
                                 </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="form-label mb-0">Stream Name</label><br>
+                                        <?php
+                                        if ($this->admin_model->get_stream_by_id($admissionDetails->stream_id)["stream_name"] != NULL) {
+                                            echo $this->admin_model->get_stream_by_id($admissionDetails->stream_id)["stream_name"];
+                                        } else {
+                                            echo "--";
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="form-label mb-0">Department</label><br>
@@ -161,7 +276,7 @@
                                         ?>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <label class="form-label mb-0">Sub Quota</label><br>
                                         <?php
@@ -235,21 +350,48 @@
                                         ?>
                                     </div>
                                 </div>
+                                <?php if ($admissionDetails->stream_id == '3'): ?>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="form-label mb-0">Batch (pass out year)</label><br>
+                                        <?php
+                                            if ($admissionDetails->batch != NULL) {
+                                                echo $admissionDetails->batch;
+                                            } else {
+                                                echo "--";
+                                            }
+                                            ?>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="form-label mb-0">Degree Level</label><br>
+                                        <?php
+                                            if ($admissionDetails->degree_level != NULL) {
+                                                echo $admissionDetails->degree_level;
+                                            } else {
+                                                echo "--";
+                                            }
+                                            ?>
+                                    </div>
+                                </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <?php if (!empty($student_photo)): ?>
-                                    <div class="student-photo"
-                                        style="width: 120px; height: 160px; border: 1px solid #000; overflow: hidden;">
-                                        <img src="<?php echo base_url($student_photo); ?>" alt="Student Photo"
-                                            style="width: 100%; height: 100%; object-fit: cover;">
-                                    </div>
-                                <?php else: ?>
-                                    <img class="img-fluid rounded shadow"
-                                        src="<?php echo base_url('assets/img/mce_light1.png'); ?>" alt="Student Photo"
+                                <div class="student-photo"
+                                    style="width: 120px; height: 160px; border: 1px solid #000; overflow: hidden;">
+                                    <img src="<?php echo base_url($student_photo); ?>" alt="Student Photo"
                                         style="width: 100%; height: 100%; object-fit: cover;">
-                                    <!-- <p>No photo available.</p> -->
+                                </div>
+                                <?php else: ?>
+                                <img class="img-fluid rounded shadow"
+                                    src="<?php echo base_url('assets/img/mce_light1.png'); ?>" alt="Student Photo"
+                                    style="width: 100%; height: 100%; object-fit: cover;">
+                                <!-- <p>No photo available.</p> -->
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -916,213 +1058,213 @@
                 <div class="card-body">
                     <?php if (count($educations_details)) {
                         foreach ($educations_details as $edu) { ?>
-                            <div class="form-row">
+                    <div class="form-row">
 
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="form-label mb-0">Level</label><br>
-                                        <?php
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Level</label><br>
+                                <?php
                                         if ($edu->education_level != NULL) {
                                             echo $edu->education_level;
                                         } else {
                                             echo "--";
                                         }
                                         ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="form-label mb-0">Institution Type</label><br>
-                                        <?php
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Institution Type</label><br>
+                                <?php
                                         if ($edu->inst_type != NULL) {
                                             echo $edu->inst_type;
                                         } else {
                                             echo "--";
                                         }
                                         ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="form-label mb-0">Board / University</label><br>
-                                        <?php
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Board / University</label><br>
+                                <?php
                                         if ($edu->inst_board != NULL) {
                                             echo $edu->inst_board;
                                         } else {
                                             echo "--";
                                         }
                                         ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="form-label mb-0">Institution Name</label><br>
-                                        <?php
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Institution Name</label><br>
+                                <?php
                                         if ($edu->inst_name != NULL) {
                                             echo $edu->inst_name;
                                         } else {
                                             echo "--";
                                         }
                                         ?>
-                                    </div>
-                                </div>
-
-
                             </div>
+                        </div>
 
-                            <div class="form-row">
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="form-label mb-0">Institution Address</label><br>
-                                        <?php
+
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Institution Address</label><br>
+                                <?php
                                         if ($edu->inst_address != NULL) {
                                             echo $edu->inst_address;
                                         } else {
                                             echo "--";
                                         }
                                         ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="form-label mb-0">Institution City</label><br>
-                                        <?php
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Institution City</label><br>
+                                <?php
                                         if ($edu->inst_city != NULL) {
                                             echo $edu->inst_city;
                                         } else {
                                             echo "--";
                                         }
                                         ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="form-label mb-0">Institution State</label><br>
-                                        <?php
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Institution State</label><br>
+                                <?php
                                         if ($edu->inst_state != NULL) {
                                             echo $edu->inst_state;
                                         } else {
                                             echo "--";
                                         }
                                         ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="form-label mb-0">Institution Country</label><br>
-                                        <?php
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Institution Country</label><br>
+                                <?php
                                         if ($edu->inst_country != NULL) {
                                             echo $edu->inst_country;
                                         } else {
                                             echo "--";
                                         }
                                         ?>
-                                    </div>
-                                </div>
                             </div>
-                            <div class="form-row">
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="form-label mb-0">Medium of Instruction</label><br>
-                                        <?php
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Medium of Instruction</label><br>
+                                <?php
                                         if ($edu->medium_of_instruction != NULL) {
                                             echo $edu->medium_of_instruction;
                                         } else {
                                             echo "--";
                                         }
                                         ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="form-label mb-0">Register Number</label><br>
-                                        <?php
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Register Number</label><br>
+                                <?php
                                         if ($edu->register_number != NULL) {
                                             echo $edu->register_number;
                                         } else {
                                             echo "--";
                                         }
                                         ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="form-label mb-0">Year of Passing</label><br>
-                                        <?php
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Year of Passing</label><br>
+                                <?php
                                         if ($edu->year_of_passing != NULL) {
                                             echo $edu->year_of_passing;
                                         } else {
                                             echo "--";
                                         }
                                         ?>
-                                    </div>
-                                </div>
+                            </div>
+                        </div>
 
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="form-label mb-0">Maximum Marks</label><br>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Maximum Marks</label><br>
 
-                                        <?php
+                                <?php
                                         if ($edu->maximum != NULL) {
                                             echo $edu->maximum;
                                         } else {
                                             echo "--";
                                         }
                                         ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="form-label mb-0">Obtained Marks</label><br>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Obtained Marks</label><br>
 
-                                        <?php
+                                <?php
                                         if ($edu->obtained != NULL) {
                                             echo $edu->obtained;
                                         } else {
                                             echo "--";
                                         }
                                         ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="form-label mb-0">Aggregate</label><br>
-                                        <!-- <p><?= $edu->aggregate; ?>%</p> -->
-                                        <?php
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Aggregate</label><br>
+                                <!-- <p><?= $edu->aggregate; ?>%</p> -->
+                                <?php
                                         if ($edu->aggregate != NULL) {
                                             echo $edu->aggregate . '%';
                                         } else {
                                             echo "--";
                                         }
                                         ?>
-                                    </div>
-                                </div>
                             </div>
-                            <table class="table" border="1">
-                                <?php
+                        </div>
+                    </div>
+                    <table class="table" border="1">
+                        <?php
                                 if (($edu->education_level == 'SSLC') || ($edu->education_level == 'PUC')) {
                                 ?>
-                                    <thead>
-                                        <tr>
-                                            <th>Subject Name</th>
-                                            <th>Min Marks</th>
-                                            <th>Max Marks</th>
-                                            <th>Obtained Marks</th>
-                                        </tr>
-                                    </thead>
-                                <?php } else { ?>
-                                    <thead>
-                                        <tr>
-                                            <th>Years</th>
-                                            <th>Percentage(%)</th>
-                                            <th>Max Marks</th>
-                                            <th>Obtained Marks</th>
-                                        </tr>
-                                    </thead>
+                        <thead>
+                            <tr>
+                                <th>Subject Name</th>
+                                <th>Min Marks</th>
+                                <th>Max Marks</th>
+                                <th>Obtained Marks</th>
+                            </tr>
+                        </thead>
+                        <?php } else { ?>
+                        <thead>
+                            <tr>
+                                <th>Years</th>
+                                <th>Percentage(%)</th>
+                                <th>Max Marks</th>
+                                <th>Obtained Marks</th>
+                            </tr>
+                        </thead>
 
-                                <?php } ?>
-                                <tbody>
-                                    <?php
+                        <?php } ?>
+                        <tbody>
+                            <?php
                                     for ($i = 1; $i <= 6; $i++) {
                                         $subject_name = $edu->{"subject_" . $i . "_name"};
                                         $min_marks = $edu->{"subject_" . $i . "_min_marks"};
@@ -1131,27 +1273,27 @@
 
                                         if ($subject_name != '') {
                                     ?>
-                                            <tr>
-                                                <td>
-                                                    <?= $subject_name; ?>
-                                                </td>
-                                                <td>
-                                                    <?= $min_marks; ?>
-                                                </td>
-                                                <td>
-                                                    <?= $max_marks; ?>
-                                                </td>
-                                                <td>
-                                                    <?= $obtained_marks; ?>
-                                                </td>
-                                            </tr>
-                                    <?php }
+                            <tr>
+                                <td>
+                                    <?= $subject_name; ?>
+                                </td>
+                                <td>
+                                    <?= $min_marks; ?>
+                                </td>
+                                <td>
+                                    <?= $max_marks; ?>
+                                </td>
+                                <td>
+                                    <?= $obtained_marks; ?>
+                                </td>
+                            </tr>
+                            <?php }
                                     } ?>
 
-                                </tbody>
+                        </tbody>
 
-                            </table>
-                            <hr>
+                    </table>
+                    <hr>
 
                     <?php }
                     } else {
@@ -1209,36 +1351,46 @@
 </div>
 
 <script>
-    let text = document.getElementById('myText').innerHTML;
-    const copyContent = async () => {
-        try {
-            await navigator.clipboard.writeText(text.trim());
-            console.log('Content copied to clipboard');
-            alert("Mobile Number Copied.");
-        } catch (err) {
-            console.error('Failed to copy: ', err);
-        }
+let text = document.getElementById('myText').innerHTML;
+const copyContent = async () => {
+    try {
+        await navigator.clipboard.writeText(text.trim());
+        console.log('Content copied to clipboard');
+        alert("Mobile Number Copied.");
+    } catch (err) {
+        console.error('Failed to copy: ', err);
     }
+}
 
-    let text1 = document.getElementById('myEmail').innerHTML;
-    const copyContent1 = async () => {
-        try {
-            await navigator.clipboard.writeText(text1.trim());
-            console.log('Content copied to clipboard');
-            alert("Email Address Copied.");
-        } catch (err) {
-            console.error('Failed to copy: ', err);
-        }
+let text1 = document.getElementById('myEmail').innerHTML;
+const copyContent1 = async () => {
+    try {
+        await navigator.clipboard.writeText(text1.trim());
+        console.log('Content copied to clipboard');
+        alert("Email Address Copied.");
+    } catch (err) {
+        console.error('Failed to copy: ', err);
     }
+}
 
-    let text2 = document.getElementById('myAadhaar').innerHTML;
-    const copyContent2 = async () => {
-        try {
-            await navigator.clipboard.writeText(text2.trim());
-            console.log('Content copied to clipboard');
-            alert("Aadhar Copied.");
-        } catch (err) {
-            console.error('Failed to copy: ', err);
-        }
+let text2 = document.getElementById('myAadhaar').innerHTML;
+const copyContent2 = async () => {
+    try {
+        await navigator.clipboard.writeText(text2.trim());
+        console.log('Content copied to clipboard');
+        alert("Aadhar Copied.");
+    } catch (err) {
+        console.error('Failed to copy: ', err);
     }
+}
+</script>
+
+<script>
+$(document).ready(function() {
+    // Trigger the modal manually
+    $('.btn-dark[data-target^="#viewCommentsModal"]').on('click', function() {
+        var targetModal = $(this).data('target');
+        $(targetModal).modal('show');
+    });
+});
 </script>

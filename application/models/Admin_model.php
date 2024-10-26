@@ -219,6 +219,16 @@ class Admin_model extends CI_Model
     $this->db->where('sub_quota', $sub_quota);
     return $this->db->get('fee_structure');
   }
+  function getFee_new($course, $quota, $sub_quota, $stream)
+  {
+    if ($quota == "MGMT" || $quota == "MGMT-LATERAL" || $quota == "MGMT-COMEDK") {
+      $this->db->where('department_id', $course);
+    }
+    $this->db->where('stream_id', $stream);
+    $this->db->where('quota', $quota);
+    $this->db->where('sub_quota', $sub_quota);
+    return $this->db->get('fee_structure');
+  }
 
 
   function getsubquota($id, $dept)
@@ -344,16 +354,18 @@ class Admin_model extends CI_Model
     return $this->db->get('admissions');
   }
 
-  function getAdmissionOverallStats($department_id)
+  function getAdmissionOverallStats($department_id,$stream)
   {
     if (empty($department_id)) {
       $this->db->select('dept_id, quota, sub_quota, COUNT(*) as cnt');
+      $this->db->where('stream_id', $stream);
       $this->db->group_by('dept_id, quota, sub_quota');
       $this->db->order_by('sub_quota, dept_id','ASC');
       return $this->db->get('admissions');
     } else {
       $this->db->select('quota, sub_quota, COUNT(*) as cnt');
       $this->db->where('dept_id', $department_id);
+      $this->db->where('stream_id', $stream);
       $this->db->group_by('quota, sub_quota');
       return $this->db->get('admissions');
     }
@@ -834,4 +846,228 @@ class Admin_model extends CI_Model
     $this->db->where('department_id', $department_id);
     $this->db->update('comedk_seats', $data);
   }
+
+  public function getDepartmentsByStream($stream_id)
+{
+    $this->db->where('stream_id', $stream_id);
+    $query = $this->db->get('departments');
+    return $query->result_array();  // Return as an array of department data
+}
+
+  function phdtransactionsdatewise($from, $to)
+  {
+      $this->db->select('admissions.id, admissions.app_no, admissions.dept_id, admissions.category_claimed, admissions.category_allotted, admissions.adm_no, admissions.academic_year, admissions.usn, admissions.student_name, admissions.quota, admissions.sub_quota, admissions.college_code, admissions.mobile, admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.year, transactions.amount, transactions.remarks, transactions.transaction_status');
+
+      $this->db->where('transactions.transaction_status', '1');
+      $this->db->where('transactions.transaction_date >=', $from);
+      $this->db->where('transactions.transaction_date <=', $to);
+      $this->db->where('admissions.stream_id', '3'); 
+      $this->db->join('admissions', 'admissions.id = transactions.admissions_id');
+      $this->db->order_by('transactions.transaction_date', 'ASC');
+
+      return $this->db->get('transactions');
+  }
+
+  function PhdDCBReport($currentAcademicYear, $course = '', $year = '', $type = '')
+{
+    $this->db->select(
+        '
+        admissions.id, 
+        admissions.app_no, 
+        admissions.adm_no, 
+        admissions.admit_date, 
+        admissions.dept_id, 
+        admissions.academic_year, 
+        admissions.student_name, 
+        admissions.usn, 
+        admissions.quota, 
+        admissions.sub_quota, 
+        admissions.college_code, 
+        admissions.category_claimed, 
+        admissions.category_allotted, 
+        admissions.caste, 
+        admissions.father_mobile, 
+        admissions.mobile,
+        admissions.batch, 
+        admissions.degree_level, 
+        admissions.status, 
+        fee_master.remarks'
+    );
+    
+    $this->db->from('admissions');
+    $this->db->join('fee_master', 'admissions.id = fee_master.student_id', 'left');
+    
+    $this->db->where('admissions.academic_year', $currentAcademicYear);
+    
+    $this->db->where('admissions.stream_id', '3');
+
+    if ($course != '') {
+        $this->db->where('admissions.dept_id', $course);
+    }
+    
+    if ($year != '') {
+        $this->db->where('fee_master.year', $year);
+    }
+    
+    if ($type != '') {
+        $this->db->where('admissions.sub_quota', $type);
+    }
+    
+    $this->db->where('admissions.status !=', '7');
+    
+    $query = $this->db->get();
+    return $query;
+}
+
+function PhdFeebalanceReport($currentAcademicYear, $course = '', $year = '')
+  {
+    $this->db->select(
+      '
+    admissions.id, 
+    admissions.app_no, 
+    admissions.adm_no, 
+    admissions.admit_date, 
+    admissions.dept_id, 
+    admissions.academic_year, 
+    admissions.student_name, 
+    admissions.usn, 
+    admissions.quota, 
+    admissions.sub_quota, 
+    admissions.college_code, 
+    admissions.category_claimed, 
+    admissions.category_allotted, 
+    admissions.mobile,
+    admissions.status, 
+    fee_master.remarks'
+    );
+    $this->db->from('admissions');
+    $this->db->join('fee_master', 'admissions.id = fee_master.student_id', 'left');
+    $this->db->where('admissions.academic_year', $currentAcademicYear);
+
+    $this->db->where('admissions.stream_id', '3');
+
+    if ($course != '') {
+      $this->db->where('admissions.dept_id', $course);
+    }
+    $this->db->where('admissions.status !=', '7');
+    if ($year != '') {
+      $this->db->where('fee_master.year', $year);
+    }
+    $query = $this->db->get();
+    return $query;
+  }
+
+  function getphdAdmissions_course($academic_year, $course, $status)
+  {
+    $this->db->where('academic_year', $academic_year);
+    $this->db->where('admissions.stream_id', '3');
+    $this->db->where('dept_id', $course);
+    $this->db->where('status', $status);
+    $this->db->order_by('admit_date', 'DESC');
+    return $this->db->get('admissions');
+  }
+
+  function mtechtransactionsdatewise($from, $to)
+  {
+      $this->db->select('admissions.id, admissions.app_no, admissions.dept_id, admissions.category_claimed, admissions.category_allotted, admissions.adm_no, admissions.academic_year, admissions.usn, admissions.student_name, admissions.quota, admissions.sub_quota, admissions.college_code, admissions.mobile, admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.year, transactions.amount, transactions.remarks, transactions.transaction_status');
+
+      $this->db->where('transactions.transaction_status', '1');
+      $this->db->where('transactions.transaction_date >=', $from);
+      $this->db->where('transactions.transaction_date <=', $to);
+      $this->db->where('admissions.stream_id', '2'); 
+      $this->db->join('admissions', 'admissions.id = transactions.admissions_id');
+      $this->db->order_by('transactions.transaction_date', 'ASC');
+
+      return $this->db->get('transactions');
+  }
+
+  function mtechDCBReport($currentAcademicYear, $course = '', $year = '', $type = '')
+  {
+      $this->db->select(
+          '
+          admissions.id, 
+          admissions.app_no, 
+          admissions.adm_no, 
+          admissions.admit_date, 
+          admissions.dept_id, 
+          admissions.academic_year, 
+          admissions.student_name, 
+          admissions.usn, 
+          admissions.quota, 
+          admissions.sub_quota, 
+          admissions.college_code, 
+          admissions.category_claimed, 
+          admissions.category_allotted, 
+          admissions.caste, 
+          admissions.father_mobile, 
+          admissions.mobile,
+          admissions.batch, 
+          admissions.degree_level, 
+          admissions.status, 
+          fee_master.remarks'
+      );
+      
+      $this->db->from('admissions');
+      $this->db->join('fee_master', 'admissions.id = fee_master.student_id', 'left');
+      
+      $this->db->where('admissions.academic_year', $currentAcademicYear);
+      
+      $this->db->where('admissions.stream_id', '2');
+  
+      if ($course != '') {
+          $this->db->where('admissions.dept_id', $course);
+      }
+      
+      if ($year != '') {
+          $this->db->where('fee_master.year', $year);
+      }
+      
+      if ($type != '') {
+          $this->db->where('admissions.sub_quota', $type);
+      }
+      
+      $this->db->where('admissions.status !=', '7');
+      
+      $query = $this->db->get();
+      return $query;
+  }
+
+  function mtechFeebalanceReport($currentAcademicYear, $course = '', $year = '')
+  {
+    $this->db->select(
+      '
+    admissions.id, 
+    admissions.app_no, 
+    admissions.adm_no, 
+    admissions.admit_date, 
+    admissions.dept_id, 
+    admissions.academic_year, 
+    admissions.student_name, 
+    admissions.usn, 
+    admissions.quota, 
+    admissions.sub_quota, 
+    admissions.college_code, 
+    admissions.category_claimed, 
+    admissions.category_allotted, 
+    admissions.mobile,
+    admissions.status, 
+    fee_master.remarks'
+    );
+    $this->db->from('admissions');
+    $this->db->join('fee_master', 'admissions.id = fee_master.student_id', 'left');
+    $this->db->where('admissions.academic_year', $currentAcademicYear);
+
+    $this->db->where('admissions.stream_id', '2');
+
+    if ($course != '') {
+      $this->db->where('admissions.dept_id', $course);
+    }
+    $this->db->where('admissions.status !=', '7');
+    if ($year != '') {
+      $this->db->where('fee_master.year', $year);
+    }
+    $query = $this->db->get();
+    return $query;
+  }
+
 }

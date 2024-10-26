@@ -129,7 +129,7 @@ class Admin extends CI_Controller
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 
-			$admissionStats = $this->admin_model->getAdmissionOverallStats(0)->result();
+			$admissionStats = $this->admin_model->getAdmissionOverallStats(0,1)->result();
 			$aidedAdmitted = array();
 			$unaidedAdmitted = array();
 			// echo "<pre>";
@@ -176,8 +176,9 @@ class Admin extends CI_Controller
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 
-			$admissionStats = $this->admin_model->getAdmissionOverallStats(0)->result();
-			$aidedAdmitted = array();
+			$admissionStats = $this->admin_model->getAdmissionOverallStats(0,1)->result();
+
+      $aidedAdmitted = array();
 			$unaidedAdmitted = array();
 			// echo "<pre>";
 			$depart = $this->admin_model->getActiveComedk()->result();
@@ -372,7 +373,8 @@ class Admin extends CI_Controller
 			$data['userTypes'] = $this->globals->userTypes();
 			$data['academicYear'] = $this->globals->academicYear();
 
-			$data['course_options'] = array(" " => "Select") + $this->courses();
+			// $data['course_options'] = array(" " => "Select") + $this->courses();
+			$data['course_options'] = array("" => "Select Branch") + $this->getAllCourses();
 			$data['type_options'] = array(" " => "Select") + $this->globals->category();
 			$data['states'] = array(" " => "Select State") + $this->globals->states();
 
@@ -405,6 +407,10 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('gttc2_grade', 'Gttc2 Percentage');
 			$this->form_validation->set_rules('gttc3_grade', 'Gttc3 Percentage');
 			$this->form_validation->set_rules('gttc4_grade', 'Gttc4 Percentage');
+			$this->form_validation->set_rules('degree1_grade', 'BE-I Percentage');
+			$this->form_validation->set_rules('degree2_grade', 'BE-II Percentage');
+			$this->form_validation->set_rules('degree3_grade', 'BE-III Percentage');
+			$this->form_validation->set_rules('degree4_grade', 'BE-IV Percentage');
 
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/newEnquiry';
@@ -435,6 +441,10 @@ class Admin extends CI_Controller
 				$data['gttc2_grade'] = $this->input->post('gttc2_grade');
 				$data['gttc3_grade'] = $this->input->post('gttc3_grade');
 				$data['gttc4_grade'] = $this->input->post('gttc4_grade');
+				$data['degree1_grade'] = $this->input->post('degree1_grade');
+				$data['degree2_grade'] = $this->input->post('degree2_grade');
+				$data['degree3_grade'] = $this->input->post('degree3_grade');
+				$data['degree4_grade'] = $this->input->post('degree4_grade');
 				$data['gender'] = $this->input->post('gender');
 				$data['aadhaar'] = $this->input->post('aadhaar');
 
@@ -477,6 +487,10 @@ class Admin extends CI_Controller
 					'gttc2_grade' => $this->input->post('gttc2_grade'),
 					'gttc3_grade' => $this->input->post('gttc3_grade'),
 					'gttc4_grade' => $this->input->post('gttc4_grade'),
+					'degree1_grade' => $this->input->post('degree1_grade'),
+					'degree2_grade' => $this->input->post('degree2_grade'),
+					'degree3_grade' => $this->input->post('degree3_grade'),
+					'degree4_grade' => $this->input->post('degree4_grade'),
 					'status' => '1',
 					'reg_date' => date('Y-m-d H:i:s'),
 					'reg_by' => $data['username']
@@ -499,6 +513,31 @@ class Admin extends CI_Controller
 		}
 	}
 
+	function getAllCourses()
+	{
+		$detailsUG = $this->admin_model->getDetailsbyfield('1', 'status', 'departments')->result();
+
+		$detailsPG = $this->admin_model->getDetailsbyfield('2', 'stream_id', 'departments')->result();
+
+		$result = array();
+
+		foreach ($detailsUG as $details1) {
+			$row = $this->admin_model->get_stream_by_id($details1->stream_id);
+			if ($row) {
+				$result[$details1->department_id] = $row['stream_short_name'] . ' - ' . $details1->department_name . ' (UG)';
+			}
+		}
+
+		foreach ($detailsPG as $details2) {
+			$row = $this->admin_model->get_stream_by_id($details2->stream_id);
+			if ($row) {
+				$result[$details2->department_id] = $row['stream_short_name'] . ' - ' . $details2->department_name . ' (PG)';
+			}
+		}
+
+		return $result;
+	}
+
 	public function enquiryDetails($id)
 	{
 		if ($this->session->userdata('logged_in')) {
@@ -510,10 +549,19 @@ class Admin extends CI_Controller
 
 			$data['page_title'] = 'Enquiries';
 			$data['menu'] = 'enquiries';
+			$data['enquiryDetails'] = $this->admin_model->getDetails('enquiries', $id)->row();
+			if ($data['enquiryDetails']->admission_based == 'BE') {
+				$data['stream'] = 2;
+				$data['course_options'] = array(" " => "Select") + $this->pgcourses();
+				$data['quota_options'] = array(" " => "Select", "MGMT" => "MGMT");
+				$data['subquota_options'] = array(" " => "Select") + $this->globals->sub_quota();
+			} else {
+				$data['stream'] = 1;
+				$data['course_options'] = array(" " => "Select") + $this->courses();
+				$data['quota_options'] = array(" " => "Select", "MGMT" => "MGMT", "MGMT-COMEDK" => "MGMT-COMEDK", "MGMT-LATERAL" => "MGMT-LATERAL");
+				$data['subquota_options'] = array(" " => "Select") + $this->globals->sub_quota();
+			}
 
-			$data['course_options'] = array(" " => "Select") + $this->courses();
-			$data['quota_options'] = array(" " => "Select", "MGMT" => "MGMT", "MGMT-COMEDK" => "MGMT-COMEDK", "MGMT-LATERAL" => "MGMT-LATERAL");
-			$data['subquota_options'] = array(" " => "Select") + $this->globals->sub_quota();
 			$data['type_options'] = array(" " => "Select") + $this->globals->category();
 
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
@@ -522,7 +570,7 @@ class Admin extends CI_Controller
 			// $data['feeCourses'] = array("" => "Select") + $this->getFeeCourses();
 			// $data['languages'] = array("" => "Select") + $this->globals->languages();
 
-			$data['enquiryDetails'] = $this->admin_model->getDetails('enquiries', $id)->row();
+
 			// var_dump($this->db->last_query());
 			$data['comments'] = $this->admin_model->getDetailsbyfield($id, 'enq_id', 'enq_comments')->result();
 
@@ -663,7 +711,29 @@ class Admin extends CI_Controller
 			$data['full_name'] = $session_data['full_name'];
 			$data['role'] = $session_data['role'];
 
-			$details = $this->admin_model->getDetailsbyfield('1', 'status', 'departments')->result();
+			$details = $this->admin_model->getDetailsbyfield2('status', '1', 'stream_id', '1', 'departments')->result();
+
+			$result = array();
+			foreach ($details as $details1) {
+				$row = $this->admin_model->get_stream_by_id($details1->stream_id);
+				$result[$details1->department_id] = $row['stream_short_name'] . ' - ' . $details1->department_name;
+			}
+
+			return $result;
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+	function pgcourses()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$details = $this->admin_model->getDetailsbyfield2('status', '1', 'stream_id', '2', 'departments')->result();
 
 			$result = array();
 			foreach ($details as $details1) {
@@ -757,9 +827,10 @@ class Admin extends CI_Controller
 			}
 
 			$quota = $this->input->post('quota');
+			$stream = $this->input->post('stream');
 			$sub_quota = $this->input->post('subquota');
 
-			$details = $this->admin_model->getFee($course, $quota, $sub_quota)->row();
+			$details = $this->admin_model->getFee_new($course, $quota, $sub_quota, $stream)->row();
 			// var_dump($this->db->last_query());
 			// $details = [
 			// 	"aided_unaided" => "Aided",
@@ -1014,12 +1085,20 @@ class Admin extends CI_Controller
 
 				if ($fee1->department_id) {
 					$dept_name = $this->admin_model->getDetailsbyfield($fee1->department_id, 'department_id', 'departments')->row();
+					$stream_name = $this->admin_model->getDetailsbyfield($fee1->stream_id, 'stream_id', 'streams')->row();
+					// $dept_name = $this->admin_model->getDetailsbyfield2('department_id',$fee1->department_id, 'stream_id',$fee1->stream_id, 'departments')->row();
+
 					$dept_name = $dept_name->department_name;
-					$quota1 = $fee1->quota . ' - ' . $dept_name;
+					$stream_name = $stream_name->stream_name;
+					$quota1 = $fee1->quota . ' - ' . $stream_name . ' - ' . $dept_name;
 				} else {
-					$quota1 = $fee1->quota . ' - All Depts.';
+					$stream_name = $this->admin_model->getDetailsbyfield($fee1->stream_id, 'stream_id', 'streams')->row();
+					$stream_name = $stream_name->stream_name;
+					$quota1 = $fee1->quota . ' - ' . $stream_name . ' - All Depts.';
 				}
+
 				if (array_key_exists($quota1, $feeDetails)) {
+
 					if (array_key_exists($fee1->sub_quota, $feeDetails[$quota1])) {
 						$category = array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, "final_fee" => $fee1->final_fee, 'id' => $fee1->id);
 						array_push($feeDetails[$quota1][$fee1->sub_quota], $category);
@@ -1028,10 +1107,13 @@ class Admin extends CI_Controller
 						$feeDetails[$quota1][$fee1->sub_quota] = $category;
 					}
 				} else {
+
 					$category = array("total_college_fee" => $fee1->total_college_fee, "corpus_fund" => $fee1->corpus_fund, "final_fee" => $fee1->final_fee, 'id' => $fee1->id);
 					$sub_quota = array($fee1->sub_quota => $category);
 					$feeDetails[$quota1] = $sub_quota;
 				}
+				// var_dump($feeDetails);
+				// die();
 			}
 			$data['feeDetails'] = $feeDetails;
 			// print_r($feeDetails);
@@ -1053,63 +1135,33 @@ class Admin extends CI_Controller
 			$data['menu'] = "feestructure";
 
 			$data['fee_structure'] = $this->admin_model->get_details_by_id($id, 'id', 'fee_structure');
+			// var_dump($data['fee_structure']['stream_id']);
+			$stream = $data['fee_structure']['stream_id'];
+			if ($stream == 3) {
+				$rules = $this->globals->get_phd_fields();
+			} else {
+				$rules = $this->globals->get_ug_pg_fields();
+			}
 
-			$this->form_validation->set_rules('e_learning_fee', 'E Learning Fee', 'numeric|required');
-			$this->form_validation->set_rules('eligibility_fee', 'Eligibility Fee', 'numeric|required');
-			$this->form_validation->set_rules('e_consortium_fee', 'e Consortium Fee', 'numeric|required');
-			$this->form_validation->set_rules('sport_fee', 'Sport Fee', 'numeric|required');
-			$this->form_validation->set_rules('sports_development_fee', 'Sports Development Fee', 'numeric|required');
-			$this->form_validation->set_rules('career_guidance_counseling_fee', 'Career Guidance & Counseling fee', 'numeric|required');
-			$this->form_validation->set_rules('university_development_fund', 'University Development Fund', 'numeric|required');
-			$this->form_validation->set_rules('promotion_of_indian_cultural_activities_fee', 'Promotion of Indian Cultural Activities Fee', 'numeric|required');
-			$this->form_validation->set_rules('teachers_development_fee', 'Teachers Development Fee', 'numeric|required');
-			$this->form_validation->set_rules('student_development_fee', 'Student Development Fee', 'numeric|required');
-			$this->form_validation->set_rules('indian_red_cross_membership_fee', 'Indian Red Cross Membership Fee', 'numeric|required');
-			$this->form_validation->set_rules('women_cell_fee', 'Women Cell Fee', 'numeric|required');
-			$this->form_validation->set_rules('nss_fee', 'NSS Fee', 'numeric|required');
-			$this->form_validation->set_rules('university_registration_fee', 'University Registration Fee', 'numeric|required');
-			$this->form_validation->set_rules('total_university_fee', 'TOTAL UNIVERSITY FEE', 'numeric|required');
-			$this->form_validation->set_rules('admission_fee', 'Admission Fee', 'numeric|required');
-			$this->form_validation->set_rules('processing_fee_paid_at_kea', 'Processing Fee paid at KEA', 'numeric|required');
-			$this->form_validation->set_rules('tution_fee', 'Tution Fee', 'numeric|required');
-			$this->form_validation->set_rules('college_other_fee', 'COLLEGE OTHER FEE', 'numeric|required');
-			$this->form_validation->set_rules('total_tution_fee', 'TOTAL TUTION FEE', 'numeric|required');
-			$this->form_validation->set_rules('total_college_fee', 'TOTAL COLLEGE FEE', 'numeric|required');
-			$this->form_validation->set_rules('skill_development_fee', 'Skill Development Fee', 'numeric|required');
-			$this->form_validation->set_rules('corpus_fund', 'Corpus Fund', 'numeric|required');
+			foreach ($rules as $rule) {
+				$this->form_validation->set_rules($rule['field'], $rule['label'], 'numeric|required');
+			}
+
 
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/editFeeStructure/' . $id;
-				$this->admin_template->show('admin/editFeeStructure', $data);
+				if ($stream == 3) {
+					$this->admin_template->show('admin/editFeeStructure_phd', $data);
+				} else {
+					$this->admin_template->show('admin/editFeeStructure', $data);
+				}
 			} else {
 
-				$updateDetails = array(
-					'e_learning_fee' => $this->input->post('e_learning_fee'),
-					'eligibility_fee' => $this->input->post('eligibility_fee'),
-					'e_consortium_fee' => strtolower($this->input->post('e_consortium_fee')),
-					'sport_fee' => $this->input->post('sport_fee'),
-					'sports_development_fee' => $this->input->post('sports_development_fee'),
-					'career_guidance_counseling_fee' => $this->input->post('career_guidance_counseling_fee'),
-					'university_development_fund' => strtoupper($this->input->post('university_development_fund')),
-					'promotion_of_indian_cultural_activities_fee' => $this->input->post('promotion_of_indian_cultural_activities_fee'),
-					'teachers_development_fee' => $this->input->post('teachers_development_fee'),
-					'student_development_fee' => $this->input->post('student_development_fee'),
-					'indian_red_cross_membership_fee' => $this->input->post('indian_red_cross_membership_fee'),
-					'women_cell_fee' => $this->input->post('women_cell_fee'),
-					'nss_fee' => $this->input->post('nss_fee'),
-					'university_registration_fee' => $this->input->post('university_registration_fee'),
-					'total_university_fee' => $this->input->post('total_university_fee'),
-					'admission_fee' => $this->input->post('admission_fee'),
-					'processing_fee_paid_at_kea' => $this->input->post('processing_fee_paid_at_kea'),
-					'tution_fee' => $this->input->post('tution_fee'),
-					'college_other_fee' => $this->input->post('college_other_fee'),
-					'total_tution_fee' => $this->input->post('total_tution_fee'),
-					'total_college_fee' => $this->input->post('total_college_fee'),
-					'skill_development_fee' => $this->input->post('skill_development_fee'),
-					'corpus_fund' => $this->input->post('corpus_fund'),
-					'final_fee' => $this->input->post('final_fee'),
-				);
+				foreach ($rules as $rule) {
+					$updateDetails[$rule['field']] = $this->input->post($rule['field']);
+				}
 
+				$updateDetails['final_fee'] = $this->input->post('final_fee');
 				$result = $this->admin_model->updateDetails($id, $updateDetails, 'fee_structure');
 				// var_dump($this->db->last_query());
 				// die();
@@ -1176,28 +1228,31 @@ class Admin extends CI_Controller
 
 			$quota = $this->input->post('quota');
 			$dept = $this->input->post('course');
+			$stream = $this->input->post('stream');
 
 			$code_options = array(" " => "Select") + $this->globals->college_codes();
 
 			$result = array();
 			$result[] = '<option value=" ">Select</option>';
-
-			if ($quota == "COMED-K") {
-				$result[] = '<option value="UnAided">' . $code_options['COMED-K'] . '</option>';
+			if ($stream == 3) {
+				$result[] = '<option value="UnAided">' . $code_options['UnAided'] . '</option>';
 			} else {
-				if (($quota != "MGMT") && ($quota != "MGMT-COMEDK") && ($quota != "MGMT-LATERAL")) {
-					$dept = 0;
+				if ($quota == "COMED-K") {
+					$result[] = '<option value="UnAided">' . $code_options['COMED-K'] . '</option>';
 				} else {
-					$dept = $dept;
-				}
+					if (($quota != "MGMT") && ($quota != "MGMT-COMEDK") && ($quota != "MGMT-LATERAL")) {
+						$dept = 0;
+					} else {
+						$dept = $dept;
+					}
 
 
-				$details = $this->admin_model->getsubquota($quota, $dept)->result();
-				foreach ($details as $details1) {
-					$result[] = '<option value="' . $details1->sub_quota . '">' . $code_options[$details1->sub_quota] . '</option>';
+					$details = $this->admin_model->getsubquota($quota, $dept)->result();
+					foreach ($details as $details1) {
+						$result[] = '<option value="' . $details1->sub_quota . '">' . $code_options[$details1->sub_quota] . '</option>';
+					}
 				}
 			}
-
 			print_r($result);
 		} else {
 			redirect('admin/timeout');
@@ -1761,12 +1816,22 @@ class Admin extends CI_Controller
 			$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]');
 			$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[admissions.email]');
 			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]|is_unique[admissions.aadhaar]');
+			$this->form_validation->set_rules('stream', 'Stream', 'required');
 			$this->form_validation->set_rules('course', 'Department', 'required');
 			$this->form_validation->set_rules('quota', 'Quota', 'required');
 			$this->form_validation->set_rules('subquota', 'College quota', 'required');
 			$this->form_validation->set_rules('category_allotted', 'Category Allocated', 'required');
 			$this->form_validation->set_rules('category_claimed', 'Category Claimed', 'required');
 			// $this->form_validation->set_rules('college_code', 'College Code', 'required');
+
+			$stream = $this->input->post('stream');
+
+			// Apply validation rules only for PhD students (stream_id = 3)
+			if ($stream == '3') {
+				$this->form_validation->set_rules('batch', 'Batch', 'required');
+				$this->form_validation->set_rules('degree_level', 'Degree Level', 'required');
+			}
+
 			$this->form_validation->set_rules('sports', 'Sports', 'required');
 			$this->form_validation->set_rules('entrance_type', 'Entrance Type', 'required');
 			$this->form_validation->set_rules('entrance_reg_no', 'Entrance Registration Number', 'required');
@@ -1785,6 +1850,7 @@ class Admin extends CI_Controller
 
 				$data['mobile'] = $this->input->post('mobile');
 				$data['email'] = $this->input->post('email');
+				$data['stream'] = $this->input->post('stream');
 				$data['course'] = $this->input->post('course');
 				$data['aadhaar'] = $this->input->post('aadhaar');
 				$data['quota'] = $this->input->post('quota');
@@ -1794,6 +1860,8 @@ class Admin extends CI_Controller
 				$data['college_code'] = $this->input->post('college_code');
 				$data['sports'] = $this->input->post('sports');
 				$data['sports_activity'] = $this->input->post('sports_activity');
+				$data['batch'] = $this->input->post('batch');
+				$data['degree_level'] = $this->input->post('degree_level');
 				$data['corpus'] = $this->input->post('corpus_fee');
 
 				$data['total_tution_fee'] = $this->input->post('total_tution_fee');
@@ -1853,6 +1921,7 @@ class Admin extends CI_Controller
 					'academic_year' => $currentAcademicYear,
 					'enq_id' => '0',
 					'app_no' => $app_no,
+					'stream_id' => $stream,
 					'dept_id' => $course,
 					'adm_no' => $app_no,
 					'usn' => $usn,
@@ -1860,6 +1929,7 @@ class Admin extends CI_Controller
 					'mobile' => $this->input->post('mobile'),
 					'email' => strtolower($this->input->post('email')),
 					'aadhaar' => $this->input->post('aadhaar'),
+					'stream_id' => $this->input->post('stream'),
 					'dept_id' => $this->input->post('course'),
 					'quota' => $this->input->post('quota'),
 					'sub_quota' => $this->input->post('subquota'),
@@ -1868,6 +1938,8 @@ class Admin extends CI_Controller
 					'college_code' => $this->input->post('college_code'),
 					'sports' => $this->input->post('sports'),
 					'sports_activity' => $this->input->post('sports_activity'),
+					'batch' => $this->input->post('batch'),
+					'degree_level' => $this->input->post('degree_level'),
 					'password' => md5($this->input->post('mobile')),
 					'entrance_type' => $this->input->post('entrance_type'),
 					'entrance_reg_no' => $this->input->post('entrance_reg_no'),
@@ -1882,6 +1954,7 @@ class Admin extends CI_Controller
 					'admit_date' => date('Y-m-d h:i:s'),
 					'admit_by' => $data['username']
 				);
+				// var_dump($insertDetails); die(); 
 
 				$result = $this->admin_model->insertDetails('admissions', $insertDetails);
 
@@ -6361,7 +6434,7 @@ With good wishes";
 			$id = base64_decode($encryptId);
 			$admissionSingle = $this->admin_model->getDetails('admissions', $id)->row();
 
-			$data['fee_structure'] = $this->admin_model->getFee($admissionSingle->dept_id, $admissionSingle->quota, $admissionSingle->sub_quota)->row();
+			$data['fee_structure'] = $this->admin_model->getFee_new($admissionSingle->dept_id, $admissionSingle->quota, $admissionSingle->sub_quota, $admissionSingle->stream_id)->row();
 			$data['stud_id'] = $id;
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$this->form_validation->set_rules('voucher_type', 'Voucher Type', 'required');
@@ -6369,7 +6442,11 @@ With good wishes";
 			$this->form_validation->set_rules('final_fee', 'Total Amount', 'numeric|required');
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/new_voucher/' . $encryptId;
-				$this->admin_template->show('admin/new_voucher', $data);
+				if ($admissionSingle->stream_id == 3) {
+					$this->admin_template->show('admin/new_voucherphd', $data);
+				} else {
+					$this->admin_template->show('admin/new_voucher', $data);
+				}
 			} else {
 
 
@@ -6754,10 +6831,22 @@ With good wishes";
 			$contactInfo1 = "SALAGAME ROAD HASSAN";
 			$contactInfo2 = "State Name : Karnataka";
 			$affiliation = "FEE RECEIPT";
-			$contactInfo = "UG (AY-2024-2025)";
+			if ($admissionDetails->stream_id == 1) {
+				$programe = "PROGRAM : B.E";
+				$contactInfo = "UG (AY-2024-2025)";
+				$chellan = "Challan : TF24-25/" . $voucherDetails->id;
+			} elseif ($admissionDetails->stream_id == 2) {
+				$programe = "PROGRAM : M.E";
+				$contactInfo = "PG (AY-2024-2025)";
+				$chellan = "Challan : ME24-25/" . $voucherDetails->id;
+			} else {
+				$programe = "PROGRAM : PHD";
+				$contactInfo = "PHD (AY-2024-2025)";
+				$chellan = "Chellan : PHD24-25/" . $voucherDetails->id;
+			}
 
 			$issuedOn = "Date : " . date("m-d-Y ");
-			$programe = "PROGRAM : B.E";
+			// $programe = "PROGRAM : B.E";
 			$chellan = "Challan : TF24-25/" . $voucherDetails->id;
 			$dept = "Dept. :" . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"];
 			$bcopy = "BANK COPY";
@@ -6796,6 +6885,7 @@ With good wishes";
 				'Indian Red Cross Membership Fee' => $voucherDetails->indian_red_cross_membership_fee,
 				'Women Cell Fee' => $voucherDetails->women_cell_fee,
 				'NSS Fee' => $voucherDetails->nss_fee,
+				'Library Fee' => $voucherDetails->library_fee,
 				'University Registration Fee' => $voucherDetails->university_registration_fee
 			];
 
@@ -6805,12 +6895,18 @@ With good wishes";
 					$university += $feeValue;
 				}
 			}
+
+			if ($admissionDetails->stream_id == 3) {
+				$university += $voucherDetails->admission_fee;
+			} else {
+				if ($voucherDetails->admission_fee > 0) {
+					$tableData[] = ['Admission Fee', $voucherDetails->admission_fee];
+				}
+			}
 			if ($university > 0) {
 				$tableData[] = ["University Other Fee", number_format($university, 2)];
 			}
-			if ($voucherDetails->admission_fee > 0) {
-				$tableData[] = ['Admission Fee', number_format($voucherDetails->admission_fee, 2)];
-			}
+
 			if ($voucherDetails->processing_fee_paid_at_kea > 0) {
 				$tableData[] = ['Processing Fee Paid at KEA', number_format($voucherDetails->processing_fee_paid_at_kea, 2)];
 			}
@@ -6829,7 +6925,7 @@ With good wishes";
 				$collegeName3 = "";
 				$contactInfo1 = "PB NO. 21,SALAGAME ROAD HASSAN, KARNATAKA";
 				$contactInfo2 = "";
-				$contactInfo = "UG (AY-2024-2025)";
+				// $contactInfo = "UG (AY-2024-2025)";
 				$pdf->Rect($x - 2, $y, 69, 90 + 70);
 				$pdf->SetXY($x, $y);
 				$pdf->SetFont('Arial', 'B', 8);
@@ -7913,7 +8009,19 @@ With good wishes";
 			ini_set("session.auto_start", 0);
 			ini_set('memory_limit', '-1');
 			define('FPDF_FONTPATH', 'plugins/font');
-
+			if($admissionDetails->stream_id==1)
+			{
+				$pgm = "UG";
+				
+			}
+			elseif($admissionDetails->stream_id==2)
+			{
+				$pgm = "PG";
+			}
+			else
+			{
+				$pgm = "PHD";
+			}
 
 			$fees = [
 				'E-Learning Fee' => $voucherDetails->e_learning_fee,
@@ -7929,6 +8037,7 @@ With good wishes";
 				'Indian Red Cross Membership Fee' => $voucherDetails->indian_red_cross_membership_fee,
 				'Women Cell Fee' => $voucherDetails->women_cell_fee,
 				'NSS Fee' => $voucherDetails->nss_fee,
+				'Library Fee' => $voucherDetails->library_fee,
 				'University Registration Fee' => $voucherDetails->university_registration_fee
 			];
 
@@ -7938,12 +8047,20 @@ With good wishes";
 					$university += $feeValue;
 				}
 			}
+			if($admissionDetails->stream_id==3)
+			{
+				$university +=$voucherDetails->admission_fee;
+			}
+			else
+			{
+				if ($voucherDetails->admission_fee > 0) {
+					$tableData[] = ['Admission Fee', $voucherDetails->admission_fee];
+				}
+			}
 			if ($university > 0) {
 				$tableData[] = ["University Other Fee", $university];
 			}
-			if ($voucherDetails->admission_fee > 0) {
-				$tableData[] = ['Admission Fee', $voucherDetails->admission_fee];
-			}
+			
 			if ($voucherDetails->processing_fee_paid_at_kea > 0) {
 				$tableData[] = ['Processing Fee Paid at KEA', $voucherDetails->processing_fee_paid_at_kea];
 			}
@@ -8041,7 +8158,7 @@ With good wishes";
 			printStudent($pdf, "College Code ", $admissionDetails->college_code, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			printStudent($pdf, "Gender ", $admissionDetails->gender, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			printStudent($pdf, "Year ", $feeDetails->year, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
-			printStudent($pdf, "Ug ", 'Ug - ' . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_name"], $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+			printStudent($pdf, $pgm, $pgm.' - ' . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_name"], $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			// printStudent($pdf, "Pg :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			$pdf->Ln(4);
 
@@ -8093,7 +8210,7 @@ With good wishes";
 			// Note and Receipt Date
 			$cellWidth = $pdf->GetPageWidth() - 20;
 			$rowHeight = 10;
-			$pdf->Ln(60);
+			$pdf->Ln(40);
 			$pdf->SetFont('Arial', '', 8);
 			$pdf->SetTextColor(0, 0, 0);
 			$pdf->SetX(12);
@@ -8704,11 +8821,24 @@ With good wishes";
 			$contactInfo1 = "SALAGAME ROAD HASSAN";
 			$contactInfo2 = "State Name : Karnataka";
 			$affiliation = "ACKNOWLEDGEMENT";
-			$contactInfo = "UG (AY-2024-2025)";
+
 
 			$issuedOn = "Date : " . date("d-m-Y ");
-			$programe = "PROGRAM : B.E";
-			$chellan = "Challan : TF24-25/" . $voucherDetails->id;
+			if ($admissionDetails->stream_id == 1) {
+				$programe = "PROGRAM : B.E";
+				$contactInfo = "UG (AY-2024-2025)";
+				$chellan = "Chellan : TF24-25/" . $voucherDetails->id;
+			} elseif ($admissionDetails->stream_id == 2) {
+				$programe = "PROGRAM : M.E";
+				$contactInfo = "PG (AY-2024-2025)";
+				$chellan = "Chellan : ME24-25/" . $voucherDetails->id;
+			} else {
+				$programe = "PROGRAM : PHD";
+				$contactInfo = "PHD (AY-2024-2025)";
+				$chellan = "Chellan : PHD24-25/" . $voucherDetails->id;
+			}
+
+			// $chellan = "Challan : TF24-25/" . $voucherDetails->id;
 			$dept = "Dept. :" . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"];
 			$bcopy = "BANK COPY";
 			$copyData = array('S.A Copy', 'Office Copy');
@@ -8746,7 +8876,8 @@ With good wishes";
 				'Indian Red Cross Membership Fee' => $voucherDetails->indian_red_cross_membership_fee,
 				'Women Cell Fee' => $voucherDetails->women_cell_fee,
 				'NSS Fee' => $voucherDetails->nss_fee,
-				'University Registration Fee' => $voucherDetails->university_registration_fee
+				'University Registration Fee' => $voucherDetails->university_registration_fee,
+				'Library Fee' => $voucherDetails->library_fee
 			];
 
 			$university = 0;
@@ -8755,12 +8886,20 @@ With good wishes";
 					$university += $feeValue;
 				}
 			}
+
+			if ($admissionDetails->stream_id == 3) {
+				$university += $voucherDetails->admission_fee;
+			} else {
+				if ($voucherDetails->admission_fee > 0) {
+					$tableData[] = ['Admission Fee', $voucherDetails->admission_fee];
+				}
+			}
+
+
 			if ($university > 0) {
 				$tableData[] = ["University Other Fee", $university];
 			}
-			if ($voucherDetails->admission_fee > 0) {
-				$tableData[] = ['Admission Fee', $voucherDetails->admission_fee];
-			}
+
 			if ($voucherDetails->processing_fee_paid_at_kea > 0) {
 				$tableData[] = ['Processing Fee Paid at KEA', $voucherDetails->processing_fee_paid_at_kea];
 			}
@@ -8779,7 +8918,9 @@ With good wishes";
 				$collegeName3 = "PB NO. 21";
 				$contactInfo1 = "SALAGAME ROAD HASSAN";
 				$contactInfo2 = "State Name : Karnataka";
-				$contactInfo = "UG (AY-2024-2025)";
+
+
+				// $contactInfo = "UG (AY-2024-2025)";
 				$pdf->Rect($x - 2, $y, 90, 200); // Increase the size of each copy
 				$pdf->SetXY($x, $y);
 				$pdf->SetFont('Arial', 'B', 10);
@@ -8908,8 +9049,29 @@ With good wishes";
 				$contactInfo4 = "UA ACCOUNT NUMBER -  14053070001574 IFSC -CNRB0011405";
 			}
 			$issuedOn = "Date : " . date("m-d-Y ");
-			$programe = "PROGRAME : B.E";
-			$chellan = "Chellan : TF24-25/" . $voucherDetails->id;
+			if($admissionDetails->stream_id==1)
+			{
+				$programe = "PROGRAM : B.E";
+				$contactInfo = "UG (AY-2024-2025)";
+				$pgm='B.E - ';
+				$chellan = "Chellan : TF24-25/" . $voucherDetails->id;
+			}
+			elseif($admissionDetails->stream_id==2)
+			{
+				$programe = "PROGRAM : M.E";
+				$contactInfo = "PG (AY-2024-2025)";
+				$pgm='M.E - ';
+				$chellan = "Chellan : ME24-25/" . $voucherDetails->id;
+			}
+			else
+			{
+				$programe = "PROGRAM : PHD";
+				$contactInfo = "PHD (AY-2024-2025)";
+				$pgm='PHD - ';
+				$chellan = "Chellan : PHD24-25/" . $voucherDetails->id;
+			}
+			// $programe = "PROGRAME : B.E";
+			// $chellan = "Chellan : TF24-25/" . $voucherDetails->id;
 			$dept = "Dept. :" . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"];
 			$scopy = "STUDENT COPY";
 			$bcopy = "BANK COPY";
@@ -8919,8 +9081,8 @@ With good wishes";
 			$tableData = [
 				['USN', $admissionDetails->usn],
 				['Name', $admissionDetails->student_name],
-				['Branch', 'B.E - ' . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"]],
-				['Year', 1],
+				['Branch', $pgm . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"]],
+				['Year', I],
 				['Mobile No.', $admissionDetails->mobile],
 				['Email ID', $admissionDetails->email],
 				['Mode of Payment NEFT/RTGS/IMPS/UPI',],
@@ -9213,8 +9375,1302 @@ With good wishes";
 
 			$res['amount'] = (int) $response_array['amount'];
 		}
-
-
 		print_r($response_array);
+	}
+
+	public function getDepartmentsByStream()
+	{
+		$stream_id = $this->input->post('stream_id');
+		$departments = $this->admin_model->getDepartmentsByStream($stream_id);
+
+		echo json_encode($departments);  // return departments as JSON
+	}
+
+	public function addComment($encryptedId)
+	{
+		$id = base64_decode($encryptedId);
+		$comment = $this->input->post('comment');
+		$data = array(
+			'comments' => $comment
+		);
+
+		$this->db->where('id', $id);
+		$this->db->update('admissions', $data);
+
+		$this->session->set_flashdata('success', 'Comment added successfully.');
+		redirect('admin/admissiondetails/' . $encryptedId);
+	}
+	function quotaDropdown()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+
+			$stream = $this->input->post('stream');
+			if ($stream == 3) {
+				$quota_options = array(" " => "Select") + $this->globals->phdquota();
+			} else {
+				$quota_options = array(" " => "Select") + $this->globals->quota();
+				unset($quota_options['MGMT']);
+			}
+
+
+			$result = array();
+
+
+
+
+
+			foreach ($quota_options as $details1) {
+
+				$result[] = '<option value="' . $details1 . '">' . $details1 . '</option>';
+			}
+
+
+
+			print_r($result);
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function phddaybook_report()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'PhD Day Book Report';
+			$data['menu'] = 'PhDdayBookReport';
+
+			$data['feeStructure'] = $this->globals->courseFees();
+
+			// var_dump($data['feeStructure']);
+			// echo "<pre>";
+			// print_r($data['feeStructure']); die;
+
+			$data['admissionStatus'] = $this->globals->admissionStatus();
+			$data['courses'] = array("all" => "All") + $this->globals->courses();
+			$data['academicYears'] = array(" " => "Select") + $this->globals->academicYear();
+
+			$this->admin_template->show('admin/phddaybook_report', $data);
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function phddayBookReportDownload()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Day Book Report';
+			$data['menu'] = 'dayBookReport';
+
+			$to = $this->input->post('to_date');
+			$from = $this->input->post('from_date');
+
+			$transactions = $this->admin_model->phdtransactionsdatewise($from, $to)->result();
+			$transactionTypes = $this->globals->transactionTypes();
+
+			$table = "<table class='table table-bordered' border='1' id='example2'>";
+
+			$table .= '<thead>';
+
+			// Include From Date and To Date in the header
+			$table .= '<tr><th colspan="18" class="font20">' . $currentAcademicYear . ' Day Book Report</th></tr>';
+			$table .= '<tr><th colspan="18" class="font20">From: ' . date('d-m-Y', strtotime($from)) . ' To: ' . date('d-m-Y', strtotime($to)) . '</th></tr>';
+
+			$table .= '<tr><th>S.No</th>
+						   <th>Academic Year</th>
+						   <th>Usn</th>
+						   <th>Student Name</th>
+						   <th>Quota</th>
+						   <th>Sub Quota</th>
+						   <th>College Code</th>
+						   <th>Studying Year</th>
+						   <th>Category claimed</th>
+						   <th>Category allocated</th>
+						   <th>Department Name</th>
+						   <th>Receipt No.</th>
+						   <th>Mode of Payment</th>
+						   <th>Reference No.</th>
+						   <th>Reference Date</th>
+						   <th>Bank Name</th>
+						   <th>Amount</th>
+						   <th>Transaction Date</th>
+					  </tr>';
+
+			$table .= '</thead>';
+			$table .= '<tbody>';
+
+			$i = 1;
+			foreach ($transactions as $transactions1) {
+				$table .= '<tr>';
+				$table .= '<td>' . $i++ . '</td>';
+				$table .= '<td>' . $transactions1->academic_year . '</td>';
+				$table .= '<td>' . $transactions1->usn . '</td>';
+				$table .= '<td>' . $transactions1->student_name . '</td>';
+				$table .= '<td>' . $transactions1->quota . '</td>';
+				$table .= '<td>' . $transactions1->sub_quota . '</td>';
+				$table .= '<td>' . $transactions1->college_code . '</td>';
+				$table .= '<td>' . $transactions1->year . '</td>';
+				$table .= '<td>' . $transactions1->category_claimed . '</td>';
+				$table .= '<td>' . $transactions1->category_allotted . '</td>';
+				$table .= '<td>' . $this->admin_model->get_dept_by_id($transactions1->dept_id)["department_name"] . '</td>';
+				$table .= '<td>' . htmlspecialchars($transactions1->receipt_no) . '</td>';
+				$table .= '<td>' . $transactionTypes[$transactions1->transaction_type] . '</td>';
+				$table .= '<td>' . htmlspecialchars($transactions1->reference_no) . '</td>';
+				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->reference_date)) . '</td>';
+				$table .= '<td>' . $transactions1->bank_name . '</td>';
+				$table .= '<td>' . number_format($transactions1->amount, 0) . '</td>';
+				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->transaction_date)) . '</td>';
+				$table .= '</tr>';
+			}
+			$table .= '</tbody>';
+			$table .= '</table>';
+			$data['table'] = $table;
+
+			$response = array(
+				'op' => 'ok',
+				'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+			);
+			die(json_encode($response));
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function phddcb_report($download = 0)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$data['page_title'] = $currentAcademicYear . ' PhD REPORT DEMAND COLLECTION BALANCE (DCB)';
+			$data['menu'] = 'DCBReport';
+
+			$data['download_action'] = 'admin/dcb_report';
+			$data['course_options'] = array("" => "Select") + $this->phdcourses();
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			// $admissions = $this->admin_model->DCBReport($currentAcademicYear)->result();
+			$admissions = $this->admin_model->PhdDCBReport($currentAcademicYear)->result();
+
+			if ($_POST) {
+				$course = $this->input->post('course');
+				$syear = $this->input->post('year');
+				$type = $this->input->post('type');
+				$admissions = $this->admin_model->PhdDCBReport($currentAcademicYear, $course, $syear, $type)->result();
+			} else {
+				$admissions = $this->admin_model->PhdDCBReport($currentAcademicYear, $course = '', $year = '', $type = '')->result();
+			}
+
+			$fees = $this->admin_model->feeDetails()->result();
+			$feeDetails = array();
+			foreach ($fees as $fees1) {
+				$feeDetails[$fees1->admissions_id] = $fees1->paid_amount;
+			}
+
+			$fees1 = $this->admin_model->feeDetailscorpus()->result();
+			$feeDetails1 = array();
+			foreach ($fees1 as $fees11) {
+				$feeDetails1[$fees11->admissions_id] = $fees11->paid_amount;
+			}
+
+			$fees2 = $this->admin_model->feeDetailscollege()->result();
+			$feeDetails2 = array();
+			foreach ($fees2 as $fees22) {
+				$feeDetails22[$fees22->admissions_id] = $fees22->paid_amount;
+			}
+
+
+			$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+			$this->table->set_template($table_setup);
+			// $table_setup = array ('table_open'=> '<table class="table table-bordered font14" border="1" id="dataTable" >');
+			// $this->table->set_template($table_setup);
+
+			$print_fields = array(
+				'S.No',
+				'Academic Year',
+				'Course',
+				'Student Name',
+				'Usn',
+				'Quota',
+				'Sub Quota',
+				'College Code',
+				'Studying Year',
+				'Mobile',
+				'Batch(Passed Out Year)',
+				'Degree Level',
+				'Father Number',
+				'Caste',
+				'Alloted Category',
+				'claimed Category',
+				'Admit. Date',
+				'Total University Other Fee',
+				'College Fee Demand',
+				'College Fee Paid',
+				'College Fee Balance',
+				// 'Corpus Fee Demand',
+				// 'Corpus Fee Paid',
+				// 'Corpus Fee Balance',
+				'Remarks'
+			);
+
+			$this->table->set_heading($print_fields);
+
+			$i = 1;
+			$final_fee = 0;
+			$fees_paid = 0;
+			$balance_amount = 0;
+			foreach ($admissions as $admissions1) {
+				$dmm = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+
+				// if($admissions1->dsc_1 == $admissions1->dsc_2){
+				//     $combination = $admissions1->dsc_1;
+				// }else{
+				//     $combination = $admissions1->dsc_1.' - '.$admissions1->dsc_2;
+				// }
+				$fees_data = $this->admin_model->getDetailsbyfield($admissions1->id, 'student_id', 'fee_master')->row();
+				$balance_amount_data = $fees_data->final_fee - $feeDetails[$admissions1->id];
+				$paid_amount = (array_key_exists($admissions1->id, $feeDetails)) ? $feeDetails[$admissions1->id] : '0';
+				$balance_amount = $admissions1->final_fee - $paid_amount;
+				// if ($admissions1->quota = 'KEA-CET(GOVT)') {
+				// 	$year = "I";
+				// }
+				$year = "I";
+
+				// $corpus_bal = $fees_data->corpus_fund - $feeDetails11[$admissions1->id];
+				$college_bal = $fees_data->total_college_fee - $feeDetails22[$admissions1->id];
+				$result_array = array(
+					$i++,
+					// $admissions1->academic_year,
+					// $admissions1->reg_no,
+					$admissions1->academic_year,
+					$dmm,
+					$admissions1->student_name,
+					$admissions1->usn,
+					$admissions1->quota,
+					$admissions1->sub_quota,
+					$admissions1->college_code,
+					$year, // Use the determined studying year here
+					$admissions1->mobile,
+					$admissions1->batch,
+					$admissions1->degree_level,
+					$admissions1->father_mobile,
+					$admissions1->caste,
+					$admissions1->category_allotted,
+					$admissions1->category_claimed,
+					($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
+					// number_format($fees_data->final_fee, 0),
+					// number_format($feeDetails[$admissions1->id], 0),
+					// number_format($balance_amount_data, 0),
+					number_format($fees_data->total_university_fee, 0),
+					number_format($fees_data->total_college_fee, 0),
+					number_format($feeDetails22[$admissions1->id], 0),
+					number_format($college_bal, 0),
+					// number_format($fees_data->corpus_fund, 0),
+					// number_format($feeDetails11[$admissions1->id], 0),
+					// number_format($corpus_bal, 0),
+					// ($admissions1->next_due_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->next_due_date)) : '',
+					$admissions1->remarks
+				);
+				// var_dump($result_array);
+				$this->table->add_row($result_array);
+				$final_fee = $final_fee + $admissions1->total_college_fee;
+				$fees_paid = $fees_paid + $paid_amount;
+				$balance_amount = $balance_amount + $balance_amount;
+			}
+
+			$data['table'] = $this->table->generate();
+			// var_dump($data['table']); die();
+			if (!$download) {
+				$this->admin_template->show('admin/phddcb_report', $data);
+			} else {
+				$response = array(
+					'op' => 'ok',
+					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+				);
+				die(json_encode($response));
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function phdfeebalance_report($download = 0)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$data['page_title'] = $currentAcademicYear . ' FEE BALANCE';
+			$data['menu'] = 'FeebalanceReport';
+			$data['course_options'] = array("" => "Select") + $this->phdcourses();
+			$data['action'] = 'admin/phdfeebalance_report';
+
+			if ($_POST) {
+				$course = $this->input->post('course');
+				$syear = $this->input->post('year');
+				$admissions = $this->admin_model->PhdFeebalanceReport($currentAcademicYear, $course, $syear)->result();
+			} else {
+				$admissions = $this->admin_model->PhdFeebalanceReport($currentAcademicYear, $course = '', $year = '')->result();
+			}
+
+			$fees = $this->admin_model->feeDetails()->result();
+
+			$feeDetails = array();
+			foreach ($fees as $fees1) {
+				$feeDetails[$fees1->admissions_id] = $fees1->paid_amount;
+			}
+
+
+			$fees1 = $this->admin_model->feeDetailscorpus()->result();
+			$feeDetails1 = array();
+			foreach ($fees1 as $fees11) {
+				$feeDetails1[$fees11->admissions_id] = $fees11->paid_amount;
+			}
+
+			$fees2 = $this->admin_model->feeDetailscollege()->result();
+			$feeDetails2 = array();
+			foreach ($fees2 as $fees22) {
+				$feeDetails22[$fees22->admissions_id] = $fees22->paid_amount;
+			}
+
+			$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2">');
+			$this->table->set_template($table_setup);
+
+			$print_fields = array(
+				'S.No',
+				'Usn',
+				'Student Name',
+				'Stream',
+				'Course',
+				'Quota',
+				'Sub Quota',
+				'College Code',
+				'Studying Year',
+				'Mobile',
+				'Alloted Category',
+				'claimed Category',
+				'Admit. Date',
+				'College Fee Demand',
+				'College Fee Paid',
+				'College Fee Balance',
+				// 'Corpus Fee Demand',
+				// 'Corpus Fee Paid',
+				// 'Corpus Fee Balance',
+				'Remarks'
+			);
+			$this->table->set_heading($print_fields);
+
+			$i = 1;
+			$final_fee = 0;
+			$fees_paid = 0;
+			$balance_amount = 0;
+			foreach ($admissions as $admissions1) {
+				$dmm = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+
+				$fees_data = $this->admin_model->getDetailsbyfield($admissions1->id, 'student_id', 'fee_master')->row();
+				$balance_amount_data = $fees_data->final_fee - (isset($feeDetails[$admissions1->id]) ? $feeDetails[$admissions1->id] : 0);
+
+				// Only add students with a positive balance amount
+				if ($balance_amount_data > 0) {
+					// if ($admissions1->quota != 'KEA-CET(LATERAL)') {
+					// 	$year = "I";
+					// } else {
+					// 	$year = "II";
+					// }
+					$year = "I";
+
+					// $corpus_bal = $fees_data->corpus_fund - $feeDetails11[$admissions1->id];
+					$college_bal = $fees_data->total_college_fee - $feeDetails22[$admissions1->id];
+					$result_array = array(
+						$i++,
+						$admissions1->usn,
+						$admissions1->student_name,
+						"PhD",
+						$dmm,
+						$admissions1->quota,
+						$admissions1->sub_quota,
+						$admissions1->college_code,
+						$year,
+						$admissions1->mobile,
+						$admissions1->category_allotted,
+						$admissions1->category_claimed,
+						($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
+						// number_format($balance_amount_data, 0),
+						number_format($fees_data->total_college_fee, 0),
+						number_format($feeDetails22[$admissions1->id], 0),
+						number_format($college_bal, 0),
+						// number_format($fees_data->corpus_fund, 0),
+						// number_format($feeDetails11[$admissions1->id], 0),
+						// number_format($corpus_bal, 0),
+						$admissions1->remarks
+					);
+
+					$this->table->add_row($result_array);
+					$balance_amount += $balance_amount_data;
+				}
+			}
+
+			$data['table'] = $this->table->generate();
+			// var_dump($data['table']); die();
+
+			if (!$download) {
+				$this->admin_template->show('admin/phdfeebalance_report', $data);
+			} else {
+				$response = array(
+					'op' => 'ok',
+					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+				);
+				die(json_encode($response));
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	function phdcourses()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$details = $this->admin_model->getDetailsbyfield('3', 'stream_id', 'departments')->result();
+
+			$result = array();
+			foreach ($details as $details1) {
+				$row = $this->admin_model->get_stream_by_id($details1->stream_id);
+				$result[$details1->department_id] = $row['stream_short_name'] . ' - ' . $details1->department_name;
+			}
+
+			return $result;
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function phdCoursewiseStudentAdmittedCount($download = '')
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Course wise Student Admitted Count';
+			$data['menu'] = 'reports';
+			$data['report_type'] = 'reports';
+			$admissionStatus = $this->globals->admissionStatus();
+			$admissionStatusColor = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissionStatus'] = array(" " => "Select Admission Status") + $this->globals->admissionStatus();
+			$data['course_options'] = array(" " => "Select") + $this->phdcourses();
+			$data['action'] = 'admin/phdCoursewiseStudentAdmittedCount';
+			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			if ($this->form_validation->run() === FALSE) {
+
+				$this->admin_template->show('admin/phdCoursewiseStudentAdmittedCount', $data);
+			} else {
+				$data['course'] = $this->input->post('course');
+				$data['status'] = $this->input->post('admission_status');
+
+
+
+				$admissions = $this->admin_model->getphdAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+
+				if (count($admissions)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'College Code', 'Status', 'Admit. Date');
+
+
+
+					$this->table->set_heading($table_headings);
+
+					$i = 1;
+					foreach ($admissions as $admissions1) {
+						$dmp = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$admissions1->student_name,
+							$admissions1->mobile,
+							$dmp,
+							$admissions1->aadhaar,
+							$admissions1->quota,
+							$admissions1->sub_quota,
+							'<strong class="text-' . $admissionStatusColor[$admissions1->status] . '">' . $admissionStatus[$admissions1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($admissions1->admit_date))
+						);
+
+
+						$this->table->add_row($result_array);
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+				$data['selected_values'] = $selectedValues;
+				// Var_dump($this->db->last_query()); 
+				if ($download == 1) {
+					$response = array(
+						'op' => 'ok',
+						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
+					);
+					die(json_encode($response));
+				} else {
+					$data['admissions1'] = $details;
+					$data['admissions'] = "Count : " . count($admissions);
+					$this->admin_template->show('admin/phdCoursewiseStudentAdmittedCount', $data);
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function phdstudentdetails_report($download = '')
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Student Details Report';
+			$data['menu'] = 'reports';
+			$data['report_type'] = $report;
+			$admissionStatus = $this->globals->admissionStatus();
+			$admissionStatusColor = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissionStatus'] = array(" " => "Select Admission Status") + $this->globals->admissionStatus();
+			$data['course_options'] = array(" " => "Select") + $this->phdcourses();
+			$data['action'] = 'admin/phdstudentdetails_report';
+			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			if ($this->form_validation->run() === FALSE) {
+
+				$this->admin_template->show('admin/phdstudentdetails_report', $data);
+			} else {
+				$data['course'] = $this->input->post('course');
+				$data['status'] = $this->input->post('admission_status');
+
+
+
+				$admissions = $this->admin_model->getphdAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+
+				if (count($admissions)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
+
+
+					$selectedValues = $this->input->post('selectedValues');
+					if ($selectedValues) {
+						foreach ($selectedValues as $selectedValues1) {
+							if ($selectedValues1 == "date_place_of_birth") {
+								$select = $select . ",date_of_birth, place_of_birth";
+								$table_headings[] = 'Date of Birth';
+								$table_headings[] = 'Place of Birth';
+							}
+							if ($selectedValues1 == "caste_category") {
+								$select = $select . ",caste, category_claimed";
+								$table_headings[] = 'Caste';
+								$table_headings[] = 'Category';
+							}
+							if ($selectedValues1 == "nationality") {
+								$select = $select . ",nationality";
+								$table_headings[] = 'Nationality';
+							}
+							if ($selectedValues1 == "religion") {
+								$select = $select . ",religion";
+								$table_headings[] = 'Religion';
+							}
+							if ($selectedValues1 == "aadhar") {
+								$select = $select . ",aadhar";
+								$table_headings[] = 'Aadhar';
+							}
+
+							if ($selectedValues1 == "current_address") {
+								$select = $select . ",current_address,current_city,current_district,current_state,current_pincode";
+								$table_headings[] = 'Current Location';
+								$table_headings[] = 'Current City';
+								$table_headings[] = 'Current District';
+								$table_headings[] = 'Current State';
+								$table_headings[] = 'Current Pincode';
+							}
+
+							if ($selectedValues1 == "present_address") {
+								$select = $select . ",present_address,present_city,present_district,present_state,present_pincode";
+								$table_headings[] = 'Present Location';
+								$table_headings[] = 'Present City';
+								$table_headings[] = 'Present District';
+								$table_headings[] = 'Present State';
+								$table_headings[] = 'Present Pincode';
+							}
+
+							if ($selectedValues1 == "father_details") {
+								$select = $select . ",father_name, father_occupation, father_mobile, father_email, father_annual_income";
+								$table_headings[] = 'Father Name';
+								$table_headings[] = 'Father Occupation';
+								$table_headings[] = 'Father Mobile';
+								$table_headings[] = 'Father Email';
+								$table_headings[] = 'Father Annual Income';
+							}
+
+							if ($selectedValues1 == "mother_details") {
+								$select = $select . ",mother_name, mother_occupation, mother_mobile, mother_email, mother_annual_income";
+								$table_headings[] = 'Mother Name';
+								$table_headings[] = 'Mother Occupation';
+								$table_headings[] = 'Mother Mobile';
+								$table_headings[] = 'Mother Email';
+								$table_headings[] = 'Mother Annual Income';
+							}
+
+							if ($selectedValues1 == "guardian_details") {
+								$select = $select . ",guardian_name, guardian_occupation, guardian_mobile, guardian_email, guardian_annual_income";
+								$table_headings[] = 'Guardian Name';
+								$table_headings[] = 'Guardian Occupation';
+								$table_headings[] = 'Guardian Mobile';
+								$table_headings[] = 'Guardian Email';
+								$table_headings[] = 'Guardian Annual Income';
+							}
+
+							if ($selectedValues1 == "previous_exam_details") {
+								$select = $select . ",entrance_type, entrance_reg_no, entrance_rank, admission_order_no, admission_order_date";
+								$table_headings[] = 'Entrance Type';
+								$table_headings[] = 'Entrance Register Number';
+								$table_headings[] = 'Entrance Rank';
+								$table_headings[] = 'Admission Order Number';
+								$table_headings[] = 'Admission Order Date';
+							}
+
+							if ($selectedValues1 == "other_details") {
+								$select = $select . ",sports,ncc,nss";
+								$table_headings[] = 'Sports';
+								$table_headings[] = 'NCC';
+								$table_headings[] = 'NSS';
+							}
+						}
+					}
+
+					$this->table->set_heading($table_headings);
+
+					$i = 1;
+					foreach ($admissions as $admissions1) {
+						$dmp = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$admissions1->student_name,
+							$admissions1->mobile,
+							$dmp,
+							$admissions1->aadhaar,
+							$admissions1->quota,
+							$admissions1->sub_quota,
+							'<strong class="text-' . $admissionStatusColor[$admissions1->status] . '">' . $admissionStatus[$admissions1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($admissions1->admit_date))
+						);
+
+
+						if ($selectedValues) {
+							foreach ($selectedValues as $selectedValues1) {
+								if ($selectedValues1 == "date_place_of_birth") {
+									$result_array[] = $admissions1->date_of_birth;
+									$result_array[] = $admissions1->place_of_birth;
+								}
+								if ($selectedValues1 == "caste_category") {
+									$result_array[] = $admissions1->caste;
+									$result_array[] = $admissions1->category_claimed;
+								}
+								if ($selectedValues1 == "nationality") {
+									$result_array[] = $admissions1->nationality;
+								}
+								if ($selectedValues1 == "religion") {
+									$result_array[] = $admissions1->religion;
+								}
+								if ($selectedValues1 == "aadhar") {
+									$result_array[] = $admissions1->aadhar;
+								}
+
+								if ($selectedValues1 == "current_address") {
+									$result_array[] = $admissions1->current_address;
+									$result_array[] = $admissions1->current_city;
+									$result_array[] = $admissions1->current_district;
+									$result_array[] = $admissions1->current_state;
+									$result_array[] = $admissions1->current_pincode;
+								}
+
+								if ($selectedValues1 == "present_address") {
+									$result_array[] = $admissions1->present_address;
+									$result_array[] = $admissions1->present_city;
+									$result_array[] = $admissions1->present_district;
+									$result_array[] = $admissions1->present_state;
+									$result_array[] = $admissions1->present_pincode;
+								}
+
+								if ($selectedValues1 == "father_details") {
+									$result_array[] = $admissions1->father_name;
+									$result_array[] = $admissions1->father_occupation;
+									$result_array[] = $admissions1->father_mobile;
+									$result_array[] = $admissions1->father_email;
+									$result_array[] = $admissions1->father_annual_income;
+								}
+
+								if ($selectedValues1 == "mother_details") {
+									$result_array[] = $admissions1->mother_name;
+									$result_array[] = $admissions1->mother_occupation;
+									$result_array[] = $admissions1->mother_mobile;
+									$result_array[] = $admissions1->mother_email;
+									$result_array[] = $admissions1->mother_annual_income;
+								}
+
+								if ($selectedValues1 == "guardian_details") {
+									$result_array[] = $admissions1->guardian_name;
+									$result_array[] = $admissions1->guardian_occupation;
+									$result_array[] = $admissions1->guardian_mobile;
+									$result_array[] = $admissions1->guardian_email;
+									$result_array[] = $admissions1->guardian_annual_income;
+								}
+
+								if ($selectedValues1 == "previous_exam_details") {
+									$result_array[] = $admissions1->entrance_type;
+									$result_array[] = $admissions1->entrance_reg_no;
+									$result_array[] = $admissions1->entrance_rank;
+									$result_array[] = $admissions1->admission_order_no;
+									$result_array[] = $admissions1->admission_order_date;
+								}
+
+
+								if ($selectedValues1 == "other_details") {
+									$result_array[] = $admissions1->sports;
+									$result_array[] = $admissions1->ncc;
+									$result_array[] = $admissions1->nss;
+								}
+							}
+						}
+						$this->table->add_row($result_array);
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+				$data['selected_values'] = $selectedValues;
+				// Var_dump($this->db->last_query()); 
+				if ($download == 1) {
+					$response = array(
+						'op' => 'ok',
+						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
+					);
+					die(json_encode($response));
+				} else {
+					$data['admissions'] = $details;
+					$this->admin_template->show('admin/phdstudentdetails_report', $data);
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function mtechdaybook_report()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Mtech Day Book Report';
+			$data['menu'] = 'MtechdayBookReport';
+
+			$data['feeStructure'] = $this->globals->courseFees();
+
+			// var_dump($data['feeStructure']);
+			// echo "<pre>";
+			// print_r($data['feeStructure']); die;
+
+			$data['admissionStatus'] = $this->globals->admissionStatus();
+			$data['courses'] = array("all" => "All") + $this->globals->courses();
+			$data['academicYears'] = array(" " => "Select") + $this->globals->academicYear();
+
+			$this->admin_template->show('admin/mtechdaybook_report', $data);
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function mtechdayBookReportDownload()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Day Book Report';
+			$data['menu'] = 'dayBookReport';
+
+			$to = $this->input->post('to_date');
+			$from = $this->input->post('from_date');
+
+			$transactions = $this->admin_model->mtechtransactionsdatewise($from, $to)->result();
+			$transactionTypes = $this->globals->transactionTypes();
+
+			$table = "<table class='table table-bordered' border='1' id='example2'>";
+
+			$table .= '<thead>';
+
+			// Include From Date and To Date in the header
+			$table .= '<tr><th colspan="18" class="font20">' . $currentAcademicYear . ' Day Book Report</th></tr>';
+			$table .= '<tr><th colspan="18" class="font20">From: ' . date('d-m-Y', strtotime($from)) . ' To: ' . date('d-m-Y', strtotime($to)) . '</th></tr>';
+
+			$table .= '<tr><th>S.No</th>
+						   <th>Academic Year</th>
+						   <th>Usn</th>
+						   <th>Student Name</th>
+						   <th>Quota</th>
+						   <th>Sub Quota</th>
+						   <th>College Code</th>
+						   <th>Studying Year</th>
+						   <th>Category claimed</th>
+						   <th>Category allocated</th>
+						   <th>Department Name</th>
+						   <th>Receipt No.</th>
+						   <th>Mode of Payment</th>
+						   <th>Reference No.</th>
+						   <th>Reference Date</th>
+						   <th>Bank Name</th>
+						   <th>Amount</th>
+						   <th>Transaction Date</th>
+					  </tr>';
+
+			$table .= '</thead>';
+			$table .= '<tbody>';
+
+			$i = 1;
+			foreach ($transactions as $transactions1) {
+				$table .= '<tr>';
+				$table .= '<td>' . $i++ . '</td>';
+				$table .= '<td>' . $transactions1->academic_year . '</td>';
+				$table .= '<td>' . $transactions1->usn . '</td>';
+				$table .= '<td>' . $transactions1->student_name . '</td>';
+				$table .= '<td>' . $transactions1->quota . '</td>';
+				$table .= '<td>' . $transactions1->sub_quota . '</td>';
+				$table .= '<td>' . $transactions1->college_code . '</td>';
+				$table .= '<td>' . $transactions1->year . '</td>';
+				$table .= '<td>' . $transactions1->category_claimed . '</td>';
+				$table .= '<td>' . $transactions1->category_allotted . '</td>';
+				$table .= '<td>' . $this->admin_model->get_dept_by_id($transactions1->dept_id)["department_name"] . '</td>';
+				$table .= '<td>' . htmlspecialchars($transactions1->receipt_no) . '</td>';
+				$table .= '<td>' . $transactionTypes[$transactions1->transaction_type] . '</td>';
+				$table .= '<td>' . htmlspecialchars($transactions1->reference_no) . '</td>';
+				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->reference_date)) . '</td>';
+				$table .= '<td>' . $transactions1->bank_name . '</td>';
+				$table .= '<td>' . number_format($transactions1->amount, 0) . '</td>';
+				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->transaction_date)) . '</td>';
+				$table .= '</tr>';
+			}
+			$table .= '</tbody>';
+			$table .= '</table>';
+			$data['table'] = $table;
+
+			$response = array(
+				'op' => 'ok',
+				'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+			);
+			die(json_encode($response));
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function mtechdcb_report($download = 0)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$data['page_title'] = $currentAcademicYear . ' MTECH REPORT DEMAND COLLECTION BALANCE (DCB)';
+			$data['menu'] = 'DCBReport';
+
+			$data['download_action'] = 'admin/dcb_report';
+			$data['course_options'] = array("" => "Select") + $this->mtechcourses();
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			// $admissions = $this->admin_model->DCBReport($currentAcademicYear)->result();
+			$admissions = $this->admin_model->mtechDCBReport($currentAcademicYear)->result();
+
+			if ($_POST) {
+				$course = $this->input->post('course');
+				$syear = $this->input->post('year');
+				$type = $this->input->post('type');
+				$admissions = $this->admin_model->mtechDCBReport($currentAcademicYear, $course, $syear, $type)->result();
+			} else {
+				$admissions = $this->admin_model->mtechDCBReport($currentAcademicYear, $course = '', $year = '', $type = '')->result();
+			}
+
+			$fees = $this->admin_model->feeDetails()->result();
+			$feeDetails = array();
+			foreach ($fees as $fees1) {
+				$feeDetails[$fees1->admissions_id] = $fees1->paid_amount;
+			}
+
+			$fees1 = $this->admin_model->feeDetailscorpus()->result();
+			$feeDetails1 = array();
+			foreach ($fees1 as $fees11) {
+				$feeDetails1[$fees11->admissions_id] = $fees11->paid_amount;
+			}
+
+			$fees2 = $this->admin_model->feeDetailscollege()->result();
+			$feeDetails2 = array();
+			foreach ($fees2 as $fees22) {
+				$feeDetails22[$fees22->admissions_id] = $fees22->paid_amount;
+			}
+
+
+			$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+			$this->table->set_template($table_setup);
+			// $table_setup = array ('table_open'=> '<table class="table table-bordered font14" border="1" id="dataTable" >');
+			// $this->table->set_template($table_setup);
+
+			$print_fields = array(
+				'S.No',
+				'Academic Year',
+				'Course',
+				'Student Name',
+				'Usn',
+				'Quota',
+				'Sub Quota',
+				'College Code',
+				'Studying Year',
+				'Mobile',
+				'Father Number',
+				'Caste',
+				'Alloted Category',
+				'claimed Category',
+				'Admit. Date',
+				'Total University Other Fee',
+				'College Fee Demand',
+				'College Fee Paid',
+				'College Fee Balance',
+				'Corpus Fee Demand',
+				'Corpus Fee Paid',
+				'Corpus Fee Balance',
+				'Remarks'
+			);
+
+			$this->table->set_heading($print_fields);
+
+			$i = 1;
+			$final_fee = 0;
+			$fees_paid = 0;
+			$balance_amount = 0;
+			foreach ($admissions as $admissions1) {
+				$dmm = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+
+				// if($admissions1->dsc_1 == $admissions1->dsc_2){
+				//     $combination = $admissions1->dsc_1;
+				// }else{
+				//     $combination = $admissions1->dsc_1.' - '.$admissions1->dsc_2;
+				// }
+				$fees_data = $this->admin_model->getDetailsbyfield($admissions1->id, 'student_id', 'fee_master')->row();
+				$balance_amount_data = $fees_data->final_fee - $feeDetails[$admissions1->id];
+				$paid_amount = (array_key_exists($admissions1->id, $feeDetails)) ? $feeDetails[$admissions1->id] : '0';
+				$balance_amount = $admissions1->final_fee - $paid_amount;
+				// if ($admissions1->quota = 'KEA-CET(GOVT)') {
+				// 	$year = "I";
+				// }
+				$year = "I";
+
+				// $corpus_bal = $fees_data->corpus_fund - $feeDetails11[$admissions1->id];
+				$college_bal = $fees_data->total_college_fee - $feeDetails22[$admissions1->id];
+				$result_array = array(
+					$i++,
+					// $admissions1->academic_year,
+					// $admissions1->reg_no,
+					$admissions1->academic_year,
+					$dmm,
+					$admissions1->student_name,
+					$admissions1->usn,
+					$admissions1->quota,
+					$admissions1->sub_quota,
+					$admissions1->college_code,
+					$year, // Use the determined studying year here
+					$admissions1->mobile,
+					$admissions1->father_mobile,
+					$admissions1->caste,
+					$admissions1->category_allotted,
+					$admissions1->category_claimed,
+					($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
+					// number_format($fees_data->final_fee, 0),
+					// number_format($feeDetails[$admissions1->id], 0),
+					// number_format($balance_amount_data, 0),
+					number_format($fees_data->total_university_fee, 0),
+					number_format($fees_data->total_college_fee, 0),
+					number_format($feeDetails22[$admissions1->id], 0),
+					number_format($college_bal, 0),
+					number_format($fees_data->corpus_fund, 0),
+					number_format($feeDetails11[$admissions1->id], 0),
+					number_format($corpus_bal, 0),
+					// ($admissions1->next_due_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->next_due_date)) : '',
+					$admissions1->remarks
+				);
+				// var_dump($result_array);
+				$this->table->add_row($result_array);
+				$final_fee = $final_fee + $admissions1->total_college_fee;
+				$fees_paid = $fees_paid + $paid_amount;
+				$balance_amount = $balance_amount + $balance_amount;
+			}
+
+			$data['table'] = $this->table->generate();
+			// var_dump($data['table']); die();
+			if (!$download) {
+				$this->admin_template->show('admin/mtechdcb_report', $data);
+			} else {
+				$response = array(
+					'op' => 'ok',
+					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+				);
+				die(json_encode($response));
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function mtechfeebalance_report($download = 0)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$data['page_title'] = $currentAcademicYear . ' FEE BALANCE';
+			$data['menu'] = 'FeebalanceReport';
+			$data['course_options'] = array("" => "Select") + $this->mtechcourses();
+			$data['action'] = 'admin/mtechfeebalance_report';
+
+			if ($_POST) {
+				$course = $this->input->post('course');
+				$syear = $this->input->post('year');
+				$admissions = $this->admin_model->mtechFeebalanceReport($currentAcademicYear, $course, $syear)->result();
+			} else {
+				$admissions = $this->admin_model->mtechFeebalanceReport($currentAcademicYear, $course = '', $year = '')->result();
+			}
+
+			$fees = $this->admin_model->feeDetails()->result();
+
+			$feeDetails = array();
+			foreach ($fees as $fees1) {
+				$feeDetails[$fees1->admissions_id] = $fees1->paid_amount;
+			}
+
+
+			$fees1 = $this->admin_model->feeDetailscorpus()->result();
+			$feeDetails1 = array();
+			foreach ($fees1 as $fees11) {
+				$feeDetails1[$fees11->admissions_id] = $fees11->paid_amount;
+			}
+
+			$fees2 = $this->admin_model->feeDetailscollege()->result();
+			$feeDetails2 = array();
+			foreach ($fees2 as $fees22) {
+				$feeDetails22[$fees22->admissions_id] = $fees22->paid_amount;
+			}
+
+			$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2">');
+			$this->table->set_template($table_setup);
+
+			$print_fields = array(
+				'S.No',
+				'Usn',
+				'Student Name',
+				'Stream',
+				'Course',
+				'Quota',
+				'Sub Quota',
+				'College Code',
+				'Studying Year',
+				'Mobile',
+				'Alloted Category',
+				'claimed Category',
+				'Admit. Date',
+				'College Fee Demand',
+				'College Fee Paid',
+				'College Fee Balance',
+				'Corpus Fee Demand',
+				'Corpus Fee Paid',
+				'Corpus Fee Balance',
+				'Remarks'
+			);
+			$this->table->set_heading($print_fields);
+
+			$i = 1;
+			$final_fee = 0;
+			$fees_paid = 0;
+			$balance_amount = 0;
+			foreach ($admissions as $admissions1) {
+				$dmm = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+
+				$fees_data = $this->admin_model->getDetailsbyfield($admissions1->id, 'student_id', 'fee_master')->row();
+				$balance_amount_data = $fees_data->final_fee - (isset($feeDetails[$admissions1->id]) ? $feeDetails[$admissions1->id] : 0);
+
+				// Only add students with a positive balance amount
+				if ($balance_amount_data > 0) {
+					// if ($admissions1->quota != 'KEA-CET(LATERAL)') {
+					// 	$year = "I";
+					// } else {
+					// 	$year = "II";
+					// }
+					$year = "I";
+
+					// $corpus_bal = $fees_data->corpus_fund - $feeDetails11[$admissions1->id];
+					$college_bal = $fees_data->total_college_fee - $feeDetails22[$admissions1->id];
+					$result_array = array(
+						$i++,
+						$admissions1->usn,
+						$admissions1->student_name,
+						"PhD",
+						$dmm,
+						$admissions1->quota,
+						$admissions1->sub_quota,
+						$admissions1->college_code,
+						$year,
+						$admissions1->mobile,
+						$admissions1->category_allotted,
+						$admissions1->category_claimed,
+						($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
+						// number_format($balance_amount_data, 0),
+						number_format($fees_data->total_college_fee, 0),
+						number_format($feeDetails22[$admissions1->id], 0),
+						number_format($college_bal, 0),
+						number_format($fees_data->corpus_fund, 0),
+						number_format($feeDetails11[$admissions1->id], 0),
+						number_format($corpus_bal, 0),
+						$admissions1->remarks
+					);
+
+					$this->table->add_row($result_array);
+					$balance_amount += $balance_amount_data;
+				}
+			}
+
+			$data['table'] = $this->table->generate();
+			// var_dump($data['table']); die();
+
+			if (!$download) {
+				$this->admin_template->show('admin/mtechfeebalance_report', $data);
+			} else {
+				$response = array(
+					'op' => 'ok',
+					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+				);
+				die(json_encode($response));
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	function mtechcourses()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$details = $this->admin_model->getDetailsbyfield('2', 'stream_id', 'departments')->result();
+
+			$result = array();
+			foreach ($details as $details1) {
+				$row = $this->admin_model->get_stream_by_id($details1->stream_id);
+				$result[$details1->department_id] = $row['stream_short_name'] . ' - ' . $details1->department_name;
+			}
+
+			return $result;
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+	function phd_dashboard()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = "Dashboard";
+			$data['menu'] = "phd_dashboard";
+			$data['enquiryStatus'] = $this->globals->enquiryStatus();
+			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+
+			$admissionStats = $this->admin_model->getAdmissionOverallStats(0,3)->result();
+			$aidedAdmitted = array();
+			$unaidedAdmitted = array();
+			// echo "<pre>";
+			$newArr = array("Aided" => array(), "UnAided" => array());
+			foreach ($admissionStats as $admissionStats1) {
+				$newArr[$admissionStats1->sub_quota][$admissionStats1->dept_id][$admissionStats1->quota] = $admissionStats1->cnt;
+			}
+			$data['newArr'] = $newArr;
+			
+
+			// print_r($newArr);
+
+			$departments = $this->admin_model->getDetailsbyfield('3', 'stream_id', 'departments')->result();
+			$aided = array();
+			$unaided = array();
+			foreach ($departments as $departments1) {
+			
+				
+					array_push($unaided, $departments1);
+				
+			}
+			
+			$data['unaided'] = $unaided;
+
+			$this->admin_template->show('admin/Dashboardphd', $data);
+		} else {
+			redirect('admin', 'refresh');
+		}
 	}
 }

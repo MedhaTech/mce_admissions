@@ -80,6 +80,69 @@
                           </div>
 
                       </div>
+                      <div class="col-lg-6">
+                          <div class="card">
+                              <div class="card-header">
+                                  <h3 class="card-title">
+                                      PhD Accounts Report
+                                  </h3>
+                              </div>
+                              <div class="card-body">
+                                  <ul>
+
+                                  <?php if((in_array($role, array(1,2,3,6,7)))){ ?>
+                                      <li><?php echo anchor('admin/phddaybook_report', 'Day Book Report'); ?> </li>
+                                      <?php }?>
+                                      <?php if((in_array($role, array(1,2,3,7)))){ ?>
+                                      <li><?php echo anchor('admin/phddcb_report', 'DCB Report'); ?> </li>
+                                      <li><?php echo anchor('admin/phdfeebalance_report', 'Fee Balance Report'); ?> </li>
+                                      <?php }?>
+
+                                  </ul>
+                              </div>
+                          </div>
+
+                      </div>
+                      <div class="col-lg-6">
+                          <div class="card">
+                              <div class="card-header">
+                                  <h3 class="card-title">
+                                      PhD Admissions Report
+                                  </h3>
+                              </div>
+                              <div class="card-body">
+                                  <ul>
+
+                                      <li><?php echo anchor('admin/phdCoursewiseStudentAdmittedCount', 'Course wise Student Admitted Count'); ?> </li>
+                                      <li><?php echo anchor('admin/phdstudentdetails_report', 'Students Details Report'); ?> </li>
+                                     
+                                  </ul>
+                              </div>
+                          </div>
+
+                      </div>
+                      <div class="col-lg-6">
+                          <div class="card">
+                              <div class="card-header">
+                                  <h3 class="card-title">
+                                      Mtech Accounts Report
+                                  </h3>
+                              </div>
+                              <div class="card-body">
+                                  <ul>
+
+                                     <?php if((in_array($role, array(1,2,3,6,7)))){ ?>
+                                      <li><?php echo anchor('admin/mtechdaybook_report', 'Day Book Report'); ?> </li>
+                                      <?php }?>
+                                      <?php if((in_array($role, array(1,2,3,7)))){ ?>
+                                      <li><?php echo anchor('admin/mtechdcb_report', 'DCB Report'); ?> </li>
+                                      <li><?php echo anchor('admin/mtechfeebalance_report', 'Fee Balance Report'); ?> </li>
+                                      <?php }?>
+                                  </ul>
+                              </div>
+                          </div>
+
+                      </div>
                   </div>
               </div>
           </div>

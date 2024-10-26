@@ -1318,14 +1318,7 @@
                                    Submit the necessary documents along with fee receipt for further processing.</label>
                                 </div>
 
-                                <div class="checkbox vertical">&nbsp;&nbsp;
-                   
-                                   
-                                   <input type="checkbox" class="form-check-input" id="applyCheck2"
-                                    onclick="enable()">
-                                    <label class="form-check-label text-gray font--12" for="applyCheck2">
-                                    I acknowledge to pay Skill Development Fee as per VTU norms. <a href=""> Click here </a> for more details</label>
-                                </div>
+                              
                         </div>
                         <div class="col-md-6 mt-2">
                             <div class="form-group">
@@ -1374,9 +1367,8 @@
 function enable() {
     var applyCheck = document.getElementById("applyCheck");
     var applyCheck1 = document.getElementById("applyCheck1");
-    var applyCheck2 = document.getElementById("applyCheck2");
     var submit = document.getElementById("submit");
-    if (applyCheck.checked && applyCheck1.checked && applyCheck2.checked) {
+    if (applyCheck.checked && applyCheck1.checked) {
         submit.removeAttribute("disabled")
     } else {
         submit.disabled = "true";
