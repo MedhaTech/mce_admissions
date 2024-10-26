@@ -21,7 +21,7 @@ class Globals
 
     public function admissionStatus()
     {
-        return array("1" => "Processing", "2" => "Submitted", "3" => "On-Hold", "4" => "Confirmed", "5" => "Rejected", "6" => "Canceled", "7" => "Archived");
+        return array("1" => "Processing", "2" => "Submitted", "3" => "On-Hold", "4" => "Confirmed", "5" => "Rejected", "6" => "Canceled", "7" => "Archived" ,"8"=>"Endorsemt");
     }
 
     public function admissionStatusColor()
