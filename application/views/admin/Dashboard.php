@@ -8,7 +8,7 @@
                 <?php if ((in_array($role, array(1, 2, 3, 7)))) { ?>
                     <div class="card-header">
                         <div class="card-title">
-                            <h6 class="m-0">MCE ADMISSION STATUS</h6>
+                            <h6 class="m-0">MCE B.E. ADMISSION STATUS</h6>
                         </div>
                         <div class="card-tools">
                             <ul class="nav nav-pills ml-auto">

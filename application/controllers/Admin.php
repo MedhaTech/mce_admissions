@@ -129,7 +129,7 @@ class Admin extends CI_Controller
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 
-			$admissionStats = $this->admin_model->getAdmissionOverallStats(0,1)->result();
+			$admissionStats = $this->admin_model->getAdmissionOverallStats(0, 1)->result();
 			$aidedAdmitted = array();
 			$unaidedAdmitted = array();
 			// echo "<pre>";
@@ -141,7 +141,7 @@ class Admin extends CI_Controller
 			// echo "<pre>";
 			// print_r($newArr); die;
 			$departments = $this->admin_model->getActiveDepartments()->result();
-			
+
 			$aided = array();
 			$unaided = array();
 			foreach ($departments as $departments1) {
@@ -176,9 +176,9 @@ class Admin extends CI_Controller
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 
-			$admissionStats = $this->admin_model->getAdmissionOverallStats(0,1)->result();
+			$admissionStats = $this->admin_model->getAdmissionOverallStats(0, 1)->result();
 
-      $aidedAdmitted = array();
+			$aidedAdmitted = array();
 			$unaidedAdmitted = array();
 			// echo "<pre>";
 			$depart = $this->admin_model->getActiveComedk()->result();
@@ -8009,17 +8009,12 @@ With good wishes";
 			ini_set("session.auto_start", 0);
 			ini_set('memory_limit', '-1');
 			define('FPDF_FONTPATH', 'plugins/font');
-			if($admissionDetails->stream_id==1)
-			{
+			if ($admissionDetails->stream_id == 1) {
 				$pgm = "UG";
-				
-			}
-			elseif($admissionDetails->stream_id==2)
-			{
+
+			} elseif ($admissionDetails->stream_id == 2) {
 				$pgm = "PG";
-			}
-			else
-			{
+			} else {
 				$pgm = "PHD";
 			}
 
@@ -8047,12 +8042,9 @@ With good wishes";
 					$university += $feeValue;
 				}
 			}
-			if($admissionDetails->stream_id==3)
-			{
-				$university +=$voucherDetails->admission_fee;
-			}
-			else
-			{
+			if ($admissionDetails->stream_id == 3) {
+				$university += $voucherDetails->admission_fee;
+			} else {
 				if ($voucherDetails->admission_fee > 0) {
 					$tableData[] = ['Admission Fee', $voucherDetails->admission_fee];
 				}
@@ -8060,7 +8052,7 @@ With good wishes";
 			if ($university > 0) {
 				$tableData[] = ["University Other Fee", $university];
 			}
-			
+
 			if ($voucherDetails->processing_fee_paid_at_kea > 0) {
 				$tableData[] = ['Processing Fee Paid at KEA', $voucherDetails->processing_fee_paid_at_kea];
 			}
@@ -8158,7 +8150,7 @@ With good wishes";
 			printStudent($pdf, "College Code ", $admissionDetails->college_code, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			printStudent($pdf, "Gender ", $admissionDetails->gender, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			printStudent($pdf, "Year ", $feeDetails->year, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
-			printStudent($pdf, $pgm, $pgm.' - ' . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_name"], $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+			printStudent($pdf, $pgm, $pgm . ' - ' . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_name"], $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			// printStudent($pdf, "Pg :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			$pdf->Ln(4);
 
@@ -9049,25 +9041,20 @@ With good wishes";
 				$contactInfo4 = "UA ACCOUNT NUMBER -  14053070001574 IFSC -CNRB0011405";
 			}
 			$issuedOn = "Date : " . date("m-d-Y ");
-			if($admissionDetails->stream_id==1)
-			{
+			if ($admissionDetails->stream_id == 1) {
 				$programe = "PROGRAM : B.E";
 				$contactInfo = "UG (AY-2024-2025)";
-				$pgm='B.E - ';
+				$pgm = 'B.E - ';
 				$chellan = "Chellan : TF24-25/" . $voucherDetails->id;
-			}
-			elseif($admissionDetails->stream_id==2)
-			{
+			} elseif ($admissionDetails->stream_id == 2) {
 				$programe = "PROGRAM : M.E";
 				$contactInfo = "PG (AY-2024-2025)";
-				$pgm='M.E - ';
+				$pgm = 'M.E - ';
 				$chellan = "Chellan : ME24-25/" . $voucherDetails->id;
-			}
-			else
-			{
+			} else {
 				$programe = "PROGRAM : PHD";
 				$contactInfo = "PHD (AY-2024-2025)";
-				$pgm='PHD - ';
+				$pgm = 'PHD - ';
 				$chellan = "Chellan : PHD24-25/" . $voucherDetails->id;
 			}
 			// $programe = "PROGRAME : B.E";
@@ -10643,7 +10630,7 @@ With good wishes";
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 
-			$admissionStats = $this->admin_model->getAdmissionOverallStats(0,3)->result();
+			$admissionStats = $this->admin_model->getAdmissionOverallStats(0, 3)->result();
 			$aidedAdmitted = array();
 			$unaidedAdmitted = array();
 			// echo "<pre>";
@@ -10652,7 +10639,7 @@ With good wishes";
 				$newArr[$admissionStats1->sub_quota][$admissionStats1->dept_id][$admissionStats1->quota] = $admissionStats1->cnt;
 			}
 			$data['newArr'] = $newArr;
-			
+
 
 			// print_r($newArr);
 
@@ -10660,12 +10647,12 @@ With good wishes";
 			$aided = array();
 			$unaided = array();
 			foreach ($departments as $departments1) {
-			
-				
-					array_push($unaided, $departments1);
-				
+
+
+				array_push($unaided, $departments1);
+
 			}
-			
+
 			$data['unaided'] = $unaided;
 
 			$this->admin_template->show('admin/Dashboardphd', $data);
