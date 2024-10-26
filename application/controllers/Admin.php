@@ -141,6 +141,7 @@ class Admin extends CI_Controller
 			// echo "<pre>";
 			// print_r($newArr); die;
 			$departments = $this->admin_model->getActiveDepartments()->result();
+			
 			$aided = array();
 			$unaided = array();
 			foreach ($departments as $departments1) {
@@ -174,13 +175,13 @@ class Admin extends CI_Controller
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
-			
+
 			$admissionStats = $this->admin_model->getAdmissionOverallStats(0)->result();
 			$aidedAdmitted = array();
 			$unaidedAdmitted = array();
 			// echo "<pre>";
 			$depart = $this->admin_model->getActiveComedk()->result();
-			
+
 			// echo "<pre>";
 			// print_r($depart); die();
 			$unaidedmgmt = array();
@@ -5363,7 +5364,8 @@ With good wishes";
 				}
 
 				$updateDetails['admission_id'] = $id;
-				$updateDetails['mobile'] = $data['admissionDetails']->mobile;;
+				$updateDetails['mobile'] = $data['admissionDetails']->mobile;
+				;
 				$updateDetails['final_fee'] = $this->input->post('final_fee');
 				$updateDetails['requested_by'] = $data['full_name'];
 				$updateDetails['requested_on'] = date('Y-m-d h:i:s');
@@ -5439,7 +5441,7 @@ With good wishes";
 
 			$pdf->SetFont('Arial', '', 9);
 			$pdf->SetXY(-30, $topGap + 5);
-			$pdf->Cell(0, 10, 'Date:' . date('d-m-Y'), 0, 1, 'R');
+			$pdf->Cell(0, 10, 'Date:23-10-2024', 0, 1, 'R');
 
 			$pdf->SetFont('Arial', 'BU', 12);
 			$pdf->SetY($topGap + 20);
@@ -6406,7 +6408,8 @@ With good wishes";
 
 
 				$updateDetails['admission_id'] = $id;
-				$updateDetails['mobile'] = $data['admissionDetails']->mobile;;
+				$updateDetails['mobile'] = $data['admissionDetails']->mobile;
+				;
 				$updateDetails['final_fee'] = $this->input->post('final_fee');
 				$updateDetails['requested_by'] = $data['full_name'];
 				$updateDetails['requested_on'] = date('Y-m-d h:i:s');
@@ -8291,8 +8294,6 @@ With good wishes";
 					$dompdf = new Dompdf($options);
 					$dompdf->loadHtml($html);
 
-
-
 					// Set paper size (optional)
 					$dompdf->setPaper('A4', 'landscape');
 
@@ -8469,7 +8470,8 @@ With good wishes";
 
 			$pdf->SetFont('Arial', '', 9);
 			$pdf->SetXY(-30, $topGap + 5);
-			$pdf->Cell(0, 10, 'Date:' . date('d-m-Y'), 0, 1, 'R');
+			$pdf->Cell(0, 10, 'Date:23-10-2024', 0, 1, 'R');
+			// $pdf->Cell(0, 10, 'Date:' . date('d-m-Y'), 0, 1, 'R');
 
 			$pdf->SetFont('Arial', 'BU', 12);
 			$pdf->SetY($topGap + 20);
@@ -9209,10 +9211,10 @@ With good wishes";
 				$res['reason'] = 'fail';
 			}
 
-			$res['amount'] = (int)$response_array['amount'];
+			$res['amount'] = (int) $response_array['amount'];
 		}
 
 
-		print_r($response_array) ;
+		print_r($response_array);
 	}
 }

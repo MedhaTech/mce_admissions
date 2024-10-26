@@ -389,7 +389,7 @@ class Admin_model extends CI_Model
 
   function getActiveDepartments()
   {
-    $this->db->select('departments.department_id, departments.stream_id, streams.stream_name, streams.stream_short_name, departments.department_name, departments.department_short_name, departments.aided_intake, departments.aided_mgmt_intake, departments.aided_comed_k_intake, departments.aided_kea_intake, departments.aided_snq_intake, departments.unaided_intake, departments.unaided_mgmt_intake, departments.unaided_comed_k_intake, departments.unaided_kea_intake, departments.unaided_snq_intake');
+    $this->db->select('departments.department_id, departments.stream_id, streams.stream_name, streams.stream_short_name, departments.department_name, departments.department_short_name, departments.aided_intake, departments.aided_mgmt_intake, departments.aided_comed_k_intake, departments.aided_kea_intake, departments.aided_kea_mgmt_intake, departments.aided_snq_intake, departments.unaided_intake, departments.unaided_mgmt_intake, departments.unaided_comed_k_intake, departments.unaided_kea_intake, departments.unaided_kea_mgmt_intake, departments.unaided_snq_intake');
     $this->db->join('streams', 'streams.stream_id = departments.stream_id');
     $this->db->where('departments.status', '1');
     return $this->db->get('departments');
