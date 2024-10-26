@@ -9,11 +9,13 @@
                   </div>
                   <div class="card-body">
                   
+                  <!-- <?php echo validation_errors(); ?> -->
+
                       <?php echo form_open_multipart($action, 'class="user"'); ?>
 
                       <div class="form-row">
 
-                          <div class="col-md-4 col-sm-12">
+                          <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label for="student_name">Student Full Name (As per SSLC)</label>
                                   <input type="text" name="student_name" id="student_name" class="form-control"
@@ -21,7 +23,7 @@
                                   <span class="text-danger"><?php echo form_error('student_name'); ?></span>
                               </div>
                           </div>
-                          <div class="col-md-4 col-sm-12">
+                          <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label for="text">Student Mobile</label>
                                   <input type="number" name="mobile" id="mobile" class="form-control"
@@ -29,7 +31,7 @@
                                   <span class="text-danger"><?php echo form_error('mobile'); ?></span>
                               </div>
                           </div>
-                          <div class="col-md-4 col-sm-12">
+                          <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label for="email">Student Email</label>
                                   <input type="text" name="email" id="email" class="form-control"
@@ -37,11 +39,6 @@
                                   <span class="text-danger"><?php echo form_error('email'); ?></span>
                               </div>
                           </div>
-
-                      </div>
-
-                      <div class="form-row">
-
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label for="dsc-2">Aadhaar Number </label>
@@ -50,13 +47,36 @@
                                   <span class="text-danger"><?php echo form_error('aadhaar'); ?></span>
                               </div>
                           </div>
-                          <div class="col-md-3 col-sm-12">
-                              <div class="form-group">
-                                  <label class="form-label">Department</label>
-                                  <?php echo form_dropdown('course', $course_options, (set_value('course')) ? set_value('course') : $course, 'class="form-control" id="course"');  ?>
-                                  <span class="text-danger"><?php echo form_error('course'); ?></span>
-                              </div>
-                          </div>
+
+                      </div>
+
+                      <div class="form-row">
+
+                            <div class="col-md-3 col-sm-12">
+                                <div class="form-group">
+                                    <label for="stream">Stream Name</label>
+                                    <select name="stream" id="stream" class="form-control">
+                                        <option value="">Select Stream</option>
+                                        <option value="1" <?php echo set_select('stream', '1'); ?>>BE</option>
+                                        <option value="2" <?php echo set_select('stream', '2'); ?>>MTech</option>
+                                        <option value="3" <?php echo set_select('stream', '3'); ?>>PhD</option>
+                                    </select>
+                                    <span class="text-danger"><?php echo form_error('stream'); ?></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-sm-12">
+                                <div class="form-group">
+                                    <label class="form-label">Department</label>
+                                    <?php 
+                                    // Get the selected value for the course
+                                    $selected_course = set_value('course');
+                                    echo form_dropdown('course', [], $selected_course, 'class="form-control" id="course"'); 
+                                    ?>
+                                    <span class="text-danger"><?php echo form_error('course'); ?></span>
+                                </div>
+                            </div>
+
                           <!-- <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="form-label">College Code</label>
@@ -69,7 +89,7 @@
                           <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="form-label">Quota </label>
-                                  <?php $state_options = array("" => "Select");
+                                  <?php 
                                     echo form_dropdown('quota', $quota_options, (set_value('quota')) ? set_value('quota') : '', 'class="form-control" id="quota" disabled'); ?>
                                   <span class="text-danger"><?php echo form_error('quota'); ?></span>
                               </div>
@@ -128,6 +148,28 @@
                               </div>
                           </div>
                       </div>
+
+                        <div class="form-row">
+                            <!-- Batch Field -->
+                            <div id="batchRow" class="col-md-3 col-sm-12">
+                                <div class="form-group">
+                                    <label for="batch">Batch(pass out year)</label>
+                                    <input type="text" name="batch" id="batch" class="form-control" 
+                                        value="<?php echo (set_value('batch')) ? set_value('batch') : $batch; ?>">
+                                    <span class="text-danger"><?php echo form_error('batch'); ?></span>
+                                </div>
+                            </div>
+
+                            <!-- Degree Level Field -->
+                            <div id="degreeLevelRow" class="col-md-3 col-sm-12">
+                                <div class="form-group">
+                                    <label for="degree_level">Degree Level</label>
+                                    <input type="text" name="degree_level" id="degree_level" class="form-control"
+                                        value="<?php echo (set_value('degree_level')) ? set_value('degree_level') : $degree_level; ?>">
+                                    <span class="text-danger"><?php echo form_error('degree_level'); ?></span>
+                                </div>
+                            </div>
+                        </div>
 
                       <div class="form-row">
                           <div class="form-group col-md-4 col-sm-12">
@@ -360,16 +402,44 @@ $(document).ready(function() {
         event.preventDefault();
 
         var course = $("#course").val();
-        if (course != " ") {
-            $('#quota').val(' ');
-            $('#subquota').val(' ');
+        var stream = $("#stream").val();
+        $('#subquota').prop("disabled", true);
+        if (course == ' ') {
+            alert("Please Select Course");
             $('#quota').prop("disabled", false);
+            $('#subquota').prop("disabled", true);
         } else {
-            $('#quota').val(' ');
-            $('#quota').prop("disabled", true);
-            $('#subquota').val(' ');
+            $.ajax({
+                'type': 'POST',
+                'url': base_url + 'admin/quotaDropdown',
+                'data': {
+                    
+                    'course':course,
+                    'stream':stream,
+                    'flag': 'S'
+                },
+                'dataType': 'text',
+                'cache': false,
+                'success': function(data) {
+                    $('select[name="quota"]').empty();
+                    $('select[name="quota"]').append(data);
+                    $('select[name="quota"]').removeAttr("disabled");
+
+                }
+            });
             $('#subquota').prop("disabled", true);
         }
+
+        // if (course != " ") {
+        //     $('#quota').val(' ');
+        //     $('#subquota').val(' ');
+        //     $('#quota').prop("disabled", false);
+        // } else {
+        //     $('#quota').val(' ');
+        //     $('#quota').prop("disabled", true);
+        //     $('#subquota').val(' ');
+        //     $('#subquota').prop("disabled", true);
+        // }
        
     });
 
@@ -378,6 +448,7 @@ $(document).ready(function() {
 
         var course = $("#course").val();
         var quota = $("#quota").val();
+        var stream = $("#stream").val();
         // alert(quota);die;
 
         if (quota == ' ') {
@@ -389,7 +460,8 @@ $(document).ready(function() {
                 'data': {
                     'quota': quota,
                     'course':course,
-                    'flag': 'S'
+                    'flag': 'S',
+                    'stream': stream
                 },
                 'dataType': 'text',
                 'cache': false,
@@ -412,7 +484,7 @@ $(document).ready(function() {
         var course = $("#course").val();
         var subquota = $("#subquota").val();
         var quota = $("#quota").val();
-
+        var stream = $("#stream").val();
 
         if (subquota != "" && quota != '') {
             var page = base_url + 'admin/getFee';
@@ -422,7 +494,8 @@ $(document).ready(function() {
                 'data': {
                     'course': course,
                     'quota': quota,
-                    'subquota': subquota
+                    'subquota': subquota,
+                    'stream': stream
                 },
                 'dataType': 'json',
                 'cache': false,
@@ -541,6 +614,7 @@ $(document).ready(function() {
     //         $('#insert').prop("disabled", true);
     //     }
     // });
+    
 
 
 
@@ -548,4 +622,51 @@ $(document).ready(function() {
 
 
 });
+  </script>
+
+  <script>
+
+        $(document).ready(function(){
+        $('#stream').change(function(){
+            var stream_id = $(this).val();
+            if (stream_id != '') {
+                $.ajax({
+                    url: "<?php echo base_url('admin/getDepartmentsByStream'); ?>",  // Replace with actual URL
+                    method: "POST",
+                    data: {stream_id: stream_id},
+                    dataType: "json",
+                    success: function(data) {
+                        var departmentOptions = '<option value="">Select Department</option>';
+                        $.each(data, function(index, department){
+                            departmentOptions += '<option value="'+department.department_id+'">'+department.department_name+'</option>';
+                        });
+                        $('#course').html(departmentOptions);  // Updated to '#course'
+                    }
+                });
+            } else {
+                $('#course').html('<option value="">Select Department</option>');  // Updated to '#course'
+            }
+        });
+    });
+
+
+    // Hide the Batch and Degree Level fields by default
+    $('#batchRow, #degreeLevelRow').hide();
+
+    // Show/Hide Batch and Degree Level based on the selected stream
+    $('#stream').change(function() {
+        var stream_id = $(this).val();
+
+        if (stream_id == '3') {
+            // Show Batch and Degree Level fields for PhD
+            $('#batchRow, #degreeLevelRow').show();
+        } else {
+            // Hide Batch and Degree Level fields for other streams
+            $('#batchRow, #degreeLevelRow').hide();
+        }
+    });
+
+    // Trigger change event on page load to apply the correct initial visibility
+    $('#stream').trigger('change');
+
   </script>

@@ -8,7 +8,7 @@
                 <?php if ((in_array($role, array(1, 2, 3, 7)))) { ?>
                     <div class="card-header">
                         <div class="card-title">
-                            <h6 class="m-0">MCE ADMISSION STATUS</h6>
+                            <h6 class="m-0">MCE B.E. ADMISSION STATUS</h6>
                         </div>
                         <div class="card-tools">
                             <ul class="nav nav-pills ml-auto">
@@ -41,6 +41,7 @@
                                         <th width="25%">DEPARTMENT</th>
                                         <th class='text-center' width="7%">MGMT (ENDORSEMNT ISSUED) <br /> STATUS</th>
                                         <th class='text-center' width="7%">MGMT-COMEDK <br /> STATUS</th>
+                                        <th class='text-center' width="7%">MGMT-KEA <br /> STATUS</th>
                                         <th class='text-center' width="7%">COMED-K <br /> STATUS</th>
                                         <th class='text-center' width="7%">KEA-CET <br /> STATUS</th>
                                         <th class='text-center' width="7%">KEA-SNQ <br /> STATUS</th>
@@ -57,9 +58,11 @@
                                     <?php $i = 1;
                                     // echo "<pre>";
                                     $aidedAdmitted = $newArr['Aided'];
-                                    echo "<tr><th class='bg-gray' colspan='13'>UG COURSES (AIDED)</th></tr>";
+                                    echo "<tr><th class='bg-gray' colspan='14'>UG COURSES (AIDED)</th></tr>";
                                     $MGMT_AIDED_TOTAL = 0;
+                                    $MGMT_KEA_AIDED_TOTAL = 0;
                                     $AIDED_MGMT_INTAKE_TOTAL = 0;
+                                    $AIDED_MGMT_KEA_INTAKE_TOTAL = 0;
                                     $MGMT_COMEDK_AIDED_TOTAL = 0;
                                     $COMEDK_AIDED_TOTAL = 0;
                                     $AIDED_COMEDK_INTAKE_TOTAL = 0;
@@ -90,6 +93,11 @@
                                         $MGMT_COMEDK_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("MGMT-COMEDK", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["MGMT-COMEDK"] : 0 : 0);
                                         echo "<td class='bg-gray-light'>" . $MGMT_COMEDK_AIDED . "</td>";
                                         $MGMT_COMEDK_AIDED_TOTAL = $MGMT_COMEDK_AIDED_TOTAL + $MGMT_COMEDK_AIDED;
+
+                                        $MGMT_KEA_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("MGMT-KEA", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["MGMT-KEA"] : 0 : 0);
+                                        echo "<td class='bg-gray-light'>" . $MGMT_KEA_AIDED . '/' . $aided1->aided_kea_mgmt_intake . "</td>";
+                                        $MGMT_KEA_AIDED_TOTAL = $MGMT_KEA_AIDED_TOTAL + $MGMT_KEA_AIDED;
+                                        $AIDED_MGMT_KEA_INTAKE_TOTAL = $AIDED_MGMT_KEA_INTAKE_TOTAL + $aided1->aided_kea_mgmt_intake;
 
                                         $COMEDK_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("COMED-K", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["COMED-K"] : 0 : 0);
                                         echo "<td>" . $COMEDK_AIDED . '/' . $aided1->aided_comed_k_intake . "</td>";
@@ -138,6 +146,7 @@
                                     echo "<td colspan='2'>TOTAL AIDED</td>";
                                     echo "<td>" . $MGMT_AIDED_TOTAL . '/' . $AIDED_MGMT_INTAKE_TOTAL . "</td>";
                                     echo "<td>" . $MGMT_COMEDK_AIDED_TOTAL . "</td>";
+                                    echo "<td>" . $MGMT_KEA_AIDED_TOTAL . '/' . $AIDED_MGMT_KEA_INTAKE_TOTAL . "</td>";
                                     echo "<td>" . $COMEDK_AIDED_TOTAL . '/' . $AIDED_COMEDK_INTAKE_TOTAL . "</td>";
                                     echo "<td>" . $KEA_AIDED_TOTAL . '/' . $AIDED_KEA_INTAKE_TOTAL . "</td>";
                                     echo "<td>" . $SNQ_AIDED_TOTAL . '/' . $AIDED_SNQ_INTAKE_TOTAL . "</td>";
@@ -152,7 +161,9 @@
                                     $i = 1;
                                     $unaidedAdmitted = $newArr['UnAided'];
                                     $MGMT_UNAIDED_TOTAL = 0;
+                                    $MGMT_KEA_UNAIDED_TOTAL = 0;
                                     $UNAIDED_MGMT_INTAKE_TOTAL = 0;
+                                    $UNAIDED_MGMT_KEA_INTAKE_TOTAL = 0;
                                     $MGMT_COMEDK_UNAIDED_TOTAL = 0;
                                     $COMEDK_UNAIDED_TOTAL = 0;
                                     $UNAIDED_COMEDK_INTAKE_TOTAL = 0;
@@ -167,8 +178,8 @@
                                     $MGMT_LATERAL_UNAIDED_TOTAL = 0;
                                     $KEALAT_UNAIDED_TOTAL = 0;
                                     $TOTAL_LATERAL_UNAIDED_TOTAL = 0;
-                                    echo "<tr><th class='bg-gray' colspan='13'>UG COURSES (UNAIDED)</th></tr>";
-                                    
+                                    echo "<tr><th class='bg-gray' colspan='14'>UG COURSES (UNAIDED)</th></tr>";
+
                                     foreach ($unaided as $unaided1) {
                                         $department_id = $unaided1->department_id;
                                         $department_name = $unaided1->department_name . '[' . $unaided1->department_short_name . ']';
@@ -184,6 +195,11 @@
                                         $MGMT_COMEDK_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("MGMT-COMEDK", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["MGMT-COMEDK"] : 0 : 0);
                                         echo "<td class='bg-gray-light'>" . $MGMT_COMEDK_UNAIDED . "</td>";
                                         $MGMT_COMEDK_UNAIDED_TOTAL = $MGMT_COMEDK_UNAIDED_TOTAL + $MGMT_COMEDK_UNAIDED;
+
+                                        $MGMT_KEA_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("MGMT-KEA", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["MGMT-KEA"] : 0 : 0);
+                                        echo "<td class='bg-gray-light'>" . $MGMT_KEA_UNAIDED . '/' . $unaided1->unaided_kea_mgmt_intake . "</td>";
+                                        $MGMT_KEA_UNAIDED_TOTAL = $MGMT_KEA_UNAIDED_TOTAL + $MGMT_KEA_UNAIDED;
+                                        $UNAIDED_MGMT_KEA_INTAKE_TOTAL = $UNAIDED_MGMT_KEA_INTAKE_TOTAL + $unaided1->unaided_kea_mgmt_intake;
 
                                         $COMEDK_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("COMED-K", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["COMED-K"] : 0 : 0);
                                         // $COMEDK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'COMED-K', 'UnAided')->row()->cnt;
@@ -238,6 +254,7 @@
                                     echo "<td colspan='2'>TOTAL UNAIDED</td>";
                                     echo "<td>" . $MGMT_UNAIDED_TOTAL . '/' . $UNAIDED_MGMT_INTAKE_TOTAL . "</td>";
                                     echo "<td>" . $MGMT_COMEDK_UNAIDED_TOTAL . "</td>";
+                                    echo "<td>" . $MGMT_KEA_UNAIDED_TOTAL . '/' . $UNAIDED_MGMT_KEA_INTAKE_TOTAL . "</td>";
                                     echo "<td>" . $COMEDK_UNAIDED_TOTAL . '/' . $UNAIDED_COMEDK_INTAKE_TOTAL . "</td>";
                                     echo "<td>" . $KEA_UNAIDED_TOTAL . '/' . $UNAIDED_KEA_INTAKE_TOTAL . "</td>";
                                     echo "<td>" . $SNQ_UNAIDED_TOTAL . '/' . $UNAIDED_SNQ_INTAKE_TOTAL . "</td>";
@@ -257,6 +274,10 @@
 
                                     $MGMT_COMEDK_OVERALL = $MGMT_COMEDK_AIDED_TOTAL + $MGMT_COMEDK_UNAIDED_TOTAL;
                                     echo "<td>" . $MGMT_COMEDK_OVERALL . "</td>";
+
+                                    $MGMT_KEA_OVERALL = $MGMT_KEA_AIDED_TOTAL + $MGMT_KEA_UNAIDED_TOTAL;
+                                    $MGMT_KEA_INTAKE_OVERALL = $AIDED_MGMT_KEA_INTAKE_TOTAL + $UNAIDED_MGMT_KEA_INTAKE_TOTAL;
+                                    echo "<td>" . $MGMT_KEA_OVERALL . '/' . $MGMT_KEA_INTAKE_OVERALL . "</td>";
 
                                     $COMEDK_AIDED_OVERALL = $COMEDK_AIDED_TOTAL + $COMEDK_UNAIDED_TOTAL;
                                     $COMEDK_INTAKE_OVERALL = $AIDED_COMEDK_INTAKE_TOTAL + $UNAIDED_COMEDK_INTAKE_TOTAL;

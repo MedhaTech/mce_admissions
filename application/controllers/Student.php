@@ -102,9 +102,9 @@ class Student extends CI_Controller
 			$data['student_name'] = $student_session['student_name'];
 			$data['page_title'] = "Dashboard";
 			$data['menu'] = "dashboard";
-	
+
 			$flow = $this->admin_model->getDetailsFilter('flow', $data['id'], 'admissions')->row()->flow;
-	
+
 			if ($flow) {
 				$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$data['entranceDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
@@ -112,40 +112,46 @@ class Student extends CI_Controller
 				$data['parentDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$data['educations_details'] = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'student_education_details')->result();
 				$data['flow_status'] = $flow;
-				
+
 				$upload_path = "./assets/students/$student_id/";
-	
-			// Check if the directory exists
-			$photo = null;
-			if (is_dir($upload_path)) {
-				// Get list of files in the directory
-				$files = scandir($upload_path);
 
-				// Remove . and .. from the list
-				$files = array_diff($files, array('.', '..'));
+				// Check if the directory exists
+				$photo = null;
+				if (is_dir($upload_path)) {
+					// Get list of files in the directory
+					$files = scandir($upload_path);
 
-				// Filter for photo files
-				$image_extensions = array('jpg', 'jpeg', 'png');
-				foreach ($files as $file) {
-					$ext = pathinfo($file, PATHINFO_EXTENSION);
-					$filename = pathinfo($file, PATHINFO_FILENAME);
+					// Remove . and .. from the list
+					$files = array_diff($files, array('.', '..'));
 
-					// Check if the file is an image and contains keywords like 'profile' or the student's ID
-					if (in_array(strtolower($ext), $image_extensions) && 
-						(stripos($filename, 'profile') !== false)) {
-						$photo = $upload_path . $file;  // Use the first matching photo found
-						break;
+					// Filter for photo files
+					$image_extensions = array('jpg', 'jpeg', 'png');
+					foreach ($files as $file) {
+						$ext = pathinfo($file, PATHINFO_EXTENSION);
+						$filename = pathinfo($file, PATHINFO_FILENAME);
+
+						// Check if the file is an image and contains keywords like 'profile' or the student's ID
+						if (
+							in_array(strtolower($ext), $image_extensions) &&
+							(stripos($filename, 'profile') !== false)
+						) {
+							$photo = $upload_path . $file;  // Use the first matching photo found
+							break;
+						}
 					}
+
+					$data['files'] = $files;
+				} else {
+					$data['files'] = array();
 				}
+				if ($data['admissionDetails']->stream_id == 3) {
+					$this->student_template->show('student/finishphd', $data);
+				} else {
+					$this->student_template->show('student/finish', $data);
+				}
+				$data['student_photo'] = $photo;  // Pass the photo path to the view
 
-				$data['files'] = $files;
-			} else {
-				$data['files'] = array();
-			}
 
-			$data['student_photo'] = $photo;  // Pass the photo path to the view
-	
-				$this->student_template->show('student/finish', $data);
 			} else {
 				$this->student_template->show('student/Dashboard', $data);
 			}
@@ -153,7 +159,7 @@ class Student extends CI_Controller
 			redirect('student', 'refresh');
 		}
 	}
-	
+
 
 	function startProcess()
 	{
@@ -349,7 +355,7 @@ class Student extends CI_Controller
 			$data['religion_option'] = array(" " => "Select Religion") + $this->globals->religion();
 			$data['caste_option'] = array(" " => "Select Caste") + $this->globals->caste();
 			$data['countries'] = $this->admin_model->getCountries();
-			$data['states1']= $this->admin_model->get_states();
+			$data['states1'] = $this->admin_model->get_states();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 
 			$this->load->library('form_validation');
@@ -630,6 +636,32 @@ class Student extends CI_Controller
 				$this->form_validation->set_rules('gt_register_number', 'Register Number', 'required');
 				$this->form_validation->set_rules('gt_year_of_passing', 'Year of Passing', 'required');
 			}
+			if ($personalDetails->admission_based == "BE") {
+				$this->form_validation->set_rules('deg_education_level', 'Education Level', 'required');
+				// $this->form_validation->set_rules('puc_inst_type', 'Institution Type', 'required');
+				$this->form_validation->set_rules('deg_inst_board', 'Board / University', 'required');
+				$this->form_validation->set_rules('deg_inst_name', 'Institution Name', 'required');
+				$this->form_validation->set_rules('deg_inst_address', 'Institution Address', 'required');
+				$this->form_validation->set_rules('deg_inst_city', 'Institution City');
+				$this->form_validation->set_rules('deg_inst_state', 'Institution State', 'required');
+				$this->form_validation->set_rules('deg_inst_country', 'Institution Country', 'required');
+				$this->form_validation->set_rules('deg_medium_of_instruction', 'Medium of Instruction', 'required');
+				$this->form_validation->set_rules('deg_register_number', 'Register Number', 'required');
+				$this->form_validation->set_rules('deg_year_of_passing', 'Year of Passing', 'required');
+			}
+			if ($personalDetails->admission_based == "MTech") {
+				$this->form_validation->set_rules('mtech_education_level', 'Education Level', 'required');
+				// $this->form_validation->set_rules('puc_inst_type', 'Institution Type', 'required');
+				$this->form_validation->set_rules('mtech_inst_board', 'Board / University', 'required');
+				$this->form_validation->set_rules('mtech_inst_name', 'Institution Name', 'required');
+				$this->form_validation->set_rules('mtech_inst_address', 'Institution Address', 'required');
+				$this->form_validation->set_rules('mtech_inst_city', 'Institution City');
+				$this->form_validation->set_rules('mtech_inst_state', 'Institution State', 'required');
+				$this->form_validation->set_rules('mtech_inst_country', 'Institution Country', 'required');
+				$this->form_validation->set_rules('mtech_medium_of_instruction', 'Medium of Instruction', 'required');
+				$this->form_validation->set_rules('mtech_register_number', 'Register Number', 'required');
+				$this->form_validation->set_rules('mtech_year_of_passing', 'Year of Passing', 'required');
+			}
 
 			if ($this->form_validation->run() === FALSE) {
 
@@ -751,6 +783,68 @@ class Student extends CI_Controller
 							$data['gt_subject_' . $i . '_min_marks'] = $min_marks;
 							$data['gt_subject_' . $i . '_max_marks'] = $max_marks;
 							$data['gt_subject_' . $i . '_obtained_marks'] = $obtained_marks;
+						}
+					}
+				}
+
+				if ($personalDetails->admission_based == "BE") {
+
+					$data = array(
+						'deg_education_level' => $this->input->post('deg_education_level'),
+						'deg_inst_type' => $this->input->post('deg_inst_type'),
+						'deg_inst_board' => $this->input->post('deg_inst_board'),
+						'deg_inst_name' => $this->input->post('deg_inst_name'),
+						'deg_inst_address' => $this->input->post('deg_inst_address'),
+						'deg_inst_city' => $this->input->post('deg_inst_city'),
+						'deg_inst_state' => $this->input->post('deg_inst_state'),
+						'deg_inst_country' => $this->input->post('deg_inst_country'),
+						'deg_medium_of_instruction' => $this->input->post('deg_medium_of_instruction'),
+						'deg_register_number' => $this->input->post('deg_register_number'),
+						'deg_year_of_passing' => $this->input->post('deg_year_of_passing')
+					);
+					for ($i = 1; $i <= 3; $i++) {
+						$subject_name = $this->input->post('deg_subject_' . $i . '_name');
+						$min_marks = $this->input->post('deg_subject_' . $i . '_min_marks');
+						$max_marks = $this->input->post('deg_subject_' . $i . '_max_marks');
+						$obtained_marks = $this->input->post('deg_subject_' . $i . '_obtained_marks');
+
+						// Only add subject if name is not empty
+						if (!empty($subject_name)) {
+							$data['deg_subject_' . $i . '_name'] = $subject_name;
+							$data['deg_subject_' . $i . '_min_marks'] = $min_marks;
+							$data['deg_subject_' . $i . '_max_marks'] = $max_marks;
+							$data['deg_subject_' . $i . '_obtained_marks'] = $obtained_marks;
+						}
+					}
+				}
+
+				if ($personalDetails->admission_based == "MTech") {
+
+					$data = array(
+						'mtech_education_level' => $this->input->post('mtech_education_level'),
+						'mtech_inst_type' => $this->input->post('mtech_inst_type'),
+						'mtech_inst_board' => $this->input->post('mtech_inst_board'),
+						'mtech_inst_name' => $this->input->post('mtech_inst_name'),
+						'mtech_inst_address' => $this->input->post('mtech_inst_address'),
+						'mtech_inst_city' => $this->input->post('mtech_inst_city'),
+						'mtech_inst_state' => $this->input->post('mtech_inst_state'),
+						'mtech_inst_country' => $this->input->post('mtech_inst_country'),
+						'mtech_medium_of_instruction' => $this->input->post('mtech_medium_of_instruction'),
+						'mtech_register_number' => $this->input->post('mtech_register_number'),
+						'mtech_year_of_passing' => $this->input->post('mtech_year_of_passing')
+					);
+					for ($i = 1; $i <= 3; $i++) {
+						$subject_name = $this->input->post('mtech_subject_' . $i . '_name');
+						$min_marks = $this->input->post('mtech_subject_' . $i . '_min_marks');
+						$max_marks = $this->input->post('mtech_subject_' . $i . '_max_marks');
+						$obtained_marks = $this->input->post('mtech_subject_' . $i . '_obtained_marks');
+
+						// Only add subject if name is not empty
+						if (!empty($subject_name)) {
+							$data['mtech_subject_' . $i . '_name'] = $subject_name;
+							$data['mtech_subject_' . $i . '_min_marks'] = $min_marks;
+							$data['mtech_subject_' . $i . '_max_marks'] = $max_marks;
+							$data['mtech_subject_' . $i . '_obtained_marks'] = $obtained_marks;
 						}
 					}
 				}
@@ -926,8 +1020,86 @@ class Student extends CI_Controller
 						}
 					}
 
-					
+
 					$result = $this->admin_model->insertDetails('student_education_details', $insertDetails1);
+				}
+
+				if ($personalDetails->admission_based == "BE") {
+					$insertDetails4 = array(
+						'student_id' => $student_id,
+						'education_level' => $this->input->post('deg_education_level'),
+						'inst_type' => $this->input->post('deg_inst_type'),
+						'inst_board' => $this->input->post('deg_inst_board'),
+						'inst_name' => $this->input->post('deg_inst_name'),
+						'inst_address' => $this->input->post('deg_inst_address'),
+						'inst_city' => $this->input->post('deg_inst_city'),
+						'inst_state' => $this->input->post('deg_inst_state'),
+						'inst_country' => $this->input->post('deg_inst_country'),
+						'medium_of_instruction' => $this->input->post('deg_medium_of_instruction'),
+						'register_number' => $this->input->post('deg_register_number'),
+						'year_of_passing' => $this->input->post('deg_year_of_passing'),
+						'aggregate' => $this->input->post('deg_aggregate'),
+						'obtained' => $this->input->post('deg_total_obtained_marks'),
+						'maximum' => $this->input->post('deg_total_max_marks'),
+						'updated_on' => date('Y-m-d h:i:s'),
+						'updated_by' => $data['student_name']
+					);
+
+					// Insert subject fields
+					for ($i = 1; $i <= 3; $i++) {
+						$subject_name = $this->input->post('deg_subject_' . $i . '_name');
+						$min_marks = $this->input->post('deg_subject_' . $i . '_min_marks');
+						$max_marks = $this->input->post('deg_subject_' . $i . '_max_marks');
+						$obtained_marks = $this->input->post('deg_subject_' . $i . '_obtained_marks');
+
+						// Only add subject if name is not empty
+						if (!empty($min_marks)) {
+							$insertDetails4['subject_' . $i . '_name'] = $subject_name;
+							$insertDetails4['subject_' . $i . '_min_marks'] = $min_marks;
+							$insertDetails4['subject_' . $i . '_max_marks'] = $max_marks;
+							$insertDetails4['subject_' . $i . '_obtained_marks'] = $obtained_marks;
+						}
+					}
+					$result = $this->admin_model->insertDetails('student_education_details', $insertDetails4);
+				}
+
+				if ($personalDetails->admission_based == "MTech") {
+					$insertDetails5 = array(
+						'student_id' => $student_id,
+						'education_level' => $this->input->post('mtech_education_level'),
+						'inst_type' => $this->input->post('mtech_inst_type'),
+						'inst_board' => $this->input->post('mtech_inst_board'),
+						'inst_name' => $this->input->post('mtech_inst_name'),
+						'inst_address' => $this->input->post('mtech_inst_address'),
+						'inst_city' => $this->input->post('mtech_inst_city'),
+						'inst_state' => $this->input->post('mtech_inst_state'),
+						'inst_country' => $this->input->post('mtech_inst_country'),
+						'medium_of_instruction' => $this->input->post('mtech_medium_of_instruction'),
+						'register_number' => $this->input->post('mtech_register_number'),
+						'year_of_passing' => $this->input->post('mtech_year_of_passing'),
+						'aggregate' => $this->input->post('mtech_aggregate'),
+						'obtained' => $this->input->post('mtech_total_obtained_marks'),
+						'maximum' => $this->input->post('mtech_total_max_marks'),
+						'updated_on' => date('Y-m-d h:i:s'),
+						'updated_by' => $data['student_name']
+					);
+
+					// Insert subject fields
+					for ($i = 1; $i <= 3; $i++) {
+						$subject_name = $this->input->post('mtech_subject_' . $i . '_name');
+						$min_marks = $this->input->post('mtech_subject_' . $i . '_min_marks');
+						$max_marks = $this->input->post('mtech_subject_' . $i . '_max_marks');
+						$obtained_marks = $this->input->post('mtech_subject_' . $i . '_obtained_marks');
+
+						// Only add subject if name is not empty
+						if (!empty($min_marks)) {
+							$insertDetails5['subject_' . $i . '_name'] = $subject_name;
+							$insertDetails5['subject_' . $i . '_min_marks'] = $min_marks;
+							$insertDetails5['subject_' . $i . '_max_marks'] = $max_marks;
+							$insertDetails5['subject_' . $i . '_obtained_marks'] = $obtained_marks;
+						}
+					}
+					$result = $this->admin_model->insertDetails('student_education_details', $insertDetails5);
 				}
 
 
@@ -967,7 +1139,7 @@ class Student extends CI_Controller
 			$data['page_title'] = "Finish";
 			$data['menu'] = "finish";
 			$data['id'] = $student_session['id'];
-			$updateDetails = array('flow' => '2','updated_on' => date('Y-m-d h:i:s'));
+			$updateDetails = array('flow' => '2', 'updated_on' => date('Y-m-d h:i:s'));
 			$result = $this->admin_model->updateDetails($data['id'], $updateDetails, 'admissions');
 			$this->student_template->show('student/completed', $data);
 		} else {
@@ -991,7 +1163,7 @@ class Student extends CI_Controller
 			$data['transactionDetails'] = $this->admin_model->getDetailsbyfield($student_id, 'admissions_id', 'transactions')->result();
 			$data['paid_amount'] = $this->admin_model->paidfee('admissions_id', $student_id, 'transaction_status', '1', 'transactions');
 			// $data['paymentDetail'] = $this->admin_model->getDetailsbyfield($student_id, 'admission_id', 'payment_structure')->result();
-			$data['paymentDetail'] = $this->admin_model->getDetailsbyfield2('admission_id',$student_id, 'offline','0', 'payment_structure')->result();
+			$data['paymentDetail'] = $this->admin_model->getDetailsbyfield2('admission_id', $student_id, 'offline', '0', 'payment_structure')->result();
 			// $this->student_template->show('student/fee_details', $data);
 
 			$this->form_validation->set_rules('mode_of_payment', 'Mode of Payment', 'required');
@@ -1162,7 +1334,7 @@ class Student extends CI_Controller
 			$pdf->Cell(0, $row, "Course & Combination", 1, 0, 'L', false);
 			$pdf->setFont('Arial', '', 9);
 			$pdf->SetXY(50, $y + $row);
-			$pdf->Cell(0, $row, $studentfeeDetails->year.' Year - B.E ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"], 1, 0, 'L', false);
+			$pdf->Cell(0, $row, $studentfeeDetails->year . ' Year - B.E ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"], 1, 0, 'L', false);
 
 			$y = $pdf->getY();
 			$pdf->setFont('Arial', 'B', 9);
@@ -1203,7 +1375,7 @@ class Student extends CI_Controller
 			$pdf->Cell(0, $row, "Mode of Payment", 1, 0, 'L', false);
 			$pdf->setFont('Arial', '', 9);
 			$pdf->SetXY(50, $y + $row);
-			$transactionTypes = array("1" => "Cash", "2"=>"DD", "3"=>"Online Payment", "4"=>"Online Transfer");
+			$transactionTypes = array("1" => "Cash", "2" => "DD", "3" => "Online Payment", "4" => "Online Transfer");
 			$pdf->Cell(0, $row, $transactionTypes[$transactionDetails->transaction_type], 1, 0, 'L', false);
 
 			$final_amount = $admissionDetails->final_amount;
@@ -1477,7 +1649,7 @@ class Student extends CI_Controller
 			$data['id'] = $student_session['id'];
 			$data['page_title'] = 'Update Education Details';
 			$data['menu'] = 'educationdetails';
-			
+
 			$this->form_validation->set_rules('education_level', 'Education Level', 'required');
 			// $this->form_validation->set_rules('inst_type', 'Institution Type', 'required');
 			$this->form_validation->set_rules('inst_board', 'Board / University', 'required');

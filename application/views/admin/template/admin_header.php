@@ -101,7 +101,14 @@
                             <a href="<?php echo base_url(); ?>admin/dashboard"
                                 class="nav-link <?= $menu_active = ($menu == "dashboard") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p> Dashboard </p>
+                                <p>B.E. Dashboard </p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a href="<?php echo base_url(); ?>admin/phd_dashboard"
+                                class="nav-link <?= $menu_active = ($menu == "phd_dashboard") ? 'active' : ''; ?>">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>Ph.D Dashboard </p>
                             </a>
                         </li>
                         <?php } ?>

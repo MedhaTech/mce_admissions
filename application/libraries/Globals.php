@@ -1476,4 +1476,71 @@ class Globals
     {
         return array("1" => "Cash", "2" => "Bank DD", "3" => "Online", "4" => "Bank Transfer", "5" => "DD");
     }
+    function get_ug_pg_fields() {
+        return [
+            ['field' => 'e_learning_fee', 'label' => 'E Learning Fee'],
+            ['field' => 'eligibility_fee', 'label' => 'Eligibility Fee'],
+            ['field' => 'e_consortium_fee', 'label' => 'e Consortium Fee'],
+            ['field' => 'sport_fee', 'label' => 'Sport Fee'],
+            ['field' => 'sports_development_fee', 'label' => 'Sports Development Fee'],
+            ['field' => 'career_guidance_counseling_fee', 'label' => 'Career Guidance & Counseling fee'],
+            ['field' => 'university_development_fund', 'label' => 'University Development Fund'],
+            ['field' => 'promotion_of_indian_cultural_activities_fee', 'label' => 'Promotion of Indian Cultural Activities Fee'],
+            ['field' => 'teachers_development_fee', 'label' => 'Teachers Development Fee'],
+            ['field' => 'student_development_fee', 'label' => 'Student Development Fee'],
+            ['field' => 'indian_red_cross_membership_fee', 'label' => 'Indian Red Cross Membership Fee'],
+            ['field' => 'women_cell_fee', 'label' => 'Women Cell Fee'],
+            ['field' => 'nss_fee', 'label' => 'NSS Fee'],
+            ['field' => 'university_registration_fee', 'label' => 'University Registration Fee'],
+            ['field' => 'total_university_fee', 'label' => 'TOTAL UNIVERSITY FEE'],
+            ['field' => 'admission_fee', 'label' => 'Admission Fee'],
+            ['field' => 'processing_fee_paid_at_kea', 'label' => 'Processing Fee paid at KEA'],
+            ['field' => 'tution_fee', 'label' => 'Tution Fee'],
+            ['field' => 'college_other_fee', 'label' => 'COLLEGE OTHER FEE'],
+            ['field' => 'total_tution_fee', 'label' => 'TOTAL TUTION FEE'],
+            ['field' => 'total_college_fee', 'label' => 'TOTAL COLLEGE FEE'],
+            ['field' => 'skill_development_fee', 'label' => 'Skill Development Fee'],
+            ['field' => 'corpus_fund', 'label' => 'Corpus Fund']
+        ];
+    }
+    function get_phd_fields() {
+        return [
+           
+            ['field' => 'e_consortium_fee', 'label' => 'e Consortium Fee'],
+           
+            ['field' => 'career_guidance_counseling_fee', 'label' => 'Career Guidance Fee'],
+            ['field' => 'university_development_fund', 'label' => 'University Development Fee'],
+            ['field' => 'library_fee', 'label' => 'Library Fee'],
+            ['field' => 'promotion_of_indian_cultural_activities_fee', 'label' => 'Cultural Activities Fee'],
+            ['field' => 'university_registration_fee', 'label' => 'Registration Fee'],
+            ['field' => 'total_university_fee', 'label' => 'TOTAL UNIVERSITY FEE'],
+            ['field' => 'admission_fee', 'label' => 'Application Fee &Admission Fee'],
+            ['field' => 'tution_fee', 'label' => 'Tution Fee'],
+            ['field' => 'college_other_fee', 'label' => 'COLLEGE OTHER FEE'],
+            ['field' => 'total_tution_fee', 'label' => 'TOTAL TUTION FEE']
+           
+          
+        ];
+    }
+    public function phdquota()
+    {
+        return array(
+            "KEA-CET(GOVT)" => "KEA-CET(GOVT)"
+            // "COMED-K" => "COMED-K",
+            // "KEA-SNQ" => "KEA-SNQ",
+            // "J&K (Non Karnataka)" => "J&K (Non Karnataka)",
+            // "GOI (Non Karnataka)" => "GOI (Non Karnataka)"
+        );
+    }
+    public function pgquota()
+    {
+        return array(
+            "MGMT" => "MGMT",
+            "KEA-CET(GOVT)" => "KEA-CET(GOVT)",
+            "COMED-K" => "COMED-K",
+            "KEA-SNQ" => "KEA-SNQ",
+            "J&K (Non Karnataka)" => "J&K (Non Karnataka)",
+            "GOI (Non Karnataka)" => "GOI (Non Karnataka)"
+        );
+    }
 }
