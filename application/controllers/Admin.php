@@ -129,17 +129,26 @@ class Admin extends CI_Controller
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 
+			$endorsementStats = $this->admin_model->getEndorsmentIssued(0, 1)->result();
 			$admissionStats = $this->admin_model->getAdmissionOverallStats(0, 1)->result();
 			$aidedAdmitted = array();
 			$unaidedAdmitted = array();
-			// echo "<pre>";
+
 			$newArr = array("Aided" => array(), "UnAided" => array());
 			foreach ($admissionStats as $admissionStats1) {
 				$newArr[$admissionStats1->sub_quota][$admissionStats1->dept_id][$admissionStats1->quota] = $admissionStats1->cnt;
 			}
 			$data['newArr'] = $newArr;
+
+			$endorsementArr = array("Aided" => array(), "UnAided" => array());
+			foreach ($endorsementStats as $endorsementStats1) {
+				$endorsementArr[$endorsementStats1->sub_quota][$endorsementStats1->dept_id][$endorsementStats1->quota] = $endorsementStats1->cnt;
+			}
+			$data['endorsementArr'] = $endorsementArr;
+
 			// echo "<pre>";
 			// print_r($newArr); die;
+
 			$departments = $this->admin_model->getActiveDepartments()->result();
 
 			$aided = array();

@@ -39,7 +39,8 @@
                                         <th width="5%">S.NO</th>
                                         <!-- <th width="20%">Stream</th> -->
                                         <th width="25%">DEPARTMENT</th>
-                                        <th class='text-center' width="7%">MGMT (ENDORSEMNT ISSUED) <br /> STATUS</th>
+                                        <th class='text-center' width="7%">MGMT (ENDORSEMNT ISSUED) </th>
+                                        <th class='text-center' width="7%">MGMT (ADMITTED) <br /> STATUS</th>
                                         <th class='text-center' width="7%">MGMT-COMEDK <br /> STATUS</th>
                                         <th class='text-center' width="7%">MGMT-KEA <br /> STATUS</th>
                                         <th class='text-center' width="7%">COMED-K <br /> STATUS</th>
@@ -58,7 +59,14 @@
                                     <?php $i = 1;
                                     // echo "<pre>";
                                     $aidedAdmitted = $newArr['Aided'];
-                                    echo "<tr><th class='bg-gray' colspan='14'>UG COURSES (AIDED)</th></tr>";
+                                    $aidedEndorsed = $endorsementArr['Aided'];
+                                    echo "<tr><th class='bg-gray' colspan='15'>UG COURSES (AIDED)</th></tr>";
+                                    $MGMT_ENDORSED_AIDED = 0;
+                                    $MGMT_KEA_ENDORSED_AIDED = 0;
+                                    $MGMT_COMEDK_ENDORSED_AIDED = 0;
+                                    $MGMT_LATERAL_ENDORSED_AIDED = 0;
+                                    $MGMT_ENDORSED_AIDED_TOTAL = 0;
+
                                     $MGMT_AIDED_TOTAL = 0;
                                     $MGMT_KEA_AIDED_TOTAL = 0;
                                     $AIDED_MGMT_INTAKE_TOTAL = 0;
@@ -84,6 +92,14 @@
                                         echo "<tr>";
                                         echo "<td>" . $i++ . ".</td>";
                                         echo "<td class='text-left'>" . $department_name . "</td>";
+
+                                        $MGMT_ENDORSED_AIDED = (array_key_exists($department_id, $aidedEndorsed) ? (array_key_exists("MGMT", $aidedEndorsed[$department_id])) ? $aidedEndorsed[$department_id]["MGMT"] : 0 : 0);
+                                        $MGMT_KEA_ENDORSED_AIDED = (array_key_exists($department_id, $aidedEndorsed) ? (array_key_exists("MGMT-KEA", $aidedEndorsed[$department_id])) ? $aidedEndorsed[$department_id]["MGMT-KEA"] : 0 : 0);
+                                        $MGMT_COMEDK_ENDORSED_AIDED = (array_key_exists($department_id, $aidedEndorsed) ? (array_key_exists("MGMT-COMEDK", $aidedEndorsed[$department_id])) ? $aidedEndorsed[$department_id]["MGMT-COMEDK"] : 0 : 0);
+                                        $MGMT_LATERAL_ENDORSED_AIDED = (array_key_exists($department_id, $aidedEndorsed) ? (array_key_exists("MGMT-LATERAL", $aidedEndorsed[$department_id])) ? $aidedEndorsed[$department_id]["MGMT-LATERAL"] : 0 : 0);
+
+                                        echo "<td class='bg-danger-light'>" . $MGMT_ENDORSED_AIDED + $MGMT_KEA_ENDORSED_AIDED + $MGMT_COMEDK_ENDORSED_AIDED . "</td>";
+                                        $MGMT_ENDORSED_AIDED_TOTAL = $MGMT_ENDORSED_AIDED_TOTAL + ($MGMT_ENDORSED_AIDED + $MGMT_KEA_ENDORSED_AIDED + $MGMT_COMEDK_ENDORSED_AIDED);
 
                                         $MGMT_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("MGMT", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["MGMT"] : 0 : 0);
                                         echo "<td class='bg-gray-light'>" . $MGMT_AIDED . '/' . $aided1->aided_mgmt_intake . "</td>";
@@ -144,6 +160,7 @@
                                     }
                                     echo "<tr class='bg-primary-light text-bold'>";
                                     echo "<td colspan='2'>TOTAL AIDED</td>";
+                                    echo "<td>" . $MGMT_ENDORSED_AIDED_TOTAL . "</td>";
                                     echo "<td>" . $MGMT_AIDED_TOTAL . '/' . $AIDED_MGMT_INTAKE_TOTAL . "</td>";
                                     echo "<td>" . $MGMT_COMEDK_AIDED_TOTAL . "</td>";
                                     echo "<td>" . $MGMT_KEA_AIDED_TOTAL . '/' . $AIDED_MGMT_KEA_INTAKE_TOTAL . "</td>";
@@ -160,6 +177,14 @@
 
                                     $i = 1;
                                     $unaidedAdmitted = $newArr['UnAided'];
+                                    $unaidedEndorsed = $endorsementArr['UnAided'];
+
+                                    $MGMT_ENDORSED_UNAIDED = 0;
+                                    $MGMT_KEA_ENDORSED_UNAIDED = 0;
+                                    $MGMT_COMEDK_ENDORSED_UNAIDED = 0;
+                                    $MGMT_LATERAL_ENDORSED_UNAIDED = 0;
+                                    $MGMT_ENDORSED_UNAIDED_TOTAL = 0;
+
                                     $MGMT_UNAIDED_TOTAL = 0;
                                     $MGMT_KEA_UNAIDED_TOTAL = 0;
                                     $UNAIDED_MGMT_INTAKE_TOTAL = 0;
@@ -178,7 +203,7 @@
                                     $MGMT_LATERAL_UNAIDED_TOTAL = 0;
                                     $KEALAT_UNAIDED_TOTAL = 0;
                                     $TOTAL_LATERAL_UNAIDED_TOTAL = 0;
-                                    echo "<tr><th class='bg-gray' colspan='14'>UG COURSES (UNAIDED)</th></tr>";
+                                    echo "<tr><th class='bg-gray' colspan='15'>UG COURSES (UNAIDED)</th></tr>";
 
                                     foreach ($unaided as $unaided1) {
                                         $department_id = $unaided1->department_id;
@@ -186,6 +211,13 @@
                                         echo "<tr>";
                                         echo "<td>" . $i++ . ".</td>";
                                         echo "<td class='text-left'>" . $department_name . "</td>";
+
+                                        $MGMT_ENDORSED_UNAIDED = (array_key_exists($department_id, $unaidedEndorsed) ? (array_key_exists("MGMT", $unaidedEndorsed[$department_id])) ? $unaidedEndorsed[$department_id]["MGMT"] : 0 : 0);
+                                        $MGMT_KEA_ENDORSED_UNAIDED = (array_key_exists($department_id, $unaidedEndorsed) ? (array_key_exists("MGMT-KEA", $unaidedEndorsed[$department_id])) ? $unaidedEndorsed[$department_id]["MGMT-KEA"] : 0 : 0);
+                                        $MGMT_COMEDK_ENDORSED_UNAIDED = (array_key_exists($department_id, $unaidedEndorsed) ? (array_key_exists("MGMT-COMEDK", $unaidedEndorsed[$department_id])) ? $unaidedEndorsed[$department_id]["MGMT-COMEDK"] : 0 : 0);
+                                        $MGMT_LATERAL_ENDORSED_UNAIDED = (array_key_exists($department_id, $unaidedEndorsed) ? (array_key_exists("MGMT-LATERAL", $unaidedEndorsed[$department_id])) ? $unaidedEndorsed[$department_id]["MGMT-LATERAL"] : 0 : 0);
+                                        echo "<td class='bg-danger-light'>" . $MGMT_ENDORSED_UNAIDED + $MGMT_KEA_ENDORSED_UNAIDED + $MGMT_COMEDK_ENDORSED_UNAIDED + $MGMT_LATERAL_ENDORSED_UNAIDED. "</td>";
+                                        $MGMT_ENDORSED_UNAIDED_TOTAL = $MGMT_ENDORSED_UNAIDED_TOTAL + ($MGMT_ENDORSED_UNAIDED + $MGMT_KEA_ENDORSED_UNAIDED + $MGMT_COMEDK_ENDORSED_UNAIDED + $MGMT_LATERAL_ENDORSED_UNAIDED);
 
                                         $MGMT_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("MGMT", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["MGMT"] : 0 : 0);
                                         echo "<td class='bg-gray-light'>" . $MGMT_UNAIDED . '/' . $unaided1->unaided_mgmt_intake . "</td>";
@@ -252,6 +284,7 @@
 
                                     echo "<tr class='bg-primary-light text-bold'>";
                                     echo "<td colspan='2'>TOTAL UNAIDED</td>";
+                                    echo "<td>" . $MGMT_ENDORSED_UNAIDED_TOTAL . "</td>";
                                     echo "<td>" . $MGMT_UNAIDED_TOTAL . '/' . $UNAIDED_MGMT_INTAKE_TOTAL . "</td>";
                                     echo "<td>" . $MGMT_COMEDK_UNAIDED_TOTAL . "</td>";
                                     echo "<td>" . $MGMT_KEA_UNAIDED_TOTAL . '/' . $UNAIDED_MGMT_KEA_INTAKE_TOTAL . "</td>";
@@ -270,6 +303,9 @@
                                     echo "<td colspan='2'>OVERALL </td>";
                                     $MGMT_OVERALL = $MGMT_AIDED_TOTAL + $MGMT_UNAIDED_TOTAL;
                                     $MGMT_INTAKE_OVERALL = $AIDED_MGMT_INTAKE_TOTAL + $UNAIDED_MGMT_INTAKE_TOTAL;
+
+                                    echo "<td>" . $MGMT_ENDORSED_AIDED_TOTAL + $MGMT_ENDORSED_UNAIDED_TOTAL . "</td>";
+
                                     echo "<td>" . $MGMT_OVERALL . '/' . $MGMT_INTAKE_OVERALL . "</td>";
 
                                     $MGMT_COMEDK_OVERALL = $MGMT_COMEDK_AIDED_TOTAL + $MGMT_COMEDK_UNAIDED_TOTAL;
