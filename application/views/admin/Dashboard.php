@@ -97,9 +97,9 @@
                                         $MGMT_KEA_ENDORSED_AIDED = (array_key_exists($department_id, $aidedEndorsed) ? (array_key_exists("MGMT-KEA", $aidedEndorsed[$department_id])) ? $aidedEndorsed[$department_id]["MGMT-KEA"] : 0 : 0);
                                         $MGMT_COMEDK_ENDORSED_AIDED = (array_key_exists($department_id, $aidedEndorsed) ? (array_key_exists("MGMT-COMEDK", $aidedEndorsed[$department_id])) ? $aidedEndorsed[$department_id]["MGMT-COMEDK"] : 0 : 0);
                                         $MGMT_LATERAL_ENDORSED_AIDED = (array_key_exists($department_id, $aidedEndorsed) ? (array_key_exists("MGMT-LATERAL", $aidedEndorsed[$department_id])) ? $aidedEndorsed[$department_id]["MGMT-LATERAL"] : 0 : 0);
-
-                                        echo "<td class='bg-danger-light'>" . $MGMT_ENDORSED_AIDED + $MGMT_KEA_ENDORSED_AIDED + $MGMT_COMEDK_ENDORSED_AIDED . "</td>";
-                                        $MGMT_ENDORSED_AIDED_TOTAL = $MGMT_ENDORSED_AIDED_TOTAL + ($MGMT_ENDORSED_AIDED + $MGMT_KEA_ENDORSED_AIDED + $MGMT_COMEDK_ENDORSED_AIDED);
+                                        $MGMT_AIDED = $MGMT_ENDORSED_AIDED + $MGMT_KEA_ENDORSED_AIDED + $MGMT_COMEDK_ENDORSED_AIDED + $MGMT_LATERAL_ENDORSED_AIDED;
+                                        echo "<td class='bg-danger-light'>" . $MGMT . "</td>";
+                                        $MGMT_ENDORSED_AIDED_TOTAL = $MGMT_ENDORSED_AIDED_TOTAL + ($MGMT_AIDED);
 
                                         $MGMT_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("MGMT", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["MGMT"] : 0 : 0);
                                         echo "<td class='bg-gray-light'>" . $MGMT_AIDED . '/' . $aided1->aided_mgmt_intake . "</td>";
@@ -216,8 +216,9 @@
                                         $MGMT_KEA_ENDORSED_UNAIDED = (array_key_exists($department_id, $unaidedEndorsed) ? (array_key_exists("MGMT-KEA", $unaidedEndorsed[$department_id])) ? $unaidedEndorsed[$department_id]["MGMT-KEA"] : 0 : 0);
                                         $MGMT_COMEDK_ENDORSED_UNAIDED = (array_key_exists($department_id, $unaidedEndorsed) ? (array_key_exists("MGMT-COMEDK", $unaidedEndorsed[$department_id])) ? $unaidedEndorsed[$department_id]["MGMT-COMEDK"] : 0 : 0);
                                         $MGMT_LATERAL_ENDORSED_UNAIDED = (array_key_exists($department_id, $unaidedEndorsed) ? (array_key_exists("MGMT-LATERAL", $unaidedEndorsed[$department_id])) ? $unaidedEndorsed[$department_id]["MGMT-LATERAL"] : 0 : 0);
-                                        echo "<td class='bg-danger-light'>" . $MGMT_ENDORSED_UNAIDED + $MGMT_KEA_ENDORSED_UNAIDED + $MGMT_COMEDK_ENDORSED_UNAIDED + $MGMT_LATERAL_ENDORSED_UNAIDED. "</td>";
-                                        $MGMT_ENDORSED_UNAIDED_TOTAL = $MGMT_ENDORSED_UNAIDED_TOTAL + ($MGMT_ENDORSED_UNAIDED + $MGMT_KEA_ENDORSED_UNAIDED + $MGMT_COMEDK_ENDORSED_UNAIDED + $MGMT_LATERAL_ENDORSED_UNAIDED);
+                                        $MGMT_UNAIDED = $MGMT_ENDORSED_UNAIDED + $MGMT_KEA_ENDORSED_UNAIDED + $MGMT_COMEDK_ENDORSED_UNAIDED + $MGMT_LATERAL_ENDORSED_UNAIDED;
+                                        echo "<td class='bg-danger-light'>" . $MGMT_UNAIDED . "</td>";
+                                        $MGMT_ENDORSED_UNAIDED_TOTAL = $MGMT_ENDORSED_UNAIDED_TOTAL + ($MGMT_UNAIDED);
 
                                         $MGMT_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("MGMT", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["MGMT"] : 0 : 0);
                                         echo "<td class='bg-gray-light'>" . $MGMT_UNAIDED . '/' . $unaided1->unaided_mgmt_intake . "</td>";
@@ -264,12 +265,12 @@
                                         $TOTAL_UNAIDED = $MGMT_UNAIDED + $MGMT_COMEDK_UNAIDED + $COMEDK_UNAIDED + $KEA_UNAIDED + $SNQ_UNAIDED + $JK_UNAIDED + $GOI_UNAIDED;
                                         echo "<td class='bg-success-light text-center font-weight-bold'>" . $TOTAL_UNAIDED . '/' . $unaided1->unaided_intake . "</td>";
                                         $TOTAL_UNAIDED_TOTAL = $TOTAL_UNAIDED_TOTAL + $TOTAL_UNAIDED;
-                                        if($department_id == "25"){
-                                            $UNAIDED_INTAKE_TOTAL = $UNAIDED_INTAKE_TOTAL + 0;    
-                                        }else{
+                                        if ($department_id == "25") {
+                                            $UNAIDED_INTAKE_TOTAL = $UNAIDED_INTAKE_TOTAL + 0;
+                                        } else {
                                             $UNAIDED_INTAKE_TOTAL = $UNAIDED_INTAKE_TOTAL + $unaided1->unaided_intake;
                                         }
-                                        
+
 
                                         $MGMT_LATERAL_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("MGMT-LATERAL", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["MGMT-LATERAL"] : 0 : 0);
                                         echo "<td class='bg-danger-light'>" . $MGMT_LATERAL_UNAIDED . "</td>";
