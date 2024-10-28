@@ -307,10 +307,12 @@
 
                                     echo "<tr class='bg-dark text-bold'>";
                                     echo "<td colspan='2'>OVERALL </td>";
+
+                                    $MGMT_ENDORSED_TOTAL = $MGMT_ENDORSED_AIDED_TOTAL + $MGMT_ENDORSED_UNAIDED_TOTAL;
                                     $MGMT_OVERALL = $MGMT_AIDED_TOTAL + $MGMT_UNAIDED_TOTAL;
                                     $MGMT_INTAKE_OVERALL = $AIDED_MGMT_INTAKE_TOTAL + $UNAIDED_MGMT_INTAKE_TOTAL;
 
-                                    echo "<td>" . $MGMT_ENDORSED_AIDED_TOTAL + $MGMT_ENDORSED_UNAIDED_TOTAL . "</td>";
+                                    echo "<td>" . $MGMT_ENDORSED_TOTAL . "</td>";
 
                                     echo "<td>" . $MGMT_OVERALL . '/' . $MGMT_INTAKE_OVERALL . "</td>";
 
