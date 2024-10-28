@@ -170,6 +170,126 @@ class Admin extends CI_Controller
 		}
 	}
 
+	function mgmt_dashboard()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = "Dashboard";
+			$data['menu'] = "dashboard";
+			$data['enquiryStatus'] = $this->globals->enquiryStatus();
+			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+
+			$endorsementStats = $this->admin_model->getEndorsmentIssued(0, 1)->result();
+			$admissionStats = $this->admin_model->getAdmissionOverallStats(0, 1)->result();
+			$aidedAdmitted = array();
+			$unaidedAdmitted = array();
+
+			// echo "<pre>";
+			// print_r($newArr); die;
+
+			$newArr = array("Aided" => array(), "UnAided" => array());
+			foreach ($admissionStats as $admissionStats1) {
+				$newArr[$admissionStats1->sub_quota][$admissionStats1->dept_id][$admissionStats1->quota] = $admissionStats1->cnt;
+			}
+			$data['newArr'] = $newArr;
+
+			$endorsementArr = array("Aided" => array(), "UnAided" => array());
+			foreach ($endorsementStats as $endorsementStats1) {
+				$endorsementArr[$endorsementStats1->sub_quota][$endorsementStats1->dept_id][$endorsementStats1->quota] = $endorsementStats1->cnt;
+			}
+			$data['endorsementArr'] = $endorsementArr;
+
+			// echo "<pre>";
+			// print_r($newArr); die;
+
+			$departments = $this->admin_model->getActiveDepartments()->result();
+
+			$aided = array();
+			$unaided = array();
+			foreach ($departments as $departments1) {
+				if ($departments1->aided_intake) {
+					array_push($aided, $departments1);
+				}
+				if ($departments1->unaided_intake) {
+					array_push($unaided, $departments1);
+				}
+			}
+			$data['aided'] = $aided;
+			$data['unaided'] = $unaided;
+
+			$this->admin_template->show('admin/mgmt_dashboard', $data);
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+	function lateral_dashboard()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = "Dashboard";
+			$data['menu'] = "dashboard";
+			$data['enquiryStatus'] = $this->globals->enquiryStatus();
+			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+
+			$endorsementStats = $this->admin_model->getEndorsmentIssued(0, 1)->result();
+			$admissionStats = $this->admin_model->getAdmissionOverallStats(0, 1)->result();
+			$aidedAdmitted = array();
+			$unaidedAdmitted = array();
+
+			// echo "<pre>";
+			// print_r($newArr); die;
+
+			$newArr = array("Aided" => array(), "UnAided" => array());
+			foreach ($admissionStats as $admissionStats1) {
+				$newArr[$admissionStats1->sub_quota][$admissionStats1->dept_id][$admissionStats1->quota] = $admissionStats1->cnt;
+			}
+			$data['newArr'] = $newArr;
+
+			$endorsementArr = array("Aided" => array(), "UnAided" => array());
+			foreach ($endorsementStats as $endorsementStats1) {
+				$endorsementArr[$endorsementStats1->sub_quota][$endorsementStats1->dept_id][$endorsementStats1->quota] = $endorsementStats1->cnt;
+			}
+			$data['endorsementArr'] = $endorsementArr;
+
+			// echo "<pre>";
+			// print_r($newArr); die;
+
+			$departments = $this->admin_model->getActiveDepartments()->result();
+			$aided = array();
+			$unaided = array();
+			foreach ($departments as $departments1) {
+				if ($departments1->aided_intake) {
+					array_push($aided, $departments1);
+				}
+				if ($departments1->unaided_intake) {
+					array_push($unaided, $departments1);
+				}
+			}
+			$data['aided'] = $aided;
+			$data['unaided'] = $unaided;
+
+			// echo "<pre>";
+			// print_r($unaided); die;
+
+			$this->admin_template->show('admin/lateral_dashboard', $data);
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
 	function dashboard2()
 	{
 		if ($this->session->userdata('logged_in')) {
@@ -194,7 +314,7 @@ class Admin extends CI_Controller
 
 			// echo "<pre>";
 			// print_r($depart); die();
-			$unaidedmgmt = array();
+			$unaidedmgmt = array();	
 			$unaidedcomed = array();
 			foreach ($depart as $depart1) {
 				if ($depart1->unaided_mgmt_intake) {
@@ -324,6 +444,14 @@ class Admin extends CI_Controller
 			}
 			$data['aided'] = $aided;
 			$data['unaided'] = $unaided;
+
+			$endorsementStats = $this->admin_model->getEndorsmentIssued(0, 1)->result();
+			$endorsementArr = array("Aided" => array(), "UnAided" => array());
+			foreach ($endorsementStats as $endorsementStats1) {
+				$endorsementArr[$endorsementStats1->sub_quota][$endorsementStats1->dept_id][$endorsementStats1->quota] = $endorsementStats1->cnt;
+			}
+			$data['endorsementArr'] = $endorsementArr;
+
 			$this->admin_template->show('admin/Dashboard1', $data);
 		} else {
 			redirect('admin', 'refresh');
