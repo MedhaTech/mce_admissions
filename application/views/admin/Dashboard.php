@@ -98,7 +98,7 @@
                                         $MGMT_COMEDK_ENDORSED_AIDED = (array_key_exists($department_id, $aidedEndorsed) ? (array_key_exists("MGMT-COMEDK", $aidedEndorsed[$department_id])) ? $aidedEndorsed[$department_id]["MGMT-COMEDK"] : 0 : 0);
                                         $MGMT_LATERAL_ENDORSED_AIDED = (array_key_exists($department_id, $aidedEndorsed) ? (array_key_exists("MGMT-LATERAL", $aidedEndorsed[$department_id])) ? $aidedEndorsed[$department_id]["MGMT-LATERAL"] : 0 : 0);
                                         $MGMT_AIDED = $MGMT_ENDORSED_AIDED + $MGMT_KEA_ENDORSED_AIDED + $MGMT_COMEDK_ENDORSED_AIDED + $MGMT_LATERAL_ENDORSED_AIDED;
-                                        echo "<td class='bg-danger-light'>" . $MGMT . "</td>";
+                                        echo "<td class='bg-danger-light'>" . $MGMT_AIDED . "</td>";
                                         $MGMT_ENDORSED_AIDED_TOTAL = $MGMT_ENDORSED_AIDED_TOTAL + ($MGMT_AIDED);
 
                                         $MGMT_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("MGMT", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["MGMT"] : 0 : 0);
