@@ -13,16 +13,7 @@
                         <div class="card-tools">
                             <ul class="nav nav-pills ml-auto">
                                 <li class="nav-item">
-                                    <?php
-                                    if ($role == 1 || $role == 2) {
-                                        echo anchor('admin/dashboard2', ' <i class="fas fa-list"></i>  COMED-K-MGMT DASHBAORD ', 'class="btn btn-success btn-sm"');
-                                        echo anchor('admin/mgmt_dashboard', ' <i class="fas fa-list"></i>  MGMT DASHBAORD ', 'class="btn btn-info btn-sm"');
-                                    }
-                                    if ($role == 3) {
-                                        echo anchor('admin/dashboard2', ' <i class="fas fa-list"></i>  COMED-K & MGMT DASHBAORD ', 'class="btn btn-success btn-sm"');
-
-                                    }
-                                    ?>
+                                <?php echo anchor('admin/dashboard', ' <i class="fas fa-list"></i>  OVERALL DASHBAORD ', 'class="btn btn-warning btn-sm"'); ?>
                                 </li>
                                 <!-- <li class="nav-item">
                                   <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
@@ -43,15 +34,6 @@
                                         <th class='text-center' width="7%">MGMT (ADMITTED) <br /> STATUS</th>
                                         <th class='text-center' width="7%">MGMT-COMEDK <br /> STATUS</th>
                                         <th class='text-center' width="7%">MGMT-KEA <br /> STATUS</th>
-                                        <th class='text-center' width="7%">COMED-K <br /> STATUS</th>
-                                        <th class='text-center' width="7%">KEA-CET <br /> STATUS</th>
-                                        <th class='text-center' width="7%">KEA-SNQ <br /> STATUS</th>
-                                        <th class='text-center' width="7%">J&K <br /> STATUS</th>
-                                        <th class='text-center' width="7%">GOI <br /> STATUS</th>
-                                        <th class='text-center' width="7%">TOTAL <br /> STATUS</th>
-                                        <th class='text-center' width="7%">MGMT-LATERAL <br /> STATUS</th>
-                                        <th class='text-center' width="7%">KEA-CET(LATERAL) <br /> STATUS</th>
-                                        <th class='text-center' width="7%">LATERAL TOTAL </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -115,47 +97,6 @@
                                         $MGMT_KEA_AIDED_TOTAL = $MGMT_KEA_AIDED_TOTAL + $MGMT_KEA_AIDED;
                                         $AIDED_MGMT_KEA_INTAKE_TOTAL = $AIDED_MGMT_KEA_INTAKE_TOTAL + $aided1->aided_kea_mgmt_intake;
 
-                                        $COMEDK_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("COMED-K", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["COMED-K"] : 0 : 0);
-                                        echo "<td>" . $COMEDK_AIDED . '/' . $aided1->aided_comed_k_intake . "</td>";
-                                        $COMEDK_AIDED_TOTAL = $COMEDK_AIDED_TOTAL + $COMEDK_AIDED;
-                                        $AIDED_COMEDK_INTAKE_TOTAL = $AIDED_COMEDK_INTAKE_TOTAL + $aided1->aided_comed_k_intake;
-
-                                        $KEA_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("KEA-CET(GOVT)", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["KEA-CET(GOVT)"] : 0 : 0);
-                                        echo "<td>" . $KEA_AIDED . '/' . $aided1->aided_kea_intake . "</td>";
-                                        $KEA_AIDED_TOTAL = $KEA_AIDED_TOTAL + $KEA_AIDED;
-                                        $AIDED_KEA_INTAKE_TOTAL = $AIDED_KEA_INTAKE_TOTAL + $aided1->aided_kea_intake;
-
-                                        $SNQ_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("KEA-SNQ", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["KEA-SNQ"] : 0 : 0);
-                                        echo "<td>" . $SNQ_AIDED . '/' . $aided1->aided_snq_intake . "</td>";
-                                        $SNQ_AIDED_TOTAL = $SNQ_AIDED_TOTAL + $SNQ_AIDED;
-                                        $AIDED_SNQ_INTAKE_TOTAL = $AIDED_SNQ_INTAKE_TOTAL + $aided1->aided_snq_intake;
-
-                                        $JK_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("J&K (Non Karnataka)", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["J&K (Non Karnataka)"] : 0 : 0);
-                                        echo "<td>" . $JK_AIDED . "</td>";
-                                        $JK_AIDED_TOTAL = $JK_AIDED + $JK_AIDED_TOTAL;
-
-                                        $GOI_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("GOI (Non Karnataka)", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["GOI (Non Karnataka)"] : 0 : 0);
-                                        echo "<td>" . $GOI_AIDED . "</td>";
-                                        $GOI_AIDED_TOTAL = $GOI_AIDED + $GOI_AIDED_TOTAL;
-
-                                        // $TOTAL_AIDED = $MGMT_AIDED + $MGMT_LATERAL_AIDED + $MGMT_COMEDK_AIDED + $COMEDK_AIDED + $KEA_AIDED + $SNQ_AIDED + $KEALAT_AIDED + $JK_AIDED + $GOI_AIDED;
-                                        $TOTAL_AIDED = $MGMT_AIDED + $MGMT_COMEDK_AIDED + $COMEDK_AIDED + $KEA_AIDED + $SNQ_AIDED + $JK_AIDED + $GOI_AIDED;
-                                        echo "<td class='bg-success-light text-center font-weight-bold'>" . $TOTAL_AIDED . '/' . $aided1->aided_intake . "</td>";
-                                        $TOTAL_AIDED_TOTAL = $TOTAL_AIDED_TOTAL + $TOTAL_AIDED;
-                                        $AIDED_INTAKE_TOTAL = $AIDED_INTAKE_TOTAL + $aided1->aided_intake;
-
-                                        $MGMT_LATERAL_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("MGMT-LATERAL", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["MGMT-LATERAL"] : 0 : 0);
-                                        echo "<td class='bg-danger-light'>" . $MGMT_LATERAL_AIDED . "</td>";
-                                        $MGMT_LATERAL_AIDED_TOTAL = $MGMT_LATERAL_AIDED_TOTAL + $MGMT_LATERAL_AIDED;
-
-                                        $KEALAT_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("KEA-CET(LATERAL)", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["KEA-CET(LATERAL)"] : 0 : 0);
-                                        echo "<td class='bg-danger-light'>" . $KEALAT_AIDED . "</td>";
-                                        $KEALAT_AIDED_TOTAL = $KEALAT_AIDED_TOTAL + $KEALAT_AIDED;
-
-                                        $TOTAL_LATERAL_AIDED = $MGMT_LATERAL_AIDED + $KEALAT_AIDED;
-                                        echo "<td class='bg-danger-light text-center font-weight-bold'>" . $TOTAL_LATERAL_AIDED . "</td>";
-                                        $TOTAL_LATERAL_AIDED_TOTAL = $TOTAL_LATERAL_AIDED_TOTAL + $TOTAL_LATERAL_AIDED;
-
                                         echo "</tr>";
                                     }
                                     echo "<tr class='bg-primary-light text-bold'>";
@@ -164,15 +105,6 @@
                                     echo "<td>" . $MGMT_AIDED_TOTAL . '/' . $AIDED_MGMT_INTAKE_TOTAL . "</td>";
                                     echo "<td>" . $MGMT_COMEDK_AIDED_TOTAL . "</td>";
                                     echo "<td>" . $MGMT_KEA_AIDED_TOTAL . '/' . $AIDED_MGMT_KEA_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $COMEDK_AIDED_TOTAL . '/' . $AIDED_COMEDK_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $KEA_AIDED_TOTAL . '/' . $AIDED_KEA_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $SNQ_AIDED_TOTAL . '/' . $AIDED_SNQ_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $JK_AIDED_TOTAL . "</td>";
-                                    echo "<td>" . $GOI_AIDED_TOTAL . "</td>";
-                                    echo "<td>" . $TOTAL_AIDED_TOTAL . '/' . $AIDED_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $MGMT_LATERAL_AIDED_TOTAL . "</td>";
-                                    echo "<td>" . $KEALAT_AIDED_TOTAL . "</td>";
-                                    echo "<td>" . $TOTAL_LATERAL_AIDED_TOTAL . "</td>";
                                     echo "</tr>";
 
                                     $i = 1;
@@ -233,57 +165,6 @@
                                         $MGMT_KEA_UNAIDED_TOTAL = $MGMT_KEA_UNAIDED_TOTAL + $MGMT_KEA_UNAIDED;
                                         $UNAIDED_MGMT_KEA_INTAKE_TOTAL = $UNAIDED_MGMT_KEA_INTAKE_TOTAL + $unaided1->unaided_kea_mgmt_intake;
 
-                                        $COMEDK_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("COMED-K", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["COMED-K"] : 0 : 0);
-                                        // $COMEDK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'COMED-K', 'UnAided')->row()->cnt;
-                                        echo "<td>" . $COMEDK_UNAIDED . '/' . $unaided1->unaided_comed_k_intake . "</td>";
-                                        $COMEDK_UNAIDED_TOTAL = $COMEDK_UNAIDED_TOTAL + $COMEDK_UNAIDED;
-                                        $UNAIDED_COMEDK_INTAKE_TOTAL = $UNAIDED_COMEDK_INTAKE_TOTAL + $unaided1->unaided_comed_k_intake;
-
-                                        $KEA_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("KEA-CET(GOVT)", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["KEA-CET(GOVT)"] : 0 : 0);
-                                        // $KEA_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'KEA-CET(GOVT)', 'UnAided')->row()->cnt;
-                                        echo "<td>" . $KEA_UNAIDED . '/' . $unaided1->unaided_kea_intake . "</td>";
-                                        $KEA_UNAIDED_TOTAL = $KEA_UNAIDED_TOTAL + $KEA_UNAIDED;
-                                        $UNAIDED_KEA_INTAKE_TOTAL = $UNAIDED_KEA_INTAKE_TOTAL + $unaided1->unaided_kea_intake;
-
-                                        $SNQ_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("KEA-SNQ", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["KEA-SNQ"] : 0 : 0);
-                                        // $SNQ_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'KEA-SNQ', 'UnAided')->row()->cnt;
-                                        echo "<td>" . $SNQ_UNAIDED . '/' . $unaided1->unaided_snq_intake . "</td>";
-                                        $SNQ_UNAIDED_TOTAL = $SNQ_UNAIDED_TOTAL + $SNQ_UNAIDED;
-                                        $UNAIDED_SNQ_INTAKE_TOTAL = $UNAIDED_SNQ_INTAKE_TOTAL + $unaided1->unaided_snq_intake;
-
-                                        $JK_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("J&K (Non Karnataka)", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["J&K (Non Karnataka)"] : 0 : 0);
-                                        // $JK_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'J&K (Non Karnataka)', 'UnAided')->row()->cnt;
-                                        echo "<td>" . $JK_UNAIDED . "</td>";
-                                        $JK_UNAIDED_TOTAL = $JK_UNAIDED_TOTAL + $JK_UNAIDED;
-
-                                        $GOI_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("GOI (Non Karnataka)", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["GOI (Non Karnataka)"] : 0 : 0);
-                                        // $GOI_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'GOI (Non Karnataka)', 'UnAided')->row()->cnt;
-                                        echo "<td>" . $GOI_UNAIDED . "</td>";
-                                        $GOI_UNAIDED_TOTAL = $GOI_UNAIDED_TOTAL + $GOI_UNAIDED;
-
-                                        $TOTAL_UNAIDED = $MGMT_UNAIDED + $MGMT_COMEDK_UNAIDED + $COMEDK_UNAIDED + $KEA_UNAIDED + $SNQ_UNAIDED + $JK_UNAIDED + $GOI_UNAIDED;
-                                        echo "<td class='bg-success-light text-center font-weight-bold'>" . $TOTAL_UNAIDED . '/' . $unaided1->unaided_intake . "</td>";
-                                        $TOTAL_UNAIDED_TOTAL = $TOTAL_UNAIDED_TOTAL + $TOTAL_UNAIDED;
-                                        if($department_id == "25"){
-                                            $UNAIDED_INTAKE_TOTAL = $UNAIDED_INTAKE_TOTAL + 0;    
-                                        }else{
-                                            $UNAIDED_INTAKE_TOTAL = $UNAIDED_INTAKE_TOTAL + $unaided1->unaided_intake;
-                                        }
-                                        
-
-                                        $MGMT_LATERAL_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("MGMT-LATERAL", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["MGMT-LATERAL"] : 0 : 0);
-                                        echo "<td class='bg-danger-light'>" . $MGMT_LATERAL_UNAIDED . "</td>";
-                                        $MGMT_LATERAL_UNAIDED_TOTAL = $MGMT_LATERAL_UNAIDED + $MGMT_LATERAL_UNAIDED_TOTAL;
-
-                                        $KEALAT_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("KEA-CET(LATERAL)", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["KEA-CET(LATERAL)"] : 0 : 0);
-                                        // $KEALAT_UNAIDED = $this->admin_model->getAdmissionStats($department_id, 'KEA-CET(LATERAL)', 'UnAided')->row()->cnt;
-                                        echo "<td class='bg-danger-light'>" . $KEALAT_UNAIDED . "</td>";
-                                        $KEALAT_UNAIDED_TOTAL = $KEALAT_UNAIDED_TOTAL + $KEALAT_UNAIDED;
-
-                                        $TOTAL_LATERAL_UNAIDED = $MGMT_LATERAL_UNAIDED + $KEALAT_UNAIDED;
-                                        echo "<td class='bg-danger-light text-center font-weight-bold'>" . $TOTAL_LATERAL_UNAIDED . "</td>";
-                                        $TOTAL_LATERAL_UNAIDED_TOTAL = $TOTAL_LATERAL_UNAIDED_TOTAL + $TOTAL_LATERAL_UNAIDED;
-
                                         echo "</tr>";
                                     }
 
@@ -293,15 +174,6 @@
                                     echo "<td>" . $MGMT_UNAIDED_TOTAL . '/' . $UNAIDED_MGMT_INTAKE_TOTAL . "</td>";
                                     echo "<td>" . $MGMT_COMEDK_UNAIDED_TOTAL . "</td>";
                                     echo "<td>" . $MGMT_KEA_UNAIDED_TOTAL . '/' . $UNAIDED_MGMT_KEA_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $COMEDK_UNAIDED_TOTAL . '/' . $UNAIDED_COMEDK_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $KEA_UNAIDED_TOTAL . '/' . $UNAIDED_KEA_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $SNQ_UNAIDED_TOTAL . '/' . $UNAIDED_SNQ_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $JK_UNAIDED_TOTAL . "</td>";
-                                    echo "<td>" . $GOI_UNAIDED_TOTAL . "</td>";
-                                    echo "<td>" . $TOTAL_UNAIDED_TOTAL . '/' . $UNAIDED_INTAKE_TOTAL . "</td>";
-                                    echo "<td>" . $MGMT_LATERAL_UNAIDED_TOTAL . "</td>";
-                                    echo "<td>" . $KEALAT_UNAIDED_TOTAL . "</td>";
-                                    echo "<td>" . $TOTAL_LATERAL_UNAIDED_TOTAL . "</td>";
                                     echo "</tr>";
 
                                     echo "<tr class='bg-dark text-bold'>";
@@ -320,36 +192,7 @@
                                     $MGMT_KEA_INTAKE_OVERALL = $AIDED_MGMT_KEA_INTAKE_TOTAL + $UNAIDED_MGMT_KEA_INTAKE_TOTAL;
                                     echo "<td>" . $MGMT_KEA_OVERALL . '/' . $MGMT_KEA_INTAKE_OVERALL . "</td>";
 
-                                    $COMEDK_AIDED_OVERALL = $COMEDK_AIDED_TOTAL + $COMEDK_UNAIDED_TOTAL;
-                                    $COMEDK_INTAKE_OVERALL = $AIDED_COMEDK_INTAKE_TOTAL + $UNAIDED_COMEDK_INTAKE_TOTAL;
-                                    echo "<td>" . $COMEDK_AIDED_OVERALL . '/' . $COMEDK_INTAKE_OVERALL . "</td>";
-
-                                    $KEA_OVERALL = $KEA_AIDED_TOTAL + $KEA_UNAIDED_TOTAL;
-                                    $KEA_INTAKE_OVERALL = $AIDED_KEA_INTAKE_TOTAL + $UNAIDED_KEA_INTAKE_TOTAL;
-                                    echo "<td>" . $KEA_OVERALL . '/' . $KEA_INTAKE_OVERALL . "</td>";
-
-                                    $SNQ_OVERALL = $SNQ_AIDED_TOTAL + $SNQ_UNAIDED_TOTAL;
-                                    $SNQ_INTAKE_OVERALL = $AIDED_SNQ_INTAKE_TOTAL + $UNAIDED_SNQ_INTAKE_TOTAL;
-                                    echo "<td>" . $SNQ_OVERALL . '/' . $SNQ_INTAKE_OVERALL . "</td>";
-
-                                    $JK_OVERALL = $JK_AIDED_TOTAL + $JK_UNAIDED_TOTAL;
-                                    echo "<td>" . $JK_OVERALL . "</td>";
-
-                                    $GOI_OVERALL = $GOI_AIDED_TOTAL + $GOI_UNAIDED_TOTAL;
-                                    echo "<td>" . $GOI_OVERALL . "</td>";
-
-                                    $TOTAL_OVERALL = $TOTAL_AIDED_TOTAL + $TOTAL_UNAIDED_TOTAL;
-                                    $INTAKE_OVERALL = $AIDED_INTAKE_TOTAL + $UNAIDED_INTAKE_TOTAL;
-                                    echo "<td>" . $TOTAL_OVERALL . '/' . $INTAKE_OVERALL . "</td>";
-
-                                    $MGMT_LATERAL_OVERALL = $MGMT_LATERAL_AIDED_TOTAL + $MGMT_LATERAL_UNAIDED_TOTAL;
-                                    echo "<td>" . $MGMT_LATERAL_OVERALL . "</td>";
-
-                                    $KEALAT_OVERALL = $KEALAT_AIDED_TOTAL + $KEALAT_UNAIDED_TOTAL;
-                                    echo "<td>" . $KEALAT_OVERALL . "</td>";
-
-                                    $TOTAL_LATERAL_OVERALL = $TOTAL_LATERAL_AIDED_TOTAL + $TOTAL_LATERAL_UNAIDED_TOTAL;
-                                    echo "<td>" . $TOTAL_LATERAL_OVERALL . "</td>";
+                                     
                                     echo "</tr>";
 
                                     // $department_id = $details1->department_id;

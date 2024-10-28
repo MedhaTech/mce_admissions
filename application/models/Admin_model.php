@@ -415,6 +415,16 @@ class Admin_model extends CI_Model
     return $this->db->get('admissions');
   }
 
+  function getEndorsmentStats($department_id, $quota, $sub_quota)
+  {
+    $this->db->select('COUNT(*) as cnt');
+    $this->db->where('dept_id', $department_id);
+    $this->db->where('quota', $quota);
+    $this->db->where('sub_quota', $sub_quota);
+    $this->db->where('endorsement', '0');
+    return $this->db->get('admissions');
+  }
+
   function getBlockedStats($department_id, $quota, $sub_quota)
   {
     $this->db->select('COUNT(*) as cnt');
