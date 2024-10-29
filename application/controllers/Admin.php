@@ -10867,7 +10867,7 @@ With good wishes";
 
 			// print_r($newArr);
 
-			$departments = $this->admin_model->getDetailsbyfield('3', 'stream_id', 'departments')->result();
+			$departments = $this->admin_model->getDetailsbyfield2('stream_id','3','status','1',  'departments')->result();
 			$aided = array();
 			$unaided = array();
 			foreach ($departments as $departments1) {
