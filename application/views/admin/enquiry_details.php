@@ -823,6 +823,7 @@ $(document).ready(function() {
         var id = '<?php echo $enquiryDetails->id; ?>';
 
         var course = $("#course").val();
+        var stream = $("#stream").val();
         var course_val = $("#course option:selected").text();
 
 
@@ -855,6 +856,7 @@ $(document).ready(function() {
 
                 'course': course,
                 'quota': quota,
+                'stream': stream,
                 'subquota': subquota,
                 'college_code': college_code,
                 'course_val': course_val,
