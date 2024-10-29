@@ -495,6 +495,43 @@ class Admin extends CI_Controller
 			redirect('admin/timeout');
 		}
 	}
+	public function mtechenquiries()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Enquiries List';
+			$data['menu'] = 'mtechenquiries';
+			$data['action'] = 'admin/mtechenquiries';
+			$data['enquiryStatus'] = $this->globals->enquiryStatus();
+			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['enquiries'] = $this->admin_model->mtechgetEnquiries($data['currentAcademicYear'])->result();
+			$data['states'] = array("" => "Select State") + $this->globals->states();
+			$data['course_options'] = array(" " => "Select Branch") + $this->pgcourses();
+
+
+
+			if ($this->input->post()) {
+				$sslc = $this->input->post('sslc');
+				$puc1 = $this->input->post('puc1');
+				$puc2 = $this->input->post('puc2');
+				$state = $this->input->post('state');
+				$course = $this->input->post('course');
+				$data['enquiries'] = $this->admin_model->getEnquiries_filter($data['currentAcademicYear'], $sslc, $puc1, $puc2, $state, $course)->result();
+			} else {
+				$data['enquiries'] = $this->admin_model->mtechgetEnquiries($data['currentAcademicYear'])->result();
+			}
+			
+			$this->admin_template->show('admin/enquiries', $data);
+		} else {
+			redirect('admin/timeout');
+		}
+	}
 
 	function newEnquiry()
 	{
@@ -1001,6 +1038,7 @@ class Admin extends CI_Controller
 			$data['menu'] = 'admissions';
 
 			$id = $this->input->post('id');
+			$stream_id = $this->input->post('stream');
 			$category_claimed = $this->input->post('category_claimed');
 			$category_allotted = $this->input->post('category_allotted');
 
@@ -1055,6 +1093,7 @@ class Admin extends CI_Controller
 				'app_no' => $app_no,
 				'adm_no' => $app_no,
 				'dept_id' => $course,
+				'stream_id' => $stream_id,
 				'usn' => $usn,
 				'student_name' => strtoupper($enquiryDetails->student_name),
 				'mobile' => $enquiryDetails->mobile,
@@ -1087,6 +1126,7 @@ class Admin extends CI_Controller
 				'academic_year' => $enquiryDetails->academic_year,
 				'student_name' => strtoupper($enquiryDetails->student_name),
 				'dept_id' => $course,
+				'stream_id' => $stream_id,
 				'year' => "I",
 				'total_university_fee' => $total_university_fee,
 				'total_tution_fee' => $total_tution_fee,
@@ -1437,7 +1477,53 @@ class Admin extends CI_Controller
 
 			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
-			$data['admissions'] = $this->admin_model->fetchDetails2('id, app_no, adm_no,quota,dept_id,sub_quota, student_name, mobile,usn,status', 'status', $status, 'academic_year', $data['currentAcademicYear'], 'admissions')->result();
+			$data['admissions'] = $this->admin_model->fetchDetails3('id, app_no, adm_no,quota,dept_id,sub_quota, student_name, mobile,usn,status', 'status', $status, 'academic_year', $data['currentAcademicYear'],'1', 'admissions')->result();
+
+			$this->admin_template->show('admin/admissions', $data);
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+	public function pgadmissions($status = null)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['admissionStatus'] = $this->globals->admissionStatus();
+
+			$data['page_title'] = ($status) ? $data['admissionStatus'][$status] . ' Admissions' : 'All Admissions';
+			$data['menu'] = 'pgadmissions';
+
+			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissions'] = $this->admin_model->fetchDetails3('id, app_no, adm_no,quota,dept_id,sub_quota, student_name, mobile,usn,status', 'status', $status, 'academic_year', $data['currentAcademicYear'],'2', 'admissions')->result();
+
+			$this->admin_template->show('admin/admissions', $data);
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+	public function phdadmissions($status = null)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['admissionStatus'] = $this->globals->admissionStatus();
+
+			$data['page_title'] = ($status) ? $data['admissionStatus'][$status] . ' Admissions' : 'All Admissions';
+			$data['menu'] = 'phdadmissions';
+
+			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissions'] = $this->admin_model->fetchDetails3('id, app_no, adm_no,quota,dept_id,sub_quota, student_name, mobile,usn,status', 'status', $status, 'academic_year', $data['currentAcademicYear'],'3', 'admissions')->result();
 
 			$this->admin_template->show('admin/admissions', $data);
 		} else {
@@ -2106,6 +2192,7 @@ class Admin extends CI_Controller
 					'academic_year' => $currentAcademicYear,
 					'student_name' => strtoupper($this->input->post('student_name')),
 					'dept_id' => $course,
+					'stream_id' => $stream,
 					'year' => $yeardata,
 					'total_university_fee' => $total_university_fee,
 					'total_tution_fee' => $total_tution_fee,
@@ -10795,6 +10882,167 @@ With good wishes";
 			$this->admin_template->show('admin/Dashboardphd', $data);
 		} else {
 			redirect('admin', 'refresh');
+		}
+	}
+
+
+	
+	public function pgadmissionsletter($encryptId)
+	{
+
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Admission Details';
+			$data['menu'] = 'admissions';
+
+			// $id = $this->encrypt->decode(base64_decode($encryptId));
+			$id = base64_decode($encryptId);
+
+			$data['admissionStatus'] = $this->globals->admissionStatus();
+			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
+
+			$data['studentDetails'] = $this->admin_model->getDetails('admissions', 'id', $id)->row();
+			$data['educations_details'] = $this->admin_model->getDetailsbyfield($id, 'id', 'student_education_details')->result();
+
+
+			$this->load->library('fpdf'); // Load library
+			ini_set("session.auto_start", 0);
+			ini_set('memory_limit', '-1');
+			define('FPDF_FONTPATH', 'plugins/font');
+			$pdf = new FPDF();
+			$pdf->AddPage('P', 'A4'); // 'P' for portrait orientation, 'A4' for A4 size (210x297 mm)
+
+			// Set left, top, and right margins (20 mm)
+			$pdf->SetMargins(30, 20, 30);
+
+			$pdf->Image('assets/img/mce_pro_letter31.jpg', 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHeight());
+
+
+			$topGap = 30;
+
+			$pdf->SetY($topGap + 5);
+			$pdf->SetFont('Arial', 'BU', 7);
+			$pdf->Cell(0, 3, "No.MCE/" . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"] . "/" . $data['admissionDetails']->adm_no, 0, 1, 'L');
+			$pdf->SetFont('Arial', 'B', 7);
+			$pdf->Cell(0, 3, 'Ashok Haranahalli', 0, 1, 'L');
+			$pdf->SetFont('Arial', '', 7);
+			$pdf->Cell(0, 3, 'Chairman, Governing Council', 0, 1, 'L');
+			$pdf->Cell(0, 3, 'of M.C.E. Hassan.', 0, 1, 'L');
+
+			$pdf->SetFont('Arial', '', 9);
+			$pdf->SetXY(-30, $topGap + 5);
+			$pdf->Cell(0, 10, 'Date:' . date('d-m-Y'), 0, 1, 'R');
+
+			$pdf->SetFont('Arial', 'BU', 12);
+			$pdf->SetY($topGap + 30);
+			$pdf->Cell(0, 10, ' ADMISSION CERTIFICATE ', 0, 1, 'C');
+
+
+
+			$pdf->Ln(6);
+			$details = array(
+				'name' => $data['admissionDetails']->student_name,
+				'parent' => $data['admissionDetails']->father_name
+			);
+			if ($data['admissionDetails']->gender == "Male") {
+				$salut = "S/O. ";
+			} else {
+				$salut = "D/O. ";
+			}
+			$nameData = $data['admissionDetails']->student_name . " " . $salut . " " . $data['admissionDetails']->father_name;
+
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->MultiCell(0, 5, '       ' . $nameData . ' has sought admission to the 1st Semester M.TECH course in ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"] . ' branch at Malnad College of Engineering, Hassan for the year 2024-25.', 0, 1);
+
+			$pdf->Ln(4);
+
+			$pdf->MultiCell(0, 5, "       There is likelihood of some seats remaining vacant after the counseling of Government PG-CET lateral process for 1st semester M.Tech program and if so, your request for admission will be considered. If for any reasons seats are filled by the Government PG-CET lateral process, you have no right to seek admissions.Your admission is strictly subjected to the approval of the Government.");
+			$pdf->Ln(4);
+
+			$pdf->MultiCell(0, 5, "       In the meanwhile subject to the above conditions you are instructed to approach the Principal, Malnad College of Engineering, and to pay the required fee, produce the certificate in original and provisionally get admitted as per rules prescribed by State Government and the Visweswaraiah Technological University, Belgaum.");
+			$pdf->Ln(4);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->Cell(0, 30, 'With Good wishes', 0, 1);
+
+
+			// $pdf->Cell(0, 5, 'Chairman - Admissions', 0, 1, 'L');
+			// $pdf->Cell(0, 5, 'Hon. Secretary', 0, 1, 'R');
+
+			$additionalDataY = $pdf->GetY() + 5;
+
+
+			$pdf->SetFont('Arial', '', 9);
+			$pdf->SetY($additionalDataY);
+
+			$email_parts = explode('@', $data['admissionDetails']->email);
+			$username = $email_parts[0];
+			$domain = $email_parts[1];
+
+			$masked_username = substr($username, 0, -2) . str_repeat('*', strlen($username) - 2);
+			$masked_email = $masked_username . '@' . $domain;
+
+			// Mask phone number
+			$masked_phone = str_repeat('*', strlen($data['admissionDetails']->mobile) - 4) . substr($data['admissionDetails']->mobile, -4);
+			$pdf->AddPage();
+			$pdf->Image('assets/img/qr.png', 80, 20, 50); // Adjust x, y, and size as needed
+			$pdf->SetY(68);
+			$pdf->SetFont('Arial', '', 12); // Bold font
+			$pdf->Cell(0, 10, 'bi8.in/202425', 0, 1, 'C');
+			$pdf->Ln(3);
+
+			$pdf->SetFont('Arial', 'B', 16); // Bold font
+			$pdf->Cell(0, 10, 'SCAN TO ENROLL ADMISSION', 0, 1, 'C');
+			$pdf->Ln(15);
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(0, 5, "No.MCE/" . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_short_name"] . "/" . $data['admissionDetails']->adm_no, 0, 1, 'L');
+			$pdf->Ln(3);
+			$pdf->SetFont('Arial', 'B', 10);
+			$pdf->Cell(0, 5, $data['admissionDetails']->student_name . ", " . $salut . " " . $data['admissionDetails']->father_name, 0, 1, 'L');
+			$pdf->Ln(3);
+			// $pdf->SetFont('Arial', 'B', 10);
+			// $pdf->Cell(0, 5, "Portal Login Credentials,", 0, 1, 'L');
+			// $pdf->Ln(3);
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->MultiCell(0, 5, "To complete your enrolment, please log in to our student portal using the credentials provided below. Here, you will be able to update your profile, access important information.");
+			$pdf->Ln(5);
+			$usernameWidth = $pdf->GetStringWidth("Username :\t");
+			$passwordWidth = $pdf->GetStringWidth("Temporary Password :\t");
+
+			// Calculate total width for the first line
+			$totalWidth = $usernameWidth + $pdf->GetStringWidth($masked_email);
+
+			// Determine x position for "Temporary Password"
+			$xPosition = $pdf->GetX() + $usernameWidth;
+
+			// Add content
+			$pdf->SetFont('Arial', 'B', 10); // Bold font
+			$pdf->Cell($usernameWidth, 4, "Username :\t", 0, 0, 'L'); // Bold text "Username : "
+			$pdf->SetFont('Arial', '', 10); // Normal font
+			$pdf->Cell(0, 4, "\t" . $masked_email, 0, 1, 'L'); // Normal text "masked_email" on a new line
+
+			$pdf->SetFont('Arial', 'B', 10); // Bold font
+			$pdf->Cell($passwordWidth, 4, "Temporary Password :\t", 0, 0, 'L'); // Bold text "Temporary Password : "
+			$pdf->SetFont('Arial', '', 10); // Normal font
+			$pdf->Cell(0, 4, "\t\t" . $masked_phone, 0, 1, 'L'); // Normal text "masked_phone" on a new line
+
+			$pdf->Ln(5); // Line break
+			$pdf->SetFont('Arial', '', 10);
+			$pdf->MultiCell(0, 5, "Please log in at your earliest convenience and change your password for security. Follow the instructions on the portal to update your personal and academic details.");
+
+			$pdf->Ln(5);
+
+			$fileName = $data['admissionDetails']->student_name . '-Admit_Letter.pdf';
+			// $pdf->output();
+			$pdf->output($fileName, 'D');
+		} else {
+			redirect('admin/timeout');
 		}
 	}
 }
