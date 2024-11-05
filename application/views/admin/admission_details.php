@@ -173,7 +173,20 @@
 
 
                             <li class="nav-item">
-                                <?php echo anchor('admin/admissions', '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Back ', 'class="btn btn-dark btn-sm"'); ?>
+                                <?php
+                                if ($admissionDetails->stream_id == 1) {
+
+                                    echo anchor('admin/admissions', '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Back ', 'class="btn btn-dark btn-sm"');
+                                } elseif ($admissionDetails->stream_id == 2) {
+
+                                    echo anchor('admin/pgadmissions', '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Back ', 'class="btn btn-dark btn-sm"');
+                                } else {
+
+                                    echo anchor('admin/phdadmissions', '<i class="fas fa-arrow-left fa-sm fa-fw"></i> Back ', 'class="btn btn-dark btn-sm"');
+                                }
+
+                                ?>
+                                <?php  ?>
                             </li>
                         </ul>
                     </div>

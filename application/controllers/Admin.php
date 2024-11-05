@@ -6764,7 +6764,7 @@ With good wishes";
 			$contactInfo1 = "M.C.E BRANCH, HASSAN - 573202";
 			$issuedOn = "Date : " . date("m-d-Y ");
 			$programe = "PROGRAME : B.E";
-			$chellan = "Chellan : TF24-25/" . $voucherDetails->id;
+			$chellan = "Challan : TF24-25/" . $voucherDetails->id;
 			$dept = "Dept. :" . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"];
 			$scopy = "STUDENT COPY";
 			$bcopy = "BANK COPY";
@@ -7066,7 +7066,7 @@ With good wishes";
 			} else {
 				$programe = "PROGRAM : PHD";
 				$contactInfo = "PHD (AY-2024-2025)";
-				$chellan = "Chellan : PHD24-25/" . $voucherDetails->id;
+				$chellan = "Challan : PHD24-25/" . $voucherDetails->id;
 			}
 
 			$issuedOn = "Date : " . date("m-d-Y ");
@@ -9043,15 +9043,15 @@ With good wishes";
 			if ($admissionDetails->stream_id == 1) {
 				$programe = "PROGRAM : B.E";
 				$contactInfo = "UG (AY-2024-2025)";
-				$chellan = "Chellan : TF24-25/" . $voucherDetails->id;
+				$chellan = "Challan : TF24-25/" . $voucherDetails->id;
 			} elseif ($admissionDetails->stream_id == 2) {
 				$programe = "PROGRAM : M.E";
 				$contactInfo = "PG (AY-2024-2025)";
-				$chellan = "Chellan : ME24-25/" . $voucherDetails->id;
+				$chellan = "Challan : ME24-25/" . $voucherDetails->id;
 			} else {
 				$programe = "PROGRAM : PHD";
 				$contactInfo = "PHD (AY-2024-2025)";
-				$chellan = "Chellan : PHD24-25/" . $voucherDetails->id;
+				$chellan = "Challan : PHD24-25/" . $voucherDetails->id;
 			}
 
 			// $chellan = "Challan : TF24-25/" . $voucherDetails->id;
@@ -9269,20 +9269,20 @@ With good wishes";
 				$programe = "PROGRAM : B.E";
 				$contactInfo = "UG (AY-2024-2025)";
 				$pgm = 'B.E - ';
-				$chellan = "Chellan : TF24-25/" . $voucherDetails->id;
+				$chellan = "Challan : TF24-25/" . $voucherDetails->id;
 			} elseif ($admissionDetails->stream_id == 2) {
 				$programe = "PROGRAM : M.E";
 				$contactInfo = "PG (AY-2024-2025)";
 				$pgm = 'M.E - ';
-				$chellan = "Chellan : ME24-25/" . $voucherDetails->id;
+				$chellan = "Challan : ME24-25/" . $voucherDetails->id;
 			} else {
 				$programe = "PROGRAM : PHD";
 				$contactInfo = "PHD (AY-2024-2025)";
 				$pgm = 'PHD - ';
-				$chellan = "Chellan : PHD24-25/" . $voucherDetails->id;
+				$chellan = "Challan : PHD24-25/" . $voucherDetails->id;
 			}
 			// $programe = "PROGRAME : B.E";
-			// $chellan = "Chellan : TF24-25/" . $voucherDetails->id;
+			// $chellan = "Challan : TF24-25/" . $voucherDetails->id;
 			$dept = "Dept. :" . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"];
 			$scopy = "STUDENT COPY";
 			$bcopy = "BANK COPY";
