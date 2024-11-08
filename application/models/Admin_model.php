@@ -373,7 +373,6 @@ class Admin_model extends CI_Model
       $this->db->group_by('quota, sub_quota');
       return $this->db->get('admissions');
     }
-
   }
 
   function getEndorsmentIssued($department_id, $stream)
@@ -393,7 +392,6 @@ class Admin_model extends CI_Model
       $this->db->group_by('quota, sub_quota');
       return $this->db->get('admissions');
     }
-
   }
 
   function getAdmissionStats($department_id, $quota, $sub_quota)
@@ -530,7 +528,7 @@ class Admin_model extends CI_Model
     return $this->db->get('transactions');
   }
 
-  function DCBReport($currentAcademicYear, $course = '', $year = '', $type = '')
+  function DCBReport1($currentAcademicYear, $course = '', $year = '', $type = '')
   {
     $this->db->select(
       '
@@ -564,6 +562,39 @@ class Admin_model extends CI_Model
     }
     if ($type != '') {
       $this->db->where('admissions.sub_quota', $type);
+    }
+    $this->db->where('admissions.status !=', '7');
+    $query = $this->db->get();
+    return $query;
+  }
+
+  function DCBReport($course = '')
+  {
+    $this->db->select(
+      '
+    admissions.id, 
+    admissions.app_no, 
+    admissions.adm_no, 
+    admissions.admit_date, 
+    admissions.dept_id, 
+    admissions.academic_year, 
+    admissions.student_name, 
+    admissions.usn, 
+    admissions.quota, 
+    admissions.sub_quota, 
+    admissions.college_code, 
+    admissions.category_claimed, 
+    admissions.category_allotted, 
+     admissions.caste, 
+      admissions.father_mobile, 
+    admissions.mobile,
+    admissions.status, 
+    admissions.endorsement'
+    );
+    $this->db->from('admissions');
+    // $this->db->join('fee_master', 'admissions.id = fee_master.student_id', 'left');
+    if ($course != '') {
+      $this->db->where('admissions.dept_id', $course);
     }
     $this->db->where('admissions.status !=', '7');
     $query = $this->db->get();
@@ -1113,5 +1144,4 @@ class Admin_model extends CI_Model
     $query = $this->db->get();
     return $query;
   }
-
 }

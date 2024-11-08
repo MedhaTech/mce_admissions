@@ -51,6 +51,7 @@
                                         <th class='text-center' width="7%">TOTAL <br /> STATUS</th>
                                         <th class='text-center' width="7%">MGMT-LATERAL <br /> STATUS</th>
                                         <th class='text-center' width="7%">KEA-CET(LATERAL) <br /> STATUS</th>
+                                        <th class='text-center' width="7%">J&K(LATERAL) <br /> STATUS</th>
                                         <th class='text-center' width="7%">LATERAL TOTAL </th>
                                     </tr>
                                 </thead>
@@ -60,7 +61,7 @@
                                     // echo "<pre>";
                                     $aidedAdmitted = $newArr['Aided'];
                                     $aidedEndorsed = $endorsementArr['Aided'];
-                                    echo "<tr><th class='bg-gray' colspan='15'>UG COURSES (AIDED)</th></tr>";
+                                    echo "<tr><th class='bg-gray' colspan='16'>UG COURSES (AIDED)</th></tr>";
                                     $MGMT_ENDORSED_AIDED = 0;
                                     $MGMT_KEA_ENDORSED_AIDED = 0;
                                     $MGMT_COMEDK_ENDORSED_AIDED = 0;
@@ -84,6 +85,7 @@
                                     $AIDED_INTAKE_TOTAL = 0;
                                     $MGMT_LATERAL_AIDED_TOTAL = 0;
                                     $KEALAT_AIDED_TOTAL = 0;
+                                    $JKLAT_AIDED_TOTAL = 0;
                                     $TOTAL_LATERAL_AIDED_TOTAL = 0;
 
                                     foreach ($aided as $aided1) {
@@ -152,7 +154,11 @@
                                         echo "<td class='bg-danger-light'>" . $KEALAT_AIDED . "</td>";
                                         $KEALAT_AIDED_TOTAL = $KEALAT_AIDED_TOTAL + $KEALAT_AIDED;
 
-                                        $TOTAL_LATERAL_AIDED = $MGMT_LATERAL_AIDED + $KEALAT_AIDED;
+                                        $JKLAT_AIDED = (array_key_exists($department_id, $aidedAdmitted) ? (array_key_exists("J&K (Non Karnataka) (LATERAL)", $aidedAdmitted[$department_id])) ? $aidedAdmitted[$department_id]["J&K (Non Karnataka) (LATERAL)"] : 0 : 0);
+                                        echo "<td class='bg-danger-light'>" . $JKLAT_AIDED . "</td>";
+                                        $JKLAT_AIDED_TOTAL = $JKLAT_AIDED_TOTAL + $JKLAT_AIDED;
+
+                                        $TOTAL_LATERAL_AIDED = $MGMT_LATERAL_AIDED + $KEALAT_AIDED + $JKLAT_AIDED;
                                         echo "<td class='bg-danger-light text-center font-weight-bold'>" . $TOTAL_LATERAL_AIDED . "</td>";
                                         $TOTAL_LATERAL_AIDED_TOTAL = $TOTAL_LATERAL_AIDED_TOTAL + $TOTAL_LATERAL_AIDED;
 
@@ -172,6 +178,7 @@
                                     echo "<td>" . $TOTAL_AIDED_TOTAL . '/' . $AIDED_INTAKE_TOTAL . "</td>";
                                     echo "<td>" . $MGMT_LATERAL_AIDED_TOTAL . "</td>";
                                     echo "<td>" . $KEALAT_AIDED_TOTAL . "</td>";
+                                    echo "<td>" . $JKLAT_AIDED_TOTAL . "</td>";
                                     echo "<td>" . $TOTAL_LATERAL_AIDED_TOTAL . "</td>";
                                     echo "</tr>";
 
@@ -202,8 +209,9 @@
                                     $UNAIDED_INTAKE_TOTAL = 0;
                                     $MGMT_LATERAL_UNAIDED_TOTAL = 0;
                                     $KEALAT_UNAIDED_TOTAL = 0;
+                                    $JKLAT_UNAIDED_TOTAL = 0;
                                     $TOTAL_LATERAL_UNAIDED_TOTAL = 0;
-                                    echo "<tr><th class='bg-gray' colspan='15'>UG COURSES (UNAIDED)</th></tr>";
+                                    echo "<tr><th class='bg-gray' colspan='16'>UG COURSES (UNAIDED)</th></tr>";
 
                                     foreach ($unaided as $unaided1) {
                                         $department_id = $unaided1->department_id;
@@ -281,7 +289,11 @@
                                         echo "<td class='bg-danger-light'>" . $KEALAT_UNAIDED . "</td>";
                                         $KEALAT_UNAIDED_TOTAL = $KEALAT_UNAIDED_TOTAL + $KEALAT_UNAIDED;
 
-                                        $TOTAL_LATERAL_UNAIDED = $MGMT_LATERAL_UNAIDED + $KEALAT_UNAIDED;
+                                        $JKLAT_UNAIDED = (array_key_exists($department_id, $unaidedAdmitted) ? (array_key_exists("J&K (Non Karnataka) (LATERAL)", $unaidedAdmitted[$department_id])) ? $unaidedAdmitted[$department_id]["J&K (Non Karnataka) (LATERAL)"] : 0 : 0);
+                                        echo "<td class='bg-danger-light'>" . $JKLAT_UNAIDED . "</td>";
+                                        $JKLAT_UNAIDED_TOTAL = $JKLAT_UNAIDED_TOTAL + $JKLAT_UNAIDED;
+
+                                        $TOTAL_LATERAL_UNAIDED = $MGMT_LATERAL_UNAIDED + $KEALAT_UNAIDED + $JKLAT_UNAIDED_TOTAL;
                                         echo "<td class='bg-danger-light text-center font-weight-bold'>" . $TOTAL_LATERAL_UNAIDED . "</td>";
                                         $TOTAL_LATERAL_UNAIDED_TOTAL = $TOTAL_LATERAL_UNAIDED_TOTAL + $TOTAL_LATERAL_UNAIDED;
 
@@ -302,6 +314,7 @@
                                     echo "<td>" . $TOTAL_UNAIDED_TOTAL . '/' . $UNAIDED_INTAKE_TOTAL . "</td>";
                                     echo "<td>" . $MGMT_LATERAL_UNAIDED_TOTAL . "</td>";
                                     echo "<td>" . $KEALAT_UNAIDED_TOTAL . "</td>";
+                                    echo "<td>" . $JKLAT_UNAIDED_TOTAL . "</td>";
                                     echo "<td>" . $TOTAL_LATERAL_UNAIDED_TOTAL . "</td>";
                                     echo "</tr>";
 
@@ -350,6 +363,9 @@
 
                                     $KEALAT_OVERALL = $KEALAT_AIDED_TOTAL + $KEALAT_UNAIDED_TOTAL;
                                     echo "<td>" . $KEALAT_OVERALL . "</td>";
+
+                                    $JKLAT_OVERALL = $JKLAT_AIDED_TOTAL + $JKLAT_UNAIDED_TOTAL;
+                                    echo "<td>" . $JKLAT_OVERALL . "</td>";
 
                                     $TOTAL_LATERAL_OVERALL = $TOTAL_LATERAL_AIDED_TOTAL + $TOTAL_LATERAL_UNAIDED_TOTAL;
                                     echo "<td>" . $TOTAL_LATERAL_OVERALL . "</td>";
