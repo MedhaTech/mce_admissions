@@ -3576,11 +3576,124 @@ With good wishes";
 			$data['menu'] = 'DCBReport';
 
 			$data['download_action'] = 'admin/dcb_report';
+			$data['course_options'] = array("" => "Select", "All"=>"All Courses") + $this->courses();
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+
+			$admissions = $this->admin_model->DCBReport('')->result();
+			// echo "<pre>";
+			// print_r($admissions);
+			// die;
+
+			$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+			$this->table->set_template($table_setup);
+			// $table_setup = array ('table_open'=> '<table class="table table-bordered font14" border="1" id="dataTable" >');
+			// $this->table->set_template($table_setup);
+
+			$print_fields = array(
+				'S.No',
+				'Academic Year',
+				'Course',
+				'Student Name',
+				'Usn',
+				'Quota',
+				'Sub Quota',
+				'College Code',
+				'Studying Year',
+				'Mobile',
+				'Father Number',
+				'Caste',
+				'Alloted Category',
+				'claimed Category',
+				'Admit. Date',
+				'Total University Other Fee',
+				'College Fee Demand',
+				'College Fee Paid',
+				'College Fee Balance',
+				'Corpus Fee Demand',
+				'Corpus Fee Paid',
+				'Corpus Fee Balance',
+				'Remarks'
+			);
+
+			$this->table->set_heading($print_fields);
+			$i = 1;
+			foreach ($admissions as $admissions1) {
+				if ($admissions1->quota != 'KEA-CET(LATERAL)') {
+					$year = "I";
+				} else {
+					$year = "II";
+				}
+				$result_array = array(
+					$i++,
+					// $admissions1->academic_year,
+					// $admissions1->reg_no,
+					$admissions1->academic_year,
+					'--',
+					$admissions1->student_name,
+					$admissions1->usn,
+					$admissions1->quota,
+					$admissions1->sub_quota,
+					$admissions1->college_code,
+					$year,
+					$admissions1->mobile,
+					$admissions1->father_mobile,
+					$admissions1->caste,
+					$admissions1->category_allotted,
+					$admissions1->category_claimed,
+					($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
+					"--",
+					"--",
+					"--",
+					"--",
+					"--",
+					"--",
+					"--",
+					// ($admissions1->next_due_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->next_due_date)) : '',
+					$admissions1->remarks
+				);
+				// var_dump($result_array);
+				$this->table->add_row($result_array);
+			}
+			$data['table'] = $this->table->generate();
+			if (!$download) {
+				$this->admin_template->show('admin/dcb_report', $data);
+			} else {
+				echo "<pre>";
+			print_r($data['table']);
+			die;
+				// $response = array(
+				// 	'op' => 'ok',
+				// 	'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+				// );
+				// die(json_encode($response));
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function dcb_report1($download = 0)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$data['page_title'] = $currentAcademicYear . ' REPORT DEMAND COLLECTION BALANCE (DCB)';
+			$data['menu'] = 'DCBReport';
+
+			$data['download_action'] = 'admin/dcb_report';
 			$data['course_options'] = array("" => "Select") + $this->courses();
 			$currentAcademicYear = $this->globals->currentAcademicYear();
+			
 			// $admissions = $this->admin_model->DCBReport($currentAcademicYear)->result();
 			$admissions = $this->admin_model->DCBReport($currentAcademicYear)->result();
-
+			echo "<pre>";
+			print_r($admissions);
+			die;
 			if ($_POST) {
 				$course = $this->input->post('course');
 				$syear = $this->input->post('year');
