@@ -441,10 +441,16 @@ class Admin_model extends CI_Model
     return $this->db->get('comedk_seats');
   }
 
-  function getActiveDepartments()
+  function getActiveDepartments($stream_id, $dept_id)
   {
     $this->db->select('departments.department_id, departments.stream_id, streams.stream_name, streams.stream_short_name, departments.department_name, departments.department_short_name, departments.aided_intake, departments.aided_mgmt_intake, departments.aided_comed_k_intake, departments.aided_kea_intake, departments.aided_kea_mgmt_intake, departments.aided_snq_intake, departments.unaided_intake, departments.unaided_mgmt_intake, departments.unaided_comed_k_intake, departments.unaided_kea_intake, departments.unaided_kea_mgmt_intake, departments.unaided_snq_intake');
     $this->db->join('streams', 'streams.stream_id = departments.stream_id');
+    if ($stream_id) {
+      $this->db->where('departments.stream_id', $stream_id);
+    }
+    if ($dept_id) {
+      $this->db->where('departments.id', $dept_id);
+    }
     $this->db->where('departments.status', '1');
     return $this->db->get('departments');
   }
@@ -472,6 +478,14 @@ class Admin_model extends CI_Model
   {
     $this->db->select('SUM(amount) as amount');
     $this->db->where('admissions_id', $admission_id);
+    $this->db->where('transaction_status', '1');
+    return $this->db->get('transactions');
+  }
+
+  function overallPaidFee()
+  {
+    $this->db->select('admissions_id, SUM(amount) as paid_amount');
+    $this->db->group_by('admissions_id');
     $this->db->where('transaction_status', '1');
     return $this->db->get('transactions');
   }
@@ -568,7 +582,7 @@ class Admin_model extends CI_Model
     return $query;
   }
 
-  function DCBReport($course = '')
+  function DCBReport($stream_id, $dept_id, $admission_type)
   {
     $this->db->select(
       '
@@ -585,18 +599,38 @@ class Admin_model extends CI_Model
     admissions.college_code, 
     admissions.category_claimed, 
     admissions.category_allotted, 
-     admissions.caste, 
-      admissions.father_mobile, 
+    admissions.caste, 
+    admissions.father_mobile, 
     admissions.mobile,
     admissions.status, 
-    admissions.endorsement'
+    admissions.endorsement,
+    fee_master.total_university_fee,
+    fee_master.total_university_fee,
+    fee_master.consession_type,
+    fee_master.consession_amount,
+    fee_master.total_college_fee,
+    fee_master.corpus_fund,
+    fee_master.final_fee,
+    '
     );
     $this->db->from('admissions');
-    // $this->db->join('fee_master', 'admissions.id = fee_master.student_id', 'left');
-    if ($course != '') {
-      $this->db->where('admissions.dept_id', $course);
+    $this->db->join('fee_master', 'admissions.id = fee_master.student_id', 'left');
+    if ($stream_id != 'all') {
+      $this->db->where('admissions.stream_id', $stream_id);
     }
+    if ($dept_id != 'all') {
+      $this->db->where('admissions.dept_id', $dept_id);
+    }
+    if ($admission_type != 'all') {
+      if ($admission_type == 'PUC') {
+        $this->db->where('admissions.admission_based', "PUC");
+      } else {
+        $this->db->where('admissions.admission_based !=', "PUC");
+      }
+    }
+    $this->db->where('admissions.endorsement', '1');
     $this->db->where('admissions.status !=', '7');
+    $this->db->order_by('admissions.dept_id, admissions.quota, admissions.student_name');
     $query = $this->db->get();
     return $query;
   }
