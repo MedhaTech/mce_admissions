@@ -180,6 +180,14 @@ class Admin_model extends CI_Model
   function getEnquiries($academic_year)
   {
     $this->db->where('academic_year', $academic_year);
+    $this->db->where('admission_based !=', 'BE');
+    $this->db->order_by('reg_date', 'DESC');
+    return $this->db->get('enquiries');
+  }
+  function mtechgetEnquiries($academic_year)
+  {
+    $this->db->where('academic_year', $academic_year);
+    $this->db->where('admission_based', 'BE');
     $this->db->order_by('reg_date', 'DESC');
     return $this->db->get('enquiries');
   }
@@ -258,6 +266,18 @@ class Admin_model extends CI_Model
     if ($value2 != null) {
       $this->db->where($field2, $value2);
     }
+    return $this->db->get($tableName);
+  }
+  function fetchDetails3($select, $field1, $value1, $field2, $value2,$value3, $tableName)
+  {
+    $this->db->select($select);
+    if ($value1 != null) {
+      $this->db->where($field1, $value1);
+    }
+    if ($value2 != null) {
+      $this->db->where($field2, $value2);
+    }
+    $this->db->where('stream_id', $value3);
     return $this->db->get($tableName);
   }
 

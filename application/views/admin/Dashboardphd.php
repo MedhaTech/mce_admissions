@@ -21,15 +21,15 @@
                             <!-- <table class="table table-bordered table-striped dataTable dtr-inline" border='1' id="dataTable"> -->
                             <table class="table table-hover text-center table-sm">
                                 <thead>
-                                <tr><th class='bg-gray' colspan='13'>PHD COURSES (UNAIDED)</th></tr>
+                                <tr><th class='bg-gray' colspan='13'>PHD COURSES (Research Centers)</th></tr>
                                     <tr class=" text-xs">
                                         <th width="5%">S.NO</th>
                                         <!-- <th width="20%">Stream</th> -->
-                                        <th width="25%">DEPARTMENT</th>
+                                        <th width="45%">List of research centers for PHD courses</th>
                                        
-                                        <th class='text-center' width="7%">KEA-CET(GOVT) <br /> STATUS</th>
+                                        <th class='text-center' width="7%">PHD STATUS</th>
                                         
-                                        <th class='text-center' width="7%">TOTAL <br /> STATUS</th>
+                                        <th class='text-center' width="7%">TOTAL <br /> </th>
                                        
                                     </tr>
                                 </thead>
