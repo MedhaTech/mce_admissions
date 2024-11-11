@@ -149,7 +149,7 @@ class Admin extends CI_Controller
 			// echo "<pre>";
 			// print_r($newArr); die;
 
-			$departments = $this->admin_model->getActiveDepartments()->result();
+			$departments = $this->admin_model->getActiveDepartments('1', '0')->result();
 
 			$aided = array();
 			$unaided = array();
@@ -208,7 +208,7 @@ class Admin extends CI_Controller
 			// echo "<pre>";
 			// print_r($newArr); die;
 
-			$departments = $this->admin_model->getActiveDepartments()->result();
+			$departments = $this->admin_model->getActiveDepartments('1', '0')->result();
 
 			$aided = array();
 			$unaided = array();
@@ -267,7 +267,7 @@ class Admin extends CI_Controller
 			// echo "<pre>";
 			// print_r($newArr); die;
 
-			$departments = $this->admin_model->getActiveDepartments()->result();
+			$departments = $this->admin_model->getActiveDepartments('1', '0')->result();
 			$aided = array();
 			$unaided = array();
 			foreach ($departments as $departments1) {
@@ -314,7 +314,7 @@ class Admin extends CI_Controller
 
 			// echo "<pre>";
 			// print_r($depart); die();
-			$unaidedmgmt = array();	
+			$unaidedmgmt = array();
 			$unaidedcomed = array();
 			foreach ($depart as $depart1) {
 				if ($depart1->unaided_mgmt_intake) {
@@ -431,7 +431,7 @@ class Admin extends CI_Controller
 
 			$data['page_title'] = "Dashboard";
 			$data['menu'] = "dashboard";
-			$details = $this->admin_model->getActiveDepartments()->result();
+			$details = $this->admin_model->getActiveDepartments('1', '0')->result();
 			$aided = array();
 			$unaided = array();
 			foreach ($details as $details1) {
@@ -1200,7 +1200,7 @@ class Admin extends CI_Controller
 			$data['page_title'] = "Departments";
 			$data['menu'] = "departments";
 
-			$data['details'] = $this->admin_model->getActiveDepartments()->result();
+			$data['details'] = $this->admin_model->getActiveDepartments('0', '0')->result();
 			// echo "<pre>"; print_r($data['details']); die;
 
 			$this->admin_template->show('admin/departments', $data);
@@ -1221,7 +1221,7 @@ class Admin extends CI_Controller
 			$data['page_title'] = "Intake Capacity";
 			$data['menu'] = "intake";
 
-			$details = $this->admin_model->getActiveDepartments()->result();
+			$details = $this->admin_model->getActiveDepartments('1', '0')->result();
 			$aided = array();
 			$unaided = array();
 			foreach ($details as $details1) {
@@ -3660,14 +3660,153 @@ With good wishes";
 
 			$currentAcademicYear = $this->globals->currentAcademicYear();
 			$data['page_title'] = $currentAcademicYear . ' REPORT DEMAND COLLECTION BALANCE (DCB)';
+			$data['menu'] = "reports";
+
+			$data['deptsDropdown'] = array(' ' => 'Select', 'all' => 'All Branches') + $this->getDeptsDropdown('1');
+
+			$this->admin_template->show('admin/dcb_report', $data);
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function dcb_report_download()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$dept_id = $this->input->post('dept_id');
+			$admission_type = $this->input->post('admission_type');
+			$sub_quota = $this->input->post('sub_quota');
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$data['page_title'] = $currentAcademicYear . ' REPORT DEMAND COLLECTION BALANCE (DCB)';
+			$data['menu'] = 'DCBReport';
+
+			$admissions = $this->admin_model->DCBReport('1',$dept_id, $admission_type, $sub_quota)->result();
+			// echo "<pre>";
+			// print_r($admissions);
+			// die;
+
+			$paidFees = $this->admin_model->overallPaidFee()->result();
+			$paidFeesArray = array();
+			foreach ($paidFees as $paidFees1) {
+				$paidFeesArray[$paidFees1->admissions_id] = $paidFees1->paid_amount;
+			}
+
+			$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+			$this->table->set_template($table_setup);
+			// $table_setup = array ('table_open'=> '<table class="table table-bordered font14" border="1" id="dataTable" >');
+			// $this->table->set_template($table_setup);
+
+			$print_fields = array(
+				'S.No',
+				'Academic Year',
+				'Course',
+				'Student Name',
+				'USN',
+				'Quota',
+				'Sub Quota',
+				'College Code',
+				'Studying Year',
+				'Mobile',
+				'Father Number',
+				'Caste',
+				'Alloted Category',
+				'claimed Category',
+				'Admit. Date',
+				'College Fee Demand',
+				'College Fee Paid',
+				'College Fee Balance',
+				'Corpus Fee Demand',
+				'Corpus Fee Paid',
+				'Corpus Fee Balance',
+				'Remarks'
+			);
+
+			$this->table->set_heading($print_fields);
+			$i = 1;
+			foreach ($admissions as $admissions1) {
+				$dept_name = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+				if ($admissions1->quota != 'KEA-CET(LATERAL)') {
+					$year = "I";
+				} else {
+					$year = "II";
+				}
+
+				$collegeFeeDemand = $admissions1->total_college_fee;
+				$paidFeeAmount = ($paidFeesArray[$admissions1->id]) ? $paidFeesArray[$admissions1->id] : 0;
+				$balanceFeeamount = $collegeFeeDemand - $paidFeeAmount;
+
+				$result_array = array(
+					$i++,
+					// $admissions1->academic_year,
+					// $admissions1->reg_no,
+					$admissions1->academic_year,
+					$dept_name,
+					$admissions1->student_name,
+					$admissions1->usn,
+					$admissions1->quota,
+					$admissions1->sub_quota,
+					$admissions1->college_code,
+					$year,
+					$admissions1->mobile,
+					$admissions1->father_mobile,
+					$admissions1->caste,
+					$admissions1->category_allotted,
+					$admissions1->category_claimed,
+					($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
+					$collegeFeeDemand,
+					$paidFeeAmount,
+					$balanceFeeamount,
+					$admissions1->corpus_fund,
+					"--",
+					"--",
+					// ($admissions1->next_due_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->next_due_date)) : '',
+					$admissions1->remarks
+				);
+				// var_dump($result_array);
+				$this->table->add_row($result_array);
+			}
+			$data['table'] = $this->table->generate();
+			
+			$response = array(
+				'op' => 'ok',
+				'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+			);
+			die(json_encode($response));
+			
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function dcb_report1($download = 0)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$data['page_title'] = $currentAcademicYear . ' REPORT DEMAND COLLECTION BALANCE (DCB)';
 			$data['menu'] = 'DCBReport';
 
 			$data['download_action'] = 'admin/dcb_report';
 			$data['course_options'] = array("" => "Select") + $this->courses();
 			$currentAcademicYear = $this->globals->currentAcademicYear();
+
 			// $admissions = $this->admin_model->DCBReport($currentAcademicYear)->result();
 			$admissions = $this->admin_model->DCBReport($currentAcademicYear)->result();
-
+			echo "<pre>";
+			print_r($admissions);
+			die;
 			if ($_POST) {
 				$course = $this->input->post('course');
 				$syear = $this->input->post('year');
@@ -9708,6 +9847,27 @@ With good wishes";
 		$this->session->set_flashdata('success', 'Comment added successfully.');
 		redirect('admin/admissiondetails/' . $encryptedId);
 	}
+
+	function getDeptsDropdown($stream_id)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$departments = $this->admin_model->getActiveDepartments($stream_id, '0')->result();
+			$return = array();
+			foreach ($departments as $departments1) {
+				$return[$departments1->department_id] = $departments1->stream_short_name . '-' . $departments1->department_name;
+			}
+			return $return;
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
 	function quotaDropdown()
 	{
 		if ($this->session->userdata('logged_in')) {
