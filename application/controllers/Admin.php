@@ -12283,4 +12283,60 @@ With good wishes";
 		}
 	}
 
+
+	function pg_dashboard()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = "Dashboard";
+			$data['menu'] = "pg_dashboard";
+			$data['enquiryStatus'] = $this->globals->enquiryStatus();
+			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+
+			$admissionStats = $this->admin_model->getAdmissionOverallStats(0, 1)->result();
+			$aidedAdmitted = array();
+			$unaidedAdmitted = array();
+
+			$newArr = array("Aided" => array(), "UnAided" => array());
+			foreach ($admissionStats as $admissionStats1) {
+				$newArr[$admissionStats1->sub_quota][$admissionStats1->dept_id][$admissionStats1->quota] = $admissionStats1->cnt;
+			}
+			$data['newArr'] = $newArr;
+
+			$endorsementArr = array("Aided" => array(), "UnAided" => array());
+			foreach ($endorsementStats as $endorsementStats1) {
+				$endorsementArr[$endorsementStats1->sub_quota][$endorsementStats1->dept_id][$endorsementStats1->quota] = $endorsementStats1->cnt;
+			}
+			$data['endorsementArr'] = $endorsementArr;
+
+			// echo "<pre>";
+			// print_r($newArr); die;
+
+			$departments = $this->admin_model->getActiveDepartments('2', '0')->result();
+
+			$aided = array();
+			$unaided = array();
+			foreach ($departments as $departments1) {
+				if ($departments1->aided_intake) {
+					array_push($aided, $departments1);
+				}
+				if ($departments1->unaided_intake) {
+					array_push($unaided, $departments1);
+				}
+			}
+			$data['aided'] = $aided;
+			$data['unaided'] = $unaided;
+
+			$this->admin_template->show('admin/Dashboardpg', $data);
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
 }
