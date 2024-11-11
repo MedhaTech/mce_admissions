@@ -221,6 +221,7 @@ class Globals
             'STH'=>'STH',
             'STK'=>'STK',
             'STR'=>'STR',
+            'SNQ'=>'SNQ',
             'XD'=>'XD',
         );
     }
@@ -296,7 +297,7 @@ class Globals
             'STH'=>'STH',
             'STK'=>'STK',
             'STR'=>'STR',
-           
+            'SNQ'=>'SNQ',
         );
     }
 
