@@ -582,7 +582,7 @@ class Admin_model extends CI_Model
     return $query;
   }
 
-  function DCBReport($stream_id, $dept_id, $admission_type)
+  function DCBReport($stream_id, $dept_id, $admission_type, $sub_quota)
   {
     $this->db->select(
       '
@@ -617,6 +617,9 @@ class Admin_model extends CI_Model
     $this->db->join('fee_master', 'admissions.id = fee_master.student_id', 'left');
     if ($stream_id != 'all') {
       $this->db->where('admissions.stream_id', $stream_id);
+    }
+    if ($sub_quota != 'all') {
+      $this->db->where('admissions.sub_quota', $sub_quota);
     }
     if ($dept_id != 'all') {
       $this->db->where('admissions.dept_id', $dept_id);

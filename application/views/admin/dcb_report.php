@@ -40,6 +40,14 @@
                                 </div>
 
                                 <div class="form-group row">
+                                    <label for="inputEmail3" class="col-md-4 col-form-label">Sub Quota</label>
+                                    <div class="col-md-8">
+                                        <?php $sub_quotas = array("all"=>"All Sub Quotas", "Aided" => "Aided","UnAided" => "UnAided");
+                                        echo form_dropdown('sub_quota', $sub_quotas, (set_value('sub_quota')) ? set_value('sub_quota') : '', 'class="form-control form-control" id="sub_quota"'); ?>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
                                     <div class="col-md-8 offset-md-4">
                                         <button type="submit" class="btn btn-danger btn-sm" name="download"
                                             id="get_details"><i class="fas fa-download"></i> Download </button>
@@ -66,6 +74,7 @@
 
             var dept_id = $("#dept_id").val();
             var admission_type = $("#admission_type").val();
+            var sub_quota = $("#sub_quota").val();
             
             $("#get_details").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Downloading...');
             $("#get_details").prop('disabled', true);
@@ -78,7 +87,8 @@
                 'url': base_url + 'admin/dcb_report_download',
                 'data': {
                     'dept_id': dept_id,
-                    'admission_type': admission_type
+                    'admission_type': admission_type,
+                    'sub_quota': sub_quota
                 },
                 'dataType': 'json',
                 'cache': false,

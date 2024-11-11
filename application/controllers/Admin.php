@@ -3573,7 +3573,7 @@ With good wishes";
 
 			$currentAcademicYear = $this->globals->currentAcademicYear();
 			$data['page_title'] = $currentAcademicYear . ' REPORT DEMAND COLLECTION BALANCE (DCB)';
-			$data['menu'] = 'DCBReport';
+			$data['menu'] = "reports";
 
 			$data['deptsDropdown'] = array(' ' => 'Select', 'all' => 'All Branches') + $this->getDeptsDropdown('1');
 
@@ -3594,12 +3594,13 @@ With good wishes";
 
 			$dept_id = $this->input->post('dept_id');
 			$admission_type = $this->input->post('admission_type');
+			$sub_quota = $this->input->post('sub_quota');
 
 			$currentAcademicYear = $this->globals->currentAcademicYear();
 			$data['page_title'] = $currentAcademicYear . ' REPORT DEMAND COLLECTION BALANCE (DCB)';
 			$data['menu'] = 'DCBReport';
 
-			$admissions = $this->admin_model->DCBReport('1',$dept_id, $admission_type)->result();
+			$admissions = $this->admin_model->DCBReport('1',$dept_id, $admission_type, $sub_quota)->result();
 			// echo "<pre>";
 			// print_r($admissions);
 			// die;
