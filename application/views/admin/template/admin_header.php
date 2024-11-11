@@ -107,14 +107,14 @@
                             <a href="<?php echo base_url(); ?>admin/dashboard"
                                 class="nav-link <?= $menu_active = ($menu == "dashboard") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>B.E. Dashboard </p>
+                                <p>UG Dashboard </p>
                             </a>
                         </li>
                         <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/phd_dashboard"
                                 class="nav-link <?= $menu_active = ($menu == "phd_dashboard") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>Ph.D Dashboard </p>
+                                <p>PhD Dashboard </p>
                             </a>
                         </li>
                         <?php } ?>
@@ -126,7 +126,14 @@
                             <a href="<?php echo base_url(); ?>admin/enquiries"
                                 class="nav-link <?= $menu_active = ($menu == "enquiries") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-th"></i>
-                                <p> All Enquiries </p>
+                                <p> UG Enquiries </p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a href="<?php echo base_url(); ?>admin/mtechenquiries"
+                                class="nav-link <?= $menu_active = ($menu == "mtechenquiries") ? 'active' : ''; ?>">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p> PG Enquiries </p>
                             </a>
                         </li>
                         <?php } ?>
@@ -147,7 +154,21 @@
                             <a href="<?php echo base_url(); ?>admin/admissions"
                                 class="nav-link <?= $menu_active = ($menu == "admissions") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-th"></i>
-                                <p> All Admissions </p>
+                                <p> UG Admissions </p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a href="<?php echo base_url(); ?>admin/pgadmissions"
+                                class="nav-link <?= $menu_active = ($menu == "pgadmissions") ? 'active' : ''; ?>">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p> PG Admissions </p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a href="<?php echo base_url(); ?>admin/phdadmissions"
+                                class="nav-link <?= $menu_active = ($menu == "phdadmissions") ? 'active' : ''; ?>">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p> PhD Admissions </p>
                             </a>
                         </li>
                         <?php } ?>

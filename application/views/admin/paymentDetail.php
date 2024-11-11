@@ -183,14 +183,27 @@
                             $url = '-';
                             $button = '-';
                         } else {
+
+
+                            if ($admissionDetails->stream_id == 1) {
+
+                                $slno = "TF24-25/";
+                            } elseif ($admissionDetails->stream_id == 2) {
+
+                                $slno = "ME24-25/";
+                            } else {
+
+                                $slno = "PHD24-25/";
+                            }
+
                             if ($paymentDetails1->voucher_type == 1 ||  $paymentDetails1->voucher_type == 5) {
-                                $url = anchor('admin/cashvoucher/' . $encryptId . '/' . $paymentDetails1->id, "TF24-25/" . $paymentDetails1->id);
+                                $url = anchor('admin/cashvoucher/' . $encryptId . '/' . $paymentDetails1->id, $slno . $paymentDetails1->id);
                             }
                             if ($paymentDetails1->voucher_type == 2) {
-                                $url = anchor('admin/voucherletter/' . $encryptId . '/' . $paymentDetails1->id, "TF24-25/" . $paymentDetails1->id);
+                                $url = anchor('admin/voucherletter/' . $encryptId . '/' . $paymentDetails1->id, $slno . $paymentDetails1->id);
                             }
                             if ($paymentDetails1->voucher_type == 4) {
-                                $url = anchor('admin/onlinevoucher/' . $encryptId . '/' . $paymentDetails1->id, "TF24-25/" . $paymentDetails1->id);
+                                $url = anchor('admin/onlinevoucher/' . $encryptId . '/' . $paymentDetails1->id, $slno . $paymentDetails1->id);
                             }
 
 
