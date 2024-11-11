@@ -102,9 +102,9 @@ class Student extends CI_Controller
 			$data['student_name'] = $student_session['student_name'];
 			$data['page_title'] = "Dashboard";
 			$data['menu'] = "dashboard";
-	
+
 			$flow = $this->admin_model->getDetailsFilter('flow', $data['id'], 'admissions')->row()->flow;
-	
+
 			if ($flow) {
 				$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$data['entranceDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
@@ -112,40 +112,46 @@ class Student extends CI_Controller
 				$data['parentDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 				$data['educations_details'] = $this->admin_model->getDetailsbyfield($student_id, 'student_id', 'student_education_details')->result();
 				$data['flow_status'] = $flow;
-				
+
 				$upload_path = "./assets/students/$student_id/";
-	
-			// Check if the directory exists
-			$photo = null;
-			if (is_dir($upload_path)) {
-				// Get list of files in the directory
-				$files = scandir($upload_path);
 
-				// Remove . and .. from the list
-				$files = array_diff($files, array('.', '..'));
+				// Check if the directory exists
+				$photo = null;
+				if (is_dir($upload_path)) {
+					// Get list of files in the directory
+					$files = scandir($upload_path);
 
-				// Filter for photo files
-				$image_extensions = array('jpg', 'jpeg', 'png');
-				foreach ($files as $file) {
-					$ext = pathinfo($file, PATHINFO_EXTENSION);
-					$filename = pathinfo($file, PATHINFO_FILENAME);
+					// Remove . and .. from the list
+					$files = array_diff($files, array('.', '..'));
 
-					// Check if the file is an image and contains keywords like 'profile' or the student's ID
-					if (in_array(strtolower($ext), $image_extensions) && 
-						(stripos($filename, 'profile') !== false)) {
-						$photo = $upload_path . $file;  // Use the first matching photo found
-						break;
+					// Filter for photo files
+					$image_extensions = array('jpg', 'jpeg', 'png');
+					foreach ($files as $file) {
+						$ext = pathinfo($file, PATHINFO_EXTENSION);
+						$filename = pathinfo($file, PATHINFO_FILENAME);
+
+						// Check if the file is an image and contains keywords like 'profile' or the student's ID
+						if (
+							in_array(strtolower($ext), $image_extensions) &&
+							(stripos($filename, 'profile') !== false)
+						) {
+							$photo = $upload_path . $file;  // Use the first matching photo found
+							break;
+						}
 					}
+
+					$data['files'] = $files;
+				} else {
+					$data['files'] = array();
 				}
+				if ($data['admissionDetails']->stream_id == 3) {
+					$this->student_template->show('student/finishphd', $data);
+				} else {
+					$this->student_template->show('student/finish', $data);
+				}
+				$data['student_photo'] = $photo;  // Pass the photo path to the view
 
-				$data['files'] = $files;
-			} else {
-				$data['files'] = array();
-			}
 
-			$data['student_photo'] = $photo;  // Pass the photo path to the view
-	
-				$this->student_template->show('student/finish', $data);
 			} else {
 				$this->student_template->show('student/Dashboard', $data);
 			}
@@ -153,7 +159,7 @@ class Student extends CI_Controller
 			redirect('student', 'refresh');
 		}
 	}
-	
+
 
 	function startProcess()
 	{
@@ -349,7 +355,7 @@ class Student extends CI_Controller
 			$data['religion_option'] = array(" " => "Select Religion") + $this->globals->religion();
 			$data['caste_option'] = array(" " => "Select Caste") + $this->globals->caste();
 			$data['countries'] = $this->admin_model->getCountries();
-			$data['states1']= $this->admin_model->get_states();
+			$data['states1'] = $this->admin_model->get_states();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 
 			$this->load->library('form_validation');
@@ -1014,7 +1020,7 @@ class Student extends CI_Controller
 						}
 					}
 
-					
+
 					$result = $this->admin_model->insertDetails('student_education_details', $insertDetails1);
 				}
 
@@ -1133,7 +1139,7 @@ class Student extends CI_Controller
 			$data['page_title'] = "Finish";
 			$data['menu'] = "finish";
 			$data['id'] = $student_session['id'];
-			$updateDetails = array('flow' => '2','updated_on' => date('Y-m-d h:i:s'));
+			$updateDetails = array('flow' => '2', 'updated_on' => date('Y-m-d h:i:s'));
 			$result = $this->admin_model->updateDetails($data['id'], $updateDetails, 'admissions');
 			$this->student_template->show('student/completed', $data);
 		} else {
@@ -1157,7 +1163,7 @@ class Student extends CI_Controller
 			$data['transactionDetails'] = $this->admin_model->getDetailsbyfield($student_id, 'admissions_id', 'transactions')->result();
 			$data['paid_amount'] = $this->admin_model->paidfee('admissions_id', $student_id, 'transaction_status', '1', 'transactions');
 			// $data['paymentDetail'] = $this->admin_model->getDetailsbyfield($student_id, 'admission_id', 'payment_structure')->result();
-			$data['paymentDetail'] = $this->admin_model->getDetailsbyfield2('admission_id',$student_id, 'offline','0', 'payment_structure')->result();
+			$data['paymentDetail'] = $this->admin_model->getDetailsbyfield2('admission_id', $student_id, 'offline', '0', 'payment_structure')->result();
 			// $this->student_template->show('student/fee_details', $data);
 
 			$this->form_validation->set_rules('mode_of_payment', 'Mode of Payment', 'required');
@@ -1328,7 +1334,7 @@ class Student extends CI_Controller
 			$pdf->Cell(0, $row, "Course & Combination", 1, 0, 'L', false);
 			$pdf->setFont('Arial', '', 9);
 			$pdf->SetXY(50, $y + $row);
-			$pdf->Cell(0, $row, $studentfeeDetails->year.' Year - B.E ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"], 1, 0, 'L', false);
+			$pdf->Cell(0, $row, $studentfeeDetails->year . ' Year - B.E ' . $this->admin_model->get_dept_by_id($data['admissionDetails']->dept_id)["department_name"], 1, 0, 'L', false);
 
 			$y = $pdf->getY();
 			$pdf->setFont('Arial', 'B', 9);
@@ -1369,7 +1375,7 @@ class Student extends CI_Controller
 			$pdf->Cell(0, $row, "Mode of Payment", 1, 0, 'L', false);
 			$pdf->setFont('Arial', '', 9);
 			$pdf->SetXY(50, $y + $row);
-			$transactionTypes = array("1" => "Cash", "2"=>"DD", "3"=>"Online Payment", "4"=>"Online Transfer");
+			$transactionTypes = array("1" => "Cash", "2" => "DD", "3" => "Online Payment", "4" => "Online Transfer");
 			$pdf->Cell(0, $row, $transactionTypes[$transactionDetails->transaction_type], 1, 0, 'L', false);
 
 			$final_amount = $admissionDetails->final_amount;
@@ -1643,7 +1649,7 @@ class Student extends CI_Controller
 			$data['id'] = $student_session['id'];
 			$data['page_title'] = 'Update Education Details';
 			$data['menu'] = 'educationdetails';
-			
+
 			$this->form_validation->set_rules('education_level', 'Education Level', 'required');
 			// $this->form_validation->set_rules('inst_type', 'Institution Type', 'required');
 			$this->form_validation->set_rules('inst_board', 'Board / University', 'required');

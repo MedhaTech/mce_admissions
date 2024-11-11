@@ -87,12 +87,11 @@ if($_SERVER['HTTP_HOST']=="admissions.mcehassan.ac.in"){
 
 $query_builder = TRUE;
 
-
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => '15.206.117.153',
-	'username' => 'Dev-user',
-	'password' => 'mce_dev@123GK',
+	'username' => 'admin',
+	'password' => 'Mcehassan@mysql2023',
 	'database' => 'mce_dev',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

@@ -129,18 +129,28 @@ class Admin extends CI_Controller
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 
-			$admissionStats = $this->admin_model->getAdmissionOverallStats(0)->result();
+			$endorsementStats = $this->admin_model->getEndorsmentIssued(0, 1)->result();
+			$admissionStats = $this->admin_model->getAdmissionOverallStats(0, 1)->result();
 			$aidedAdmitted = array();
 			$unaidedAdmitted = array();
-			// echo "<pre>";
+
 			$newArr = array("Aided" => array(), "UnAided" => array());
 			foreach ($admissionStats as $admissionStats1) {
 				$newArr[$admissionStats1->sub_quota][$admissionStats1->dept_id][$admissionStats1->quota] = $admissionStats1->cnt;
 			}
 			$data['newArr'] = $newArr;
+
+			$endorsementArr = array("Aided" => array(), "UnAided" => array());
+			foreach ($endorsementStats as $endorsementStats1) {
+				$endorsementArr[$endorsementStats1->sub_quota][$endorsementStats1->dept_id][$endorsementStats1->quota] = $endorsementStats1->cnt;
+			}
+			$data['endorsementArr'] = $endorsementArr;
+
 			// echo "<pre>";
 			// print_r($newArr); die;
+
 			$departments = $this->admin_model->getActiveDepartments()->result();
+
 			$aided = array();
 			$unaided = array();
 			foreach ($departments as $departments1) {
@@ -155,6 +165,126 @@ class Admin extends CI_Controller
 			$data['unaided'] = $unaided;
 
 			$this->admin_template->show('admin/Dashboard', $data);
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+	function mgmt_dashboard()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = "Dashboard";
+			$data['menu'] = "dashboard";
+			$data['enquiryStatus'] = $this->globals->enquiryStatus();
+			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+
+			$endorsementStats = $this->admin_model->getEndorsmentIssued(0, 1)->result();
+			$admissionStats = $this->admin_model->getAdmissionOverallStats(0, 1)->result();
+			$aidedAdmitted = array();
+			$unaidedAdmitted = array();
+
+			// echo "<pre>";
+			// print_r($newArr); die;
+
+			$newArr = array("Aided" => array(), "UnAided" => array());
+			foreach ($admissionStats as $admissionStats1) {
+				$newArr[$admissionStats1->sub_quota][$admissionStats1->dept_id][$admissionStats1->quota] = $admissionStats1->cnt;
+			}
+			$data['newArr'] = $newArr;
+
+			$endorsementArr = array("Aided" => array(), "UnAided" => array());
+			foreach ($endorsementStats as $endorsementStats1) {
+				$endorsementArr[$endorsementStats1->sub_quota][$endorsementStats1->dept_id][$endorsementStats1->quota] = $endorsementStats1->cnt;
+			}
+			$data['endorsementArr'] = $endorsementArr;
+
+			// echo "<pre>";
+			// print_r($newArr); die;
+
+			$departments = $this->admin_model->getActiveDepartments()->result();
+
+			$aided = array();
+			$unaided = array();
+			foreach ($departments as $departments1) {
+				if ($departments1->aided_intake) {
+					array_push($aided, $departments1);
+				}
+				if ($departments1->unaided_intake) {
+					array_push($unaided, $departments1);
+				}
+			}
+			$data['aided'] = $aided;
+			$data['unaided'] = $unaided;
+
+			$this->admin_template->show('admin/mgmt_dashboard', $data);
+		} else {
+			redirect('admin', 'refresh');
+		}
+	}
+
+	function lateral_dashboard()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = "Dashboard";
+			$data['menu'] = "dashboard";
+			$data['enquiryStatus'] = $this->globals->enquiryStatus();
+			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+
+			$endorsementStats = $this->admin_model->getEndorsmentIssued(0, 1)->result();
+			$admissionStats = $this->admin_model->getAdmissionOverallStats(0, 1)->result();
+			$aidedAdmitted = array();
+			$unaidedAdmitted = array();
+
+			// echo "<pre>";
+			// print_r($newArr); die;
+
+			$newArr = array("Aided" => array(), "UnAided" => array());
+			foreach ($admissionStats as $admissionStats1) {
+				$newArr[$admissionStats1->sub_quota][$admissionStats1->dept_id][$admissionStats1->quota] = $admissionStats1->cnt;
+			}
+			$data['newArr'] = $newArr;
+
+			$endorsementArr = array("Aided" => array(), "UnAided" => array());
+			foreach ($endorsementStats as $endorsementStats1) {
+				$endorsementArr[$endorsementStats1->sub_quota][$endorsementStats1->dept_id][$endorsementStats1->quota] = $endorsementStats1->cnt;
+			}
+			$data['endorsementArr'] = $endorsementArr;
+
+			// echo "<pre>";
+			// print_r($newArr); die;
+
+			$departments = $this->admin_model->getActiveDepartments()->result();
+			$aided = array();
+			$unaided = array();
+			foreach ($departments as $departments1) {
+				if ($departments1->aided_intake) {
+					array_push($aided, $departments1);
+				}
+				if ($departments1->unaided_intake) {
+					array_push($unaided, $departments1);
+				}
+			}
+			$data['aided'] = $aided;
+			$data['unaided'] = $unaided;
+
+			// echo "<pre>";
+			// print_r($unaided); die;
+
+			$this->admin_template->show('admin/lateral_dashboard', $data);
 		} else {
 			redirect('admin', 'refresh');
 		}
@@ -175,7 +305,8 @@ class Admin extends CI_Controller
 			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 
-			$admissionStats = $this->admin_model->getAdmissionOverallStats(0)->result();
+			$admissionStats = $this->admin_model->getAdmissionOverallStats(0, 1)->result();
+
 			$aidedAdmitted = array();
 			$unaidedAdmitted = array();
 			// echo "<pre>";
@@ -183,7 +314,7 @@ class Admin extends CI_Controller
 
 			// echo "<pre>";
 			// print_r($depart); die();
-			$unaidedmgmt = array();
+			$unaidedmgmt = array();	
 			$unaidedcomed = array();
 			foreach ($depart as $depart1) {
 				if ($depart1->unaided_mgmt_intake) {
@@ -313,6 +444,14 @@ class Admin extends CI_Controller
 			}
 			$data['aided'] = $aided;
 			$data['unaided'] = $unaided;
+
+			$endorsementStats = $this->admin_model->getEndorsmentIssued(0, 1)->result();
+			$endorsementArr = array("Aided" => array(), "UnAided" => array());
+			foreach ($endorsementStats as $endorsementStats1) {
+				$endorsementArr[$endorsementStats1->sub_quota][$endorsementStats1->dept_id][$endorsementStats1->quota] = $endorsementStats1->cnt;
+			}
+			$data['endorsementArr'] = $endorsementArr;
+
 			$this->admin_template->show('admin/Dashboard1', $data);
 		} else {
 			redirect('admin', 'refresh');
@@ -547,10 +686,19 @@ class Admin extends CI_Controller
 
 			$data['page_title'] = 'Enquiries';
 			$data['menu'] = 'enquiries';
+			$data['enquiryDetails'] = $this->admin_model->getDetails('enquiries', $id)->row();
+			if ($data['enquiryDetails']->admission_based == 'BE') {
+				$data['stream'] = 2;
+				$data['course_options'] = array(" " => "Select") + $this->pgcourses();
+				$data['quota_options'] = array(" " => "Select", "MGMT" => "MGMT");
+				$data['subquota_options'] = array(" " => "Select") + $this->globals->sub_quota();
+			} else {
+				$data['stream'] = 1;
+				$data['course_options'] = array(" " => "Select") + $this->courses();
+				$data['quota_options'] = array(" " => "Select", "MGMT" => "MGMT", "MGMT-COMEDK" => "MGMT-COMEDK", "MGMT-LATERAL" => "MGMT-LATERAL");
+				$data['subquota_options'] = array(" " => "Select") + $this->globals->sub_quota();
+			}
 
-			$data['course_options'] = array(" " => "Select") + $this->courses();
-			$data['quota_options'] = array(" " => "Select", "MGMT" => "MGMT", "MGMT-COMEDK" => "MGMT-COMEDK", "MGMT-LATERAL" => "MGMT-LATERAL");
-			$data['subquota_options'] = array(" " => "Select") + $this->globals->sub_quota();
 			$data['type_options'] = array(" " => "Select") + $this->globals->category();
 
 			$data['enquiryStatus'] = $this->globals->enquiryStatus();
@@ -559,7 +707,7 @@ class Admin extends CI_Controller
 			// $data['feeCourses'] = array("" => "Select") + $this->getFeeCourses();
 			// $data['languages'] = array("" => "Select") + $this->globals->languages();
 
-			$data['enquiryDetails'] = $this->admin_model->getDetails('enquiries', $id)->row();
+
 			// var_dump($this->db->last_query());
 			$data['comments'] = $this->admin_model->getDetailsbyfield($id, 'enq_id', 'enq_comments')->result();
 
@@ -700,7 +848,29 @@ class Admin extends CI_Controller
 			$data['full_name'] = $session_data['full_name'];
 			$data['role'] = $session_data['role'];
 
-			$details = $this->admin_model->getDetailsbyfield('1', 'status', 'departments')->result();
+			$details = $this->admin_model->getDetailsbyfield2('status', '1', 'stream_id', '1', 'departments')->result();
+
+			$result = array();
+			foreach ($details as $details1) {
+				$row = $this->admin_model->get_stream_by_id($details1->stream_id);
+				$result[$details1->department_id] = $row['stream_short_name'] . ' - ' . $details1->department_name;
+			}
+
+			return $result;
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+	function pgcourses()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$details = $this->admin_model->getDetailsbyfield2('status', '1', 'stream_id', '2', 'departments')->result();
 
 			$result = array();
 			foreach ($details as $details1) {
@@ -797,7 +967,7 @@ class Admin extends CI_Controller
 			$stream = $this->input->post('stream');
 			$sub_quota = $this->input->post('subquota');
 
-			$details = $this->admin_model->getFee_new($course, $quota, $sub_quota,$stream)->row();
+			$details = $this->admin_model->getFee_new($course, $quota, $sub_quota, $stream)->row();
 			// var_dump($this->db->last_query());
 			// $details = [
 			// 	"aided_unaided" => "Aided",
@@ -5404,7 +5574,8 @@ With good wishes";
 				}
 
 				$updateDetails['admission_id'] = $id;
-				$updateDetails['mobile'] = $data['admissionDetails']->mobile;;
+				$updateDetails['mobile'] = $data['admissionDetails']->mobile;
+				;
 				$updateDetails['final_fee'] = $this->input->post('final_fee');
 				$updateDetails['requested_by'] = $data['full_name'];
 				$updateDetails['requested_on'] = date('Y-m-d h:i:s');
@@ -5480,7 +5651,7 @@ With good wishes";
 
 			$pdf->SetFont('Arial', '', 9);
 			$pdf->SetXY(-30, $topGap + 5);
-			$pdf->Cell(0, 10, 'Date:' . date('d-m-Y'), 0, 1, 'R');
+			$pdf->Cell(0, 10, 'Date:23-10-2024', 0, 1, 'R');
 
 			$pdf->SetFont('Arial', 'BU', 12);
 			$pdf->SetY($topGap + 20);
@@ -6409,7 +6580,7 @@ With good wishes";
 			$id = base64_decode($encryptId);
 			$admissionSingle = $this->admin_model->getDetails('admissions', $id)->row();
 
-			$data['fee_structure'] = $this->admin_model->getFee($admissionSingle->dept_id, $admissionSingle->quota, $admissionSingle->sub_quota)->row();
+			$data['fee_structure'] = $this->admin_model->getFee_new($admissionSingle->dept_id, $admissionSingle->quota, $admissionSingle->sub_quota, $admissionSingle->stream_id)->row();
 			$data['stud_id'] = $id;
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $id)->row();
 			$this->form_validation->set_rules('voucher_type', 'Voucher Type', 'required');
@@ -6417,7 +6588,11 @@ With good wishes";
 			$this->form_validation->set_rules('final_fee', 'Total Amount', 'numeric|required');
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/new_voucher/' . $encryptId;
-				$this->admin_template->show('admin/new_voucher', $data);
+				if ($admissionSingle->stream_id == 3) {
+					$this->admin_template->show('admin/new_voucherphd', $data);
+				} else {
+					$this->admin_template->show('admin/new_voucher', $data);
+				}
 			} else {
 
 
@@ -6456,7 +6631,8 @@ With good wishes";
 
 
 				$updateDetails['admission_id'] = $id;
-				$updateDetails['mobile'] = $data['admissionDetails']->mobile;;
+				$updateDetails['mobile'] = $data['admissionDetails']->mobile;
+				;
 				$updateDetails['final_fee'] = $this->input->post('final_fee');
 				$updateDetails['requested_by'] = $data['full_name'];
 				$updateDetails['requested_on'] = date('Y-m-d h:i:s');
@@ -6801,10 +6977,22 @@ With good wishes";
 			$contactInfo1 = "SALAGAME ROAD HASSAN";
 			$contactInfo2 = "State Name : Karnataka";
 			$affiliation = "FEE RECEIPT";
-			$contactInfo = "UG (AY-2024-2025)";
+			if ($admissionDetails->stream_id == 1) {
+				$programe = "PROGRAM : B.E";
+				$contactInfo = "UG (AY-2024-2025)";
+				$chellan = "Challan : TF24-25/" . $voucherDetails->id;
+			} elseif ($admissionDetails->stream_id == 2) {
+				$programe = "PROGRAM : M.E";
+				$contactInfo = "PG (AY-2024-2025)";
+				$chellan = "Challan : ME24-25/" . $voucherDetails->id;
+			} else {
+				$programe = "PROGRAM : PHD";
+				$contactInfo = "PHD (AY-2024-2025)";
+				$chellan = "Chellan : PHD24-25/" . $voucherDetails->id;
+			}
 
 			$issuedOn = "Date : " . date("m-d-Y ");
-			$programe = "PROGRAM : B.E";
+			// $programe = "PROGRAM : B.E";
 			$chellan = "Challan : TF24-25/" . $voucherDetails->id;
 			$dept = "Dept. :" . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"];
 			$bcopy = "BANK COPY";
@@ -6843,6 +7031,7 @@ With good wishes";
 				'Indian Red Cross Membership Fee' => $voucherDetails->indian_red_cross_membership_fee,
 				'Women Cell Fee' => $voucherDetails->women_cell_fee,
 				'NSS Fee' => $voucherDetails->nss_fee,
+				'Library Fee' => $voucherDetails->library_fee,
 				'University Registration Fee' => $voucherDetails->university_registration_fee
 			];
 
@@ -6852,12 +7041,18 @@ With good wishes";
 					$university += $feeValue;
 				}
 			}
+
+			if ($admissionDetails->stream_id == 3) {
+				$university += $voucherDetails->admission_fee;
+			} else {
+				if ($voucherDetails->admission_fee > 0) {
+					$tableData[] = ['Admission Fee', $voucherDetails->admission_fee];
+				}
+			}
 			if ($university > 0) {
 				$tableData[] = ["University Other Fee", number_format($university, 2)];
 			}
-			if ($voucherDetails->admission_fee > 0) {
-				$tableData[] = ['Admission Fee', number_format($voucherDetails->admission_fee, 2)];
-			}
+
 			if ($voucherDetails->processing_fee_paid_at_kea > 0) {
 				$tableData[] = ['Processing Fee Paid at KEA', number_format($voucherDetails->processing_fee_paid_at_kea, 2)];
 			}
@@ -6876,7 +7071,7 @@ With good wishes";
 				$collegeName3 = "";
 				$contactInfo1 = "PB NO. 21,SALAGAME ROAD HASSAN, KARNATAKA";
 				$contactInfo2 = "";
-				$contactInfo = "UG (AY-2024-2025)";
+				// $contactInfo = "UG (AY-2024-2025)";
 				$pdf->Rect($x - 2, $y, 69, 90 + 70);
 				$pdf->SetXY($x, $y);
 				$pdf->SetFont('Arial', 'B', 8);
@@ -7960,7 +8155,14 @@ With good wishes";
 			ini_set("session.auto_start", 0);
 			ini_set('memory_limit', '-1');
 			define('FPDF_FONTPATH', 'plugins/font');
+			if ($admissionDetails->stream_id == 1) {
+				$pgm = "UG";
 
+			} elseif ($admissionDetails->stream_id == 2) {
+				$pgm = "PG";
+			} else {
+				$pgm = "PHD";
+			}
 
 			$fees = [
 				'E-Learning Fee' => $voucherDetails->e_learning_fee,
@@ -7976,6 +8178,7 @@ With good wishes";
 				'Indian Red Cross Membership Fee' => $voucherDetails->indian_red_cross_membership_fee,
 				'Women Cell Fee' => $voucherDetails->women_cell_fee,
 				'NSS Fee' => $voucherDetails->nss_fee,
+				'Library Fee' => $voucherDetails->library_fee,
 				'University Registration Fee' => $voucherDetails->university_registration_fee
 			];
 
@@ -7985,12 +8188,17 @@ With good wishes";
 					$university += $feeValue;
 				}
 			}
+			if ($admissionDetails->stream_id == 3) {
+				$university += $voucherDetails->admission_fee;
+			} else {
+				if ($voucherDetails->admission_fee > 0) {
+					$tableData[] = ['Admission Fee', $voucherDetails->admission_fee];
+				}
+			}
 			if ($university > 0) {
 				$tableData[] = ["University Other Fee", $university];
 			}
-			if ($voucherDetails->admission_fee > 0) {
-				$tableData[] = ['Admission Fee', $voucherDetails->admission_fee];
-			}
+
 			if ($voucherDetails->processing_fee_paid_at_kea > 0) {
 				$tableData[] = ['Processing Fee Paid at KEA', $voucherDetails->processing_fee_paid_at_kea];
 			}
@@ -8088,7 +8296,7 @@ With good wishes";
 			printStudent($pdf, "College Code ", $admissionDetails->college_code, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			printStudent($pdf, "Gender ", $admissionDetails->gender, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			printStudent($pdf, "Year ", $feeDetails->year, $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
-			printStudent($pdf, "Ug ", 'Ug - ' . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_name"], $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
+			printStudent($pdf, $pgm, $pgm . ' - ' . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_name"], $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			// printStudent($pdf, "Pg :", '', $pdf->GetY(), $rowHeight, $cellWidth1, $cellWidth2);
 			$pdf->Ln(4);
 
@@ -8140,7 +8348,7 @@ With good wishes";
 			// Note and Receipt Date
 			$cellWidth = $pdf->GetPageWidth() - 20;
 			$rowHeight = 10;
-			$pdf->Ln(60);
+			$pdf->Ln(40);
 			$pdf->SetFont('Arial', '', 8);
 			$pdf->SetTextColor(0, 0, 0);
 			$pdf->SetX(12);
@@ -8341,8 +8549,6 @@ With good wishes";
 					$dompdf = new Dompdf($options);
 					$dompdf->loadHtml($html);
 
-
-
 					// Set paper size (optional)
 					$dompdf->setPaper('A4', 'landscape');
 
@@ -8519,7 +8725,8 @@ With good wishes";
 
 			$pdf->SetFont('Arial', '', 9);
 			$pdf->SetXY(-30, $topGap + 5);
-			$pdf->Cell(0, 10, 'Date:' . date('d-m-Y'), 0, 1, 'R');
+			$pdf->Cell(0, 10, 'Date:23-10-2024', 0, 1, 'R');
+			// $pdf->Cell(0, 10, 'Date:' . date('d-m-Y'), 0, 1, 'R');
 
 			$pdf->SetFont('Arial', 'BU', 12);
 			$pdf->SetY($topGap + 20);
@@ -8752,11 +8959,24 @@ With good wishes";
 			$contactInfo1 = "SALAGAME ROAD HASSAN";
 			$contactInfo2 = "State Name : Karnataka";
 			$affiliation = "ACKNOWLEDGEMENT";
-			$contactInfo = "UG (AY-2024-2025)";
+
 
 			$issuedOn = "Date : " . date("d-m-Y ");
-			$programe = "PROGRAM : B.E";
-			$chellan = "Challan : TF24-25/" . $voucherDetails->id;
+			if ($admissionDetails->stream_id == 1) {
+				$programe = "PROGRAM : B.E";
+				$contactInfo = "UG (AY-2024-2025)";
+				$chellan = "Chellan : TF24-25/" . $voucherDetails->id;
+			} elseif ($admissionDetails->stream_id == 2) {
+				$programe = "PROGRAM : M.E";
+				$contactInfo = "PG (AY-2024-2025)";
+				$chellan = "Chellan : ME24-25/" . $voucherDetails->id;
+			} else {
+				$programe = "PROGRAM : PHD";
+				$contactInfo = "PHD (AY-2024-2025)";
+				$chellan = "Chellan : PHD24-25/" . $voucherDetails->id;
+			}
+
+			// $chellan = "Challan : TF24-25/" . $voucherDetails->id;
 			$dept = "Dept. :" . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"];
 			$bcopy = "BANK COPY";
 			$copyData = array('S.A Copy', 'Office Copy');
@@ -8794,7 +9014,8 @@ With good wishes";
 				'Indian Red Cross Membership Fee' => $voucherDetails->indian_red_cross_membership_fee,
 				'Women Cell Fee' => $voucherDetails->women_cell_fee,
 				'NSS Fee' => $voucherDetails->nss_fee,
-				'University Registration Fee' => $voucherDetails->university_registration_fee
+				'University Registration Fee' => $voucherDetails->university_registration_fee,
+				'Library Fee' => $voucherDetails->library_fee
 			];
 
 			$university = 0;
@@ -8803,12 +9024,20 @@ With good wishes";
 					$university += $feeValue;
 				}
 			}
+
+			if ($admissionDetails->stream_id == 3) {
+				$university += $voucherDetails->admission_fee;
+			} else {
+				if ($voucherDetails->admission_fee > 0) {
+					$tableData[] = ['Admission Fee', $voucherDetails->admission_fee];
+				}
+			}
+
+
 			if ($university > 0) {
 				$tableData[] = ["University Other Fee", $university];
 			}
-			if ($voucherDetails->admission_fee > 0) {
-				$tableData[] = ['Admission Fee', $voucherDetails->admission_fee];
-			}
+
 			if ($voucherDetails->processing_fee_paid_at_kea > 0) {
 				$tableData[] = ['Processing Fee Paid at KEA', $voucherDetails->processing_fee_paid_at_kea];
 			}
@@ -8827,7 +9056,9 @@ With good wishes";
 				$collegeName3 = "PB NO. 21";
 				$contactInfo1 = "SALAGAME ROAD HASSAN";
 				$contactInfo2 = "State Name : Karnataka";
-				$contactInfo = "UG (AY-2024-2025)";
+
+
+				// $contactInfo = "UG (AY-2024-2025)";
 				$pdf->Rect($x - 2, $y, 90, 200); // Increase the size of each copy
 				$pdf->SetXY($x, $y);
 				$pdf->SetFont('Arial', 'B', 10);
@@ -8956,8 +9187,24 @@ With good wishes";
 				$contactInfo4 = "UA ACCOUNT NUMBER -  14053070001574 IFSC -CNRB0011405";
 			}
 			$issuedOn = "Date : " . date("m-d-Y ");
-			$programe = "PROGRAME : B.E";
-			$chellan = "Chellan : TF24-25/" . $voucherDetails->id;
+			if ($admissionDetails->stream_id == 1) {
+				$programe = "PROGRAM : B.E";
+				$contactInfo = "UG (AY-2024-2025)";
+				$pgm = 'B.E - ';
+				$chellan = "Chellan : TF24-25/" . $voucherDetails->id;
+			} elseif ($admissionDetails->stream_id == 2) {
+				$programe = "PROGRAM : M.E";
+				$contactInfo = "PG (AY-2024-2025)";
+				$pgm = 'M.E - ';
+				$chellan = "Chellan : ME24-25/" . $voucherDetails->id;
+			} else {
+				$programe = "PROGRAM : PHD";
+				$contactInfo = "PHD (AY-2024-2025)";
+				$pgm = 'PHD - ';
+				$chellan = "Chellan : PHD24-25/" . $voucherDetails->id;
+			}
+			// $programe = "PROGRAME : B.E";
+			// $chellan = "Chellan : TF24-25/" . $voucherDetails->id;
 			$dept = "Dept. :" . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"];
 			$scopy = "STUDENT COPY";
 			$bcopy = "BANK COPY";
@@ -8967,8 +9214,8 @@ With good wishes";
 			$tableData = [
 				['USN', $admissionDetails->usn],
 				['Name', $admissionDetails->student_name],
-				['Branch', 'B.E - ' . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"]],
-				['Year', 1],
+				['Branch', $pgm . $this->admin_model->get_dept_by_id($admissionDetails->dept_id)["department_short_name"]],
+				['Year', I],
 				['Mobile No.', $admissionDetails->mobile],
 				['Email ID', $admissionDetails->email],
 				['Mode of Payment NEFT/RTGS/IMPS/UPI',],
@@ -9259,10 +9506,8 @@ With good wishes";
 				$res['reason'] = 'fail';
 			}
 
-			$res['amount'] = (int)$response_array['amount'];
+			$res['amount'] = (int) $response_array['amount'];
 		}
-
-
 		print_r($response_array);
 	}
 
@@ -9689,7 +9934,7 @@ With good wishes";
 					// 	$year = "II";
 					// }
 					$year = "I";
-					
+
 					// $corpus_bal = $fees_data->corpus_fund - $feeDetails11[$admissions1->id];
 					$college_bal = $fees_data->total_college_fee - $feeDetails22[$admissions1->id];
 					$result_array = array(
@@ -10445,7 +10690,7 @@ With good wishes";
 					// 	$year = "II";
 					// }
 					$year = "I";
-					
+
 					// $corpus_bal = $fees_data->corpus_fund - $feeDetails11[$admissions1->id];
 					$college_bal = $fees_data->total_college_fee - $feeDetails22[$admissions1->id];
 					$result_array = array(
@@ -10514,6 +10759,51 @@ With good wishes";
 			return $result;
 		} else {
 			redirect('admin/timeout');
+		}
+	}
+	function phd_dashboard()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = "Dashboard";
+			$data['menu'] = "phd_dashboard";
+			$data['enquiryStatus'] = $this->globals->enquiryStatus();
+			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+
+			$admissionStats = $this->admin_model->getAdmissionOverallStats(0, 3)->result();
+			$aidedAdmitted = array();
+			$unaidedAdmitted = array();
+			// echo "<pre>";
+			$newArr = array("Aided" => array(), "UnAided" => array());
+			foreach ($admissionStats as $admissionStats1) {
+				$newArr[$admissionStats1->sub_quota][$admissionStats1->dept_id][$admissionStats1->quota] = $admissionStats1->cnt;
+			}
+			$data['newArr'] = $newArr;
+
+
+			// print_r($newArr);
+
+			$departments = $this->admin_model->getDetailsbyfield('3', 'stream_id', 'departments')->result();
+			$aided = array();
+			$unaided = array();
+			foreach ($departments as $departments1) {
+
+
+				array_push($unaided, $departments1);
+
+			}
+
+			$data['unaided'] = $unaided;
+
+			$this->admin_template->show('admin/Dashboardphd', $data);
+		} else {
+			redirect('admin', 'refresh');
 		}
 	}
 

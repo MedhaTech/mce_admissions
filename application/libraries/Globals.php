@@ -21,7 +21,7 @@ class Globals
 
     public function admissionStatus()
     {
-        return array("1" => "Processing", "2" => "Submitted", "3" => "On-Hold", "4" => "Confirmed", "5" => "Rejected", "6" => "Canceled", "7" => "Archived");
+        return array("1" => "Processing", "2" => "Submitted", "3" => "On-Hold", "4" => "Confirmed", "5" => "Rejected", "6" => "Canceled", "7" => "Archived" ,"8"=>"Endorsemt");
     }
 
     public function admissionStatusColor()
@@ -1515,7 +1515,7 @@ class Globals
             ['field' => 'university_registration_fee', 'label' => 'Registration Fee'],
             ['field' => 'total_university_fee', 'label' => 'TOTAL UNIVERSITY FEE'],
             ['field' => 'admission_fee', 'label' => 'Application Fee &Admission Fee'],
-    
+            ['field' => 'tution_fee', 'label' => 'Tution Fee'],
             ['field' => 'college_other_fee', 'label' => 'COLLEGE OTHER FEE'],
             ['field' => 'total_tution_fee', 'label' => 'TOTAL TUTION FEE']
            
@@ -1529,8 +1529,18 @@ class Globals
             // "COMED-K" => "COMED-K",
             // "KEA-SNQ" => "KEA-SNQ",
             // "J&K (Non Karnataka)" => "J&K (Non Karnataka)",
-            // "GOI (Non Karnataka)" => "GOI (Non Karnataka)",
-            // "KEA-CET(LATERAL)" => "KEA-CET(LATERAL)"
+            // "GOI (Non Karnataka)" => "GOI (Non Karnataka)"
+        );
+    }
+    public function pgquota()
+    {
+        return array(
+            "MGMT" => "MGMT",
+            "KEA-CET(GOVT)" => "KEA-CET(GOVT)",
+            "COMED-K" => "COMED-K",
+            "KEA-SNQ" => "KEA-SNQ",
+            "J&K (Non Karnataka)" => "J&K (Non Karnataka)",
+            "GOI (Non Karnataka)" => "GOI (Non Karnataka)"
         );
     }
 }

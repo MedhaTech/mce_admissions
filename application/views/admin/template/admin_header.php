@@ -5,6 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= $page_title; ?> | MCE Campus Portal</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="MEDHA TECH">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url();?>themes/images/logo/favicon.png">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -101,7 +107,14 @@
                             <a href="<?php echo base_url(); ?>admin/dashboard"
                                 class="nav-link <?= $menu_active = ($menu == "dashboard") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p> Dashboard </p>
+                                <p>B.E. Dashboard </p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a href="<?php echo base_url(); ?>admin/phd_dashboard"
+                                class="nav-link <?= $menu_active = ($menu == "phd_dashboard") ? 'active' : ''; ?>">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>Ph.D Dashboard </p>
                             </a>
                         </li>
                         <?php } ?>

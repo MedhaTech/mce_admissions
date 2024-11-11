@@ -9,23 +9,23 @@
                       <div class="col-lg-12">
 
                           <div class="card">
-                              <div class="card-header bg-dark">
+                              <!-- <div class="card-header bg-dark">
                                   <h3 class="card-title">
                                       <?=$page_title;?>
                                   </h3>
-                              </div>
-                              <div class="card-body">
-                                  <table class="table table-hover text-center table-sm">
+                              </div> -->
+                              <div class="card-body1">
+                                  <table class="table table-hover text-center table-lg">
                                       <thead>
                                           <tr>
                                               <th width="5%">S.NO</th>
                                               <th width="20%">STREAM</th>
-                                              <th width="35%">DEPARTMENT</th>
-                                              <th width="15%">TOTAL <br /> INTAKE</th>
-                                              <th width="15%">MGMT <br /> INTAKE</th>
-                                              <th width="15%">COMED-K <br /> INTAKE</th>
-                                              <th width="15%">KEA-CET <br /> INTAKE</th>
-                                              <th width="15%">SNQ <br /> INTAKE</th>
+                                              <th width="25%">DEPARTMENT</th>
+                                              <th width="10%">TOTAL <br /> INTAKE</th>
+                                              <th width="10%">MGMT <br /> INTAKE</th>
+                                              <th width="10%">COMED-K <br /> INTAKE</th>
+                                              <th width="10%">KEA-CET <br /> INTAKE</th>
+                                              <th width="10%">SNQ <br /> INTAKE</th>
                                           </tr>
                                       </thead>
                                       <tbody>
