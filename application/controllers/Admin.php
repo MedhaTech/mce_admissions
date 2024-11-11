@@ -1548,7 +1548,7 @@ class Admin extends CI_Controller
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 
 			if ($report == 1) {
-				$enquiries = $this->admin_model->getEnquiries($data['currentAcademicYear'])->result();
+				$enquiries = $this->admin_model->getbeEnquiries($data['currentAcademicYear'])->result();
 
 				if (count($enquiries)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
@@ -1581,7 +1581,7 @@ class Admin extends CI_Controller
 				}
 			}
 			if ($report == 2) {
-				$enquiries = $this->admin_model->getEnquiries($data['currentAcademicYear'])->result();
+				$enquiries = $this->admin_model->getbeEnquiries($data['currentAcademicYear'])->result();
 
 				if (count($enquiries)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
@@ -1613,7 +1613,7 @@ class Admin extends CI_Controller
 				}
 			}
 			if ($report == 3) {
-				$enquiries = $this->admin_model->getEnquiries($data['currentAcademicYear'])->result();
+				$enquiries = $this->admin_model->getbeEnquiries($data['currentAcademicYear'])->result();
 
 				if (count($enquiries)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
@@ -6528,7 +6528,16 @@ With good wishes";
 			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
 			$admissionStatusColor = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
-			$data['admissions'] = $this->admin_model->fetchDetails2('id, app_no, adm_no,quota,dept_id,sub_quota, student_name, mobile,usn,status', 'status', $status, 'academic_year', $data['currentAcademicYear'], 'admissions')->result();
+			$data['admissions'] = $this->admin_model->mtechdetails(
+				'id, app_no, adm_no, quota, dept_id, sub_quota, student_name, mobile, usn, status',
+				'status',
+				$status,
+				'academic_year',
+				$data['currentAcademicYear'],
+				'admissions',
+				['stream_id' => '1'] // Change stream_id to '1'
+			)->result();
+			
 
 			$admissions = $data['admissions'];
 			if ($download == 1) {
@@ -11293,4 +11302,985 @@ With good wishes";
 			redirect('admin/timeout');
 		}
 	}
+
+	public function mtechcorpusoverall_report($download = 0)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$data['page_title'] = $currentAcademicYear . ' MTECH CORPUS OVERALL FEE';
+			$data['menu'] = 'mtechCorpusoverallfeeReport';
+
+			$data['download_action'] = 'admin/mtechcorpusoverall_report';
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$admissions = $this->admin_model->mtechCorpusReport($currentAcademicYear)->result();
+
+			$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2">');
+			$this->table->set_template($table_setup);
+
+			$print_fields = array('S.No', 'Academic Year', 'Usn', 'Student Name', 'Course', 'Quota', 'Sub Quota', 'College Code', 'Studying Year', 'Mobile', 'Admit. Date', 'Corpus Fund', 'Remarks');
+			$this->table->set_heading($print_fields);
+
+			$i = 1;
+			foreach ($admissions as $admissions1) {
+				$dmm = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+
+				// Only display students with a Corpus Fund fee
+
+				$result_array = array(
+					$i++,
+					$admissions1->academic_year,
+					$admissions1->usn,
+					$admissions1->student_name,
+					$dmm,
+					$admissions1->quota,
+					$admissions1->sub_quota,
+					$admissions1->college_code,
+					1,
+					$admissions1->mobile,
+					($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
+					number_format($admissions1->Corpus_fund, 0), // Use Corpus_fund directly from the admissions object
+					$admissions1->remarks
+				);
+
+				$this->table->add_row($result_array);
+			}
+
+
+			$data['table'] = $this->table->generate();
+
+			if (!$download) {
+				$this->admin_template->show('admin/mtechcorpusoverall_report', $data);
+			} else {
+				$response = array(
+					'op' => 'ok',
+					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+				);
+				die(json_encode($response));
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function mtechcorpusbalance_report($download = 0)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$data['page_title'] = $currentAcademicYear . ' MTECH CORPUS BALANCE FEE';
+			$data['menu'] = 'mtechcorpusbalance_report';
+
+			$data['download_action'] = 'admin/mtechcorpusbalance_report';
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$admissions = $this->admin_model->mtechCorpusBalanceReport($currentAcademicYear)->result();
+
+			$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2">');
+			$this->table->set_template($table_setup);
+
+			$print_fields = array('S.No', 'Academic Year', 'Usn', 'Student Name', 'Course', 'Quota', 'Sub Quota', 'College Code', 'Studying Year', 'Mobile', 'Admit. Date', 'Corpus Fund Balance', 'Remarks');
+			$this->table->set_heading($print_fields);
+
+			$i = 1;
+			foreach ($admissions as $admissions1) {
+				$dmm = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+
+				// Only display students with a Corpus Fund fee
+				if ($admissions1->Corpus_fund > 0) { // Ensure Corpus_fund is greater than 0
+					$result_array = array(
+						$i++,
+						$admissions1->academic_year,
+						$admissions1->usn,
+						$admissions1->student_name,
+						$dmm,
+						$admissions1->quota,
+						$admissions1->sub_quota,
+						$admissions1->college_code,
+						1,
+						$admissions1->mobile,
+						($admissions1->admit_date != "0000-00-00") ? date('d-m-Y', strtotime($admissions1->admit_date)) : '',
+						number_format($admissions1->Corpus_fund, 0), // Use Corpus_fund directly from the admissions object
+						$admissions1->remarks
+					);
+
+					$this->table->add_row($result_array);
+				}
+			}
+
+			$data['table'] = $this->table->generate();
+
+			if (!$download) {
+				$this->admin_template->show('admin/mtechcorpusbalance_report', $data);
+			} else {
+				$response = array(
+					'op' => 'ok',
+					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+				);
+				die(json_encode($response));
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function mtechCoursewiseStudentAdmittedCount($download = '')
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Mtech Course wise Student Admitted Count';
+			$data['menu'] = 'reports';
+			$data['report_type'] = 'reports';
+			$admissionStatus = $this->globals->admissionStatus();
+			$admissionStatusColor = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissionStatus'] = array(" " => "Select Admission Status") + $this->globals->admissionStatus();
+			$data['course_options'] = array(" " => "Select") + $this->mtechcourses();
+			$data['action'] = 'admin/mtechCoursewiseStudentAdmittedCount';
+			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			if ($this->form_validation->run() === FALSE) {
+
+				$this->admin_template->show('admin/mtechCoursewiseStudentAdmittedCount', $data);
+			} else {
+				$data['course'] = $this->input->post('course');
+				$data['status'] = $this->input->post('admission_status');
+
+
+
+				$admissions = $this->admin_model->getmtechAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+
+				if (count($admissions)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'College Code', 'Status', 'Admit. Date');
+
+
+
+					$this->table->set_heading($table_headings);
+
+					$i = 1;
+					foreach ($admissions as $admissions1) {
+						$dmp = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$admissions1->student_name,
+							$admissions1->mobile,
+							$dmp,
+							$admissions1->aadhaar,
+							$admissions1->quota,
+							$admissions1->sub_quota,
+							'<strong class="text-' . $admissionStatusColor[$admissions1->status] . '">' . $admissionStatus[$admissions1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($admissions1->admit_date))
+						);
+
+
+						$this->table->add_row($result_array);
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+				$data['selected_values'] = $selectedValues;
+				// Var_dump($this->db->last_query()); 
+				if ($download == 1) {
+					$response = array(
+						'op' => 'ok',
+						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
+					);
+					die(json_encode($response));
+				} else {
+					$data['admissions1'] = $details;
+					$data['admissions'] = "Count : " . count($admissions);
+					$this->admin_template->show('admin/mtechCoursewiseStudentAdmittedCount', $data);
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function mtechstudentdetails_report($download = '')
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Mtech Student Details Report';
+			$data['menu'] = 'reports';
+			$data['report_type'] = $report;
+			$admissionStatus = $this->globals->admissionStatus();
+			$admissionStatusColor = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissionStatus'] = array(" " => "Select Admission Status") + $this->globals->admissionStatus();
+			$data['course_options'] = array(" " => "Select") + $this->mtechcourses();
+			$data['action'] = 'admin/mtechstudentdetails_report';
+			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			if ($this->form_validation->run() === FALSE) {
+
+				$this->admin_template->show('admin/mtechstudentdetails_report', $data);
+			} else {
+				$data['course'] = $this->input->post('course');
+				$data['status'] = $this->input->post('admission_status');
+
+
+
+				$admissions = $this->admin_model->getmtechAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+
+				if (count($admissions)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
+
+
+					$selectedValues = $this->input->post('selectedValues');
+					if ($selectedValues) {
+						foreach ($selectedValues as $selectedValues1) {
+							if ($selectedValues1 == "date_place_of_birth") {
+								$select = $select . ",date_of_birth, place_of_birth";
+								$table_headings[] = 'Date of Birth';
+								$table_headings[] = 'Place of Birth';
+							}
+							if ($selectedValues1 == "caste_category") {
+								$select = $select . ",caste, category_claimed";
+								$table_headings[] = 'Caste';
+								$table_headings[] = 'Category';
+							}
+							if ($selectedValues1 == "nationality") {
+								$select = $select . ",nationality";
+								$table_headings[] = 'Nationality';
+							}
+							if ($selectedValues1 == "religion") {
+								$select = $select . ",religion";
+								$table_headings[] = 'Religion';
+							}
+							if ($selectedValues1 == "aadhar") {
+								$select = $select . ",aadhar";
+								$table_headings[] = 'Aadhar';
+							}
+
+							if ($selectedValues1 == "current_address") {
+								$select = $select . ",current_address,current_city,current_district,current_state,current_pincode";
+								$table_headings[] = 'Current Location';
+								$table_headings[] = 'Current City';
+								$table_headings[] = 'Current District';
+								$table_headings[] = 'Current State';
+								$table_headings[] = 'Current Pincode';
+							}
+
+							if ($selectedValues1 == "present_address") {
+								$select = $select . ",present_address,present_city,present_district,present_state,present_pincode";
+								$table_headings[] = 'Present Location';
+								$table_headings[] = 'Present City';
+								$table_headings[] = 'Present District';
+								$table_headings[] = 'Present State';
+								$table_headings[] = 'Present Pincode';
+							}
+
+							if ($selectedValues1 == "father_details") {
+								$select = $select . ",father_name, father_occupation, father_mobile, father_email, father_annual_income";
+								$table_headings[] = 'Father Name';
+								$table_headings[] = 'Father Occupation';
+								$table_headings[] = 'Father Mobile';
+								$table_headings[] = 'Father Email';
+								$table_headings[] = 'Father Annual Income';
+							}
+
+							if ($selectedValues1 == "mother_details") {
+								$select = $select . ",mother_name, mother_occupation, mother_mobile, mother_email, mother_annual_income";
+								$table_headings[] = 'Mother Name';
+								$table_headings[] = 'Mother Occupation';
+								$table_headings[] = 'Mother Mobile';
+								$table_headings[] = 'Mother Email';
+								$table_headings[] = 'Mother Annual Income';
+							}
+
+							if ($selectedValues1 == "guardian_details") {
+								$select = $select . ",guardian_name, guardian_occupation, guardian_mobile, guardian_email, guardian_annual_income";
+								$table_headings[] = 'Guardian Name';
+								$table_headings[] = 'Guardian Occupation';
+								$table_headings[] = 'Guardian Mobile';
+								$table_headings[] = 'Guardian Email';
+								$table_headings[] = 'Guardian Annual Income';
+							}
+
+							if ($selectedValues1 == "previous_exam_details") {
+								$select = $select . ",entrance_type, entrance_reg_no, entrance_rank, admission_order_no, admission_order_date";
+								$table_headings[] = 'Entrance Type';
+								$table_headings[] = 'Entrance Register Number';
+								$table_headings[] = 'Entrance Rank';
+								$table_headings[] = 'Admission Order Number';
+								$table_headings[] = 'Admission Order Date';
+							}
+
+							if ($selectedValues1 == "other_details") {
+								$select = $select . ",sports,ncc,nss";
+								$table_headings[] = 'Sports';
+								$table_headings[] = 'NCC';
+								$table_headings[] = 'NSS';
+							}
+						}
+					}
+
+					$this->table->set_heading($table_headings);
+
+					$i = 1;
+					foreach ($admissions as $admissions1) {
+						$dmp = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$admissions1->student_name,
+							$admissions1->mobile,
+							$dmp,
+							$admissions1->aadhaar,
+							$admissions1->quota,
+							$admissions1->sub_quota,
+							'<strong class="text-' . $admissionStatusColor[$admissions1->status] . '">' . $admissionStatus[$admissions1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($admissions1->admit_date))
+						);
+
+
+						if ($selectedValues) {
+							foreach ($selectedValues as $selectedValues1) {
+								if ($selectedValues1 == "date_place_of_birth") {
+									$result_array[] = $admissions1->date_of_birth;
+									$result_array[] = $admissions1->place_of_birth;
+								}
+								if ($selectedValues1 == "caste_category") {
+									$result_array[] = $admissions1->caste;
+									$result_array[] = $admissions1->category_claimed;
+								}
+								if ($selectedValues1 == "nationality") {
+									$result_array[] = $admissions1->nationality;
+								}
+								if ($selectedValues1 == "religion") {
+									$result_array[] = $admissions1->religion;
+								}
+								if ($selectedValues1 == "aadhar") {
+									$result_array[] = $admissions1->aadhar;
+								}
+
+								if ($selectedValues1 == "current_address") {
+									$result_array[] = $admissions1->current_address;
+									$result_array[] = $admissions1->current_city;
+									$result_array[] = $admissions1->current_district;
+									$result_array[] = $admissions1->current_state;
+									$result_array[] = $admissions1->current_pincode;
+								}
+
+								if ($selectedValues1 == "present_address") {
+									$result_array[] = $admissions1->present_address;
+									$result_array[] = $admissions1->present_city;
+									$result_array[] = $admissions1->present_district;
+									$result_array[] = $admissions1->present_state;
+									$result_array[] = $admissions1->present_pincode;
+								}
+
+								if ($selectedValues1 == "father_details") {
+									$result_array[] = $admissions1->father_name;
+									$result_array[] = $admissions1->father_occupation;
+									$result_array[] = $admissions1->father_mobile;
+									$result_array[] = $admissions1->father_email;
+									$result_array[] = $admissions1->father_annual_income;
+								}
+
+								if ($selectedValues1 == "mother_details") {
+									$result_array[] = $admissions1->mother_name;
+									$result_array[] = $admissions1->mother_occupation;
+									$result_array[] = $admissions1->mother_mobile;
+									$result_array[] = $admissions1->mother_email;
+									$result_array[] = $admissions1->mother_annual_income;
+								}
+
+								if ($selectedValues1 == "guardian_details") {
+									$result_array[] = $admissions1->guardian_name;
+									$result_array[] = $admissions1->guardian_occupation;
+									$result_array[] = $admissions1->guardian_mobile;
+									$result_array[] = $admissions1->guardian_email;
+									$result_array[] = $admissions1->guardian_annual_income;
+								}
+
+								if ($selectedValues1 == "previous_exam_details") {
+									$result_array[] = $admissions1->entrance_type;
+									$result_array[] = $admissions1->entrance_reg_no;
+									$result_array[] = $admissions1->entrance_rank;
+									$result_array[] = $admissions1->admission_order_no;
+									$result_array[] = $admissions1->admission_order_date;
+								}
+
+
+								if ($selectedValues1 == "other_details") {
+									$result_array[] = $admissions1->sports;
+									$result_array[] = $admissions1->ncc;
+									$result_array[] = $admissions1->nss;
+								}
+							}
+						}
+						$this->table->add_row($result_array);
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+				$data['selected_values'] = $selectedValues;
+				// Var_dump($this->db->last_query()); 
+				if ($download == 1) {
+					$response = array(
+						'op' => 'ok',
+						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
+					);
+					die(json_encode($response));
+				} else {
+					$data['admissions'] = $details;
+					$this->admin_template->show('admin/mtechstudentdetails_report', $data);
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function mtechadmissionscroll_report($download = 0)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$data['page_title'] = $currentAcademicYear . ' MTECH ADMISSION SCROLL REPORT';
+			$data['menu'] = 'mtechadmissionscroll_report';
+
+			$data['download_action'] = 'admin/mtechadmissionscroll_report/1';
+
+			$currentAcademicYear = $this->globals->currentAcademicYear();
+			$transactions = $this->admin_model->mtechtransactions('1')->result();
+			$transactionTypes = $this->globals->transactionTypes();
+
+			// 			print_r($transactions); 
+			if ($download) {
+				$table = "<table class='table table-bordered' border='1'  id='example2' >";
+			} else {
+				$table = "<table class='table table-bordered font14' border='1' id='example2' >";
+			}
+			$table .= '<thead>';
+			if ($download) {
+				$table .= '<tr><th colspan="11" class="font20">' . $currentAcademicYear . ' ADMISSION SCROLL</th></tr>';
+			}
+			$table .= '<tr><th>S.No</th>
+			               <th> Student Name </th>
+						    <th> Department Name </th>
+			               <th> Receipt No. </th>
+			              
+			               <th> Mode of Payment </th>
+			               <th> Reference No. </th>
+			               <th> Reference Date </th>
+			               <th> Bank Name </th>
+			               <th> Amount </th>
+						    <th> Date </th>
+			          </tr>';
+
+			$table .= '</thead>';
+			$table .= '<tbody>';
+			$i = 1;
+			foreach ($transactions as $transactions1) {
+				//  print_r($transactions1); 
+				// if($transactions1->dsc_1 == $transactions1->dsc_2){
+				//     $combination = $transactions1->dsc_1;
+				// }else{
+				//     $combination = $transactions1->dsc_1.' - '.$transactions1->dsc_2;
+				// }
+
+				$table .= '<tr>';
+				$table .= '<td>' . $i++ . '</td>';
+				$table .= '<td>' . $transactions1->student_name . '</td>';
+				$table .= '<td>' . $this->admin_model->get_dept_by_id($transactions1->dept_id)["department_name"] . '</td>';
+				//  $table .= '<td>'.$transactions1->course.'</td>';   
+				//  $table .= '<td>'.$combination.'</td>';   
+				$table .= '<td>' . $transactions1->receipt_no . '</td>';
+
+				$table .= '<td>' . $transactionTypes[$transactions1->transaction_type] . '</td>';
+				$table .= '<td>' . $transactions1->reference_no . '</td>';
+				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->reference_date)) . '</td>';
+				$table .= '<td>' . $transactions1->bank_name . '</td>';
+				$table .= '<td>' . number_format($transactions1->amount, 0) . '</td>';
+				$table .= '<td>' . date('d-m-Y', strtotime($transactions1->transaction_date)) . '</td>';
+				$table .= '</tr>';
+			}
+			$table .= '</tbody>';
+			$table .= '</table>';
+			$data['table'] = $table;
+			if (!$download) {
+				$this->admin_template->show('admin/mtechadmissionscroll_report', $data);
+			} else {
+				$response = array(
+					'op' => 'ok',
+					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+				);
+				die(json_encode($response));
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function mtechcategory_admissions_report($download = '')
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'MTECH CATEGORY ADMISSIONS REPORT';
+			$data['menu'] = 'reports';
+			// $data['report_type'] = $report;
+			$admissionStatus = $this->globals->admissionStatus();
+			$admissionStatusColor = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['course_options'] = array(" " => "Select") + $this->courses();
+			$data['type_options'] = array(" " => "Select") + $this->globals->category();
+			$data['action'] = 'admin/mtechcategory_admissions_report';
+			$this->form_validation->set_rules('category', 'Category', 'required');
+			if ($this->form_validation->run() === FALSE) {
+
+				$this->admin_template->show('admin/mtechcategory_admissions_report', $data);
+			} else {
+				$data['category'] = $this->input->post('category');
+
+				$admissions = $this->admin_model->getmtechAdmissions_category($data['currentAcademicYear'], $data['category'])->result();
+
+				// var_dump($admissions); die();
+
+				if (count($admissions)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
+					$this->table->set_heading($print_fields);
+
+					$i = 1;
+					foreach ($admissions as $admissions1) {
+						$dmn = $this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"];
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$admissions1->student_name,
+							$admissions1->mobile,
+							$dmn,
+							$admissions1->aadhaar,
+							$admissions1->quota,
+							$admissions1->sub_quota,
+							'<strong class="text-' . $admissionStatusColor[$admissions1->status] . '">' . $admissionStatus[$admissions1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($admissions1->admit_date))
+						);
+						$this->table->add_row($result_array);
+						$course = $data['course_options'][$course_id];
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+				if ($download == 1) {
+					$response = array(
+						'op' => 'ok',
+						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
+					);
+					die(json_encode($response));
+				} else {
+					$data['admissions'] = $details;
+					$this->admin_template->show('admin/mtechcategory_admissions_report', $data);
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function mtechadmissionsyearbook($download = null)
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			$status = null;
+			$data['admissionStatus'] = $this->globals->admissionStatus();
+			$admissionStatus = $this->globals->admissionStatus();
+			$data['page_title'] = 'Mtech Admission Year Book';
+			$data['menu'] = 'admissions';
+
+			$data['admissionStatusColor'] = $this->globals->admissionStatusColor();
+			$admissionStatusColor = $this->globals->admissionStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['admissions'] = $this->admin_model->mtechdetails(
+				'id, app_no, adm_no, quota, dept_id, sub_quota, student_name, mobile, usn, status',
+				'status',
+				$status,
+				'academic_year',
+				$data['currentAcademicYear'],
+				'admissions',
+				['stream_id' => '2'] 
+			)->result();
+			$admissions = $data['admissions'];
+			if ($download == 1) {
+				if (count($admissions)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$print_fields = array('S.NO', 'App No', 'Applicant Name', 'Mobile', 'Course', 'Quota', 'Sub Quota', 'Status');
+					$this->table->set_heading($print_fields);
+
+					$i = 1;
+					foreach ($admissions as $admissions1) {
+
+						// $encryptId = base64_encode($this->encrypt->encode($admissions1->id));
+						$encryptId = base64_encode($admissions1->id);
+
+						$result_array = array(
+							$i++,
+							//   $admissions1->app_no,
+							$admissions1->app_no,
+							$admissions1->student_name,
+							$admissions1->mobile,
+
+							$this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"],
+							$admissions1->quota,
+							$admissions1->sub_quota,
+							// $admissions1->category_allotted,
+
+							// $admissions1->category_claimed,
+							'<strong class="text-' . $admissionStatusColor[$admissions1->status] . '">' . $admissionStatus[$admissions1->status] . '</strong>'
+						);
+						$this->table->add_row($result_array);
+					}
+					$table = $this->table->generate();
+				} else {
+					$table = "<div class='text-center'><img src='" . base_url() . "assets/img/no_data.jpg' class='nodata'></div>";
+				}
+
+				$base64_excel_data = "data:application/vnd.ms-excel;base64," . base64_encode($table);
+
+				// Remove the prefix to get only the base64 encoded data
+				$base64_data = str_replace('data:application/vnd.ms-excel;base64,', '', $base64_excel_data);
+
+				// Decode the base64 data to get the raw Excel content
+				$excel_data = base64_decode($base64_data);
+
+				// Set the headers to prompt a file download
+				header('Content-Type: application/vnd.ms-excel');
+				header('Content-Disposition: attachment; filename="downloaded_file.xls"');
+				header('Content-Length: ' . strlen($excel_data));
+
+				// Output the Excel content
+				echo $excel_data;
+
+				// End the script to ensure no additional output is sent
+				exit();
+			}
+			$this->admin_template->show('admin/mtechadmissionsyearbook', $data);
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function mtechreport($report, $download = '')
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Reports';
+			$data['menu'] = 'reports';
+			$data['report_type'] = $report;
+			$enquiryStatus = $this->globals->enquiryStatus();
+			$enquiryStatusColor = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+
+			if ($report == 7) {
+				$enquiries = $this->admin_model->getmtechEnquiries($data['currentAcademicYear'])->result();
+
+				if (count($enquiries)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Branch Preference-I', 'Branch Preference-II', 'Branch Preference-III', 'Aadhaar Number', 'SSLC Grade', 'Degree-I Grade', 'Degree-II Grade', 'Degree-III Grade', 'Status', 'Reg. Date');
+					$this->table->set_heading($print_fields);
+
+					$i = 1;
+					foreach ($enquiries as $enquiries1) {
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$enquiries1->student_name,
+							$enquiries1->mobile,
+							$enquiries1->course,
+							$enquiries1->course1,
+							$enquiries1->course2,
+							$enquiries1->aadhaar,
+							$enquiries1->sslc_grade,
+							$enquiries1->degree1_grade,
+							$enquiries1->degree2_grade,
+							$enquiries1->degree3_grade,
+							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
+						);
+						$this->table->add_row($result_array);
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+			}
+			if ($report == 8) {
+				$enquiries = $this->admin_model->getmtechEnquiries_non($data['currentAcademicYear'])->result();
+
+				if (count($enquiries)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'State', 'SSLC Grade', 'Degree-I Grade', 'Degree-II Grade', 'Status', 'Reg. Date');
+					$this->table->set_heading($print_fields);
+
+					$i = 1;
+					foreach ($enquiries as $enquiries1) {
+
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$enquiries1->student_name,
+							$enquiries1->mobile,
+							$enquiries1->course,
+							$enquiries1->aadhaar,
+							$enquiries1->state,
+							$enquiries1->sslc_grade,
+							$enquiries1->degree1_grade,
+							$enquiries1->degree2_grade,
+							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
+						);
+						$this->table->add_row($result_array);
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+			}
+			if ($report == 9) {
+				$enquiries = $this->admin_model->getmtechEnquiries_sports($data['currentAcademicYear'])->result();
+
+				if (count($enquiries)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Sports', 'SSLC Grade', 'Degree-I Grade', 'Degree-II Grade', 'Status', 'Reg. Date');
+					$this->table->set_heading($print_fields);
+
+					$i = 1;
+					foreach ($enquiries as $enquiries1) {
+
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$enquiries1->student_name,
+							$enquiries1->mobile,
+							$enquiries1->course,
+							$enquiries1->aadhaar,
+							$enquiries1->sports,
+							$enquiries1->sslc_grade,
+							$enquiries1->degree1_grade,
+							$enquiries1->degree2_grade,
+							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
+						);
+						$this->table->add_row($result_array);
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+			}
+
+
+
+
+
+
+			if ($download == 1) {
+				$response = array(
+					'op' => 'ok',
+					'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
+				);
+				die(json_encode($response));
+			} else {
+				$data['enquiries'] = $details;
+				$this->admin_template->show('admin/mtechreport_download', $data);
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function mtechreport_department($download = '')
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Reports';
+			$data['menu'] = 'reports';
+			$data['report_type'] = '';
+			$enquiryStatus = $this->globals->enquiryStatus();
+			$enquiryStatusColor = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['course_options'] = array(" " => "Select") + $this->mtechcourses();
+			$data['action'] = 'admin/mtechreport_department';
+			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			if ($this->form_validation->run() === FALSE) {
+
+				$this->admin_template->show('admin/mtechreport_department', $data);
+			} else {
+				$data['course'] = $this->input->post('course');
+				$course_name = $this->admin_model->get_dept_by_id($data['course'])["department_name"];
+				$enquiries = $this->admin_model->getmtechEnquiries_course_new($data['currentAcademicYear'], $data['course'], $course_name)->result();
+
+				if (count($enquiries)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Branch Prefernce I', 'Branch Prefernce II', 'Branch Prefernce III', 'Aadhaar Number', 'SSLC Grade', 'Degree-I Grade', 'Degree-II Grade', 'Status', 'Reg. Date');
+					$this->table->set_heading($print_fields);
+
+					$i = 1;
+					foreach ($enquiries as $enquiries1) {
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$enquiries1->student_name,
+							$enquiries1->mobile,
+							$enquiries1->course,
+							$enquiries1->course1,
+							$enquiries1->course2,
+							$enquiries1->aadhaar,
+							$enquiries1->sslc_grade,
+							$enquiries1->degree1_grade,
+							$enquiries1->degree2_grade,
+							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
+						);
+						$this->table->add_row($result_array);
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+				if ($download == 1) {
+					$response = array(
+						'op' => 'ok',
+						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
+					);
+					die(json_encode($response));
+				} else {
+					$data['enquiries'] = $details;
+					$this->admin_template->show('admin/mtechreport_department', $data);
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
+	public function mtechreport_category($download = '')
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = 'Reports';
+			$data['menu'] = 'reports';
+			$data['report_type'] = '';
+			$enquiryStatus = $this->globals->enquiryStatus();
+			$enquiryStatusColor = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+			$data['course_options'] = array(" " => "Select") + $this->courses();
+			$data['type_options'] = array(" " => "Select") + $this->globals->category();
+			$data['action'] = 'admin/mtechreport_category';
+			$this->form_validation->set_rules('category', 'Category', 'required');
+			if ($this->form_validation->run() === FALSE) {
+
+				$this->admin_template->show('admin/mtechreport_category', $data);
+			} else {
+				$data['category'] = $this->input->post('category');
+
+				$enquiries = $this->admin_model->getmtechEnquiries_category($data['currentAcademicYear'], $data['category'])->result();
+
+				if (count($enquiries)) {
+					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
+					$this->table->set_template($table_setup);
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'SSLC Grade', 'PUC-I Grade', 'Status', 'Reg. Date');
+					$this->table->set_heading($print_fields);
+
+					$i = 1;
+					foreach ($enquiries as $enquiries1) {
+						$result_array = array(
+							$i++,
+							//   $enquiries1->academic_year,
+							$enquiries1->student_name,
+							$enquiries1->mobile,
+							$enquiries1->course,
+							$enquiries1->aadhaar,
+							$enquiries1->sslc_grade,
+							$enquiries1->puc1_grade,
+							'<strong class="text-' . $enquiryStatusColor[$enquiries1->status] . '">' . $enquiryStatus[$enquiries1->status] . '</strong>',
+							date('d-m-Y h:i A', strtotime($enquiries1->reg_date))
+						);
+						$this->table->add_row($result_array);
+					}
+					$details = $this->table->generate();
+				} else {
+					$details = 'No student details found';
+				}
+				if ($download == 1) {
+					$response = array(
+						'op' => 'ok',
+						'file' => "data:application/vnd.ms-excel;base64," . base64_encode($details)
+					);
+					die(json_encode($response));
+				} else {
+					$data['enquiries'] = $details;
+					$this->admin_template->show('admin/mtechreport_category', $data);
+				}
+			}
+		} else {
+			redirect('admin/timeout');
+		}
+	}
+
 }

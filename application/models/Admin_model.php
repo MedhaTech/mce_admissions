@@ -283,10 +283,11 @@ class Admin_model extends CI_Model
 
   function getEnquiries_per($academic_year)
   {
-    $this->db->where('academic_year', $academic_year);
-    $this->db->order_by('puc1_grade', 'DESC');
-    return $this->db->get('enquiries');
-  }
+      $this->db->where('academic_year', $academic_year);
+      $this->db->where('admission_based !=', 'BE'); 
+      $this->db->order_by('puc1_grade', 'DESC');
+      return $this->db->get('enquiries');
+  }  
 
   function getEnquiries_non($academic_year)
   {
@@ -312,15 +313,18 @@ class Admin_model extends CI_Model
   }
 
   function getEnquiries_course_new($academic_year, $course, $course_name)
-  {
+{
     $this->db->where('academic_year', $academic_year);
+    $this->db->where('admission_based !=', 'BE'); 
+    $this->db->group_start(); 
     $this->db->where('course_id', $course);
     $this->db->or_where('course1', 'B.E - ' . $course_name);
     $this->db->or_where('course2', 'B.E - ' . $course_name);
-
+    $this->db->group_end(); 
     $this->db->order_by('reg_date', 'DESC');
     return $this->db->get('enquiries');
-  }
+}
+
 
   function getEnquiries_filter($academic_year, $sslc = '', $puc1 = '', $puc2 = '', $state = '', $course = '')
   {
@@ -588,6 +592,7 @@ class Admin_model extends CI_Model
     $this->db->from('admissions');
     $this->db->join('fee_master', 'admissions.id = fee_master.student_id', 'left');
     $this->db->where('admissions.academic_year', $currentAcademicYear);
+    $this->db->where('admissions.stream_id', '1');
     if ($course != '') {
       $this->db->where('admissions.dept_id', $course);
     }
@@ -682,6 +687,8 @@ class Admin_model extends CI_Model
     $this->db->from('admissions');
     $this->db->join('fee_master', 'admissions.id = fee_master.student_id', 'left');
     $this->db->where('admissions.academic_year', $currentAcademicYear);
+
+    $this->db->where('admissions.stream_id', '1');
     if ($course != '') {
       $this->db->where('admissions.dept_id', $course);
     }
@@ -701,6 +708,7 @@ class Admin_model extends CI_Model
     $this->db->where('admissions.academic_year', $currentAcademicYear);
     $this->db->where('admissions.status !=', '7');
     $this->db->where('fee_master.Corpus_fund >', 0);
+    $this->db->where('admissions.stream_id', '1'); 
     return $this->db->get();
   }
 
@@ -728,6 +736,7 @@ class Admin_model extends CI_Model
     $this->db->join('transactions', 'transactions.id = admissions.id', 'left');
     $this->db->where('admissions.academic_year', $currentAcademicYear);
     $this->db->where('admissions.status !=', '7');
+    $this->db->where('admissions.stream_id', '1'); 
     $this->db->group_by('admissions.id');
     $this->db->having('Corpus_fund_balance >', 0);
     return $this->db->get();
@@ -770,15 +779,18 @@ class Admin_model extends CI_Model
     return $this->db->get('admissions');
   }
 
-  function transactions($transaction_status)
-  {
-    $this->db->select('admissions.id, admissions.app_no,admissions.dept_id, admissions.adm_no, admissions.student_name, admissions.mobile,  admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.amount, transactions.remarks, transactions.transaction_status');
-    if ($transaction_status != null)
-      $this->db->where('transactions.transaction_status', $transaction_status);
-    $this->db->join('admissions', 'admissions.id=transactions.admissions_id');
+  public function transactions($transaction_status) 
+{
+    $this->db->select('admissions.id, admissions.app_no, admissions.dept_id, admissions.adm_no, admissions.student_name, admissions.mobile, admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.amount, transactions.remarks, transactions.transaction_status');
+    if ($transaction_status != null) {
+        $this->db->where('transactions.transaction_status', $transaction_status);
+    }
+    $this->db->where('admissions.stream_id', '1'); 
+    $this->db->join('admissions', 'admissions.id = transactions.admissions_id');
     $this->db->order_by('transactions.transaction_date', 'ASC');
     return $this->db->get('transactions');
-  }
+}
+
   function transactionsdatewise($from, $to)
   {
     $this->db->select('admissions.id, admissions.app_no,admissions.dept_id,admissions.category_claimed,admissions.category_allotted, admissions.adm_no,admissions.academic_year, admissions.usn,admissions.student_name,admissions.quota,admissions.sub_quota,admissions.college_code, admissions.mobile,  admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.year, transactions.amount, transactions.remarks, transactions.transaction_status');
@@ -786,6 +798,7 @@ class Admin_model extends CI_Model
     $this->db->where('transactions.transaction_status', '1');
     $this->db->where('transactions.transaction_date>=', $from);
     $this->db->where('transactions.transaction_date<=', $to);
+    $this->db->where('admissions.stream_id', '1'); 
     $this->db->join('admissions', 'admissions.id=transactions.admissions_id');
     $this->db->order_by('transactions.transaction_date', 'ASC');
     return $this->db->get('transactions');
@@ -795,6 +808,7 @@ class Admin_model extends CI_Model
   {
     $this->db->where('academic_year', $academic_year);
     $this->db->where('category_claimed', $category_claimed);
+    $this->db->where('admissions.stream_id', '1'); 
     $this->db->order_by('admit_date', 'DESC');
     return $this->db->get('admissions');
   }
@@ -802,6 +816,7 @@ class Admin_model extends CI_Model
   function getAdmissions_course($academic_year, $course, $status)
   {
     $this->db->where('academic_year', $academic_year);
+    $this->db->where('admissions.stream_id', '1');
     $this->db->where('dept_id', $course);
     $this->db->where('status', $status);
     $this->db->order_by('admit_date', 'DESC');
@@ -1201,4 +1216,167 @@ class Admin_model extends CI_Model
     $query = $this->db->get();
     return $query;
   }
+  
+  function mtechCorpusReport($currentAcademicYear)
+  {
+      $this->db->select('admissions.id, admissions.app_no, admissions.adm_no, admissions.admit_date, admissions.dept_id, admissions.academic_year, admissions.student_name, admissions.usn, admissions.quota, admissions.sub_quota, admissions.college_code, admissions.mobile, admissions.fees_paid, admissions.status, fee_master.Corpus_fund, admissions.remarks');
+      $this->db->from('admissions');
+      $this->db->join('fee_master', 'fee_master.student_id = admissions.id');
+      $this->db->where('admissions.academic_year', $currentAcademicYear);
+      $this->db->where('admissions.status !=', '7');
+      $this->db->where('fee_master.Corpus_fund >', 0);
+      $this->db->where('admissions.stream_id', '2'); 
+      return $this->db->get();
+  }
+  
+  function mtechCorpusBalanceReport($currentAcademicYear)
+{
+    $this->db->select('admissions.id, 
+                         admissions.app_no, 
+                         admissions.adm_no, 
+                         MAX(admissions.admit_date) AS admit_date, 
+                         MAX(admissions.dept_id) AS dept_id, 
+                         MAX(admissions.academic_year) AS academic_year, 
+                         MAX(admissions.student_name) AS student_name, 
+                         MAX(admissions.usn) AS usn, 
+                         MAX(admissions.quota) AS quota, 
+                         MAX(admissions.sub_quota) AS sub_quota, 
+                         MAX(admissions.college_code) AS college_code, 
+                         MAX(admissions.mobile) AS mobile, 
+                         MAX(admissions.fees_paid) AS fees_paid, 
+                         MAX(admissions.status) AS status, 
+                         MAX(fee_master.Corpus_fund) AS Corpus_fund, 
+                         MAX(admissions.remarks) AS remarks, 
+                         (MAX(fee_master.Corpus_fund) - COALESCE(SUM(transactions.amount), 0)) AS Corpus_fund_balance');
+    $this->db->from('admissions');
+    $this->db->join('fee_master', 'fee_master.student_id = admissions.id');
+    $this->db->join('transactions', 'transactions.id = admissions.id', 'left');
+    $this->db->where('admissions.academic_year', $currentAcademicYear);
+    $this->db->where('admissions.status !=', '7');
+    $this->db->where('admissions.stream_id', '2'); 
+    $this->db->group_by('admissions.id');
+    $this->db->having('Corpus_fund_balance >', 0);
+    return $this->db->get();
+}
+
+function getmtechAdmissions_course($academic_year, $course, $status)
+{
+  $this->db->where('academic_year', $academic_year);
+  $this->db->where('admissions.stream_id', '2');
+  $this->db->where('dept_id', $course);
+  $this->db->where('status', $status);
+  $this->db->order_by('admit_date', 'DESC');
+  return $this->db->get('admissions');
+}
+function mtechtransactions($transaction_status) 
+{
+    $this->db->select('admissions.id, admissions.app_no, admissions.dept_id, admissions.adm_no, admissions.student_name, admissions.mobile, admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.amount, transactions.remarks, transactions.transaction_status');
+
+    if ($transaction_status != null) {
+        $this->db->where('transactions.transaction_status', $transaction_status);
+    }
+    $this->db->where('admissions.stream_id', '2');
+
+    $this->db->join('admissions', 'admissions.id=transactions.admissions_id');
+    $this->db->order_by('transactions.transaction_date', 'ASC');
+    
+    return $this->db->get('transactions');
+}
+
+function getmtechAdmissions_category($academic_year, $category_claimed)
+{
+    $this->db->where('academic_year', $academic_year);
+    $this->db->where('category_claimed', $category_claimed);
+    $this->db->where('stream_id', '2'); 
+    $this->db->order_by('admit_date', 'DESC');
+    return $this->db->get('admissions');
+}
+
+public function mtechdetails($select, $field1, $value1, $field2, $value2, $tableName, $conditions = [])
+{
+    $this->db->select($select);
+    if ($value1 != null) {
+        $this->db->where($field1, $value1);
+    }
+    if ($value2 != null) {
+        $this->db->where($field2, $value2);
+    }
+    if (!empty($conditions)) {
+        foreach ($conditions as $key => $value) {
+            $this->db->where($key, $value);
+        }
+    }
+
+    return $this->db->get($tableName);
+}
+
+function getmtechEnquiries($academic_year)
+{
+    $this->db->where('academic_year', $academic_year);
+    $this->db->where('admission_based', 'BE');
+    $this->db->order_by('reg_date', 'DESC');
+    return $this->db->get('enquiries');
+}
+function getmtechEnquiries_non($academic_year)
+{
+    $this->db->where('academic_year', $academic_year);
+    $this->db->where('state !=', 'Karnataka');
+    $this->db->where('state !=', 'KA');
+    $this->db->where('admission_based', 'BE'); 
+    $this->db->order_by('reg_date', 'DESC');
+    return $this->db->get('enquiries');
+}
+function getmtechEnquiries_sports($academic_year)
+{
+  $this->db->where('academic_year', $academic_year);
+  $this->db->where('sports!=', '');
+  $this->db->where('admission_based', 'BE'); 
+  $this->db->order_by('reg_date', 'DESC');
+  return $this->db->get('enquiries');
+}
+function getmtechEnquiries_course_new($academic_year, $course, $course_name)
+{
+  $this->db->where('academic_year', $academic_year);
+  $this->db->where('course_id', $course);
+  $this->db->or_where('course1', 'B.E - ' . $course_name);
+  $this->db->or_where('course2', 'B.E - ' . $course_name);
+
+  $this->db->order_by('reg_date', 'DESC');
+  return $this->db->get('enquiries');
+}
+function getmtechEnquiries_category($academic_year, $category)
+  {
+    $this->db->where('academic_year', $academic_year);
+    $this->db->where('category', $category);
+    $this->db->where('admission_based', 'BE'); 
+    $this->db->order_by('reg_date', 'DESC');
+    return $this->db->get('enquiries');
+  }
+
+  public function bedetails($select, $field1, $value1, $field2, $value2, $tableName, $conditions = [])
+{
+    $this->db->select($select);
+    if ($value1 != null) {
+        $this->db->where($field1, $value1);
+    }
+    if ($value2 != null) {
+        $this->db->where($field2, $value2);
+    }
+    if (!empty($conditions)) {
+        foreach ($conditions as $key => $value) {
+            $this->db->where($key, $value);
+        }
+    }
+
+    return $this->db->get($tableName);
+}
+
+function getbeEnquiries($academic_year)
+{
+    $this->db->where('academic_year', $academic_year);
+    $this->db->where('admission_based !=', 'BE'); // Exclude those with admission_based as 'BE'
+    $this->db->order_by('reg_date', 'DESC');
+    return $this->db->get('enquiries');
+}
+
 }
