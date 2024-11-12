@@ -290,6 +290,7 @@ class Globals
             'SCK'=>'SCK',
             'SCR'=>'SCR',
             'SCRH'=>'SCRH',
+            'SNQ'=>'SNQ',
             'ST'=>'ST',
             'STG'=>'STG',
             'STGH'=>'STGH',
