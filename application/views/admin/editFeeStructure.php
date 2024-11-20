@@ -242,6 +242,16 @@
                                           </div>
                                       </div>
                                       <div class="form-group row">
+                                          <label for="staticEmail" class="col-md-5 col-form-label text-right">Exam
+                                              fee</label>
+                                          <div class="col-md-7">
+                                              <input type="text" name="exam_fee" id="exam_fee"
+                                                  class="form-control"
+                                                  value="<?php echo (set_value('exam_fee'))?set_value('exam_fee'):$fee_structure['exam_fee'];?>">
+                                              <span class="text-danger"></span>
+                                          </div>
+                                      </div>
+                                      <div class="form-group row">
                                           <label for="staticEmail" class="col-md-5 col-form-label text-right">Processing
                                               Fee paid
                                               at
@@ -440,6 +450,11 @@ $(document).ready(function() {
         calFeeTotal();
     });
 
+    $("#exam_fee").change(function() {
+        event.preventDefault();
+        calFeeTotal();
+    });
+
     $("#processing_fee_paid_at_kea").change(function() {
         event.preventDefault();
         calFeeTotal();
@@ -489,6 +504,7 @@ $(document).ready(function() {
             indian_red_cross_membership_fee + women_cell_fee + nss_fee + university_registration_fee
 
         var admission_fee = parseInt($('#admission_fee').val());
+        var exam_fee = parseInt($('#exam_fee').val());
         var processing_fee_paid_at_kea = parseInt($('#processing_fee_paid_at_kea').val());
         var tution_fee = parseInt($('#tution_fee').val());
         var college_other_fee = parseInt($('#college_other_fee').val());
@@ -497,7 +513,7 @@ $(document).ready(function() {
         var corpus_fund = parseInt($('#corpus_fund').val());
 
         var total_tution_fee = admission_fee + processing_fee_paid_at_kea + tution_fee + college_other_fee +
-            skill_development_fee;
+            skill_development_fee + exam_fee;
 
         var total_college_fee = total_tution_fee + total_university_fee;
 

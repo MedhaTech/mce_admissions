@@ -654,6 +654,44 @@
                                           </div>
                                       </div>
                                       <div class="form-group row">
+                                          <label for="staticEmail" class="col-md-4 col-form-label  ">Exam
+                                              fee</label>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php echo  $fee_structure->exam_fee; ?>
+
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <label for="staticEmail" class="col-form-label  ">
+                                                  <?php $paid = $this->admin_model->checkFieldGreaterThanZerovalue($fee_structure->id, 'exam_fee', $stud_id); ?>
+                                                  <?= $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-1">
+                                              <label for="staticEmail" class="col-form-label  ">
+
+                                                  <?= $fee_structure->exam_fee - $paid; ?>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-2">
+                                              <input type="text" readonly name="exam_fee" id="exam_fee" class="form-control" value="<?php echo (set_value('exam_fee')) ? set_value('exam_fee') : $fee_structure->exam_fee; ?>">
+                                              <span class="text-danger"></span>
+                                          </div>
+                                          <div class="col-md-1">
+                                              <?php $readonlyvalue = $this->admin_model->checkFieldGreaterThanZero1($fee_structure->id, 'exam_fee', $stud_id);
+
+                                                if ($readonlyvalue) {
+                                                    $readonly = "disabled";
+                                                } else {
+                                                    $readonly = "";
+                                                }
+
+                                                ?>
+                                              <input type="checkbox" <?= $readonly; ?> name="fees[]" id="exam_fee_checkbox" value="<?php echo (set_value('exam_fee')) ? set_value('exam_fee') : $fee_structure->exam_fee; ?>">
+                                          </div>
+                                      </div>
+                                      <div class="form-group row">
                                           <label for="staticEmail" class="col-md-4 col-form-label  ">Processing
                                               Fee paid
                                               at
