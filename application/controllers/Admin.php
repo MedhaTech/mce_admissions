@@ -754,127 +754,163 @@ class Admin extends CI_Controller
 		}
 	}
 
-
 	function editEnquiry($id)
-	{
-		if ($this->session->userdata('logged_in')) {
-			$session_data = $this->session->userdata('logged_in');
-			$data['id'] = $session_data['id'];
-			$data['username'] = $session_data['username'];
-			$data['full_name'] = $session_data['full_name'];
-			$data['role'] = $session_data['role'];
+{
+    if ($this->session->userdata('logged_in')) {
+        $session_data = $this->session->userdata('logged_in');
+        $data['id'] = $session_data['id'];
+        $data['username'] = $session_data['username'];
+        $data['full_name'] = $session_data['full_name'];
+        $data['role'] = $session_data['role'];
 
-			$data['page_title'] = 'Edit Enquiry';
-			$data['menu'] = 'enquiries';
-			$data['userTypes'] = $this->globals->userTypes();
+        $data['page_title'] = 'Edit Enquiry';
+        $data['menu'] = 'enquiries';
+        $data['userTypes'] = $this->globals->userTypes();
 
-			$data['academicYear'] = $this->globals->academicYear();
-			$data['course_options'] = array(" " => "Select") + $this->courses();
-			$data['type_options'] = array(" " => "Select") + $this->globals->category();
-			$data['states'] = array(" " => "Select State") + $this->globals->states();
+        $data['academicYear'] = $this->globals->academicYear();
+        $data['course_options'] = array(" " => "Select") + $this->getAllCourses();
+        $data['type_options'] = array(" " => "Select") + $this->globals->category();
+        $data['states'] = array(" " => "Select State") + $this->globals->states();
+        $data['enquiryDetails'] = $this->admin_model->getDetails('enquiries', $id)->row();
 
+        // Form validation rules
+        $this->form_validation->set_rules('academic_year', 'Academic Year', 'required');
+        $this->form_validation->set_rules('student_name', 'Applicant Name', 'required');
+        $this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]');
+        $this->form_validation->set_rules('email', 'Email', 'trim|valid_email');
+        $this->form_validation->set_rules('par_name', 'Parent Name', 'required');
+        $this->form_validation->set_rules('par_mobile', 'Parent Mobile', 'required');
+        $this->form_validation->set_rules('par_email', 'Parent Email', 'required');
+        $this->form_validation->set_rules('course', 'Course', 'required');
+        $this->form_validation->set_rules('course1', 'Course', 'required');
+        $this->form_validation->set_rules('course2', 'Course', 'required');
+        $this->form_validation->set_rules('gender', 'Gender', 'required');
+        $this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]');
+        $this->form_validation->set_rules('state', 'State', 'required');
+        $this->form_validation->set_rules('city', 'City', 'required');
+        $this->form_validation->set_rules('category', 'Category', 'required');
+        $this->form_validation->set_rules('sslc_grade', 'Sslc Grade', 'required');
 
-			$this->form_validation->set_rules('academic_year', 'Academic Year', 'required');
-			$this->form_validation->set_rules('student_name', 'Applicant Name', 'required');
-
-			$this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]');
-			$this->form_validation->set_rules('email', 'Email', 'trim|valid_email');
-			$this->form_validation->set_rules('par_name', 'Parent Name', 'required');
-			$this->form_validation->set_rules('par_mobile', 'Parent Mobile', 'required');
-			$this->form_validation->set_rules('par_email', 'Parent Email', 'required');
-			$this->form_validation->set_rules('course', 'Course', 'required');
-			$this->form_validation->set_rules('course1', 'Course', 'required');
-			$this->form_validation->set_rules('course2', 'Course', 'required');
-			$this->form_validation->set_rules('gender', 'Gender', 'required');
-			$this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]');
-			$this->form_validation->set_rules('state', 'State', 'required');
-			$this->form_validation->set_rules('city', 'City', 'required');
-			$this->form_validation->set_rules('category', 'Category', 'required');
-			$this->form_validation->set_rules('sslc_grade', 'Sslc Grade', 'required');
-			$this->form_validation->set_rules('puc1_grade', 'Puc Grade', 'required');
-			$this->form_validation->set_rules('exam_board', 'Exam Board');
-			$this->form_validation->set_rules('puc2_grade', 'Puc2 Grade', 'required');
-			// $this->form_validation->set_rules('register_grade', '10+2 Percentage / Grade', 'required');
-			// $this->form_validation->set_rules('exam_board', 'Exam Board');
-			// $this->form_validation->set_rules('register_number', 'Register Number', 'required');
-			// $this->form_validation->set_rules('aadhaar', 'Aadhaar Number', 'required|regex_match[/^[0-9]{12}$/]');
-
-			if ($this->form_validation->run() === FALSE) {
-				$data['action'] = 'admin/editEnquiry/' . $id;
-
-				$enquiryDetails = $this->admin_model->getDetails('enquiries', $id)->row();
-
-
-				$data['academic_year'] = $enquiryDetails->academic_year;
-				$data['student_name'] = $enquiryDetails->student_name;
-
-				$data['mobile'] = $enquiryDetails->mobile;
-				$data['email'] = $enquiryDetails->email;
-				$data['par_name'] = $enquiryDetails->par_name;
-				$data['par_mobile'] = $enquiryDetails->par_mobile;
-				$data['par_email'] = $enquiryDetails->par_email;
-				$data['course'] = $enquiryDetails->course_id;
-				$data['course1'] = $enquiryDetails->course_id;
-				$data['course2'] = $enquiryDetails->course_id;
-				$data['gender'] = $enquiryDetails->gender;
-				$data['aadhaar'] = $enquiryDetails->aadhaar;
-				$data['state'] = $enquiryDetails->state;
-				$data['city'] = $enquiryDetails->city;
-				$data['category'] = $enquiryDetails->category;
-				$data['sslc_grade'] = $enquiryDetails->sslc_grade;
-				$data['puc1_grade'] = $enquiryDetails->puc1_grade;
-				$data['puc2_grade'] = $enquiryDetails->puc2_grade;
-				$data['exam_board'] = $enquiryDetails->exam_board;
-				// $data['register_number'] =  $enquiryDetails->register_number;
-				// $data['register_grade'] = $enquiryDetails->register_grade;
-				$this->admin_template->show('admin/edit_enquiry', $data);
-			} else {
-				$course_id = $this->input->post('course');
-				$course = $data['course_options'][$course_id];
-
-
-
-				$updateDetails = array(
-					'student_name' => strtoupper($this->input->post('student_name')),
-					// 'register_grade' => $this->input->post('register_grade'),
-					'mobile' => $this->input->post('mobile'),
-					'email' => strtolower($this->input->post('email')),
-					'par_name' => $this->input->post('par_name'),
-					'par_mobile' => $this->input->post('par_mobile'),
-					'par_email' => $this->input->post('par_email'),
-					'course_id' => $this->input->post('course'),
-					'course_id' => $this->input->post('course1'),
-					'course_id' => $this->input->post('course2'),
-					'gender' => $this->input->post('gender'),
-					'aadhaar' => $this->input->post('aadhaar'),
-					'course' => $course,
-					'state' => $this->input->post('state'),
-					'city' => $this->input->post('city'),
-					'category' => $this->input->post('category'),
-					'sslc_grade' => $this->input->post('sslc_grade'),
-					'puc1_grade' => $this->input->post('puc1_grade'),
-					// 'exam_board' => strtoupper($this->input->post('exam_board')),
-					'puc2_grade' => $this->input->post('puc2_grade'),
-
-					// 'exam_board' => strtoupper($this->input->post('exam_board')),
-					// 'register_number' => $this->input->post('register_number')
-				);
-
-				$result = $this->admin_model->updateDetails($id, $updateDetails, 'enquiries');
-				if ($result) {
-					$this->session->set_flashdata('message', 'Enquiry Details updated successfully...!');
-					$this->session->set_flashdata('status', 'alert-success');
-				} else {
-					$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
-					$this->session->set_flashdata('status', 'alert-warning');
-				}
-
-				redirect('admin/enquiryDetails/' . $id, 'refresh');
-			}
-		} else {
-			redirect('admin', 'refresh');
+       // Conditional validation for different admission types
+		if ($data['enquiryDetails']->admission_based == 'PUC') {
+			$this->form_validation->set_rules('puc1_grade', 'PUC-I Grade', 'required');
+			$this->form_validation->set_rules('puc2_grade', 'PUC-II Grade', 'required');
+		} elseif ($data['enquiryDetails']->admission_based == 'GTTC') {
+			$this->form_validation->set_rules('gttc1_grade', 'GTTC-I Grade', 'required');
+			$this->form_validation->set_rules('gttc2_grade', 'GTTC-II Grade', 'required');
+			$this->form_validation->set_rules('gttc3_grade', 'GTTC-III Grade', 'required');
+			$this->form_validation->set_rules('gttc4_grade', 'GTTC-IV Grade', 'required');
+		} elseif ($data['enquiryDetails']->admission_based == 'DIPLOMA') {
+			$this->form_validation->set_rules('diploma1_grade', 'DIPLOMA-I Grade', 'required');
+			$this->form_validation->set_rules('diploma2_grade', 'DIPLOMA-II Grade', 'required');
+			$this->form_validation->set_rules('diploma3_grade', 'DIPLOMA-III Grade', 'required');
+		} elseif ($data['enquiryDetails']->admission_based == 'BE') {
+			$this->form_validation->set_rules('degree1_grade', 'BE-I Grade', 'required');
+			$this->form_validation->set_rules('degree2_grade', 'BE-II Grade', 'required');
+			$this->form_validation->set_rules('degree3_grade', 'BE-III Grade', 'required');
+			$this->form_validation->set_rules('degree4_grade', 'BE-IV Grade', 'required');
 		}
-	}
+
+        if ($this->form_validation->run() === FALSE) {
+            $data['action'] = 'admin/editEnquiry/' . $id;
+
+            $enquiryDetails = $this->admin_model->getDetails('enquiries', $id)->row();
+
+            // Populating data
+            $data['academic_year'] = $enquiryDetails->academic_year;
+            $data['student_name'] = $enquiryDetails->student_name;
+            $data['mobile'] = $enquiryDetails->mobile;
+            $data['email'] = $enquiryDetails->email;
+            $data['par_name'] = $enquiryDetails->par_name;
+            $data['par_mobile'] = $enquiryDetails->par_mobile;
+            $data['par_email'] = $enquiryDetails->par_email;
+            $data['course'] = $enquiryDetails->course_id;
+            $data['course1'] = $enquiryDetails->course_id;
+            $data['course2'] = $enquiryDetails->course_id;
+            $data['gender'] = $enquiryDetails->gender;
+            $data['aadhaar'] = $enquiryDetails->aadhaar;
+            $data['state'] = $enquiryDetails->state;
+            $data['city'] = $enquiryDetails->city;
+            $data['category'] = $enquiryDetails->category;
+            $data['sslc_grade'] = $enquiryDetails->sslc_grade;
+            // $data['exam_board'] = $enquiryDetails->exam_board;
+
+            // Conditionally populate grades based on admission type
+            if ($enquiryDetails->admission_based == 'PUC') {
+                $data['puc1_grade'] = $enquiryDetails->puc1_grade;
+                $data['puc2_grade'] = $enquiryDetails->puc2_grade;
+            } elseif ($enquiryDetails->admission_based == 'GTTC') {
+                $data['gttc1_grade'] = $enquiryDetails->gttc1_grade;
+                $data['gttc2_grade'] = $enquiryDetails->gttc2_grade;
+                $data['gttc3_grade'] = $enquiryDetails->gttc3_grade;
+                $data['gttc4_grade'] = $enquiryDetails->gttc4_grade;
+            } elseif ($enquiryDetails->admission_based == 'DIPLOMA') {
+                $data['diploma1_grade'] = $enquiryDetails->diploma1_grade;
+                $data['diploma2_grade'] = $enquiryDetails->diploma2_grade;
+                $data['diploma3_grade'] = $enquiryDetails->diploma3_grade;
+                $data['diploma4_grade'] = $enquiryDetails->diploma4_grade;
+            } elseif ($enquiryDetails->admission_based == 'BE') {
+                $data['degree1_grade'] = $enquiryDetails->degree1_grade;
+                $data['degree2_grade'] = $enquiryDetails->degree2_grade;
+                $data['degree3_grade'] = $enquiryDetails->degree3_grade;
+                $data['degree4_grade'] = $enquiryDetails->degree4_grade;
+            }
+
+            $this->admin_template->show('admin/edit_enquiry', $data);
+        } else {
+            $updateDetails = array(
+                'student_name' => strtoupper($this->input->post('student_name')),
+                'mobile' => $this->input->post('mobile'),
+                'email' => strtolower($this->input->post('email')),
+                'par_name' => $this->input->post('par_name'),
+                'par_mobile' => $this->input->post('par_mobile'),
+                'par_email' => $this->input->post('par_email'),
+                'course_id' => $this->input->post('course'),
+                'gender' => $this->input->post('gender'),
+                'aadhaar' => $this->input->post('aadhaar'),
+                'state' => $this->input->post('state'),
+                'city' => $this->input->post('city'),
+                'category' => $this->input->post('category'),
+                'sslc_grade' => $this->input->post('sslc_grade'),
+                // 'exam_board' => strtoupper($this->input->post('exam_board'))
+            );
+
+           // Update grades based on admission type
+			if ($data['enquiryDetails']->admission_based == 'PUC') {
+				$updateDetails['puc1_grade'] = $this->input->post('puc1_grade');
+				$updateDetails['puc2_grade'] = $this->input->post('puc2_grade');
+			} elseif ($data['enquiryDetails']->admission_based == 'GTTC') {
+				$updateDetails['gttc1_grade'] = $this->input->post('gttc1_grade');
+				$updateDetails['gttc2_grade'] = $this->input->post('gttc2_grade');
+				$updateDetails['gttc3_grade'] = $this->input->post('gttc3_grade');
+				$updateDetails['gttc4_grade'] = $this->input->post('gttc4_grade');
+			} elseif ($data['enquiryDetails']->admission_based == 'DIPLOMA') {
+				$updateDetails['diploma1_grade'] = $this->input->post('diploma1_grade');
+				$updateDetails['diploma2_grade'] = $this->input->post('diploma2_grade');
+				$updateDetails['diploma3_grade'] = $this->input->post('diploma3_grade');
+			} elseif ($data['enquiryDetails']->admission_based == 'BE') {
+				$updateDetails['degree1_grade'] = $this->input->post('degree1_grade');
+				$updateDetails['degree2_grade'] = $this->input->post('degree2_grade');
+				$updateDetails['degree3_grade'] = $this->input->post('degree3_grade');
+				$updateDetails['degree4_grade'] = $this->input->post('degree4_grade');
+			}
+
+            // Update the enquiry details
+            $result = $this->admin_model->updateDetails($id, $updateDetails, 'enquiries');
+            if ($result) {
+                $this->session->set_flashdata('message', 'Enquiry Details updated successfully...!');
+                $this->session->set_flashdata('status', 'alert-success');
+            } else {
+                $this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+                $this->session->set_flashdata('status', 'alert-warning');
+            }
+
+            redirect('admin/enquiryDetails/' . $id, 'refresh');
+        }
+    } else {
+        redirect('admin', 'refresh');
+    }
+   }
 
 	function courses()
 	{
@@ -7366,9 +7402,12 @@ With good wishes";
 			if ($university > 0) {
 				$tableData[] = ["University Other Fee", number_format($university, 2)];
 			}
-
+			
 			if ($voucherDetails->processing_fee_paid_at_kea > 0) {
 				$tableData[] = ['Processing Fee Paid at KEA', number_format($voucherDetails->processing_fee_paid_at_kea, 2)];
+			}
+			if ($voucherDetails->exam_fee > 0) {
+				$tableData[] = ['Exam Fee', $voucherDetails->exam_fee];
 			}
 			if ($voucherDetails->tution_fee > 0) {
 				$tableData[] = ['Tution Fee', number_format($voucherDetails->tution_fee, 2)];
@@ -7591,8 +7630,12 @@ With good wishes";
 			if ($voucherDetails->admission_fee > 0) {
 				$tableData[] = ['Admission Fee', $voucherDetails->admission_fee];
 			}
+			
 			if ($voucherDetails->processing_fee_paid_at_kea > 0) {
 				$tableData[] = ['Processing Fee Paid at KEA', $voucherDetails->processing_fee_paid_at_kea];
+			}
+			if ($voucherDetails->exam_fee > 0) {
+				$tableData[] = ['Exam Fee', $voucherDetails->exam_fee];
 			}
 			if ($voucherDetails->tution_fee > 0) {
 				$tableData[] = ['Tution Fee', $voucherDetails->tution_fee];
@@ -7776,25 +7819,25 @@ With good wishes";
 			$pdf->Cell(0, 10, 'Year:' . $admissionDetails->academic_year, 0, 1, 'R');
 			$pdf->Cell(0, 1, 'Adm. No.:' . $admissionDetails->adm_no, 0, 1, 'R');
 
+			$pdf->SetXY(15, $topGap + 15);
 			$pdf->SetFont('Arial', '', 10);
-			$pdf->SetX(15, $topGap);
 			$pdf->Cell(60, 6, 'CET AT No.', 0);
 			$pdf->SetFont('Arial', 'B', 10);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->entrance_reg_no, 0, 'C');
 
-			$pdf->SetX(15, $topGap + 9);
+			$pdf->SetXY(15, $topGap + 21);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(60, 6, 'Rank No.', 0);
 			$pdf->SetFont('Arial', 'B', 10);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->entrance_rank, 0, 'C');
 
-			$pdf->SetX(15, $topGap + 9);
+			$pdf->SetXY(15, $topGap + 27);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(60, 6, 'Name of the candidate.', 0);
 			$pdf->SetFont('Arial', 'B', 10);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->student_name, 0, 'C');
 
-			$pdf->SetX(15, $topGap + 9);
+			$pdf->SetXY(15, $topGap + 33);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(60, 6, 'Date of Birth and Age', 0);
 			$pdf->SetFont('Arial', 'B', 10);
@@ -7804,20 +7847,25 @@ With good wishes";
 			$combinedValue = $admissionDetails->date_of_birth . ' ' . $age;
 			$pdf->Cell(0, 6, ': ' . $combinedValue, 0, 'C');
 
-			$pdf->SetX(15, $topGap + 9);
+			$pdf->SetXY(15, $topGap + 39);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(60, 6, 'Category Claimed', 0);
 			$pdf->SetFont('Arial', 'B', 9);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->category_claimed, 0, 'C');
 
-			$pdf->SetX(15, $topGap + 9);
+			$pdf->SetXY(15, $topGap + 45);
 			$pdf->SetFont('Arial', '', 10); // Updated font style for Category Allotted
 			$pdf->Cell(60, 6, 'Category Allotted', 0);
 			$pdf->SetFont('Arial', 'B', 9);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->category_allotted, 0, 'C');
 
-			$pdf->SetFont('Arial', 'BU', 12);
-			$pdf->Cell(60, 10, 'DOCUMENTS PRODUCED ', 0, 1, 'C');
+			$pdf->SetXY(15, $topGap + 51);  
+			$pdf->SetFont('Arial', 'BU', 12);  
+			$text = 'DOCUMENTS PRODUCED';
+			$textWidth = $pdf->GetStringWidth($text);  
+			$cellWidth = $textWidth + 10;  
+			$pdf->SetX((210 - $cellWidth) / 2);  
+			$pdf->Cell($cellWidth, 10, $text, 0, 1, 'C');
 
 			$totalHeight = 60;
 			$rowHeight = 6;
@@ -8512,9 +8560,12 @@ With good wishes";
 			if ($university > 0) {
 				$tableData[] = ["University Other Fee", $university];
 			}
-
+		
 			if ($voucherDetails->processing_fee_paid_at_kea > 0) {
 				$tableData[] = ['Processing Fee Paid at KEA', $voucherDetails->processing_fee_paid_at_kea];
+			}
+			if ($voucherDetails->exam_fee > 0) {
+				$tableData[] = ['Exam Fee', $voucherDetails->exam_fee];
 			}
 			if ($voucherDetails->tution_fee > 0) {
 				$tableData[] = ['Tution Fee', $voucherDetails->tution_fee];
@@ -9354,6 +9405,9 @@ With good wishes";
 
 			if ($voucherDetails->processing_fee_paid_at_kea > 0) {
 				$tableData[] = ['Processing Fee Paid at KEA', $voucherDetails->processing_fee_paid_at_kea];
+			}
+			if ($voucherDetails->exam_fee > 0) {
+				$tableData[] = ['Exam Fee', $voucherDetails->exam_fee];
 			}
 			if ($voucherDetails->tution_fee > 0) {
 				$tableData[] = ['Tution Fee', $voucherDetails->tution_fee];
@@ -12280,6 +12334,62 @@ With good wishes";
 			}
 		} else {
 			redirect('admin/timeout');
+		}
+	}
+
+
+	function pg_dashboard()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+
+			$data['page_title'] = "Dashboard";
+			$data['menu'] = "pg_dashboard";
+			$data['enquiryStatus'] = $this->globals->enquiryStatus();
+			$data['enquiryStatusColor'] = $this->globals->enquiryStatusColor();
+			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
+
+			$admissionStats = $this->admin_model->getAdmissionOverallStats(0, 1)->result();
+			$aidedAdmitted = array();
+			$unaidedAdmitted = array();
+
+			$newArr = array("Aided" => array(), "UnAided" => array());
+			foreach ($admissionStats as $admissionStats1) {
+				$newArr[$admissionStats1->sub_quota][$admissionStats1->dept_id][$admissionStats1->quota] = $admissionStats1->cnt;
+			}
+			$data['newArr'] = $newArr;
+
+			$endorsementArr = array("Aided" => array(), "UnAided" => array());
+			foreach ($endorsementStats as $endorsementStats1) {
+				$endorsementArr[$endorsementStats1->sub_quota][$endorsementStats1->dept_id][$endorsementStats1->quota] = $endorsementStats1->cnt;
+			}
+			$data['endorsementArr'] = $endorsementArr;
+
+			// echo "<pre>";
+			// print_r($newArr); die;
+
+			$departments = $this->admin_model->getActiveDepartments('2', '0')->result();
+
+			$aided = array();
+			$unaided = array();
+			foreach ($departments as $departments1) {
+				if ($departments1->aided_intake) {
+					array_push($aided, $departments1);
+				}
+				if ($departments1->unaided_intake) {
+					array_push($unaided, $departments1);
+				}
+			}
+			$data['aided'] = $aided;
+			$data['unaided'] = $unaided;
+
+			$this->admin_template->show('admin/Dashboardpg', $data);
+		} else {
+			redirect('admin', 'refresh');
 		}
 	}
 

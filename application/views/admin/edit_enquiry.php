@@ -180,30 +180,114 @@
 
             </div>
 
+            <?php if ($enquiryDetails->admission_based == 'PUC'): ?>
+            <!-- PUC Fields -->
             <div class="form-row">
-              <div class="col-md-4 col-sm-12">
-                <div class="form-group">
-                <label for="aadhaar">PUC-I(10+1) Percentage/Grade</label>
-                  <input type="text" name="puc1_grade" id="puc1_grade" class="form-control" value="<?php echo (set_value('puc1_grade')) ? set_value('puc1_grade') : $puc1_grade; ?>">
-                  <span class="text-danger"><?php echo form_error('puc1_grade'); ?></span>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label for="puc1_grade">PUC-I(10+1) Percentage/Grade</label>
+                        <input type="text" name="puc1_grade" id="puc1_grade" class="form-control" value="<?php echo set_value('puc1_grade', $enquiryDetails->puc1_grade); ?>">
+                        <span class="text-danger"><?php echo form_error('puc1_grade'); ?></span>
+                    </div>
                 </div>
-              </div>
-              <div class="col-md-4 col-sm-12">
-                <div class="form-group">
-                  <label for="course">12th Exam Board</label>
-                  <?php $exam_board_options = array("" => "Select", "CBSE" => "CBSE", "ICSE" => "ICSE", "Karnataka State Board" => "Karnataka State Board", "AP State Board" => "AP State Board", "Other State Board" => "Other State Board");
-                  echo form_dropdown('exam_board', $exam_board_options, $exam_board, 'class="form-control" id="exam_board"'); ?>
-                  <span class="text-danger"><?php echo form_error('exam_board'); ?></span>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label for="puc2_grade">PUC-II(10+2) Percentage/Grade</label>
+                        <input type="text" name="puc2_grade" id="puc2_grade" class="form-control" value="<?php echo set_value('puc2_grade', $enquiryDetails->puc2_grade); ?>">
+                        <span class="text-danger"><?php echo form_error('puc2_grade'); ?></span>
+                    </div>
                 </div>
-              </div>
-              <div class="col-md-4 col-sm-12">
-              <div class="form-group">
-                 <label for="aadhaar">PUC-II(10+2) Percentage/Grade</label>
-                  <input type="text" name="puc2_grade" id="puc2_grade" class="form-control" value="<?php echo (set_value('puc2_grade')) ? set_value('puc2_grade') : $puc2_grade; ?>">
-                  <span class="text-danger"><?php echo form_error('puc2_grade'); ?></span>
-                </div>
-              </div>
             </div>
+        <?php elseif ($enquiryDetails->admission_based == 'GTTC'): ?>
+            <!-- GTTC Fields -->
+            <div class="form-row">
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label for="gttc1_grade">GTTC-I Percentage/Grade</label>
+                        <input type="text" name="gttc1_grade" id="gttc1_grade" class="form-control" value="<?php echo set_value('gttc1_grade', $enquiryDetails->gttc1_grade); ?>">
+                        <span class="text-danger"><?php echo form_error('gttc1_grade'); ?></span>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label for="gttc2_grade">GTTC-II Percentage/Grade</label>
+                        <input type="text" name="gttc2_grade" id="gttc2_grade" class="form-control" value="<?php echo set_value('gttc2_grade', $enquiryDetails->gttc2_grade); ?>">
+                        <span class="text-danger"><?php echo form_error('gttc2_grade'); ?></span>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label for="gttc3_grade">GTTC-III Percentage/Grade</label>
+                        <input type="text" name="gttc3_grade" id="gttc3_grade" class="form-control" value="<?php echo set_value('gttc3_grade', $enquiryDetails->gttc3_grade); ?>">
+                        <span class="text-danger"><?php echo form_error('gttc3_grade'); ?></span>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label for="gttc4_grade">GTTC-IV Percentage/Grade</label>
+                        <input type="text" name="gttc4_grade" id="gttc4_grade" class="form-control" value="<?php echo set_value('gttc4_grade', $enquiryDetails->gttc4_grade); ?>">
+                        <span class="text-danger"><?php echo form_error('gttc4_grade'); ?></span>
+                    </div>
+                </div>
+            </div>
+        <?php elseif ($enquiryDetails->admission_based == 'DIPLOMA'): ?>
+            <!-- DIPLOMA Fields -->
+            <div class="form-row">
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label for="diploma1_grade">DIPLOMA-I Percentage/Grade</label>
+                        <input type="text" name="diploma1_grade" id="diploma1_grade" class="form-control" value="<?php echo set_value('diploma1_grade', $enquiryDetails->diploma1_grade); ?>">
+                        <span class="text-danger"><?php echo form_error('diploma1_grade'); ?></span>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label for="diploma2_grade">DIPLOMA-II Percentage/Grade</label>
+                        <input type="text" name="diploma2_grade" id="diploma2_grade" class="form-control" value="<?php echo set_value('diploma2_grade', $enquiryDetails->diploma2_grade); ?>">
+                        <span class="text-danger"><?php echo form_error('diploma2_grade'); ?></span>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label for="diploma3_grade">DIPLOMA-III Percentage/Grade</label>
+                        <input type="text" name="diploma3_grade" id="diploma3_grade" class="form-control" value="<?php echo set_value('diploma3_grade', $enquiryDetails->diploma3_grade); ?>">
+                        <span class="text-danger"><?php echo form_error('diploma3_grade'); ?></span>
+                    </div>
+                </div>
+            </div>
+        <?php elseif ($enquiryDetails->admission_based == 'BE'): ?>
+            <!-- BE Fields -->
+            <div class="form-row">
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label for="degree1_grade">BE-I Percentage/Grade</label>
+                        <input type="text" name="degree1_grade" id="degree1_grade" class="form-control" value="<?php echo set_value('degree1_grade', $enquiryDetails->degree1_grade); ?>">
+                        <span class="text-danger"><?php echo form_error('degree1_grade'); ?></span>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label for="degree2_grade">BE-II Percentage/Grade</label>
+                        <input type="text" name="degree2_grade" id="degree2_grade" class="form-control" value="<?php echo set_value('degree2_grade', $enquiryDetails->degree2_grade); ?>">
+                        <span class="text-danger"><?php echo form_error('degree2_grade'); ?></span>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label for="degree3_grade">BE-III Percentage/Grade</label>
+                        <input type="text" name="degree3_grade" id="degree3_grade" class="form-control" value="<?php echo set_value('degree3_grade', $enquiryDetails->degree3_grade); ?>">
+                        <span class="text-danger"><?php echo form_error('degree3_grade'); ?></span>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label for="degree4_grade">BE-IV Percentage/Grade</label>
+                        <input type="text" name="degree4_grade" id="degree4_grade" class="form-control" value="<?php echo set_value('degree4_grade', $enquiryDetails->degree4_grade); ?>">
+                        <span class="text-danger"><?php echo form_error('degree4_grade'); ?></span>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
 
             <div class="form-group row">
               <div class="col-sm-2"> &nbsp;</div>

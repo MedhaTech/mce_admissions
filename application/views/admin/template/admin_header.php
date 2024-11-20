@@ -111,6 +111,13 @@
                             </a>
                         </li>
                         <li class="nav-item ">
+                            <a href="<?php echo base_url(); ?>admin/pg_dashboard"
+                                class="nav-link <?= $menu_active = ($menu == "pg_dashboard") ? 'active' : ''; ?>">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>PG Dashboard </p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
                             <a href="<?php echo base_url(); ?>admin/phd_dashboard"
                                 class="nav-link <?= $menu_active = ($menu == "phd_dashboard") ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
