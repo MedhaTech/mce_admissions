@@ -7402,9 +7402,12 @@ With good wishes";
 			if ($university > 0) {
 				$tableData[] = ["University Other Fee", number_format($university, 2)];
 			}
-
+			
 			if ($voucherDetails->processing_fee_paid_at_kea > 0) {
 				$tableData[] = ['Processing Fee Paid at KEA', number_format($voucherDetails->processing_fee_paid_at_kea, 2)];
+			}
+			if ($voucherDetails->exam_fee > 0) {
+				$tableData[] = ['Exam Fee', $voucherDetails->exam_fee];
 			}
 			if ($voucherDetails->tution_fee > 0) {
 				$tableData[] = ['Tution Fee', number_format($voucherDetails->tution_fee, 2)];
@@ -7627,8 +7630,12 @@ With good wishes";
 			if ($voucherDetails->admission_fee > 0) {
 				$tableData[] = ['Admission Fee', $voucherDetails->admission_fee];
 			}
+			
 			if ($voucherDetails->processing_fee_paid_at_kea > 0) {
 				$tableData[] = ['Processing Fee Paid at KEA', $voucherDetails->processing_fee_paid_at_kea];
+			}
+			if ($voucherDetails->exam_fee > 0) {
+				$tableData[] = ['Exam Fee', $voucherDetails->exam_fee];
 			}
 			if ($voucherDetails->tution_fee > 0) {
 				$tableData[] = ['Tution Fee', $voucherDetails->tution_fee];
@@ -7812,25 +7819,25 @@ With good wishes";
 			$pdf->Cell(0, 10, 'Year:' . $admissionDetails->academic_year, 0, 1, 'R');
 			$pdf->Cell(0, 1, 'Adm. No.:' . $admissionDetails->adm_no, 0, 1, 'R');
 
+			$pdf->SetXY(15, $topGap + 15);
 			$pdf->SetFont('Arial', '', 10);
-			$pdf->SetX(15, $topGap);
 			$pdf->Cell(60, 6, 'CET AT No.', 0);
 			$pdf->SetFont('Arial', 'B', 10);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->entrance_reg_no, 0, 'C');
 
-			$pdf->SetX(15, $topGap + 9);
+			$pdf->SetXY(15, $topGap + 21);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(60, 6, 'Rank No.', 0);
 			$pdf->SetFont('Arial', 'B', 10);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->entrance_rank, 0, 'C');
 
-			$pdf->SetX(15, $topGap + 9);
+			$pdf->SetXY(15, $topGap + 27);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(60, 6, 'Name of the candidate.', 0);
 			$pdf->SetFont('Arial', 'B', 10);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->student_name, 0, 'C');
 
-			$pdf->SetX(15, $topGap + 9);
+			$pdf->SetXY(15, $topGap + 33);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(60, 6, 'Date of Birth and Age', 0);
 			$pdf->SetFont('Arial', 'B', 10);
@@ -7840,20 +7847,25 @@ With good wishes";
 			$combinedValue = $admissionDetails->date_of_birth . ' ' . $age;
 			$pdf->Cell(0, 6, ': ' . $combinedValue, 0, 'C');
 
-			$pdf->SetX(15, $topGap + 9);
+			$pdf->SetXY(15, $topGap + 39);
 			$pdf->SetFont('Arial', '', 10);
 			$pdf->Cell(60, 6, 'Category Claimed', 0);
 			$pdf->SetFont('Arial', 'B', 9);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->category_claimed, 0, 'C');
 
-			$pdf->SetX(15, $topGap + 9);
+			$pdf->SetXY(15, $topGap + 45);
 			$pdf->SetFont('Arial', '', 10); // Updated font style for Category Allotted
 			$pdf->Cell(60, 6, 'Category Allotted', 0);
 			$pdf->SetFont('Arial', 'B', 9);
 			$pdf->Cell(0, 6, ': ' . $admissionDetails->category_allotted, 0, 'C');
 
-			$pdf->SetFont('Arial', 'BU', 12);
-			$pdf->Cell(60, 10, 'DOCUMENTS PRODUCED ', 0, 1, 'C');
+			$pdf->SetXY(15, $topGap + 51);  
+			$pdf->SetFont('Arial', 'BU', 12);  
+			$text = 'DOCUMENTS PRODUCED';
+			$textWidth = $pdf->GetStringWidth($text);  
+			$cellWidth = $textWidth + 10;  
+			$pdf->SetX((210 - $cellWidth) / 2);  
+			$pdf->Cell($cellWidth, 10, $text, 0, 1, 'C');
 
 			$totalHeight = 60;
 			$rowHeight = 6;
@@ -8548,9 +8560,12 @@ With good wishes";
 			if ($university > 0) {
 				$tableData[] = ["University Other Fee", $university];
 			}
-
+		
 			if ($voucherDetails->processing_fee_paid_at_kea > 0) {
 				$tableData[] = ['Processing Fee Paid at KEA', $voucherDetails->processing_fee_paid_at_kea];
+			}
+			if ($voucherDetails->exam_fee > 0) {
+				$tableData[] = ['Exam Fee', $voucherDetails->exam_fee];
 			}
 			if ($voucherDetails->tution_fee > 0) {
 				$tableData[] = ['Tution Fee', $voucherDetails->tution_fee];
@@ -9390,6 +9405,9 @@ With good wishes";
 
 			if ($voucherDetails->processing_fee_paid_at_kea > 0) {
 				$tableData[] = ['Processing Fee Paid at KEA', $voucherDetails->processing_fee_paid_at_kea];
+			}
+			if ($voucherDetails->exam_fee > 0) {
+				$tableData[] = ['Exam Fee', $voucherDetails->exam_fee];
 			}
 			if ($voucherDetails->tution_fee > 0) {
 				$tableData[] = ['Tution Fee', $voucherDetails->tution_fee];

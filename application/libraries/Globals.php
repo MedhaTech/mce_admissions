@@ -1497,6 +1497,7 @@ class Globals
             ['field' => 'total_university_fee', 'label' => 'TOTAL UNIVERSITY FEE'],
             ['field' => 'admission_fee', 'label' => 'Admission Fee'],
             ['field' => 'processing_fee_paid_at_kea', 'label' => 'Processing Fee paid at KEA'],
+            ['field' => 'exam_fee', 'label' => 'Exam Fee'],
             ['field' => 'tution_fee', 'label' => 'Tution Fee'],
             ['field' => 'college_other_fee', 'label' => 'COLLEGE OTHER FEE'],
             ['field' => 'total_tution_fee', 'label' => 'TOTAL TUTION FEE'],
