@@ -210,6 +210,14 @@
                                       </div>
                                       <div class="form-group row">
                                           <label for="staticEmail"
+                                              class="col-md-5 col-form-label font-weight-normal text-right">Exam
+                                              Fee : </label>
+                                          <div class="col-md-7 col-form-label">
+                                              <?php echo (set_value('exam_fee'))?set_value('exam_fee'):$fee_structure['exam_fee'];?>
+                                          </div>
+                                      </div>
+                                      <div class="form-group row">
+                                          <label for="staticEmail"
                                               class="col-md-5 col-form-label font-weight-normal text-right">Processing
                                               Fee paid
                                               at

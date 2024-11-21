@@ -141,7 +141,7 @@
                                         $GOI_AIDED_TOTAL = $GOI_AIDED + $GOI_AIDED_TOTAL;
 
                                         // $TOTAL_AIDED = $MGMT_AIDED + $MGMT_LATERAL_AIDED + $MGMT_COMEDK_AIDED + $COMEDK_AIDED + $KEA_AIDED + $SNQ_AIDED + $KEALAT_AIDED + $JK_AIDED + $GOI_AIDED;
-                                        $TOTAL_AIDED = $MGMT_AIDED + $MGMT_COMEDK_AIDED + $COMEDK_AIDED + $KEA_AIDED + $SNQ_AIDED + $JK_AIDED + $GOI_AIDED;
+                                        $TOTAL_AIDED = $MGMT_AIDED + $MGMT_COMEDK_AIDED + $MGMT_KEA_AIDED_TOTAL + $COMEDK_AIDED + $KEA_AIDED + $SNQ_AIDED + $JK_AIDED + $GOI_AIDED;
                                         echo "<td class='bg-success-light text-center font-weight-bold'>" . $TOTAL_AIDED . '/' . $aided1->aided_intake . "</td>";
                                         $TOTAL_AIDED_TOTAL = $TOTAL_AIDED_TOTAL + $TOTAL_AIDED;
                                         $AIDED_INTAKE_TOTAL = $AIDED_INTAKE_TOTAL + $aided1->aided_intake;
@@ -270,7 +270,7 @@
                                         echo "<td>" . $GOI_UNAIDED . "</td>";
                                         $GOI_UNAIDED_TOTAL = $GOI_UNAIDED_TOTAL + $GOI_UNAIDED;
 
-                                        $TOTAL_UNAIDED = $MGMT_UNAIDED + $MGMT_COMEDK_UNAIDED + $COMEDK_UNAIDED + $KEA_UNAIDED + $SNQ_UNAIDED + $JK_UNAIDED + $GOI_UNAIDED;
+                                        $TOTAL_UNAIDED = $MGMT_UNAIDED + $MGMT_COMEDK_UNAIDED + $MGMT_KEA_UNAIDED_TOTAL + $COMEDK_UNAIDED + $KEA_UNAIDED + $SNQ_UNAIDED + $JK_UNAIDED + $GOI_UNAIDED;
                                         echo "<td class='bg-success-light text-center font-weight-bold'>" . $TOTAL_UNAIDED . '/' . $unaided1->unaided_intake . "</td>";
                                         $TOTAL_UNAIDED_TOTAL = $TOTAL_UNAIDED_TOTAL + $TOTAL_UNAIDED;
                                         if ($department_id == "25") {
