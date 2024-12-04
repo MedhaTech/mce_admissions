@@ -3,10 +3,6 @@
     <section class="content-header">
         <div class="container-fluid">
 
-
-
-
-
             <!-- /.col -->
             <div class="card m-2 shadow card-info">
                 <div class="card-header ">
@@ -15,7 +11,6 @@
                     </h3>
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
-
                         </ul>
                     </div>
                 </div>
@@ -23,7 +18,7 @@
                 <div class="card-body">
                     <?php echo form_open_multipart($action, 'class="user"'); ?>
                     <?php if ($this->session->flashdata('message')) { ?>
-                        <div align="center" class="alert <?= $this->session->flashdata('status'); ?>" id="msg">
+                        <div class="alert <?= $this->session->flashdata('status'); ?>" id="msg">
                             <?php echo $this->session->flashdata('message') ?>
                         </div>
                     <?php } ?>
@@ -33,64 +28,87 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label">Paid Date:</label>
-                                <input type="date" class="form-control" placeholder="Enter Date" id="transaction_date" name="transaction_date" value="">
+                                <input type="date" class="form-control" placeholder="Enter Date" id="transaction_date"
+                                    name="transaction_date" value="">
                                 <span class="text-danger"><?php echo form_error('transaction_date'); ?></span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="form-label">Receipt Number(Tally):</label>
-                                <input type="text" class="form-control" placeholder="Enter Receipt Number(Tally)" id="receipt_no" name="receipt_no" value="">
+                                <label class="form-label">Receipt Number (Tally):</label>
+                                <input type="text" class="form-control" placeholder="Enter Receipt Number (Tally)"
+                                    id="receipt_no" name="receipt_no" value="">
                                 <span class="text-danger"><?php echo form_error('receipt_no'); ?></span>
                             </div>
                         </div>
 
-
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">Transaction ID:</label>
+                                <input type="text" class="form-control" placeholder="Enter Transaction ID"
+                                    id="transaction_id" name="transaction_id" value="">
+                                <span class="text-danger"><?php echo form_error('transaction_id'); ?></span>
+                            </div>
+                        </div>
+                        <?php if(!in_array($voucherDetails->voucher_type, array('2','5'))){ ?>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Payment Reference:</label>
+                                    <input type="text" class="form-control" placeholder="Enter Ref. Number"
+                                        id="reference_no" name="reference_no" value="">
+                                    <span class="text-danger"><?php echo form_error('reference_no'); ?></span>
+                                </div>
+                            </div>
+                        <?php } ?>
 
                         <?php if ($voucherDetails->voucher_type == 2) { ?>
-
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-label">DD Date:</label>
-                                    <input type="date" class="form-control" placeholder="Enter Date" id="dd_date" name="dd_date" value="<?=$voucherDetails->dd_date;?>">
+                                    <input type="date" class="form-control" placeholder="Enter Date" id="dd_date"
+                                        name="dd_date" value="<?= $voucherDetails->dd_date; ?>">
                                     <span class="text-danger"><?php echo form_error('dd_date'); ?></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-label">DD Number:</label>
-                                    <input type="text" class="form-control" placeholder="Enter number" id="dd_number" name="dd_number" value="<?=$voucherDetails->dd_number;?>">
+                                    <input type="text" class="form-control" placeholder="Enter number" id="dd_number"
+                                        name="dd_number" value="<?= $voucherDetails->dd_number; ?>">
                                     <span class="text-danger"><?php echo form_error('dd_number'); ?></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-label">Bank Name :</label>
-                                    <input type="text" class="form-control" placeholder="Enter bank name" id="dd_bank" name="dd_bank" value="<?=$voucherDetails->dd_bank;?>">
+                                    <input type="text" class="form-control" placeholder="Enter bank name" id="dd_bank"
+                                        name="dd_bank" value="<?= $voucherDetails->dd_bank; ?>">
                                     <span class="text-danger"><?php echo form_error('dd_bank'); ?></span>
                                 </div>
                             </div>
                         <?php } ?>
                         <?php if ($voucherDetails->voucher_type == 5) { ?>
-
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-label">DD Date:</label>
-                                    <input type="date" class="form-control" placeholder="Enter Date" id="dd_date" readonly name="dd_date" value="<?=$voucherDetails->dd_date;?>">
+                                    <input type="date" class="form-control" placeholder="Enter Date" id="dd_date" readonly
+                                        name="dd_date" value="<?= $voucherDetails->dd_date; ?>">
                                     <span class="text-danger"><?php echo form_error('dd_date'); ?></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-label">DD Number:</label>
-                                    <input type="text" class="form-control" placeholder="Enter number" readonly id="dd_number" name="dd_number" value="<?=$voucherDetails->dd_number;?>">
+                                    <input type="text" class="form-control" placeholder="Enter number" readonly
+                                        id="dd_number" name="dd_number" value="<?= $voucherDetails->dd_number; ?>">
                                     <span class="text-danger"><?php echo form_error('dd_number'); ?></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-label">Bank Name :</label>
-                                    <input type="text" class="form-control" placeholder="Enter bank name" readonly id="dd_bank" name="dd_bank" value="<?=$voucherDetails->dd_bank;?>">
+                                    <input type="text" class="form-control" placeholder="Enter bank name" readonly
+                                        id="dd_bank" name="dd_bank" value="<?= $voucherDetails->dd_bank; ?>">
                                     <span class="text-danger"><?php echo form_error('dd_bank'); ?></span>
                                 </div>
                             </div>
@@ -106,12 +124,11 @@
                             </div>
 
                         <?php } ?>
-
-
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label">Comments:</label>
-                                <textarea class="form-control" placeholder="Enter Comments" id="remarks" name="remarks"> </textarea>
+                                <textarea class="form-control" placeholder="Enter Comments" id="remarks"
+                                    name="remarks"> </textarea>
                                 <span class="text-danger"><?php echo form_error('remarks'); ?></span>
                             </div>
                         </div>

@@ -70,8 +70,7 @@
                         <ul class="nav nav-pills ml-auto">
                             <li class="nav-item">
                                 <?php if ($fees->consession_amount == 0) { ?>
-                                    <button class="btn btn-dark btn-sm" id="edit_concession"
-                                        name="edit_concession">
+                                    <button class="btn btn-dark btn-sm" id="edit_concession" name="edit_concession">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-edit"></i>
                                         </span>
@@ -163,81 +162,79 @@
                 </div>
                 <div class="card-body">
 
-                </div>
-                <?php $rec = 0;   // to update Admisison Date
 
-                if ($paymentDetail) {
-                    $rec = 0;
-                    $table_setup = array('table_open' => '<table class="table table-hover font14">');
-                    $this->table->set_template($table_setup);
-                    $print_fields = array('S.No', 'Voucher', 'Amount', 'Voucher Type', 'Date',  'Status', 'Action');
-                    $this->table->set_heading($print_fields);
+                    <?php $rec = 0;   // to update Admisison Date
+                    
+                    if ($paymentDetail) {
+                        $rec = 0;
+                        $table_setup = array('table_open' => '<table class="table table-hover font14">');
+                        $this->table->set_template($table_setup);
+                        $print_fields = array('S.No', 'Voucher', 'Amount', 'Voucher Type', 'Date', 'Status', 'Action');
+                        $this->table->set_heading($print_fields);
 
-                    $statusTypes = array("0" => "Not Paid", "1" => "Paid", "2" => "Failed", "3" => "Processing");
+                        $statusTypes = array("0" => "Not Paid", "1" => "Paid", "2" => "Failed", "3" => "Processing");
 
-                    $i = 1;
-                    $total = 0;
-                    foreach ($paymentDetail as $paymentDetails1) {
+                        $i = 1;
+                        $total = 0;
+                        foreach ($paymentDetail as $paymentDetails1) {
 
-                        if ($paymentDetails1->voucher_type == 3) {
-                            $url = '-';
-                            $button = '-';
-                        } else {
-
-
-                            if ($admissionDetails->stream_id == 1) {
-
-                                $slno = "TF24-25/";
-                            } elseif ($admissionDetails->stream_id == 2) {
-
-                                $slno = "ME24-25/";
-                            } else {
-
-                                $slno = "PHD24-25/";
-                            }
-
-                            if ($paymentDetails1->voucher_type == 1 ||  $paymentDetails1->voucher_type == 5) {
-                                $url = anchor('admin/cashvoucher/' . $encryptId . '/' . $paymentDetails1->id, $slno . $paymentDetails1->id);
-                            }
-                            if ($paymentDetails1->voucher_type == 2) {
-                                $url = anchor('admin/voucherletter/' . $encryptId . '/' . $paymentDetails1->id, $slno . $paymentDetails1->id);
-                            }
-                            if ($paymentDetails1->voucher_type == 4) {
-                                $url = anchor('admin/onlinevoucher/' . $encryptId . '/' . $paymentDetails1->id, $slno . $paymentDetails1->id);
-                            }
-
-
-                            if ($paymentDetails1->status != 1) {
-                                $button = anchor('admin/mark_paid/' . $encryptId . '/' . $paymentDetails1->id, "Mark as paid", 'class="btn btn-success btn-sm"');
-                            } else {
+                            if ($paymentDetails1->voucher_type == 3) {
+                                $url = '-';
                                 $button = '-';
+                            } else {
+
+
+                                if ($admissionDetails->stream_id == 1) {
+
+                                    $slno = "TF24-25/";
+                                } elseif ($admissionDetails->stream_id == 2) {
+
+                                    $slno = "ME24-25/";
+                                } else {
+
+                                    $slno = "PHD24-25/";
+                                }
+
+                                if ($paymentDetails1->voucher_type == 1 || $paymentDetails1->voucher_type == 5) {
+                                    $url = anchor('admin/cashvoucher/' . $encryptId . '/' . $paymentDetails1->id, $slno . $paymentDetails1->id);
+                                }
+                                if ($paymentDetails1->voucher_type == 2) {
+                                    $url = anchor('admin/voucherletter/' . $encryptId . '/' . $paymentDetails1->id, $slno . $paymentDetails1->id);
+                                }
+                                if ($paymentDetails1->voucher_type == 4) {
+                                    $url = anchor('admin/onlinevoucher/' . $encryptId . '/' . $paymentDetails1->id, $slno . $paymentDetails1->id);
+                                }
+                                if ($paymentDetails1->status != 1) {
+                                    $button = anchor('admin/mark_paid/' . $encryptId . '/' . $paymentDetails1->id, "Mark as paid", 'class="btn btn-success btn-sm"');
+                                } else {
+                                    $button = '-';
+                                }
                             }
+
+
+
+
+                            $result_array = array(
+                                $i++,
+                                $url,
+                                number_format($paymentDetails1->final_fee, 2),
+                                $voucher_types[$paymentDetails1->voucher_type],
+                                $paymentDetails1->requested_on,
+                                $statusTypes[$paymentDetails1->status],
+                                $button
+
+
+                            );
+                            $this->table->add_row($result_array);
                         }
 
-
-
-
-                        $result_array = array(
-                            $i++,
-                            $url,
-                            number_format($paymentDetails1->final_fee, 2),
-                            $voucher_types[$paymentDetails1->voucher_type],
-                            $paymentDetails1->requested_on,
-                            $statusTypes[$paymentDetails1->status],
-                            $button
-
-
-                        );
-                        $this->table->add_row($result_array);
+                        echo $this->table->generate();
+                    } else {
+                        $rec = 1;
+                        echo "<h6 class='text-left'> No voucher details found..! </h6>";
                     }
-
-                    echo $this->table->generate();
-                } else {
-                    $rec = 1;
-                    echo "<h6 class='text-left'> No voucher details found..! </h6>";
-                }
-                ?>
-
+                    ?>
+                </div>
             </div>
 
             <div class="card m-2 shadow card-info">
@@ -328,7 +325,8 @@
         <div class="modal-content tx-14">
             <div class="modal-header">
                 <h6 class="modal-title text-bold" id="exampleModalLabel">
-                    <?= $enquiryDetails->student_name; ?> Details</h6>
+                    <?= $enquiryDetails->student_name; ?> Details
+                </h6>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -342,8 +340,9 @@
                         <div class="col">
                             <div class="form-group">
                                 <label class="form-label">Total College Fee</label>
-                                <input type="text" class="form-control" id="total_college_fee"
-                                    name="total_college_fee" placeholder="Total College fee" readonly value="<?php echo $fees->total_college_fee; ?>">
+                                <input type="text" class="form-control" id="total_college_fee" name="total_college_fee"
+                                    placeholder="Total College fee" readonly
+                                    value="<?php echo $fees->total_college_fee; ?>">
                             </div>
                         </div>
                         <div class="col">
@@ -356,8 +355,8 @@
                         <div class="col">
                             <div class="form-group">
                                 <label class="form-label">Total Fee</label>
-                                <input type="text" class="form-control" id="total_tution_fee"
-                                    name="total_tution_fee" placeholder="Total Fee" readonly value="<?php echo $fees->final_fee; ?>">
+                                <input type="text" class="form-control" id="total_tution_fee" name="total_tution_fee"
+                                    placeholder="Total Fee" readonly value="<?php echo $fees->final_fee; ?>">
                             </div>
                         </div>
                     </div>
@@ -374,8 +373,8 @@
                         <div class="col">
                             <div class="form-group">
                                 <label class="form-label">Concession Amount (if any)</label>
-                                <input type="text" class="form-control" id="concession_fee"
-                                    name="concession_fee" placeholder="Enter Concession Fee" value="<?php echo $fees->consession_amount; ?>">
+                                <input type="text" class="form-control" id="concession_fee" name="concession_fee"
+                                    placeholder="Enter Concession Fee" value="<?php echo $fees->consession_amount; ?>">
                             </div>
                         </div>
                         <div class="col">
@@ -415,14 +414,14 @@
 </div>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         var base_url = '<?php echo base_url(); ?>';
 
         $("#cash_details").hide();
         $("#cheque_dd_details").hide();
         $("#online_payment_details").hide();
 
-        $('input[type=radio][name=mode_of_payment]').change(function() {
+        $('input[type=radio][name=mode_of_payment]').change(function () {
             if (this.value == "Cash") {
                 $("#cash_details").show();
                 $("#cheque_dd_details").hide();
@@ -439,7 +438,7 @@
                 $("#online_payment_details").show();
             }
 
-            $('#cash_amount').keypress(function(e) {
+            $('#cash_amount').keypress(function (e) {
                 var a = [];
                 var k = e.which;
                 for (i = 48; i < 58; i++)
@@ -452,13 +451,13 @@
                     $(".error").css("display", "none");
                 }
 
-                setTimeout(function() {
+                setTimeout(function () {
                     $('.error').fadeOut('slow');
                 }, 2000);
 
             });
 
-            $('#cheque_dd_amount').keypress(function(e) {
+            $('#cheque_dd_amount').keypress(function (e) {
                 var a = [];
                 var k = e.which;
                 for (i = 48; i < 58; i++)
@@ -471,13 +470,13 @@
                     $(".error").css("display", "none");
                 }
 
-                setTimeout(function() {
+                setTimeout(function () {
                     $('.error').fadeOut('slow');
                 }, 2000);
 
             });
 
-            $('#transaction_amount').keypress(function(e) {
+            $('#transaction_amount').keypress(function (e) {
                 var a = [];
                 var k = e.which;
                 for (i = 48; i < 58; i++)
@@ -490,7 +489,7 @@
                     $(".error").css("display", "none");
                 }
 
-                setTimeout(function() {
+                setTimeout(function () {
                     $('.error').fadeOut('slow');
                 }, 2000);
 
@@ -499,13 +498,13 @@
 
 
 
-        $("#edit_concession").click(function() {
+        $("#edit_concession").click(function () {
             event.preventDefault();
             $('#student_modal').modal('show');
         });
 
 
-        $("#concession_fee").change(function() {
+        $("#concession_fee").change(function () {
             event.preventDefault();
             var final_amount = finalAmount();
             $('#final_amount').val(finalAmount);
@@ -513,7 +512,7 @@
             $('#final_amount').val(final_amount);
         });
 
-        $("#corpus_fee").change(function() {
+        $("#corpus_fee").change(function () {
             event.preventDefault();
             var final_amount = finalAmount();
             $('#final_amount').val(finalAmount);
@@ -537,7 +536,7 @@
 
             return total_college_fee;
         }
-        $("#insert").click(function() {
+        $("#insert").click(function () {
             event.preventDefault();
             var id = '<?php echo $encryptId; ?>';
 
@@ -567,11 +566,11 @@
                 },
                 'dataType': 'text',
                 'cache': false,
-                'beforeSend': function() {
+                'beforeSend': function () {
                     $('#insert').val("Inserting...");
                     $("#insert").attr("disabled", true);
                 },
-                'success': function(data) {
+                'success': function (data) {
                     $('#insert').val("Inserted");
                     $('#student_modal').modal('hide');
                     var url = base_url + 'admin/paymentDetail/' + id
@@ -584,7 +583,7 @@
     });
 </script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
 
         // Function to update final fee based on selected checkboxes
@@ -593,7 +592,7 @@
             var corpusFundChecked = false;
 
             // Iterate over each checkbox that needs to be considered
-            $('input[type="checkbox"]').each(function() {
+            $('input[type="checkbox"]').each(function () {
                 if ($(this).prop('checked')) {
                     var inputId = $(this).attr('id').replace('_checkbox', '');
                     var inputValue = parseFloat($('#' + inputId).val());
@@ -614,14 +613,14 @@
 
             // If corpus_fund_checkbox is checked, uncheck all other checkboxes
             if (corpusFundChecked) {
-                $('input[type="checkbox"]').each(function() {
+                $('input[type="checkbox"]').each(function () {
                     if ($(this).attr('id') !== 'corpus_fund_checkbox' && $(this).prop('checked')) {
                         $(this).prop('checked', false);
                     }
                 });
             }
         }
-        $('#selectAllCheckbox').change(function() {
+        $('#selectAllCheckbox').change(function () {
             // Check if the master checkbox is checked
             var isChecked = $(this).is(':checked');
 
@@ -629,7 +628,7 @@
             $('input[type="checkbox"]:not(:disabled):not(#corpus_fund_checkbox)').prop('checked', isChecked);
         });
         // Attach change event listener to relevant checkboxes
-        $('input[type="checkbox"]').change(function() {
+        $('input[type="checkbox"]').change(function () {
             updateFinalFee(); // Update the final fee whenever a checkbox changes
         });
 
@@ -638,9 +637,9 @@
     });
 </script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         // Listen for form submission
-        $('form').submit(function(event) {
+        $('form').submit(function (event) {
             // Prevent the default form submission
             event.preventDefault();
 
@@ -648,7 +647,7 @@
             var selectedFees = [];
 
             // Iterate over each checked checkbox
-            $('input[name="fees[]"]:checked').each(function() {
+            $('input[name="fees[]"]:checked').each(function () {
                 // Get the value of the checkbox (e.g., 'e_learning_fee')
                 var feeValue = $(this).val();
 

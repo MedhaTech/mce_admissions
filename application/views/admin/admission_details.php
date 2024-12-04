@@ -32,10 +32,10 @@
                     <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">
                             <li class="nav-item"><?php if ($admissionDetails->updated_on != '') {
-                                                        $timestamp = strtotime($admissionDetails->updated_on);
-                                                        $new_date_format = date('d-m-Y H:i:s', $timestamp);
-                                                        echo "Submitted On : " . $new_date_format . " ";
-                                                    } ?></li>
+                                $timestamp = strtotime($admissionDetails->updated_on);
+                                $new_date_format = date('d-m-Y H:i:s', $timestamp);
+                                echo "Submitted On : " . $new_date_format . " ";
+                            } ?></li>
                             <!-- <li class="nav-item">
                                 <?php
                                 // $encryptId = base64_encode($admissionDetails->id);
@@ -46,6 +46,11 @@
                                 // );
                                 ?>
                             </li> -->
+
+                            <li class="nav-item">
+                                <?php $encryptId = base64_encode($admissionDetails->id);
+                                echo anchor('admin/paymentDetail/' . $encryptId, 'Fees ', 'class="btn btn-dark btn-sm"'); ?>
+                            </li>
 
                             <li class="nav-item">
                                 <?php $encryptId = base64_encode($admissionDetails->id); ?>
@@ -151,7 +156,7 @@
                                         <?php $encryptId = base64_encode($admissionDetails->id);
                                         echo anchor('admin/pgadmissionsletter/' . $encryptId, '<i class="fas fa-download fa-sm fa-fw"></i> Admit Letter ', 'class="btn btn-danger btn-sm"'); ?>
                                     </li>
-                            <?php
+                                    <?php
                                 }
                             } ?>
                             <?php if ((in_array($role, array(1, 2)))) {
@@ -160,7 +165,7 @@
                                         <?php $encryptId = base64_encode($admissionDetails->id);
                                         echo anchor('admin/admissionsletterlateral/' . $encryptId, '<i class="fas fa-download fa-sm fa-fw"></i> Admit Letter ', 'class="btn btn-danger btn-sm"'); ?>
                                     </li>
-                            <?php }
+                                <?php }
                             } ?>
                             <?php if ((in_array($role, array(1, 2)))) {
                                 if ($admissionDetails->quota == "MGMT-COMEDK") { ?>
@@ -168,7 +173,7 @@
                                         <?php $encryptId = base64_encode($admissionDetails->id);
                                         echo anchor('admin/admissionslettermgmtcomedk/' . $encryptId, '<i class="fas fa-download fa-sm fa-fw"></i> Admit Letter ', 'class="btn btn-danger btn-sm"'); ?>
                                     </li>
-                            <?php }
+                                <?php }
                             } ?>
 
 
@@ -186,7 +191,7 @@
                                 }
 
                                 ?>
-                                <?php  ?>
+                                <?php ?>
                             </li>
                         </ul>
                     </div>
@@ -1264,7 +1269,7 @@
                             <table class="table" border="1">
                                 <?php
                                 if (($edu->education_level == 'SSLC') || ($edu->education_level == 'PUC')) {
-                                ?>
+                                    ?>
                                     <thead>
                                         <tr>
                                             <th>Subject Name</th>
@@ -1293,7 +1298,7 @@
                                         $obtained_marks = $edu->{"subject_" . $i . "_obtained_marks"};
 
                                         if ($subject_name != '') {
-                                    ?>
+                                            ?>
                                             <tr>
                                                 <td>
                                                     <?= $subject_name; ?>
@@ -1308,7 +1313,7 @@
                                                     <?= $obtained_marks; ?>
                                                 </td>
                                             </tr>
-                                    <?php }
+                                        <?php }
                                     } ?>
 
                                 </tbody>
@@ -1316,7 +1321,7 @@
                             </table>
                             <hr>
 
-                    <?php }
+                        <?php }
                     } else {
                         echo "<div class='text-center'><img src='" . base_url() . "assets/img/no_data.jpg' class='nodata'></div>";
                     } ?>
@@ -1348,7 +1353,7 @@
                                 $result_array = array(
                                     $i++,
                                     //   $admissions1->app_no,
-
+                        
 
                                     $document_type,
 
@@ -1407,9 +1412,9 @@
 </script>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         // Trigger the modal manually
-        $('.btn-dark[data-target^="#viewCommentsModal"]').on('click', function() {
+        $('.btn-dark[data-target^="#viewCommentsModal"]').on('click', function () {
             var targetModal = $(this).data('target');
             $(targetModal).modal('show');
         });
