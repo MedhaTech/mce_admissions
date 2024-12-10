@@ -2085,17 +2085,17 @@ class Admin extends CI_Controller
 
 			$stream = $this->input->post('stream');
 
-			// Apply validation rules only for PhD students (stream_id = 3)
 			if ($stream == '3') {
-				$this->form_validation->set_rules('batch', 'Batch', 'required');
+				// $this->form_validation->set_rules('batch', 'Batch', 'required');
 				$this->form_validation->set_rules('degree_level', 'Degree Level', 'required');
 			}
-
 			$this->form_validation->set_rules('sports', 'Sports', 'required');
-			$this->form_validation->set_rules('entrance_type', 'Entrance Type', 'required');
+			if ($stream == '1' || $stream == '2') {
+				$this->form_validation->set_rules('entrance_type', 'Entrance Type', 'required');
+				$this->form_validation->set_rules('entrance_rank', 'Entrance Exam Rank', 'required');
+				$this->form_validation->set_rules('admission_order_no', 'Admission Order Number', 'required');
+			}			
 			$this->form_validation->set_rules('entrance_reg_no', 'Entrance Registration Number', 'required');
-			$this->form_validation->set_rules('entrance_rank', 'Entrance Exam Rank', 'required');
-			$this->form_validation->set_rules('admission_order_no', 'Admission Order Number', 'required');
 			$this->form_validation->set_rules('admission_order_date', 'Admission Order Date', 'required');
 			$this->form_validation->set_rules('fees_paid', 'Fees Paid', 'required');
 			$this->form_validation->set_rules('fees_receipt_no', 'Fees Receipt Number', 'required');
