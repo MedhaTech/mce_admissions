@@ -2086,7 +2086,7 @@ class Admin extends CI_Controller
 			$stream = $this->input->post('stream');
 
 			if ($stream == '3') {
-				// $this->form_validation->set_rules('batch', 'Batch', 'required');
+				$this->form_validation->set_rules('admission_based', 'Admission Based On', 'required');
 				$this->form_validation->set_rules('degree_level', 'Degree Level', 'required');
 			}
 			$this->form_validation->set_rules('sports', 'Sports', 'required');
@@ -2119,7 +2119,7 @@ class Admin extends CI_Controller
 				$data['college_code'] = $this->input->post('college_code');
 				$data['sports'] = $this->input->post('sports');
 				$data['sports_activity'] = $this->input->post('sports_activity');
-				$data['batch'] = $this->input->post('batch');
+				$data['admission_based'] = $this->input->post('admission_based');
 				$data['degree_level'] = $this->input->post('degree_level');
 				$data['corpus'] = $this->input->post('corpus_fee');
 
@@ -2197,7 +2197,7 @@ class Admin extends CI_Controller
 					'college_code' => $this->input->post('college_code'),
 					'sports' => $this->input->post('sports'),
 					'sports_activity' => $this->input->post('sports_activity'),
-					'batch' => $this->input->post('batch'),
+					'admission_based' => $this->input->post('admission_based'),
 					'degree_level' => $this->input->post('degree_level'),
 					'password' => md5($this->input->post('mobile')),
 					'entrance_type' => $this->input->post('entrance_type'),

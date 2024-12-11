@@ -358,6 +358,8 @@ class Student extends CI_Controller
 			$data['states1'] = $this->admin_model->get_states();
 			$data['admissionDetails'] = $this->admin_model->getDetails('admissions', $data['id'])->row();
 
+			$data['stream_id'] = $data['admissionDetails']->stream_id;
+
 			$this->load->library('form_validation');
 
 			$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
@@ -662,6 +664,32 @@ class Student extends CI_Controller
 				$this->form_validation->set_rules('mtech_register_number', 'Register Number', 'required');
 				$this->form_validation->set_rules('mtech_year_of_passing', 'Year of Passing', 'required');
 			}
+			if ($personalDetails->admission_based == "M.Sc") {
+				$this->form_validation->set_rules('msc_education_level', 'Education Level', 'required');
+				// $this->form_validation->set_rules('puc_inst_type', 'Institution Type', 'required');
+				$this->form_validation->set_rules('msc_inst_board', 'Board / University', 'required');
+				$this->form_validation->set_rules('msc_inst_name', 'Institution Name', 'required');
+				$this->form_validation->set_rules('msc_inst_address', 'Institution Address', 'required');
+				$this->form_validation->set_rules('msc_inst_city', 'Institution City');
+				$this->form_validation->set_rules('msc_inst_state', 'Institution State', 'required');
+				$this->form_validation->set_rules('msc_inst_country', 'Institution Country', 'required');
+				$this->form_validation->set_rules('msc_medium_of_instruction', 'Medium of Instruction', 'required');
+				$this->form_validation->set_rules('msc_register_number', 'Register Number', 'required');
+				$this->form_validation->set_rules('msc_year_of_passing', 'Year of Passing', 'required');
+			}
+			if ($personalDetails->admission_based == "M.ScEngg") {
+				$this->form_validation->set_rules('mscegg_education_level', 'Education Level', 'required');
+				// $this->form_validation->set_rules('puc_inst_type', 'Institution Type', 'required');
+				$this->form_validation->set_rules('mscegg_inst_board', 'Board / University', 'required');
+				$this->form_validation->set_rules('mscegg_inst_name', 'Institution Name', 'required');
+				$this->form_validation->set_rules('mscegg_inst_address', 'Institution Address', 'required');
+				$this->form_validation->set_rules('mscegg_inst_city', 'Institution City');
+				$this->form_validation->set_rules('mscegg_inst_state', 'Institution State', 'required');
+				$this->form_validation->set_rules('mscegg_inst_country', 'Institution Country', 'required');
+				$this->form_validation->set_rules('mscegg_medium_of_instruction', 'Medium of Instruction', 'required');
+				$this->form_validation->set_rules('mscegg_register_number', 'Register Number', 'required');
+				$this->form_validation->set_rules('mscegg_year_of_passing', 'Year of Passing', 'required');
+			}
 
 			if ($this->form_validation->run() === FALSE) {
 
@@ -849,7 +877,67 @@ class Student extends CI_Controller
 					}
 				}
 
+				if ($personalDetails->admission_based == "M.Sc") {
 
+					$data = array(
+						'msc_education_level' => $this->input->post('msc_education_level'),
+						'msc_inst_type' => $this->input->post('msc_inst_type'),
+						'msc_inst_board' => $this->input->post('msc_inst_board'),
+						'msc_inst_name' => $this->input->post('msc_inst_name'),
+						'msc_inst_address' => $this->input->post('msc_inst_address'),
+						'msc_inst_city' => $this->input->post('msc_inst_city'),
+						'msc_inst_state' => $this->input->post('msc_inst_state'),
+						'msc_inst_country' => $this->input->post('msc_inst_country'),
+						'msc_medium_of_instruction' => $this->input->post('msc_medium_of_instruction'),
+						'msc_register_number' => $this->input->post('msc_register_number'),
+						'msc_year_of_passing' => $this->input->post('msc_year_of_passing')
+					);
+					for ($i = 1; $i <= 3; $i++) {
+						$subject_name = $this->input->post('msc_subject_' . $i . '_name');
+						$min_marks = $this->input->post('msc_subject_' . $i . '_min_marks');
+						$max_marks = $this->input->post('msc_subject_' . $i . '_max_marks');
+						$obtained_marks = $this->input->post('msc_subject_' . $i . '_obtained_marks');
+
+						// Only add subject if name is not empty
+						if (!empty($subject_name)) {
+							$data['msc_subject_' . $i . '_name'] = $subject_name;
+							$data['msc_subject_' . $i . '_min_marks'] = $min_marks;
+							$data['msc_subject_' . $i . '_max_marks'] = $max_marks;
+							$data['msc_subject_' . $i . '_obtained_marks'] = $obtained_marks;
+						}
+					}
+				}
+
+				if ($personalDetails->admission_based == "M.ScEngg") {
+
+					$data = array(
+						'mscegg_education_level' => $this->input->post('mscegg_education_level'),
+						'mscegg_inst_type' => $this->input->post('mscegg_inst_type'),
+						'mscegg_inst_board' => $this->input->post('mscegg_inst_board'),
+						'mscegg_inst_name' => $this->input->post('mscegg_inst_name'),
+						'mscegg_inst_address' => $this->input->post('mscegg_inst_address'),
+						'mscegg_inst_city' => $this->input->post('mscegg_inst_city'),
+						'mscegg_inst_state' => $this->input->post('mscegg_inst_state'),
+						'mscegg_inst_country' => $this->input->post('mscegg_inst_country'),
+						'mscegg_medium_of_instruction' => $this->input->post('mscegg_medium_of_instruction'),
+						'mscegg_register_number' => $this->input->post('mscegg_register_number'),
+						'mscegg_year_of_passing' => $this->input->post('mscegg_year_of_passing')
+					);
+					for ($i = 1; $i <= 3; $i++) {
+						$subject_name = $this->input->post('mscegg_subject_' . $i . '_name');
+						$min_marks = $this->input->post('mscegg_subject_' . $i . '_min_marks');
+						$max_marks = $this->input->post('mscegg_subject_' . $i . '_max_marks');
+						$obtained_marks = $this->input->post('mscegg_subject_' . $i . '_obtained_marks');
+
+						// Only add subject if name is not empty
+						if (!empty($subject_name)) {
+							$data['mscegg_subject_' . $i . '_name'] = $subject_name;
+							$data['mscegg_subject_' . $i . '_min_marks'] = $min_marks;
+							$data['mscegg_subject_' . $i . '_max_marks'] = $max_marks;
+							$data['mscegg_subject_' . $i . '_obtained_marks'] = $obtained_marks;
+						}
+					}
+				}
 
 				// Insert subject fields
 
@@ -1102,7 +1190,83 @@ class Student extends CI_Controller
 					$result = $this->admin_model->insertDetails('student_education_details', $insertDetails5);
 				}
 
+				if ($personalDetails->admission_based == "M.Sc") {
+					$insertDetails5 = array(
+						'student_id' => $student_id,
+						'education_level' => $this->input->post('msc_education_level'),
+						'inst_type' => $this->input->post('msc_inst_type'),
+						'inst_board' => $this->input->post('msc_inst_board'),
+						'inst_name' => $this->input->post('msc_inst_name'),
+						'inst_address' => $this->input->post('msc_inst_address'),
+						'inst_city' => $this->input->post('msc_inst_city'),
+						'inst_state' => $this->input->post('msc_inst_state'),
+						'inst_country' => $this->input->post('msc_inst_country'),
+						'medium_of_instruction' => $this->input->post('msc_medium_of_instruction'),
+						'register_number' => $this->input->post('msc_register_number'),
+						'year_of_passing' => $this->input->post('msc_year_of_passing'),
+						'aggregate' => $this->input->post('msc_aggregate'),
+						'obtained' => $this->input->post('msc_total_obtained_marks'),
+						'maximum' => $this->input->post('msc_total_max_marks'),
+						'updated_on' => date('Y-m-d h:i:s'),
+						'updated_by' => $data['student_name']
+					);
 
+					// Insert subject fields
+					for ($i = 1; $i <= 3; $i++) {
+						$subject_name = $this->input->post('msc_subject_' . $i . '_name');
+						$min_marks = $this->input->post('msc_subject_' . $i . '_min_marks');
+						$max_marks = $this->input->post('msc_subject_' . $i . '_max_marks');
+						$obtained_marks = $this->input->post('msc_subject_' . $i . '_obtained_marks');
+
+						// Only add subject if name is not empty
+						if (!empty($min_marks)) {
+							$insertDetails5['subject_' . $i . '_name'] = $subject_name;
+							$insertDetails5['subject_' . $i . '_min_marks'] = $min_marks;
+							$insertDetails5['subject_' . $i . '_max_marks'] = $max_marks;
+							$insertDetails5['subject_' . $i . '_obtained_marks'] = $obtained_marks;
+						}
+					}
+					$result = $this->admin_model->insertDetails('student_education_details', $insertDetails5);
+				}
+
+				if ($personalDetails->admission_based == "M.ScEngg") {
+					$insertDetails5 = array(
+						'student_id' => $student_id,
+						'education_level' => $this->input->post('mscegg_education_level'),
+						'inst_type' => $this->input->post('mscegg_inst_type'),
+						'inst_board' => $this->input->post('mscegg_inst_board'),
+						'inst_name' => $this->input->post('mscegg_inst_name'),
+						'inst_address' => $this->input->post('mscegg_inst_address'),
+						'inst_city' => $this->input->post('mscegg_inst_city'),
+						'inst_state' => $this->input->post('mscegg_inst_state'),
+						'inst_country' => $this->input->post('mscegg_inst_country'),
+						'medium_of_instruction' => $this->input->post('mscegg_medium_of_instruction'),
+						'register_number' => $this->input->post('mscegg_register_number'),
+						'year_of_passing' => $this->input->post('mscegg_year_of_passing'),
+						'aggregate' => $this->input->post('mscegg_aggregate'),
+						'obtained' => $this->input->post('mscegg_total_obtained_marks'),
+						'maximum' => $this->input->post('mscegg_total_max_marks'),
+						'updated_on' => date('Y-m-d h:i:s'),
+						'updated_by' => $data['student_name']
+					);
+
+					// Insert subject fields
+					for ($i = 1; $i <= 3; $i++) {
+						$subject_name = $this->input->post('mscegg_subject_' . $i . '_name');
+						$min_marks = $this->input->post('mscegg_subject_' . $i . '_min_marks');
+						$max_marks = $this->input->post('mscegg_subject_' . $i . '_max_marks');
+						$obtained_marks = $this->input->post('mscegg_subject_' . $i . '_obtained_marks');
+
+						// Only add subject if name is not empty
+						if (!empty($min_marks)) {
+							$insertDetails5['subject_' . $i . '_name'] = $subject_name;
+							$insertDetails5['subject_' . $i . '_min_marks'] = $min_marks;
+							$insertDetails5['subject_' . $i . '_max_marks'] = $max_marks;
+							$insertDetails5['subject_' . $i . '_obtained_marks'] = $obtained_marks;
+						}
+					}
+					$result = $this->admin_model->insertDetails('student_education_details', $insertDetails5);
+				}
 
 				if ($result) {
 					$this->session->set_flashdata('message', 'Education Details added successfully...!');
