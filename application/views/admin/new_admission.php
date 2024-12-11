@@ -160,6 +160,17 @@
                                 </div>
                             </div> -->
 
+                            <!-- Admission Based on Level Field -->
+                            <div id="batchRow" class="col-md-3 col-sm-12">
+                                <div class="form-group">
+                                <label class="label">Admission Based On<span class="text-danger">*</span></label>
+                                    <?php $level_options = array(" " => "Select Level", "MTech" => "MTech", "M.Sc" => "M.Sc", "M.ScEngg" => "M.ScEngg");
+                                    echo form_dropdown('admission_based', $level_options, (set_value('admission_based')) ? set_value('admission_based') : $admission_based, 'class="form-control " id="admission_based"');
+                                    ?>
+                                    <span class="text-danger"><?php echo form_error('admission_based'); ?></span>
+                                </div>
+                            </div>
+
                             <!-- Degree Level Field -->
                             <div id="degreeLevelRow" class="col-md-3 col-sm-12">
                                 <div class="form-group">
@@ -179,7 +190,7 @@
                                 ?>
                               <span class="text-danger"><?php echo form_error('entrance_type'); ?></span>
                           </div>
-                          <div class="col-md-4 col-sm-12">
+                          <!-- <div class="col-md-4 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Entrance Registration Number<span
                                           class="text-danger">*</span></label>
@@ -187,6 +198,16 @@
                                       value="<?php echo (set_value('entrance_reg_no')) ? set_value('entrance_reg_no') : $entrance_reg_no; ?>"
                                       placeholder="Enter Entrance Registration Number">
                                   <span class="text-danger"><?php echo form_error('entrance_reg_no'); ?></span>
+                              </div>
+                          </div> -->
+                          <div id="orderno"class="col-md-4 col-sm-12">
+                              <div class="form-group">
+                                  <label class="label">Admission Order No<span class="text-danger">*</span></label>
+                                  <input type="text" name="admission_order_no" id="admission_order_no"
+                                      class="form-control"
+                                      value="<?php echo (set_value('admission_order_no')) ? set_value('admission_order_no') : $admission_order_no; ?>"
+                                      placeholder="Enter Admission Order No">
+                                  <span class="text-danger"><?php echo form_error('admission_order_no'); ?></span>
                               </div>
                           </div>
                           <div id="rank" class="col-md-4 col-sm-12">
@@ -201,14 +222,14 @@
                       </div>
 
                       <div class="form-row">
-                          <div id="orderno"class="col-md-4 col-sm-12">
+                           <div class="col-md-4 col-sm-12">
                               <div class="form-group">
-                                  <label class="label">Admission Order No<span class="text-danger">*</span></label>
-                                  <input type="text" name="admission_order_no" id="admission_order_no"
-                                      class="form-control"
-                                      value="<?php echo (set_value('admission_order_no')) ? set_value('admission_order_no') : $admission_order_no; ?>"
-                                      placeholder="Enter Admission Order No">
-                                  <span class="text-danger"><?php echo form_error('admission_order_no'); ?></span>
+                                  <label class="label">Entrance Registration Number<span
+                                          class="text-danger">*</span></label>
+                                  <input type="text" name="entrance_reg_no" id="entrance_reg_no" class="form-control"
+                                      value="<?php echo (set_value('entrance_reg_no')) ? set_value('entrance_reg_no') : $entrance_reg_no; ?>"
+                                      placeholder="Enter Entrance Registration Number">
+                                  <span class="text-danger"><?php echo form_error('entrance_reg_no'); ?></span>
                               </div>
                           </div>
                           <div class="col-md-4 col-sm-12">
