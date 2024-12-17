@@ -89,7 +89,11 @@ class Globals
         return array(
             "PUC" => "PUC",
             "DIPLOMA" => "DIPLOMA",
-            "GTTC" => "GT&TC"
+            "GTTC" => "GT&TC",
+            "BE" => "BE",
+            "MTech" => "MTech",
+            "M.Sc" => "M.Sc",
+            "M.ScEngg" => "M.ScEngg"
         );
     }
     

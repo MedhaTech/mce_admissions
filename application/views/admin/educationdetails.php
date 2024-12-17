@@ -2954,6 +2954,64 @@ $(document).ready(function() {
         });
     });
 
+    $('#mtech_inst_country').change(function() {
+        var country_id = $(this).find(':selected').data('id');
+
+
+        // AJAX call to get states
+        $.ajax({
+            url: '<?php echo base_url('student/get_states'); ?>',
+            type: 'post',
+            data: {
+                country_id: country_id
+            },
+            dataType: 'json',
+            success: function(response) {
+                var len = response.length;
+                $('#mtech_inst_state').empty();
+                $('#mtech_inst_state').show();
+                $('#mtech_inst_city').show(); // Hide city dropdown if visible
+                $('#mtech_inst_city').empty(); // Clear city dropdown
+
+                $('#mtech_inst_state').append("<option value=''>Select State</option>");
+                for (var i = 0; i < len; i++) {
+                    var id = response[i]['id'];
+                    var name = response[i]['name'];
+                    $('#mtech_inst_state').append("<option data-id='" + id + "' value='" +
+                        name + "'>" + name + "</option>");
+                }
+            }
+        });
+    });
+
+    // AJAX request when a state is selected
+    $('#mtech_inst_state').change(function() {
+        var state_id = $(this).find(':selected').data('id');
+
+        // AJAX call to get cities
+        $.ajax({
+            url: '<?php echo base_url('student/get_cities'); ?>',
+            type: 'post',
+            data: {
+                state_id: state_id
+            },
+            dataType: 'json',
+            success: function(response) {
+                var len = response.length;
+                $('#mtech_inst_city').empty();
+                $('#mtech_inst_city').show();
+
+                $('#mtech_inst_city').append("<option value=''>Select City</option>");
+                for (var i = 0; i < len; i++) {
+                    var id = response[i]['id'];
+                    var name = response[i]['name'];
+                    $('#mtech_inst_city').append("<option value='" + name + "'>" + name +
+                        "</option>");
+                }
+            }
+        });
+    });
+
     $('#msc_inst_country').change(function() {
         var country_id = $(this).find(':selected').data('id');
 
