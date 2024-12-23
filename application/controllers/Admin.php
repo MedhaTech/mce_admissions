@@ -2086,21 +2086,20 @@ class Admin extends CI_Controller
 			$stream = $this->input->post('stream');
 
 			if ($stream == '3') {
-				$this->form_validation->set_rules('admission_based', 'Admission Based On', 'required');
-				$this->form_validation->set_rules('degree_level', 'Degree Level', 'required');
+			$this->form_validation->set_rules('admission_based', 'Admission Based On', 'required');
+			$this->form_validation->set_rules('degree_level', 'Degree Level', 'required');
 			}
 			$this->form_validation->set_rules('sports', 'Sports', 'required');
 			if ($stream == '1' || $stream == '2') {
-				$this->form_validation->set_rules('entrance_type', 'Entrance Type', 'required');
-				$this->form_validation->set_rules('entrance_rank', 'Entrance Exam Rank', 'required');
-				$this->form_validation->set_rules('admission_order_no', 'Admission Order Number', 'required');
-			}			
+			$this->form_validation->set_rules('entrance_type', 'Entrance Type', 'required');
+			$this->form_validation->set_rules('entrance_rank', 'Entrance Exam Rank', 'required');
+			$this->form_validation->set_rules('admission_order_no', 'Admission Order Number', 'required');
 			$this->form_validation->set_rules('entrance_reg_no', 'Entrance Registration Number', 'required');
 			$this->form_validation->set_rules('admission_order_date', 'Admission Order Date', 'required');
 			$this->form_validation->set_rules('fees_paid', 'Fees Paid', 'required');
 			$this->form_validation->set_rules('fees_receipt_no', 'Fees Receipt Number', 'required');
 			$this->form_validation->set_rules('fees_receipt_date', 'Fees Receipt Date', 'required');
-
+			}			
 
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/newAdmission';
@@ -4385,21 +4384,23 @@ With good wishes";
 			$data['course_options'] = array(" " => "Select") + $this->courses();
 			$data['action'] = 'admin/studentdetails_report';
 			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
 			if ($this->form_validation->run() === FALSE) {
 
 				$this->admin_template->show('admin/studentdetails_report', $data);
 			} else {
 				$data['course'] = $this->input->post('course');
+				$data['gender'] = $this->input->post('gender');
 				$data['status'] = $this->input->post('admission_status');
 
 
 
-				$admissions = $this->admin_model->getAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+				$admissions = $this->admin_model->getAdmissions_coursereport($data['currentAcademicYear'], $data['course'], $data['gender'],  $data['status'])->result();
 
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
 
 
 					$selectedValues = $this->input->post('selectedValues');
@@ -4501,6 +4502,7 @@ With good wishes";
 							//   $enquiries1->academic_year,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 							$dmp,
 							$admissions1->aadhaar,
 							$admissions1->quota,
@@ -4641,6 +4643,7 @@ With good wishes";
 			}
 			$table .= '<tr><th>S.No</th>
 			               <th> Student Name </th>
+							<th>Gender</th>
 						    <th> Department Name </th>
 			               <th> Receipt No. </th>
 			              
@@ -4666,6 +4669,7 @@ With good wishes";
 				$table .= '<tr>';
 				$table .= '<td>' . $i++ . '</td>';
 				$table .= '<td>' . $transactions1->student_name . '</td>';
+				$table .= '<td>' . $transactions1->gender . '</td>';
 				$table .= '<td>' . $this->admin_model->get_dept_by_id($transactions1->dept_id)["department_name"] . '</td>';
 				//  $table .= '<td>'.$transactions1->course.'</td>';   
 				//  $table .= '<td>'.$combination.'</td>';   
@@ -4712,23 +4716,28 @@ With good wishes";
 			$admissionStatusColor = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['course_options'] = array(" " => "Select") + $this->courses();
-			$data['type_options'] = array(" " => "Select") + $this->globals->category();
+			$data['type_options'] = array("all" => "All") + $this->globals->category();
+			$data['claimed_options'] = array("all" => "All") + $this->globals->category_claimed();
 			$data['action'] = 'admin/category_admissions_report';
-			$this->form_validation->set_rules('category', 'Category', 'required');
+			$this->form_validation->set_rules('category_allotted', 'Category', 'required');
+			$this->form_validation->set_rules('category_claimed', 'Category', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
 			if ($this->form_validation->run() === FALSE) {
 
 				$this->admin_template->show('admin/category_admissions_report', $data);
 			} else {
-				$data['category'] = $this->input->post('category');
+				$data['category_allotted'] = $this->input->post('category_allotted');
+				$data['category_claimed'] = $this->input->post('category_claimed');
+				$data['gender'] = $this->input->post('gender');
 
-				$admissions = $this->admin_model->getAdmissions_category($data['currentAcademicYear'], $data['category'])->result();
+				$admissions = $this->admin_model->getAdmissions_category($data['currentAcademicYear'], $data['category_allotted'], $data['category_claimed'], $data['gender'])->result();
 
 				// var_dump($admissions); die();
 
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
 					$this->table->set_heading($print_fields);
 
 					$i = 1;
@@ -4739,6 +4748,7 @@ With good wishes";
 							//   $enquiries1->academic_year,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 							$dmn,
 							$admissions1->aadhaar,
 							$admissions1->quota,
@@ -6729,21 +6739,21 @@ With good wishes";
 			$data['course_options'] = array(" " => "Select") + $this->courses();
 			$data['action'] = 'admin/CoursewiseStudentAdmittedCount';
 			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
 			if ($this->form_validation->run() === FALSE) {
 
 				$this->admin_template->show('admin/CoursewiseStudentAdmittedCount', $data);
 			} else {
 				$data['course'] = $this->input->post('course');
+				$data['gender'] = $this->input->post('gender');
 				$data['status'] = $this->input->post('admission_status');
 
-
-
-				$admissions = $this->admin_model->getAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+				$admissions = $this->admin_model->getAdmissions_coursereport($data['currentAcademicYear'], $data['course'], $data['gender'], $data['status'])->result();
 
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'College Code', 'Status', 'Admit. Date');
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Aadhaar Number', 'Quota', 'College Code', 'Status', 'Admit. Date');
 
 
 
@@ -6757,6 +6767,7 @@ With good wishes";
 							//   $enquiries1->academic_year,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 							$dmp,
 							$admissions1->aadhaar,
 							$admissions1->quota,
@@ -6809,7 +6820,7 @@ With good wishes";
 			$admissionStatusColor = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['admissions'] = $this->admin_model->mtechdetails(
-				'id, app_no, adm_no, quota, dept_id, sub_quota, student_name, mobile, usn, status',
+				'id, app_no, adm_no, quota, dept_id, sub_quota, student_name, mobile, gender, usn, status',
 				'status',
 				$status,
 				'academic_year',
@@ -6824,7 +6835,7 @@ With good wishes";
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$print_fields = array('S.NO', 'App No', 'Applicant Name', 'Mobile', 'Course', 'Quota', 'Sub Quota', 'Status');
+					$print_fields = array('S.NO', 'App No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Quota', 'Sub Quota', 'Status');
 					$this->table->set_heading($print_fields);
 
 					$i = 1;
@@ -6839,6 +6850,7 @@ With good wishes";
 							$admissions1->app_no,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 
 							$this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"],
 							$admissions1->quota,
@@ -10653,21 +10665,23 @@ With good wishes";
 			$data['course_options'] = array(" " => "Select") + $this->phdcourses();
 			$data['action'] = 'admin/phdCoursewiseStudentAdmittedCount';
 			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
 			if ($this->form_validation->run() === FALSE) {
 
 				$this->admin_template->show('admin/phdCoursewiseStudentAdmittedCount', $data);
 			} else {
 				$data['course'] = $this->input->post('course');
+				$data['gender'] = $this->input->post('gender');
 				$data['status'] = $this->input->post('admission_status');
 
 
 
-				$admissions = $this->admin_model->getphdAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+				$admissions = $this->admin_model->getphdAdmissions_course($data['currentAcademicYear'], $data['course'], $data['gender'], $data['status'])->result();
 
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'College Code', 'Status', 'Admit. Date');
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Aadhaar Number', 'Quota', 'College Code', 'Status', 'Admit. Date');
 
 
 
@@ -10681,6 +10695,7 @@ With good wishes";
 							//   $enquiries1->academic_year,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 							$dmp,
 							$admissions1->aadhaar,
 							$admissions1->quota,
@@ -10734,21 +10749,23 @@ With good wishes";
 			$data['course_options'] = array(" " => "Select") + $this->phdcourses();
 			$data['action'] = 'admin/phdstudentdetails_report';
 			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
 			if ($this->form_validation->run() === FALSE) {
 
 				$this->admin_template->show('admin/phdstudentdetails_report', $data);
 			} else {
 				$data['course'] = $this->input->post('course');
+				$data['gender'] = $this->input->post('gender');
 				$data['status'] = $this->input->post('admission_status');
 
 
 
-				$admissions = $this->admin_model->getphdAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+				$admissions = $this->admin_model->getphdAdmissions_course($data['currentAcademicYear'], $data['course'], $data['gender'], $data['status'])->result();
 
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
 
 
 					$selectedValues = $this->input->post('selectedValues');
@@ -10850,6 +10867,7 @@ With good wishes";
 							//   $enquiries1->academic_year,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 							$dmp,
 							$admissions1->aadhaar,
 							$admissions1->quota,
@@ -11747,21 +11765,23 @@ With good wishes";
 			$data['course_options'] = array(" " => "Select") + $this->mtechcourses();
 			$data['action'] = 'admin/mtechCoursewiseStudentAdmittedCount';
 			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
 			if ($this->form_validation->run() === FALSE) {
 
 				$this->admin_template->show('admin/mtechCoursewiseStudentAdmittedCount', $data);
 			} else {
 				$data['course'] = $this->input->post('course');
+				$data['gender'] = $this->input->post('gender');
 				$data['status'] = $this->input->post('admission_status');
 
 
 
-				$admissions = $this->admin_model->getmtechAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+				$admissions = $this->admin_model->getmtechAdmissions_course($data['currentAcademicYear'], $data['course'], $data['gender'], $data['status'])->result();
 
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'College Code', 'Status', 'Admit. Date');
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Aadhaar Number', 'Quota', 'College Code', 'Status', 'Admit. Date');
 
 
 
@@ -11775,6 +11795,7 @@ With good wishes";
 							//   $enquiries1->academic_year,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 							$dmp,
 							$admissions1->aadhaar,
 							$admissions1->quota,
@@ -11828,21 +11849,23 @@ With good wishes";
 			$data['course_options'] = array(" " => "Select") + $this->mtechcourses();
 			$data['action'] = 'admin/mtechstudentdetails_report';
 			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
 			if ($this->form_validation->run() === FALSE) {
 
 				$this->admin_template->show('admin/mtechstudentdetails_report', $data);
 			} else {
 				$data['course'] = $this->input->post('course');
+				$data['gender'] = $this->input->post('gender');
 				$data['status'] = $this->input->post('admission_status');
 
 
 
-				$admissions = $this->admin_model->getmtechAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+				$admissions = $this->admin_model->getmtechAdmissions_course($data['currentAcademicYear'], $data['course'], $data['gender'], $data['status'])->result();
 
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
 
 
 					$selectedValues = $this->input->post('selectedValues');
@@ -11944,6 +11967,7 @@ With good wishes";
 							//   $enquiries1->academic_year,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 							$dmp,
 							$admissions1->aadhaar,
 							$admissions1->quota,
@@ -12084,6 +12108,7 @@ With good wishes";
 			}
 			$table .= '<tr><th>S.No</th>
 			               <th> Student Name </th>
+			               <th> Gender </th>
 						    <th> Department Name </th>
 			               <th> Receipt No. </th>
 			              
@@ -12109,6 +12134,7 @@ With good wishes";
 				$table .= '<tr>';
 				$table .= '<td>' . $i++ . '</td>';
 				$table .= '<td>' . $transactions1->student_name . '</td>';
+				$table .= '<td>' . $transactions1->gender . '</td>';
 				$table .= '<td>' . $this->admin_model->get_dept_by_id($transactions1->dept_id)["department_name"] . '</td>';
 				//  $table .= '<td>'.$transactions1->course.'</td>';   
 				//  $table .= '<td>'.$combination.'</td>';   
@@ -12155,23 +12181,28 @@ With good wishes";
 			$admissionStatusColor = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['course_options'] = array(" " => "Select") + $this->courses();
-			$data['type_options'] = array(" " => "Select") + $this->globals->category();
+			$data['type_options'] = array("all" => "All") + $this->globals->category();
+			$data['claimed_options'] = array("all" => "All") + $this->globals->category_claimed();
 			$data['action'] = 'admin/mtechcategory_admissions_report';
-			$this->form_validation->set_rules('category', 'Category', 'required');
+			$this->form_validation->set_rules('category_allotted', 'Category', 'required');
+			$this->form_validation->set_rules('category_claimed', 'Category', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
 			if ($this->form_validation->run() === FALSE) {
 
 				$this->admin_template->show('admin/mtechcategory_admissions_report', $data);
 			} else {
-				$data['category'] = $this->input->post('category');
+				$data['category_allotted'] = $this->input->post('category_allotted');
+				$data['category_claimed'] = $this->input->post('category_claimed');
+				$data['gender'] = $this->input->post('gender');
 
-				$admissions = $this->admin_model->getmtechAdmissions_category($data['currentAcademicYear'], $data['category'])->result();
+				$admissions = $this->admin_model->getmtechAdmissions_category($data['currentAcademicYear'], $data['category_allotted'], $data['category_claimed'], $data['gender'])->result();
 
 				// var_dump($admissions); die();
 
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
 					$this->table->set_heading($print_fields);
 
 					$i = 1;
@@ -12182,6 +12213,7 @@ With good wishes";
 							//   $enquiries1->academic_year,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 							$dmn,
 							$admissions1->aadhaar,
 							$admissions1->quota,
@@ -12230,7 +12262,7 @@ With good wishes";
 			$admissionStatusColor = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['admissions'] = $this->admin_model->mtechdetails(
-				'id, app_no, adm_no, quota, dept_id, sub_quota, student_name, mobile, usn, status',
+				'id, app_no, adm_no, quota, dept_id, sub_quota, student_name, gender, mobile, usn, status',
 				'status',
 				$status,
 				'academic_year',
@@ -12243,7 +12275,7 @@ With good wishes";
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$print_fields = array('S.NO', 'App No', 'Applicant Name', 'Mobile', 'Course', 'Quota', 'Sub Quota', 'Status');
+					$print_fields = array('S.NO', 'App No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Quota', 'Sub Quota', 'Status');
 					$this->table->set_heading($print_fields);
 
 					$i = 1;
@@ -12258,6 +12290,7 @@ With good wishes";
 							$admissions1->app_no,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 
 							$this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"],
 							$admissions1->quota,

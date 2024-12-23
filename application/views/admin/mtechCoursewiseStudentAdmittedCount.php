@@ -36,6 +36,13 @@
                           </div>
                           <div class="col-md-4 col-sm-12">
                               <div class="form-group">
+                                  <label for="dsc-2">Gender </label>
+                                  <?php $gender_options = array("all" => "All", "Male" => "Male", "Female" => "Female", "Not Prefer to Say" => "Not Prefer to Say"); echo form_dropdown('gender', $gender_options, (set_value('gender')) ? set_value('gender') : 'gender', 'class="form-control" id="gender"'); ?>
+                                  <span class="text-danger"><?php echo form_error('gender'); ?></span>
+                              </div>
+                          </div>
+                          <div class="col-md-4 col-sm-12">
+                              <div class="form-group">
                                   <label class="label font-13">Admission Status<span class="text-danger">*</span></label>
                                   <?php echo form_dropdown('admission_status', $admissionStatus, (set_value('admission_status')) ? set_value('admission_status') : $admission_status, 'class="form-control" id="status"'); ?>
                                   <span class="text-danger"><?php echo form_error('admission_status'); ?></span>
