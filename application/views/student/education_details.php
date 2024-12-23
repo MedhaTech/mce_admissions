@@ -1476,6 +1476,411 @@
 
                           </div>
                       <?php } ?>
+                      <?php if ($personalDetails->admission_based == "M.Sc") { ?>
+                          <div class="card-body" id="card2">
+
+
+                              <h3>M.Sc</h3>
+
+                              <div class="form-row">
+
+                                  <div class="col-md-4 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Level</label>
+                                          <?php $level_options = array("M.Sc" => "M.Sc");
+                                            echo form_dropdown('msc_education_level', $level_options, (set_value('msc_education_level')) ? set_value('msc_education_level') : 'msc_education_level', 'class="form-control " id="msc_education_level"');
+                                            ?>
+                                          <span class="text-danger"><?php echo form_error('msc_education_level'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Board / University</label>
+                                          <input type="text" name="msc_inst_board" id="msc_inst_board" value="<?php echo (set_value('msc_inst_board')) ? set_value('msc_inst_board') : $msc_inst_board; ?>" class="form-control" placeholder="Enter Institution Board">
+                                          <span class="text-danger"><?php echo form_error('msc_inst_board'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Institution Name</label>
+                                          <input type="text" name="msc_inst_name" id="msc_inst_name" value="<?php echo (set_value('msc_inst_name')) ? set_value('msc_inst_name') : $msc_inst_name; ?>" class="form-control" placeholder="Enter Institution Name">
+                                          <span class="text-danger"><?php echo form_error('msc_inst_name'); ?></span>
+                                      </div>
+                                  </div>
+
+
+
+                              </div>
+
+                              <div class="form-row">
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Institution Address</label>
+                                          <input type="text" name="msc_inst_address" id="msc_inst_address" value="<?php echo (set_value('msc_inst_address')) ? set_value('msc_inst_address') : $msc_inst_address; ?>" class="form-control" placeholder="Enter Institution Address">
+                                          <span class="text-danger"><?php echo form_error('msc_inst_address'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+
+                                          <label class="label">Institution Country</label>
+
+                                          <select name="msc_inst_country" id="msc_inst_country" class="form-control input-lg select2">
+                                              <option selected="">Select Country</option>
+                                              <?php foreach ($countries as $country) : ?>
+                                                  <option data-id="<?= $country->id ?>" value="<?= $country->name ?>"><?= $country->name ?></option>
+                                              <?php endforeach; ?>
+                                          </select>
+                                          <span class="text-danger"><?php echo form_error('msc_inst_country'); ?></span>
+
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Institution State</label>
+
+                                          <!-- <input type="text" name="diploma_inst_state" id="diploma_inst_state" class="form-control" placeholder="Enter Institution State"> -->
+                                          <select name="msc_inst_state" id="msc_inst_state" class="form-control input-lg select2">
+                                              <option value="">Select State</option>
+                                          </select>
+
+                                          <span class="text-danger"><?php echo form_error('msc_inst_state'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+
+                                          <label class="label">Institution City</label>
+                                          <select name="msc_inst_city" id="msc_inst_city" class="form-control input-lg select2">
+                                              <option value="">Select City</option>
+                                          </select>
+                                          <span class="text-danger"><?php echo form_error('msc_inst_city'); ?></span>
+
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="form-row">
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Medium of Instruction</label>
+
+                                          <?php
+
+                                            // $instruction_options= array(" " => "Select Medium of instruction") + $this->globals->diploma_medium_of_instruction();
+                                            echo form_dropdown('msc_medium_of_instruction', $instruction_options, (set_value('msc_medium_of_instruction')) ? set_value('msc_medium_of_instruction') : $msc_medium_of_instruction, 'class="form-control form-control" id="msc_medium_of_instruction"');
+                                            ?>
+
+                                          <span class="text-danger"><?php echo form_error('msc_medium_of_instruction'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Register Number</label>
+                                          <input type="text" name="msc_register_number" value="<?php echo (set_value('msc_register_number')) ? set_value('msc_register_number') : $msc_register_number; ?>" id="msc_register_number" class="form-control" placeholder="Enter Register Number">
+                                          <span class="text-danger"><?php echo form_error('msc_register_number'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Year of Passing</label>
+                                          <input type="month" name="msc_year_of_passing" value="<?php echo (set_value('msc_year_of_passing')) ? set_value('msc_year_of_passing') : $msc_year_of_passing; ?>" id="msc_year_of_passing" class="form-control" placeholder="Enter School Year">
+                                          <span class="text-danger"><?php echo form_error('msc_year_of_passing'); ?></span>
+                                      </div>
+                                  </div>
+                              </div>
+                              <table class="table" border="1">
+                                  <thead>
+                                      <tr>
+                                          <th></th>
+                                          <th>Obtained Marks</th>
+                                          <th>Maximum Marks</th>
+                                          <th>Percentage%</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <!-- Subject 1 -->
+                                      <tr>
+                                          <th><input type="text" name="msc_subject_1_name" id="msc_subject_1_name" class="form-control font-weight-bold" placeholder="I year" value="I year" readonly></th>
+                                          <td>
+                                              <input type="number" name="msc_subject_1_obtained_marks" id="msc_subject_1_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('msc_subject_1_obtained_marks')) ? set_value('msc_subject_1_obtained_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('msc_subject_1_obtained_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="number" name="msc_subject_1_max_marks" id="msc_subject_1_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('msc_subject_1_max_marks')) ? set_value('msc_subject_1_max_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('msc_subject_1_max_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="text" readonly name="msc_subject_1_min_marks" id="msc_subject_1_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('msc_subject_1_min_marks')) ? set_value('msc_subject_1_min_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('msc_subject_1_min_marks'); ?></span>
+                                          </td>
+                                      </tr>
+                                      <!-- Subject 2 -->
+                                      <tr>
+                                          <th><input type="text" name="msc_subject_2_name" id="msc_subject_2_name" class="form-control font-weight-bold" placeholder="II year" value="II year" readonly></th>
+                                          <td>
+                                              <input type="number" name="msc_subject_2_obtained_marks" id="msc_subject_2_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('msc_subject_2_obtained_marks')) ? set_value('msc_subject_2_obtained_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('msc_subject_2_obtained_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="number" name="msc_subject_2_max_marks" id="msc_subject_2_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('msc_subject_2_max_marks')) ? set_value('msc_subject_2_max_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('msc_subject_2_max_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="text" readonly name="msc_subject_2_min_marks" id="msc_subject_2_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('msc_subject_2_min_marks')) ? set_value('msc_subject_2_min_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('msc_subject_2_min_marks'); ?></span>
+                                          </td>
+                                      </tr>
+                                      <!-- Subject 3 -->
+
+                                  </tbody>
+                                  <!-- <tfoot>
+                                      <tr>
+                                          <th>Total/Aggregate</th>
+                                          <th><input type="text" name="diploma_total_min_marks" id="diploma_total_min_marks" class="form-control" value="" readonly></th>
+                                          <th><input type="text" name="diploma_total_max_marks" id="diploma_total_max_marks" class="form-control" value="" readonly></th>
+                                          <th><input type="text" name="diploma_aggregate" id="diploma_aggregate" class="form-control" value="" readonly></th>
+                                      </tr>
+
+                                  </tfoot> -->
+                              </table>
+                              <div class="form-row">
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Obtained Marks</label>
+                                          <input type="text" name="msc_total_obtained_marks" value="<?php echo (set_value('msc_total_obtained_marks')) ? set_value('msc_total_obtained_marks') : ''; ?>" id="msc_total_obtained_marks" class="form-control" readonly>
+
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Maximum Marks</label>
+                                          <input type="text" name="msc_total_max_marks" value="<?php echo (set_value('msc_total_max_marks')) ? set_value('msc_total_max_marks') : ''; ?>" id="msc_total_max_marks" class="form-control" readonly>
+
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Aggregate Percentage</label>
+                                          <input type="text" name="msc_aggregate" value="<?php echo (set_value('msc_aggregate')) ? set_value('msc_aggregate') : ''; ?>" id="msc_aggregate" class="form-control" readonly>
+
+                                      </div>
+                                  </div>
+
+                              </div>
+
+
+                          </div>
+                      <?php } ?>
+                      <?php if ($personalDetails->admission_based == "M.ScEngg") { ?>
+                          <div class="card-body" id="card2">
+
+
+                              <h3>M.Sc Engg</h3>
+
+                              <div class="form-row">
+
+                                  <div class="col-md-4 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Level</label>
+                                          <?php $level_options = array("M.Sc Engg" => "M.Sc Engg");
+                                            echo form_dropdown('mscegg_education_level', $level_options, (set_value('mscegg_education_level')) ? set_value('mscegg_education_level') : 'mscegg_education_level', 'class="form-control " id="mscegg_education_level"');
+                                            ?>
+                                          <span class="text-danger"><?php echo form_error('mscegg_education_level'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Board / University</label>
+                                          <input type="text" name="mscegg_inst_board" id="mscegg_inst_board" value="<?php echo (set_value('mscegg_inst_board')) ? set_value('mscegg_inst_board') : $mscegg_inst_board; ?>" class="form-control" placeholder="Enter Institution Board">
+                                          <span class="text-danger"><?php echo form_error('mscegg_inst_board'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Institution Name</label>
+                                          <input type="text" name="mscegg_inst_name" id="mscegg_inst_name" value="<?php echo (set_value('mscegg_inst_name')) ? set_value('mscegg_inst_name') : $mscegg_inst_name; ?>" class="form-control" placeholder="Enter Institution Name">
+                                          <span class="text-danger"><?php echo form_error('mscegg_inst_name'); ?></span>
+                                      </div>
+                                  </div>
+
+
+
+                              </div>
+
+                              <div class="form-row">
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Institution Address</label>
+                                          <input type="text" name="mscegg_inst_address" id="mscegg_inst_address" value="<?php echo (set_value('mscegg_inst_address')) ? set_value('mscegg_inst_address') : $mscegg_inst_address; ?>" class="form-control" placeholder="Enter Institution Address">
+                                          <span class="text-danger"><?php echo form_error('mscegg_inst_address'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+
+                                          <label class="label">Institution Country</label>
+
+                                          <select name="mscegg_inst_country" id="mscegg_inst_country" class="form-control input-lg select2">
+                                              <option selected="">Select Country</option>
+                                              <?php foreach ($countries as $country) : ?>
+                                                  <option data-id="<?= $country->id ?>" value="<?= $country->name ?>"><?= $country->name ?></option>
+                                              <?php endforeach; ?>
+                                          </select>
+                                          <span class="text-danger"><?php echo form_error('mscegg_inst_country'); ?></span>
+
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Institution State</label>
+
+                                          <!-- <input type="text" name="diploma_inst_state" id="diploma_inst_state" class="form-control" placeholder="Enter Institution State"> -->
+                                          <select name="mscegg_inst_state" id="mscegg_inst_state" class="form-control input-lg select2">
+                                              <option value="">Select State</option>
+                                          </select>
+
+                                          <span class="text-danger"><?php echo form_error('mscegg_inst_state'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+
+                                          <label class="label">Institution City</label>
+                                          <select name="mscegg_inst_city" id="mscegg_inst_city" class="form-control input-lg select2">
+                                              <option value="">Select City</option>
+                                          </select>
+                                          <span class="text-danger"><?php echo form_error('mscegg_inst_city'); ?></span>
+
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="form-row">
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Medium of Instruction</label>
+
+                                          <?php
+
+                                            // $instruction_options= array(" " => "Select Medium of instruction") + $this->globals->diploma_medium_of_instruction();
+                                            echo form_dropdown('mscegg_medium_of_instruction', $instruction_options, (set_value('mscegg_medium_of_instruction')) ? set_value('mscegg_medium_of_instruction') : $mscegg_medium_of_instruction, 'class="form-control form-control" id="mscegg_medium_of_instruction"');
+                                            ?>
+
+                                          <span class="text-danger"><?php echo form_error('mscegg_medium_of_instruction'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Register Number</label>
+                                          <input type="text" name="mscegg_register_number" value="<?php echo (set_value('mscegg_register_number')) ? set_value('mscegg_register_number') : $mscegg_register_number; ?>" id="mscegg_register_number" class="form-control" placeholder="Enter Register Number">
+                                          <span class="text-danger"><?php echo form_error('mscegg_register_number'); ?></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Year of Passing</label>
+                                          <input type="month" name="mscegg_year_of_passing" value="<?php echo (set_value('mscegg_year_of_passing')) ? set_value('mscegg_year_of_passing') : $mscegg_year_of_passing; ?>" id="mscegg_year_of_passing" class="form-control" placeholder="Enter School Year">
+                                          <span class="text-danger"><?php echo form_error('mscegg_year_of_passing'); ?></span>
+                                      </div>
+                                  </div>
+                              </div>
+                              <table class="table" border="1">
+                                  <thead>
+                                      <tr>
+                                          <th></th>
+                                          <th>Obtained Marks</th>
+                                          <th>Maximum Marks</th>
+                                          <th>Percentage%</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <!-- Subject 1 -->
+                                      <tr>
+                                          <th><input type="text" name="mscegg_subject_1_name" id="mscegg_subject_1_name" class="form-control font-weight-bold" placeholder="I year" value="I year" readonly></th>
+                                          <td>
+                                              <input type="number" name="mscegg_subject_1_obtained_marks" id="mscegg_subject_1_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('mscegg_subject_1_obtained_marks')) ? set_value('mscegg_subject_1_obtained_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('mscegg_subject_1_obtained_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="number" name="mscegg_subject_1_max_marks" id="mscegg_subject_1_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('mscegg_subject_1_max_marks')) ? set_value('mscegg_subject_1_max_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('mscegg_subject_1_max_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="text" readonly name="mscegg_subject_1_min_marks" id="mscegg_subject_1_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('mscegg_subject_1_min_marks')) ? set_value('mscegg_subject_1_min_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('mscegg_subject_1_min_marks'); ?></span>
+                                          </td>
+                                      </tr>
+                                      <!-- Subject 2 -->
+                                      <tr>
+                                          <th><input type="text" name="mscegg_subject_2_name" id="mscegg_subject_2_name" class="form-control font-weight-bold" placeholder="II year" value="II year" readonly></th>
+                                          <td>
+                                              <input type="number" name="mscegg_subject_2_obtained_marks" id="mscegg_subject_2_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('mscegg_subject_2_obtained_marks')) ? set_value('mscegg_subject_2_obtained_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('mscegg_subject_2_obtained_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="number" name="mscegg_subject_2_max_marks" id="mscegg_subject_2_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('mscegg_subject_2_max_marks')) ? set_value('mscegg_subject_2_max_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('mscegg_subject_2_max_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="text" readonly name="mscegg_subject_2_min_marks" id="mscegg_subject_2_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('mscegg_subject_2_min_marks')) ? set_value('mscegg_subject_2_min_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('mscegg_subject_2_min_marks'); ?></span>
+                                          </td>
+                                      </tr>
+                                      <!-- Subject 3 -->
+                                      <tr>
+                                          <th><input type="text" name="mscegg_subject_3_name" id="mscegg_subject_3_name" class="form-control font-weight-bold" placeholder="III year" value="III year" readonly></th>
+                                          <td>
+                                              <input type="number" name="mscegg_subject_3_obtained_marks" id="mscegg_subject_3_obtained_marks" class="form-control" placeholder="Enter Obtained Marks" value="<?php echo (set_value('mscegg_subject_3_obtained_marks')) ? set_value('mscegg_subject_3_obtained_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('mscegg_subject_3_obtained_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="number" name="mscegg_subject_3_max_marks" id="mscegg_subject_3_max_marks" class="form-control" placeholder="Enter Max Marks" value="<?php echo (set_value('mscegg_subject_3_max_marks')) ? set_value('mscegg_subject_3_max_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('mscegg_subject_3_max_marks'); ?></span>
+                                          </td>
+                                          <td>
+                                              <input type="text" readonly name="mscegg_subject_3_min_marks" id="mscegg_subject_3_min_marks" placeholder="Enter Percentage" class="form-control" value="<?php echo (set_value('mscegg_subject_3_min_marks')) ? set_value('mscegg_subject_3_min_marks') : ''; ?>">
+                                              <span class="text-danger"><?php echo form_error('mscegg_subject_3_min_marks'); ?></span>
+                                          </td>
+                                      </tr>
+
+                                  </tbody>
+                                  <!-- <tfoot>
+                                      <tr>
+                                          <th>Total/Aggregate</th>
+                                          <th><input type="text" name="diploma_total_min_marks" id="diploma_total_min_marks" class="form-control" value="" readonly></th>
+                                          <th><input type="text" name="diploma_total_max_marks" id="diploma_total_max_marks" class="form-control" value="" readonly></th>
+                                          <th><input type="text" name="diploma_aggregate" id="diploma_aggregate" class="form-control" value="" readonly></th>
+                                      </tr>
+
+                                  </tfoot> -->
+                              </table>
+                              <div class="form-row">
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Obtained Marks</label>
+                                          <input type="text" name="mscegg_total_obtained_marks" value="<?php echo (set_value('mscegg_total_obtained_marks')) ? set_value('mscegg_total_obtained_marks') : ''; ?>" id="mscegg_total_obtained_marks" class="form-control" readonly>
+
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Maximum Marks</label>
+                                          <input type="text" name="mscegg_total_max_marks" value="<?php echo (set_value('mscegg_total_max_marks')) ? set_value('mscegg_total_max_marks') : ''; ?>" id="mscegg_total_max_marks" class="form-control" readonly>
+
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 col-sm-6">
+                                      <div class="form-group">
+                                          <label class="label">Aggregate Percentage</label>
+                                          <input type="text" name="mscegg_aggregate" value="<?php echo (set_value('mscegg_aggregate')) ? set_value('mscegg_aggregate') : ''; ?>" id="mscegg_aggregate" class="form-control" readonly>
+
+                                      </div>
+                                  </div>
+
+                              </div>
+
+
+                          </div>
+                      <?php } ?>
 
                   <?php } ?>
                   <div class="card-footer">
@@ -1724,6 +2129,86 @@
 
           }
 
+          function calculateTotals6() {
+              let totalObtainedMarks = 0;
+              let totalMaxMarks = 0;
+
+
+              // Iterate through each subject row in the table
+              // Iterate through each subject row in the table
+              for (let i = 1; i <= 4; i++) { // Assuming you have 6 subjects as per your example
+                  // Get obtained marks and max marks for each subject
+                  let obtainedMarksInput = document.getElementById(`msc_subject_${i}_obtained_marks`);
+                  let maxMarksInput = document.getElementById(`msc_subject_${i}_max_marks`);
+                  let minMarksInput = document.getElementById(`msc_subject_${i}_min_marks`);
+                  // Check if inputs exist before accessing their values
+                  if (obtainedMarksInput && maxMarksInput) {
+                      let obtainedMarks = parseFloat(obtainedMarksInput.value) || 0;
+                      let maxMarks = parseFloat(maxMarksInput.value) || 0;
+                      let percent = (obtainedMarks / maxMarks) * 100;
+
+                    
+                      // Update the percentage field for the subject
+                      minMarksInput.value = percent.toFixed(2) + '%';
+                      // Add to cumulative totals
+                      totalObtainedMarks += obtainedMarks;
+                      totalMaxMarks += maxMarks;
+                  }
+              }
+              // Calculate aggregate percentage
+              let aggregatePercentage = (totalObtainedMarks / totalMaxMarks) * 100;
+
+              // Update total fields
+
+              $('#msc_total_max_marks').val(totalMaxMarks);
+              $('#msc_total_obtained_marks').val(totalObtainedMarks);
+
+              // Calculate aggregate percentage
+
+              $('#msc_aggregate').val(aggregatePercentage.toFixed(2) + '%');
+
+          }
+
+          function calculateTotals7() {
+              let totalObtainedMarks = 0;
+              let totalMaxMarks = 0;
+
+
+              // Iterate through each subject row in the table
+              // Iterate through each subject row in the table
+              for (let i = 1; i <= 4; i++) { // Assuming you have 6 subjects as per your example
+                  // Get obtained marks and max marks for each subject
+                  let obtainedMarksInput = document.getElementById(`mscegg_subject_${i}_obtained_marks`);
+                  let maxMarksInput = document.getElementById(`mscegg_subject_${i}_max_marks`);
+                  let minMarksInput = document.getElementById(`mscegg_subject_${i}_min_marks`);
+                  // Check if inputs exist before accessing their values
+                  if (obtainedMarksInput && maxMarksInput) {
+                      let obtainedMarks = parseFloat(obtainedMarksInput.value) || 0;
+                      let maxMarks = parseFloat(maxMarksInput.value) || 0;
+                      let percent = (obtainedMarks / maxMarks) * 100;
+
+                    
+                      // Update the percentage field for the subject
+                      minMarksInput.value = percent.toFixed(2) + '%';
+                      // Add to cumulative totals
+                      totalObtainedMarks += obtainedMarks;
+                      totalMaxMarks += maxMarks;
+                  }
+              }
+              // Calculate aggregate percentage
+              let aggregatePercentage = (totalObtainedMarks / totalMaxMarks) * 100;
+
+              // Update total fields
+
+              $('#mscegg_total_max_marks').val(totalMaxMarks);
+              $('#mscegg_total_obtained_marks').val(totalObtainedMarks);
+
+              // Calculate aggregate percentage
+
+              $('#mscegg_aggregate').val(aggregatePercentage.toFixed(2) + '%');
+
+          }
+
           // Calculate totals on input change
           $('input[type="number"]').on('input', calculateTotals);
           $('input[type="number"]').on('input', calculateTotals1);
@@ -1731,6 +2216,8 @@
           $('input[type="number"]').on('input', calculateTotals3);
           $('input[type="number"]').on('input', calculateTotals4);
           $('input[type="number"]').on('input', calculateTotals5);
+          $('input[type="number"]').on('input', calculateTotals6);
+          $('input[type="number"]').on('input', calculateTotals7);
 
           $('#inst_country').change(function() {
               var country_id = $(this).find(':selected').data('id');
@@ -2059,6 +2546,118 @@
                           var id = response[i]['id'];
                           var name = response[i]['name'];
                           $('#mtech_inst_city').append("<option value='" + name + "'>" + name + "</option>");
+                      }
+                  }
+              });
+          });
+
+          $('#msc_inst_country').change(function() {
+              var country_id = $(this).find(':selected').data('id');
+
+
+              // AJAX call to get states
+              $.ajax({
+                  url: '<?php echo base_url('student/get_states'); ?>',
+                  type: 'post',
+                  data: {
+                      country_id: country_id
+                  },
+                  dataType: 'json',
+                  success: function(response) {
+                      var len = response.length;
+                      $('#msc_inst_state').empty();
+                      $('#msc_inst_state').show();
+                      $('#msc_inst_city').show(); // Hide city dropdown if visible
+                      $('#msc_inst_city').empty(); // Clear city dropdown
+
+                      $('#msc_inst_state').append("<option value=''>Select State</option>");
+                      for (var i = 0; i < len; i++) {
+                          var id = response[i]['id'];
+                          var name = response[i]['name'];
+                          $('#msc_inst_state').append("<option data-id='" + id + "' value='" + name + "'>" + name + "</option>");
+                      }
+                  }
+              });
+          });
+
+          // AJAX request when a state is selected
+          $('#msc_inst_state').change(function() {
+              var state_id = $(this).find(':selected').data('id');
+
+              // AJAX call to get cities
+              $.ajax({
+                  url: '<?php echo base_url('student/get_cities'); ?>',
+                  type: 'post',
+                  data: {
+                      state_id: state_id
+                  },
+                  dataType: 'json',
+                  success: function(response) {
+                      var len = response.length;
+                      $('#msc_inst_city').empty();
+                      $('#msc_inst_city').show();
+
+                      $('#msc_inst_city').append("<option value=''>Select City</option>");
+                      for (var i = 0; i < len; i++) {
+                          var id = response[i]['id'];
+                          var name = response[i]['name'];
+                          $('#msc_inst_city').append("<option value='" + name + "'>" + name + "</option>");
+                      }
+                  }
+              });
+          });
+
+          $('#mscegg_inst_country').change(function() {
+              var country_id = $(this).find(':selected').data('id');
+
+
+              // AJAX call to get states
+              $.ajax({
+                  url: '<?php echo base_url('student/get_states'); ?>',
+                  type: 'post',
+                  data: {
+                      country_id: country_id
+                  },
+                  dataType: 'json',
+                  success: function(response) {
+                      var len = response.length;
+                      $('#mscegg_inst_state').empty();
+                      $('#mscegg_inst_state').show();
+                      $('#mscegg_inst_city').show(); // Hide city dropdown if visible
+                      $('#mscegg_inst_city').empty(); // Clear city dropdown
+
+                      $('#msc_inst_state').append("<option value=''>Select State</option>");
+                      for (var i = 0; i < len; i++) {
+                          var id = response[i]['id'];
+                          var name = response[i]['name'];
+                          $('#mscegg_inst_state').append("<option data-id='" + id + "' value='" + name + "'>" + name + "</option>");
+                      }
+                  }
+              });
+          });
+
+          // AJAX request when a state is selected
+          $('#mscegg_inst_state').change(function() {
+              var state_id = $(this).find(':selected').data('id');
+
+              // AJAX call to get cities
+              $.ajax({
+                  url: '<?php echo base_url('student/get_cities'); ?>',
+                  type: 'post',
+                  data: {
+                      state_id: state_id
+                  },
+                  dataType: 'json',
+                  success: function(response) {
+                      var len = response.length;
+                      $('#mscegg_inst_city').empty();
+                      $('#mscegg_inst_city').show();
+
+                      $('#msc_inst_city').append("<option value=''>Select City</option>");
+                      for (var i = 0; i < len; i++) {
+                          var id = response[i]['id'];
+                          var name = response[i]['name'];
+                          $('#mscegg_inst_city').append("<option value='" + name + "'>" + name + "</option>");
                       }
                   }
               });

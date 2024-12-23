@@ -151,12 +151,23 @@
 
                         <div class="form-row">
                             <!-- Batch Field -->
-                            <div id="batchRow" class="col-md-3 col-sm-12">
+                            <!-- <div id="batchRow" class="col-md-3 col-sm-12">
                                 <div class="form-group">
                                     <label for="batch">Batch(pass out year)</label>
                                     <input type="text" name="batch" id="batch" class="form-control" 
                                         value="<?php echo (set_value('batch')) ? set_value('batch') : $batch; ?>">
                                     <span class="text-danger"><?php echo form_error('batch'); ?></span>
+                                </div>
+                            </div> -->
+
+                            <!-- Admission Based on Level Field -->
+                            <div id="batchRow" class="col-md-3 col-sm-12">
+                                <div class="form-group">
+                                <label class="label">Admission Based On<span class="text-danger">*</span></label>
+                                    <?php $level_options = array(" " => "Select Level", "MTech" => "MTech", "M.Sc" => "M.Sc", "M.ScEngg" => "M.ScEngg");
+                                    echo form_dropdown('admission_based', $level_options, (set_value('admission_based')) ? set_value('admission_based') : $admission_based, 'class="form-control " id="admission_based"');
+                                    ?>
+                                    <span class="text-danger"><?php echo form_error('admission_based'); ?></span>
                                 </div>
                             </div>
 
@@ -172,14 +183,14 @@
                         </div>
 
                       <div class="form-row">
-                          <div class="form-group col-md-4 col-sm-12">
+                          <div id="entrancetype" class="form-group col-md-4 col-sm-12">
                               <label class="label">Entrance Type<span class="text-danger">*</span></label>
                               <?php $entrance_options = array(" " => "Select Entrance type", "CET" => "CET", "COMED-K" => "COMED-K", "GOI " => "GOI ", "J&K" => "J&K");
                                 echo form_dropdown('entrance_type', $entrance_options, (set_value('entrance_type')) ? set_value('entrance_type') : $entrance_type, 'class="form-control" id="entrance_type"');
                                 ?>
                               <span class="text-danger"><?php echo form_error('entrance_type'); ?></span>
                           </div>
-                          <div class="col-md-4 col-sm-12">
+                          <!-- <div class="col-md-4 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Entrance Registration Number<span
                                           class="text-danger">*</span></label>
@@ -188,8 +199,18 @@
                                       placeholder="Enter Entrance Registration Number">
                                   <span class="text-danger"><?php echo form_error('entrance_reg_no'); ?></span>
                               </div>
+                          </div> -->
+                          <div id="orderno"class="col-md-4 col-sm-12">
+                              <div class="form-group">
+                                  <label class="label">Admission Order No<span class="text-danger">*</span></label>
+                                  <input type="text" name="admission_order_no" id="admission_order_no"
+                                      class="form-control"
+                                      value="<?php echo (set_value('admission_order_no')) ? set_value('admission_order_no') : $admission_order_no; ?>"
+                                      placeholder="Enter Admission Order No">
+                                  <span class="text-danger"><?php echo form_error('admission_order_no'); ?></span>
+                              </div>
                           </div>
-                          <div class="col-md-4 col-sm-12">
+                          <div id="rank" class="col-md-4 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Entrance Exam Rank<span class="text-danger">*</span></label>
                                   <input type="number" name="entrance_rank" id="entrance_rank" class="form-control"
@@ -201,14 +222,14 @@
                       </div>
 
                       <div class="form-row">
-                          <div class="col-md-4 col-sm-12">
+                           <div class="col-md-4 col-sm-12">
                               <div class="form-group">
-                                  <label class="label">Admission Order No<span class="text-danger">*</span></label>
-                                  <input type="text" name="admission_order_no" id="admission_order_no"
-                                      class="form-control"
-                                      value="<?php echo (set_value('admission_order_no')) ? set_value('admission_order_no') : $admission_order_no; ?>"
-                                      placeholder="Enter Admission Order No">
-                                  <span class="text-danger"><?php echo form_error('admission_order_no'); ?></span>
+                                  <label class="label">Entrance Registration Number<span
+                                          class="text-danger">*</span></label>
+                                  <input type="text" name="entrance_reg_no" id="entrance_reg_no" class="form-control"
+                                      value="<?php echo (set_value('entrance_reg_no')) ? set_value('entrance_reg_no') : $entrance_reg_no; ?>"
+                                      placeholder="Enter Entrance Registration Number">
+                                  <span class="text-danger"><?php echo form_error('entrance_reg_no'); ?></span>
                               </div>
                           </div>
                           <div class="col-md-4 col-sm-12">
@@ -665,6 +686,22 @@ $(document).ready(function() {
             $('#batchRow, #degreeLevelRow').hide();
         }
     });
+
+        // Hide the Batch and Degree Level fields by default
+        $('#entrancetype, #rank, #orderno').show();
+
+        // Show/Hide Batch and Degree Level based on the selected stream
+        $('#stream').change(function() {
+            var stream_id = $(this).val();
+
+            if (stream_id == '3') {
+                // Show Batch and Degree Level fields for PhD
+                $('#entrancetype, #rank, #orderno').hide();
+            } else {
+                // Hide Batch and Degree Level fields for other streams
+                $('#entrancetype, #rank, #orderno').show();
+            }
+        });
 
     // Trigger change event on page load to apply the correct initial visibility
     $('#stream').trigger('change');

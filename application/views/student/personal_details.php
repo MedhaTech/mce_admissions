@@ -173,15 +173,31 @@
                                   <span class="text-danger"><?php echo form_error('hobbies'); ?></span>
                               </div>
                           </div>
-                          <div class="col-md-3 col-sm-12">
+                          <!-- <div class="col-md-3 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Admission Based On<span class="text-danger">*</span></label>
-                                <?php $level_options = array(" " => "Select Level","PUC" => "PUC", "Diploma" => "Diploma", "BE" => "BE", "MTech" => "MTech");
+                                <?php $level_options = array(" " => "Select Level","PUC" => "PUC", "Diploma" => "Diploma", "BE" => "BE");
                                     echo form_dropdown('admission_based', $level_options, (set_value('admission_based')) ? set_value('admission_based') : $admission_based, 'class="form-control " id="admission_based"');
                                   ?>
                                
                               </div>
-                          </div>
+                          </div> -->
+                          <?php 
+                            // Check if the stream_id is not equal to 3
+                            if ($stream_id != 3) {
+                            ?>
+                                <div class="col-md-3 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="label">Admission Based On<span class="text-danger">*</span></label>
+                                        <?php 
+                                        $level_options = array(" " => "Select Level", "PUC" => "PUC", "Diploma" => "Diploma", "BE" => "BE");
+                                        echo form_dropdown('admission_based', $level_options, (set_value('admission_based')) ? set_value('admission_based') : $admission_based, 'class="form-control" id="admission_based"');
+                                        ?>
+                                    </div>
+                                </div>
+                            <?php
+                            }
+                          ?>
                           <div class="col-md-3 col-sm-12 latclass">
                               <div class="form-group">
                                   <label class="form-label">Lateral Entry</label>
