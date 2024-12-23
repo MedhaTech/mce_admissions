@@ -781,7 +781,7 @@ class Admin_model extends CI_Model
 
   public function transactions($transaction_status) 
 {
-    $this->db->select('admissions.id, admissions.app_no, admissions.dept_id, admissions.adm_no, admissions.student_name, admissions.mobile, admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.amount, transactions.remarks, transactions.transaction_status');
+    $this->db->select('admissions.id, admissions.app_no, admissions.dept_id, admissions.adm_no, admissions.student_name,admissions.gender, admissions.mobile, admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.amount, transactions.remarks, transactions.transaction_status');
     if ($transaction_status != null) {
         $this->db->where('transactions.transaction_status', $transaction_status);
     }
@@ -804,10 +804,18 @@ class Admin_model extends CI_Model
     return $this->db->get('transactions');
   }
 
-  function getAdmissions_category($academic_year, $category_claimed)
+  function getAdmissions_category($academic_year,$category_allotted, $category_claimed, $gender)
   {
     $this->db->where('academic_year', $academic_year);
+    if($category_allotted!='all'){
+      $this->db->where('category_allotted', $category_allotted);
+      }    
+    if($category_claimed!='all'){
     $this->db->where('category_claimed', $category_claimed);
+    }
+    if($gender!='all'){
+    $this->db->where('gender', $gender);
+    }
     $this->db->where('admissions.stream_id', '1'); 
     $this->db->order_by('admit_date', 'DESC');
     return $this->db->get('admissions');
@@ -823,6 +831,18 @@ class Admin_model extends CI_Model
     return $this->db->get('admissions');
   }
 
+  function getAdmissions_coursereport($academic_year, $course, $gender, $status)
+  {
+    $this->db->where('academic_year', $academic_year);
+    $this->db->where('admissions.stream_id', '1');
+    $this->db->where('dept_id', $course);
+    if($gender!='all'){
+      $this->db->where('gender', $gender);
+      }
+    $this->db->where('status', $status);
+    $this->db->order_by('admit_date', 'DESC');
+    return $this->db->get('admissions');
+  }
 
   function paidfee($id1, $value1, $id2, $value2, $tableName)
   {
@@ -1104,11 +1124,14 @@ class Admin_model extends CI_Model
     return $query;
   }
 
-  function getphdAdmissions_course($academic_year, $course, $status)
+  function getphdAdmissions_course($academic_year, $course, $gender, $status)
   {
     $this->db->where('academic_year', $academic_year);
     $this->db->where('admissions.stream_id', '3');
     $this->db->where('dept_id', $course);
+    if($gender!='all'){
+      $this->db->where('gender', $gender);
+      }
     $this->db->where('status', $status);
     $this->db->order_by('admit_date', 'DESC');
     return $this->db->get('admissions');
@@ -1259,18 +1282,21 @@ class Admin_model extends CI_Model
     return $this->db->get();
 }
 
-function getmtechAdmissions_course($academic_year, $course, $status)
+function getmtechAdmissions_course($academic_year, $course, $gender, $status)
 {
   $this->db->where('academic_year', $academic_year);
   $this->db->where('admissions.stream_id', '2');
   $this->db->where('dept_id', $course);
+  if($gender!='all'){
+    $this->db->where('gender', $gender);
+    }
   $this->db->where('status', $status);
   $this->db->order_by('admit_date', 'DESC');
   return $this->db->get('admissions');
 }
 function mtechtransactions($transaction_status) 
 {
-    $this->db->select('admissions.id, admissions.app_no, admissions.dept_id, admissions.adm_no, admissions.student_name, admissions.mobile, admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.amount, transactions.remarks, transactions.transaction_status');
+    $this->db->select('admissions.id, admissions.app_no, admissions.dept_id, admissions.adm_no, admissions.student_name, admissions.mobile, admissions.gender, admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.amount, transactions.remarks, transactions.transaction_status');
 
     if ($transaction_status != null) {
         $this->db->where('transactions.transaction_status', $transaction_status);
@@ -1283,10 +1309,18 @@ function mtechtransactions($transaction_status)
     return $this->db->get('transactions');
 }
 
-function getmtechAdmissions_category($academic_year, $category_claimed)
+function getmtechAdmissions_category($academic_year, $category_allotted, $category_claimed, $gender)
 {
     $this->db->where('academic_year', $academic_year);
+    if($category_allotted!='all'){
+      $this->db->where('category_allotted', $category_allotted);
+      }    
+    if($category_claimed!='all'){
     $this->db->where('category_claimed', $category_claimed);
+    }
+    if($gender!='all'){
+    $this->db->where('gender', $gender);
+    }
     $this->db->where('stream_id', '2'); 
     $this->db->order_by('admit_date', 'DESC');
     return $this->db->get('admissions');

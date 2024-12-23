@@ -57,9 +57,9 @@
                                     <label for="stream">Stream Name</label>
                                     <select name="stream" id="stream" class="form-control">
                                         <option value="">Select Stream</option>
-                                        <option value="1" <?php echo set_select('stream', '1'); ?>>BE</option>
-                                        <option value="2" <?php echo set_select('stream', '2'); ?>>MTech</option>
-                                        <option value="3" <?php echo set_select('stream', '3'); ?>>PhD</option>
+                                        <option value="1" <?php echo set_select('stream', '1'); ?>>B.E</option>
+                                        <option value="2" <?php echo set_select('stream', '2'); ?>>M.Tech</option>
+                                        <option value="3" <?php echo set_select('stream', '3'); ?>>Ph.D</option>
                                     </select>
                                     <span class="text-danger"><?php echo form_error('stream'); ?></span>
                                 </div>
@@ -222,7 +222,7 @@
                       </div>
 
                       <div class="form-row">
-                           <div class="col-md-4 col-sm-12">
+                           <div id="regno" class="col-md-4 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Entrance Registration Number<span
                                           class="text-danger">*</span></label>
@@ -232,7 +232,7 @@
                                   <span class="text-danger"><?php echo form_error('entrance_reg_no'); ?></span>
                               </div>
                           </div>
-                          <div class="col-md-4 col-sm-12">
+                          <div id="admisnorderdate" class="col-md-4 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Admission Order Date<span class="text-danger">*</span></label>
 
@@ -243,7 +243,7 @@
                                   <span class="text-danger"><?php echo form_error('admission_order_date'); ?></span>
                               </div>
                           </div>
-                          <div class="col-md-4 col-sm-12">
+                          <div id="fespaid" class="col-md-4 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Fees Paid<span class="text-danger">*</span></label>
                                   <input type="number" name="fees_paid" id="fees_paid" class="form-control"
@@ -255,7 +255,7 @@
                       </div>
 
                       <div class="form-row">
-                          <div class="col-md-6 col-sm-12">
+                          <div id="fereciptno" class="col-md-6 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Fees Receipt No<span class="text-danger">*</span></label>
                                   <input type="text" name="fees_receipt_no" id="fees_receipt_no" class="form-control"
@@ -264,7 +264,7 @@
                                   <span class="text-danger"><?php echo form_error('fees_receipt_no'); ?></span>
                               </div>
                           </div>
-                          <div class="col-md-6 col-sm-12">
+                          <div id="ferecipdate" class="col-md-6 col-sm-12">
                               <div class="form-group">
                                   <label class="label">Fees Receipt Date<span class="text-danger">*</span></label>
                                   <input type="date" name="fees_receipt_date" id="fees_receipt_date"
@@ -696,10 +696,10 @@ $(document).ready(function() {
 
             if (stream_id == '3') {
                 // Show Batch and Degree Level fields for PhD
-                $('#entrancetype, #rank, #orderno').hide();
+                $('#entrancetype, #rank, #orderno, #regno, #admisnorderdate, #fespaid, #fereciptno, #ferecipdate').hide();
             } else {
                 // Hide Batch and Degree Level fields for other streams
-                $('#entrancetype, #rank, #orderno').show();
+                $('#entrancetype, #rank, #orderno, #regno, #admisnorderdate, #fespaid, #fereciptno, #ferecipdate').show();
             }
         });
 
