@@ -12665,4 +12665,127 @@ With good wishes";
 		}
 	}
 
+	public function consolidated_report($download = 0)
+{
+    if ($this->session->userdata('logged_in')) {
+        $session_data = $this->session->userdata('logged_in');
+        $data['id'] = $session_data['id'];
+        $data['username'] = $session_data['username'];
+        $data['full_name'] = $session_data['full_name'];
+        $data['role'] = $session_data['role'];
+
+        $data['page_title'] = "Consolidated 2024-25 1st year & 3rd semester student list";
+        $data['menu'] = "reports";
+
+        // Get the current academic year (You can modify this based on your requirements)
+        $currentAcademicYear = $this->globals->currentAcademicYear();
+
+        // Fetch the student data from the model
+        $students = $this->admin_model->getConsolidatedReport($currentAcademicYear)->result();
+
+        // Set up table structure
+        $table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2">');
+        $this->table->set_template($table_setup);
+
+        // Table headers
+        $print_fields = array('S.No', 'Student Name','Usn', 'Course', 'College Code', 'Quota', 'Sub Quota', 'Category Claimed', 'Category Allotted', 'Admit Date', 'Admission Number', 'Student Registration No', 'Cet Rank',
+	   'Admission Based On', 'Blood Group', 'CET/COMEDK Fees Paid', 'CET/COMEDK Fees Receipt No', 'CET/COMEDK Fees Receipt Date', 'Birth Date', 'Gender', 'Current Address',
+       'Current City', 'Current State', 'Current Pincode', 'Current Country', 'Permanent Address', 'Permanent City', 'Permanent State', 'Permanent Pincode', 'Permanent Country',
+	   'Mobile', 'Email', 'Domicile', 'Birth Place', 'Birth Country', 'Nationality', 'Religion', 'Caste', 'Mother Tongue', 'Disability', 'Type of Disability', 'Economically Backward', 'Hobbies',
+	   'Sports', 'Sports Name', 'Aadhar number', 'Father Occupation', 'Father Name', 'Father Annual Income', 'Father EmailID', 'Father Mobile 1', 'Mother Occupation', 'Mother Name', 'Mother Annual Income', 'Mother EmailID', 
+	   'Mother Mobile 1', 'Guardian Occupation', 'Guardian Name', 'Guardian Annual Income', 'Guardian EmailID', 'Guardian Mobile 1');
+        $this->table->set_heading($print_fields);
+
+        // Add data rows to the table
+        $i = 1;
+        foreach ($students as $student) {
+            $dmm = $this->admin_model->get_dept_by_id($student->dept_id)["department_name"];
+
+            // Assuming you want to display all students (no filtering like Corpus Fund balance here)
+            $result_array = array(
+                $i++,  // Serial number
+                // $student->academic_year,
+				$student->student_name,
+                $student->usn,
+                $dmm,  // Department name
+			    $student->college_code,
+				$student->quota,
+				$student->sub_quota,
+				$student->category_claimed,
+				$student->category_allotted,
+				$student->admit_date,
+				$student->admission_order_no,
+				$student->entrance_reg_no,
+				$student->exam_rank,
+				$student->admission_based,
+				$student->blood_group,
+				$student->fees_paid,
+				$student->fees_receipt_no,
+				$student->fees_receipt_date,
+				$student->date_of_birth,
+				$student->gender,
+				$student->current_address,
+				$student->current_city,
+				$student->current_state,
+				$student->current_pincode,
+				$student->current_country,
+				$student->present_address,
+				$student->present_city,
+				$student->present_state,
+				$student->present_pincode,
+				$student->present_country,
+				$student->mobile,
+				$student->email,
+				$student->domicile_of_state,
+				$student->place_of_birth,
+				$student->country_of_birth,
+				$student->nationality,
+				$student->religion,
+				$student->caste,
+				$student->mother_tongue,
+				$student->disability,
+				$student->type_of_disability,
+				$student->economically_backward,
+				$student->hobbies,
+				$student->sports,
+				$student->sports_activity,
+				$student->aadhaar,
+				$student->father_occupation,
+				$student->father_name,
+				$student->father_annual_income,
+				$student->father_email,
+				$student->father_mobile,
+				$student->mother_occupation,
+				$student->mother_name,
+				$student->mother_annual_income,
+				$student->mother_email,
+				$student->mother_mobile,
+				$student->guardian_name,
+				$student->guardian_annual_income,
+				$student->guardian_email,
+				$student->guardian_mobile,
+				$student->guardian_occupation,
+            );
+
+            $this->table->add_row($result_array);
+        }
+
+        $data['table'] = $this->table->generate();
+
+        // If not downloading, show the report
+        if (!$download) {
+            $this->admin_template->show('admin/consolidated_report', $data);
+        } else {
+            // If downloading, return the table as an Excel file
+            $response = array(
+                'op' => 'ok',
+                'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
+            );
+            die(json_encode($response));
+        }
+    } else {
+        redirect('admin/timeout');
+    }
+}
+
 }

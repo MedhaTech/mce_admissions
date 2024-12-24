@@ -1413,4 +1413,84 @@ function getbeEnquiries($academic_year)
     return $this->db->get('enquiries');
 }
 
+public function getConsolidatedReport($academic_year)
+{
+    $this->db->select('
+        a.usn,
+        a.student_name,
+        a.dept_id,
+        a.quota,
+        a.sub_quota,
+        a.college_code,
+        a.category_claimed,
+        a.category_allotted,
+        a.admit_date,
+        a.admission_order_no,
+        a.entrance_reg_no,
+        a.exam_rank,
+        a.admission_based,
+        a.blood_group,
+        a.fees_paid,
+        a.fees_receipt_no,
+        a.fees_receipt_date,
+        a.date_of_birth,
+        a.gender,
+        a.current_address,
+        a.current_city,
+        a.current_state,
+        a.current_pincode,
+        a.current_country,
+        a.present_address,
+        a.present_city,
+        a.present_state,
+        a.present_pincode,
+        a.present_country,
+        a.mobile,
+        a.email,
+        a.domicile_of_state,
+        a.place_of_birth,
+        a.country_of_birth,
+        a.nationality,
+        a.religion,
+        a.caste,
+        a.mother_tongue,
+        a.disability,
+        a.type_of_disability,
+        a.economically_backward,
+        a.hobbies,
+        a.sports,
+        a.sports_activity,
+        a.aadhaar,
+        a.father_occupation,
+        a.father_name,
+        a.father_annual_income,
+        a.father_email,
+        a.father_mobile,
+        a.mother_occupation,
+        a.mother_name,
+        a.mother_annual_income,
+        a.mother_email,
+        a.mother_mobile,
+        a.guardian_name,
+				a.guardian_annual_income,
+				a.guardian_email,
+			  a.guardian_mobile,
+				a.guardian_occupation,
+        a.remarks,
+        e.education_level,
+        a.gender
+    ');
+
+    $this->db->from('admissions AS a');
+    
+    $this->db->join('student_education_details AS e', 'e.id = a.id', 'left');
+    
+    $this->db->where('a.academic_year', $academic_year);  
+    $this->db->where('a.stream_id', 1);  
+    
+    $this->db->order_by('a.student_name', 'ASC');
+
+    return $this->db->get();  
+}
+
 }
