@@ -1430,6 +1430,9 @@ public function getConsolidatedReport($academic_year)
         a.exam_rank,
         a.admission_based,
         a.blood_group,
+        MAX(t.amount) AS amount, 
+        MAX(t.receipt_no) AS receipt_no,
+        MAX(t.receipt_date) AS receipt_date,  
         a.fees_paid,
         a.fees_receipt_no,
         a.fees_receipt_date,
@@ -1472,25 +1475,55 @@ public function getConsolidatedReport($academic_year)
         a.mother_email,
         a.mother_mobile,
         a.guardian_name,
-				a.guardian_annual_income,
-				a.guardian_email,
-			  a.guardian_mobile,
-				a.guardian_occupation,
-        a.remarks,
-        e.education_level,
-        a.gender
+        a.guardian_annual_income,
+        a.guardian_email,
+        a.guardian_mobile,
+        a.guardian_occupation,
+        
+        -- Concatenate all education levels and institution boards for each student
+        GROUP_CONCAT(e.education_level ORDER BY e.id ASC) AS education_level,  
+        GROUP_CONCAT(e.inst_board ORDER BY e.id ASC) AS inst_board,
+        GROUP_CONCAT(e.inst_name ORDER BY e.id ASC) AS inst_name,
+        GROUP_CONCAT(e.inst_address ORDER BY e.id ASC) AS inst_address,
+        GROUP_CONCAT(e.inst_city ORDER BY e.id ASC) AS inst_city,
+        GROUP_CONCAT(e.year_of_passing ORDER BY e.id ASC) AS year_of_passing,
+        GROUP_CONCAT(e.inst_state ORDER BY e.id ASC) AS inst_state,
+        GROUP_CONCAT(e.inst_country ORDER BY e.id ASC) AS inst_country,
+        GROUP_CONCAT(e.medium_of_instruction ORDER BY e.id ASC) AS medium_of_instruction,
+        GROUP_CONCAT(e.aggregate ORDER BY e.id ASC) AS aggregate,
+        GROUP_CONCAT(e.register_number ORDER BY e.id ASC) AS register_number
     ');
 
     $this->db->from('admissions AS a');
     
-    $this->db->join('student_education_details AS e', 'e.id = a.id', 'left');
-    
+    // Join with student_education_details on student_id (assuming e.student_id is correct)
+    $this->db->join('student_education_details AS e', 'e.student_id = a.id', 'left');
+
+    // Joining the fee_master table based on 'student_id' (assuming student_id in fee_master matches 'id' in admissions)
+    $this->db->join('fee_master AS f', 'f.student_id = a.id', 'left');
+
+    // Joining the fee_master table based on 'id' (assuming student_id in fee_transactions matches 'id' in admissions)
+    $this->db->join('fee_transactions AS t', 't.id = a.id', 'left');
+
+    // Filter by academic year and stream (assuming stream_id = 1 is valid)
     $this->db->where('a.academic_year', $academic_year);  
     $this->db->where('a.stream_id', 1);  
-    
+
+    // Group by student (using student ID) to ensure only one row per student
+    $this->db->group_by('a.id');  
+
+    // Order the result by student name in ascending order
     $this->db->order_by('a.student_name', 'ASC');
 
-    return $this->db->get();  
+    // Execute the query and return the result
+    $query = $this->db->get();
+
+    // Check if results exist
+    if ($query->num_rows() > 0) {
+        return $query;
+    } else {
+        return [];  // Return an empty array if no students are found
+    }
 }
 
 }
