@@ -138,6 +138,10 @@
                                 <?php $encryptId = base64_encode($admissionDetails->id);
                                 echo anchor('admin/updateadmissiondetails/' . $encryptId, '<i class="fas fa-edit fa-sm fa-fw"></i> Edit ', 'class="btn btn-dark btn-sm"'); ?>
                             </li>
+                            <li class="nav-item">
+                                <?php $encryptId = base64_encode($admissionDetails->id);
+                                echo anchor('admin/updatequota/' . $encryptId, '<i class="fas fa-edit fa-sm fa-fw"></i> Change Quota ', 'class="btn btn-primary btn-sm"'); ?>
+                            </li>
                             <?php if ((in_array($role, array(1, 2)))) {
                                 if ($admissionDetails->quota == "MGMT" && $admissionDetails->stream_id == "1") { ?>
                                     <li class="nav-item">
