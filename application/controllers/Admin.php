@@ -12688,27 +12688,79 @@ With good wishes";
         $this->table->set_template($table_setup);
 
         // Table headers
-        $print_fields = array('S.No', 'Student Name','Usn', 'Course', 'College Code', 'Quota', 'Sub Quota', 'Category Claimed', 'Category Allotted', 'Admit Date', 'Admission Number', 'Student Registration No', 'Cet Rank',
-	   'Admission Based On', 'Blood Group', 'CET/COMEDK Fees Paid', 'CET/COMEDK Fees Receipt No', 'CET/COMEDK Fees Receipt Date', 'Birth Date', 'Gender', 'Current Address',
-       'Current City', 'Current State', 'Current Pincode', 'Current Country', 'Permanent Address', 'Permanent City', 'Permanent State', 'Permanent Pincode', 'Permanent Country',
-	   'Mobile', 'Email', 'Domicile', 'Birth Place', 'Birth Country', 'Nationality', 'Religion', 'Caste', 'Mother Tongue', 'Disability', 'Type of Disability', 'Economically Backward', 'Hobbies',
-	   'Sports', 'Sports Name', 'Aadhar number', 'Father Occupation', 'Father Name', 'Father Annual Income', 'Father EmailID', 'Father Mobile 1', 'Mother Occupation', 'Mother Name', 'Mother Annual Income', 'Mother EmailID', 
-	   'Mother Mobile 1', 'Guardian Occupation', 'Guardian Name', 'Guardian Annual Income', 'Guardian EmailID', 'Guardian Mobile 1');
-        $this->table->set_heading($print_fields);
+		$print_fields = array(
+			'S.No', 'Student Name', 'Usn', 'Course', 'College Code', 'Quota', 'Sub Quota', 'Category Claimed', 'Category Allotted', 'Admit Date', 'Admission Number', 
+			'Student Registration No', 'Cet Rank', 'Admission Based On', 'Blood Group', 'College Fees Paid', 'College Fees Receipt No', 'College Fees Receipt Date',
+			'CET/COMEDK Fees Paid', 'CET/COMEDK Fees Receipt No', 'CET/COMEDK Fees Receipt Date', 'Birth Date', 'Gender', 'Current Address', 'Current City', 
+			'Current State', 'Current Pincode', 'Current Country', 'Permanent Address', 'Permanent City', 'Permanent State', 'Permanent Pincode', 'Permanent Country', 
+			'Mobile', 'Email', 'Domicile', 'Birth Place', 'Birth Country', 'Nationality', 'Religion', 'Caste', 'Mother Tongue', 'Disability', 'Type of Disability', 
+			'Economically Backward', 'Hobbies', 'Sports', 'Sports Name', 'Aadhar number', 'Father Occupation', 'Father Name', 'Father Annual Income', 'Father EmailID', 
+			'Father Mobile 1', 'Mother Occupation', 'Mother Name', 'Mother Annual Income', 'Mother EmailID', 'Mother Mobile 1', 'Guardian Occupation', 'Guardian Name', 
+			'Guardian Annual Income', 'Guardian EmailID', 'Guardian Mobile 1', 'Education Level 1', 'Education Level 2', 'Education Level 1 Institution Board', 'Education Level 2 Institution Board',
+			'Education Level 1 Institution Name', 'Education Level 2 Institution Name', 'Education Level 1 Institution Address', 'Education Level 2 Institution Address',
+			'Education Level 1 Institution City', 'Education Level 2 Institution City', 'Education Level 1 Year of Passing', 'Education Level 2 Year of Passing', 
+			'Education Level 1 Institution State', 'Education Level 2 Institution State', 'Education Level 1 Institution Country', 'Education Level 2 Institution Country', 
+			'Education Level 1 Medium of Instruction', 'Education Level 2 Medium of Instruction', 'Education Level 1 Percentage', 'Education Level 2 Percentage', 
+			'Education Level 1 Register Number', 'Education Level 2 Register Number');
+		$this->table->set_heading($print_fields);
 
-        // Add data rows to the table
-        $i = 1;
-        foreach ($students as $student) {
-            $dmm = $this->admin_model->get_dept_by_id($student->dept_id)["department_name"];
+		// Add data rows to the table
+		$i = 1;
+		foreach ($students as $student) {
+			$dmm = $this->admin_model->get_dept_by_id($student->dept_id)["department_name"];
 
-            // Assuming you want to display all students (no filtering like Corpus Fund balance here)
-            $result_array = array(
-                $i++,  // Serial number
-                // $student->academic_year,
+			// Split the education_level into two parts (if it's comma-separated)
+			$education_levels = explode(',', $student->education_level);
+			$education_level_1 = isset($education_levels[0]) ? $education_levels[0] : '';  // First part
+			$education_level_2 = isset($education_levels[1]) ? $education_levels[1] : '';  // Second part
+
+			// Split the inst_board into two parts (if it's comma-separated)
+			$inst_boards = explode(',', $student->inst_board);
+			$inst_board_1 = isset($inst_boards[0]) ? $inst_boards[0] : '';  // First part
+			$inst_board_2 = isset($inst_boards[1]) ? $inst_boards[1] : '';  // Second part
+			// Split the inst_name into two parts (if it's comma-separated)
+			$inst_names = explode(',', $student->inst_name);
+			$inst_name_1 = isset($inst_names[0]) ? $inst_names[0] : '';  // First part
+			$inst_name_2 = isset($inst_names[1]) ? $inst_names[1] : '';  // Second part
+			// Split the inst_address into two parts (if it's comma-separated)
+			$inst_addresss = explode(',', $student->inst_address);
+			$inst_address_1 = isset($inst_addresss[0]) ? $inst_addresss[0] : '';  // First part
+			$inst_address_2 = isset($inst_addresss[1]) ? $inst_addresss[1] : '';  // Second part
+			// Split the inst_city into two parts (if it's comma-separated)
+			$inst_citys = explode(',', $student->inst_city);
+			$inst_city_1 = isset($inst_citys[0]) ? $inst_citys[0] : '';  // First part
+			$inst_city_2 = isset($inst_citys[1]) ? $inst_citys[1] : '';  // Second part
+			// Split the year_of_passing into two parts (if it's comma-separated)
+			$year_of_passings = explode(',', $student->year_of_passing);
+			$year_of_passing_1 = isset($year_of_passings[0]) ? $year_of_passings[0] : '';  // First part
+			$year_of_passing_2 = isset($year_of_passings[1]) ? $year_of_passings[1] : '';  // Second part
+			// Split the inst_state into two parts (if it's comma-separated)
+			$inst_states = explode(',', $student->inst_state);
+			$inst_state_1 = isset($inst_states[0]) ? $inst_states[0] : '';  // First part
+			$inst_state_2 = isset($inst_states[1]) ? $inst_states[1] : '';  // Second part
+			// Split the inst_country into two parts (if it's comma-separated)
+			$inst_countrys = explode(',', $student->inst_country);
+			$inst_country_1 = isset($inst_countrys[0]) ? $inst_countrys[0] : '';  // First part
+			$inst_country_2 = isset($inst_countrys[1]) ? $inst_countrys[1] : '';  // Second part
+			// Split the medium_of_instruction into two parts (if it's comma-separated)
+			$medium_of_instructions = explode(',', $student->medium_of_instruction);
+			$medium_of_instruction_1 = isset($medium_of_instructions[0]) ? $medium_of_instructions[0] : '';  // First part
+			$medium_of_instruction_2 = isset($medium_of_instructions[1]) ? $medium_of_instructions[1] : '';  // Second part
+			// Split the aggregate into two parts (if it's comma-separated)
+			$aggregates = explode(',', $student->aggregate);
+			$aggregate_1 = isset($aggregates[0]) ? $aggregates[0] : '';  // First part
+			$aggregate_2 = isset($aggregates[1]) ? $aggregates[1] : '';  // Second part
+			// Split the register_number into two parts (if it's comma-separated)
+			$register_numbers = explode(',', $student->register_number);
+			$register_number_1 = isset($register_numbers[0]) ? $register_numbers[0] : '';  // First part
+			$register_number_2 = isset($register_numbers[1]) ? $register_numbers[1] : '';  // Second part
+
+			$result_array = array(
+				$i++,  // Serial number
 				$student->student_name,
-                $student->usn,
-                $dmm,  // Department name
-			    $student->college_code,
+				$student->usn,
+				$dmm,  // Department name
+				$student->college_code,
 				$student->quota,
 				$student->sub_quota,
 				$student->category_claimed,
@@ -12719,6 +12771,9 @@ With good wishes";
 				$student->exam_rank,
 				$student->admission_based,
 				$student->blood_group,
+				$student->amount,
+				$student->receipt_no,
+				$student->receipt_date,
 				$student->fees_paid,
 				$student->fees_receipt_no,
 				$student->fees_receipt_date,
@@ -12760,28 +12815,55 @@ With good wishes";
 				$student->mother_annual_income,
 				$student->mother_email,
 				$student->mother_mobile,
+				$student->guardian_occupation,
 				$student->guardian_name,
 				$student->guardian_annual_income,
 				$student->guardian_email,
 				$student->guardian_mobile,
-				$student->guardian_occupation,
-            );
+				$education_level_1,  
+				$education_level_2,  
+				$inst_board_1,
+				$inst_board_2,
+				$inst_name_1,
+				$inst_name_2,
+				$inst_address_1,
+				$inst_address_2,
+				$inst_city_1,
+				$inst_city_2,
+				$year_of_passing_1,
+				$year_of_passing_2,
+				$inst_state_1,
+				$inst_state_2,
+				$inst_country_1,
+				$inst_country_2,
+				$medium_of_instruction_1,
+				$medium_of_instruction_2,
+				$aggregate_1,
+				$aggregate_2,
+				$register_number_1,
+				$register_number_2,
+			);
 
-            $this->table->add_row($result_array);
-        }
+			$this->table->add_row($result_array);
+		}
 
-        $data['table'] = $this->table->generate();
+		// Generate the table
+		$data['table'] = $this->table->generate();
 
-        // If not downloading, show the report
-        if (!$download) {
-            $this->admin_template->show('admin/consolidated_report', $data);
+        // If download is set (the link was clicked with the download parameter), trigger file download
+        if ($download) {
+            // Set headers for Excel download
+            header("Content-type: application/vnd.ms-excel");
+            header("Content-Disposition: attachment; filename=consolidated_report_" . date('Y-m-d') . ".xls");
+            header("Pragma: no-cache");
+            header("Expires: 0");
+
+            // Output the table HTML as the Excel content
+            echo $data['table'];
+            exit;
         } else {
-            // If downloading, return the table as an Excel file
-            $response = array(
-                'op' => 'ok',
-                'file' => "data:application/vnd.ms-excel;base64," . base64_encode($data['table'])
-            );
-            die(json_encode($response));
+            // Otherwise, show the report
+            $this->admin_template->show('admin/consolidated_report', $data);
         }
     } else {
         redirect('admin/timeout');
