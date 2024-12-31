@@ -1532,7 +1532,7 @@ class Globals
     public function phdquota()
     {
         return array(
-            "KEA-CET(GOVT)" => "KEA-CET(GOVT)"
+            "Ph.D" => "Ph.D"
             // "COMED-K" => "COMED-K",
             // "KEA-SNQ" => "KEA-SNQ",
             // "J&K (Non Karnataka)" => "J&K (Non Karnataka)",

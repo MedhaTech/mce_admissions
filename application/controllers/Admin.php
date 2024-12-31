@@ -2086,21 +2086,20 @@ class Admin extends CI_Controller
 			$stream = $this->input->post('stream');
 
 			if ($stream == '3') {
-				$this->form_validation->set_rules('admission_based', 'Admission Based On', 'required');
-				$this->form_validation->set_rules('degree_level', 'Degree Level', 'required');
+			$this->form_validation->set_rules('admission_based', 'Admission Based On', 'required');
+			$this->form_validation->set_rules('degree_level', 'Degree Level', 'required');
 			}
 			$this->form_validation->set_rules('sports', 'Sports', 'required');
 			if ($stream == '1' || $stream == '2') {
-				$this->form_validation->set_rules('entrance_type', 'Entrance Type', 'required');
-				$this->form_validation->set_rules('entrance_rank', 'Entrance Exam Rank', 'required');
-				$this->form_validation->set_rules('admission_order_no', 'Admission Order Number', 'required');
-			}			
+			$this->form_validation->set_rules('entrance_type', 'Entrance Type', 'required');
+			$this->form_validation->set_rules('entrance_rank', 'Entrance Exam Rank', 'required');
+			$this->form_validation->set_rules('admission_order_no', 'Admission Order Number', 'required');
 			$this->form_validation->set_rules('entrance_reg_no', 'Entrance Registration Number', 'required');
 			$this->form_validation->set_rules('admission_order_date', 'Admission Order Date', 'required');
 			$this->form_validation->set_rules('fees_paid', 'Fees Paid', 'required');
 			$this->form_validation->set_rules('fees_receipt_no', 'Fees Receipt Number', 'required');
 			$this->form_validation->set_rules('fees_receipt_date', 'Fees Receipt Date', 'required');
-
+			}			
 
 			if ($this->form_validation->run() === FALSE) {
 				$data['action'] = 'admin/newAdmission';
@@ -4385,21 +4384,23 @@ With good wishes";
 			$data['course_options'] = array(" " => "Select") + $this->courses();
 			$data['action'] = 'admin/studentdetails_report';
 			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
 			if ($this->form_validation->run() === FALSE) {
 
 				$this->admin_template->show('admin/studentdetails_report', $data);
 			} else {
 				$data['course'] = $this->input->post('course');
+				$data['gender'] = $this->input->post('gender');
 				$data['status'] = $this->input->post('admission_status');
 
 
 
-				$admissions = $this->admin_model->getAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+				$admissions = $this->admin_model->getAdmissions_coursereport($data['currentAcademicYear'], $data['course'], $data['gender'],  $data['status'])->result();
 
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
 
 
 					$selectedValues = $this->input->post('selectedValues');
@@ -4501,6 +4502,7 @@ With good wishes";
 							//   $enquiries1->academic_year,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 							$dmp,
 							$admissions1->aadhaar,
 							$admissions1->quota,
@@ -4641,6 +4643,7 @@ With good wishes";
 			}
 			$table .= '<tr><th>S.No</th>
 			               <th> Student Name </th>
+							<th>Gender</th>
 						    <th> Department Name </th>
 			               <th> Receipt No. </th>
 			              
@@ -4666,6 +4669,7 @@ With good wishes";
 				$table .= '<tr>';
 				$table .= '<td>' . $i++ . '</td>';
 				$table .= '<td>' . $transactions1->student_name . '</td>';
+				$table .= '<td>' . $transactions1->gender . '</td>';
 				$table .= '<td>' . $this->admin_model->get_dept_by_id($transactions1->dept_id)["department_name"] . '</td>';
 				//  $table .= '<td>'.$transactions1->course.'</td>';   
 				//  $table .= '<td>'.$combination.'</td>';   
@@ -4712,23 +4716,28 @@ With good wishes";
 			$admissionStatusColor = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['course_options'] = array(" " => "Select") + $this->courses();
-			$data['type_options'] = array(" " => "Select") + $this->globals->category();
+			$data['type_options'] = array("all" => "All") + $this->globals->category();
+			$data['claimed_options'] = array("all" => "All") + $this->globals->category_claimed();
 			$data['action'] = 'admin/category_admissions_report';
-			$this->form_validation->set_rules('category', 'Category', 'required');
+			$this->form_validation->set_rules('category_allotted', 'Category', 'required');
+			$this->form_validation->set_rules('category_claimed', 'Category', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
 			if ($this->form_validation->run() === FALSE) {
 
 				$this->admin_template->show('admin/category_admissions_report', $data);
 			} else {
-				$data['category'] = $this->input->post('category');
+				$data['category_allotted'] = $this->input->post('category_allotted');
+				$data['category_claimed'] = $this->input->post('category_claimed');
+				$data['gender'] = $this->input->post('gender');
 
-				$admissions = $this->admin_model->getAdmissions_category($data['currentAcademicYear'], $data['category'])->result();
+				$admissions = $this->admin_model->getAdmissions_category($data['currentAcademicYear'], $data['category_allotted'], $data['category_claimed'], $data['gender'])->result();
 
 				// var_dump($admissions); die();
 
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
 					$this->table->set_heading($print_fields);
 
 					$i = 1;
@@ -4739,6 +4748,7 @@ With good wishes";
 							//   $enquiries1->academic_year,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 							$dmn,
 							$admissions1->aadhaar,
 							$admissions1->quota,
@@ -6729,21 +6739,21 @@ With good wishes";
 			$data['course_options'] = array(" " => "Select") + $this->courses();
 			$data['action'] = 'admin/CoursewiseStudentAdmittedCount';
 			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
 			if ($this->form_validation->run() === FALSE) {
 
 				$this->admin_template->show('admin/CoursewiseStudentAdmittedCount', $data);
 			} else {
 				$data['course'] = $this->input->post('course');
+				$data['gender'] = $this->input->post('gender');
 				$data['status'] = $this->input->post('admission_status');
 
-
-
-				$admissions = $this->admin_model->getAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+				$admissions = $this->admin_model->getAdmissions_coursereport($data['currentAcademicYear'], $data['course'], $data['gender'], $data['status'])->result();
 
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'College Code', 'Status', 'Admit. Date');
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Aadhaar Number', 'Quota', 'College Code', 'Status', 'Admit. Date');
 
 
 
@@ -6757,6 +6767,7 @@ With good wishes";
 							//   $enquiries1->academic_year,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 							$dmp,
 							$admissions1->aadhaar,
 							$admissions1->quota,
@@ -6809,7 +6820,7 @@ With good wishes";
 			$admissionStatusColor = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['admissions'] = $this->admin_model->mtechdetails(
-				'id, app_no, adm_no, quota, dept_id, sub_quota, student_name, mobile, usn, status',
+				'id, app_no, adm_no, quota, dept_id, sub_quota, student_name, mobile, gender, usn, status',
 				'status',
 				$status,
 				'academic_year',
@@ -6824,7 +6835,7 @@ With good wishes";
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$print_fields = array('S.NO', 'App No', 'Applicant Name', 'Mobile', 'Course', 'Quota', 'Sub Quota', 'Status');
+					$print_fields = array('S.NO', 'App No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Quota', 'Sub Quota', 'Status');
 					$this->table->set_heading($print_fields);
 
 					$i = 1;
@@ -6839,6 +6850,7 @@ With good wishes";
 							$admissions1->app_no,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 
 							$this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"],
 							$admissions1->quota,
@@ -10653,21 +10665,23 @@ With good wishes";
 			$data['course_options'] = array(" " => "Select") + $this->phdcourses();
 			$data['action'] = 'admin/phdCoursewiseStudentAdmittedCount';
 			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
 			if ($this->form_validation->run() === FALSE) {
 
 				$this->admin_template->show('admin/phdCoursewiseStudentAdmittedCount', $data);
 			} else {
 				$data['course'] = $this->input->post('course');
+				$data['gender'] = $this->input->post('gender');
 				$data['status'] = $this->input->post('admission_status');
 
 
 
-				$admissions = $this->admin_model->getphdAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+				$admissions = $this->admin_model->getphdAdmissions_course($data['currentAcademicYear'], $data['course'], $data['gender'], $data['status'])->result();
 
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'College Code', 'Status', 'Admit. Date');
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Aadhaar Number', 'Quota', 'College Code', 'Status', 'Admit. Date');
 
 
 
@@ -10681,6 +10695,7 @@ With good wishes";
 							//   $enquiries1->academic_year,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 							$dmp,
 							$admissions1->aadhaar,
 							$admissions1->quota,
@@ -10734,21 +10749,23 @@ With good wishes";
 			$data['course_options'] = array(" " => "Select") + $this->phdcourses();
 			$data['action'] = 'admin/phdstudentdetails_report';
 			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
 			if ($this->form_validation->run() === FALSE) {
 
 				$this->admin_template->show('admin/phdstudentdetails_report', $data);
 			} else {
 				$data['course'] = $this->input->post('course');
+				$data['gender'] = $this->input->post('gender');
 				$data['status'] = $this->input->post('admission_status');
 
 
 
-				$admissions = $this->admin_model->getphdAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+				$admissions = $this->admin_model->getphdAdmissions_course($data['currentAcademicYear'], $data['course'], $data['gender'], $data['status'])->result();
 
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
 
 
 					$selectedValues = $this->input->post('selectedValues');
@@ -10850,6 +10867,7 @@ With good wishes";
 							//   $enquiries1->academic_year,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 							$dmp,
 							$admissions1->aadhaar,
 							$admissions1->quota,
@@ -11513,7 +11531,7 @@ With good wishes";
 
 			$pdf->Ln(4);
 
-			$pdf->MultiCell(0, 5, "       There is likelihood of some seats remaining vacant after the counseling of Government PG-CET lateral process for 1st semester M.Tech program and if so, your request for admission will be considered. If for any reasons seats are filled by the Government PG-CET lateral process, you have no right to seek admissions.Your admission is strictly subjected to the approval of the Government.");
+			$pdf->MultiCell(0, 5, "       There is likelihood of some seats remaining vacant after the counseling of Government PG-CET process for 1st semester M.Tech program and if so, your request for admission will be considered. If for any reasons seats are filled by the Government PG-CET process, you have no right to seek admissions.Your admission is strictly subjected to the approval of the Government.");
 			$pdf->Ln(4);
 
 			$pdf->MultiCell(0, 5, "       In the meanwhile subject to the above conditions you are instructed to approach the Principal, Malnad College of Engineering, and to pay the required fee, produce the certificate in original and provisionally get admitted as per rules prescribed by State Government and the Visweswaraiah Technological University, Belgaum.");
@@ -11747,21 +11765,23 @@ With good wishes";
 			$data['course_options'] = array(" " => "Select") + $this->mtechcourses();
 			$data['action'] = 'admin/mtechCoursewiseStudentAdmittedCount';
 			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
 			if ($this->form_validation->run() === FALSE) {
 
 				$this->admin_template->show('admin/mtechCoursewiseStudentAdmittedCount', $data);
 			} else {
 				$data['course'] = $this->input->post('course');
+				$data['gender'] = $this->input->post('gender');
 				$data['status'] = $this->input->post('admission_status');
 
 
 
-				$admissions = $this->admin_model->getmtechAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+				$admissions = $this->admin_model->getmtechAdmissions_course($data['currentAcademicYear'], $data['course'], $data['gender'], $data['status'])->result();
 
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'College Code', 'Status', 'Admit. Date');
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Aadhaar Number', 'Quota', 'College Code', 'Status', 'Admit. Date');
 
 
 
@@ -11775,6 +11795,7 @@ With good wishes";
 							//   $enquiries1->academic_year,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 							$dmp,
 							$admissions1->aadhaar,
 							$admissions1->quota,
@@ -11828,21 +11849,23 @@ With good wishes";
 			$data['course_options'] = array(" " => "Select") + $this->mtechcourses();
 			$data['action'] = 'admin/mtechstudentdetails_report';
 			$this->form_validation->set_rules('course', 'Branch Preference-I', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
 			if ($this->form_validation->run() === FALSE) {
 
 				$this->admin_template->show('admin/mtechstudentdetails_report', $data);
 			} else {
 				$data['course'] = $this->input->post('course');
+				$data['gender'] = $this->input->post('gender');
 				$data['status'] = $this->input->post('admission_status');
 
 
 
-				$admissions = $this->admin_model->getmtechAdmissions_course($data['currentAcademicYear'], $data['course'], $data['status'])->result();
+				$admissions = $this->admin_model->getmtechAdmissions_course($data['currentAcademicYear'], $data['course'], $data['gender'], $data['status'])->result();
 
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
+					$table_headings = array('S.No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
 
 
 					$selectedValues = $this->input->post('selectedValues');
@@ -11944,6 +11967,7 @@ With good wishes";
 							//   $enquiries1->academic_year,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 							$dmp,
 							$admissions1->aadhaar,
 							$admissions1->quota,
@@ -12084,6 +12108,7 @@ With good wishes";
 			}
 			$table .= '<tr><th>S.No</th>
 			               <th> Student Name </th>
+			               <th> Gender </th>
 						    <th> Department Name </th>
 			               <th> Receipt No. </th>
 			              
@@ -12109,6 +12134,7 @@ With good wishes";
 				$table .= '<tr>';
 				$table .= '<td>' . $i++ . '</td>';
 				$table .= '<td>' . $transactions1->student_name . '</td>';
+				$table .= '<td>' . $transactions1->gender . '</td>';
 				$table .= '<td>' . $this->admin_model->get_dept_by_id($transactions1->dept_id)["department_name"] . '</td>';
 				//  $table .= '<td>'.$transactions1->course.'</td>';   
 				//  $table .= '<td>'.$combination.'</td>';   
@@ -12155,23 +12181,28 @@ With good wishes";
 			$admissionStatusColor = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['course_options'] = array(" " => "Select") + $this->courses();
-			$data['type_options'] = array(" " => "Select") + $this->globals->category();
+			$data['type_options'] = array("all" => "All") + $this->globals->category();
+			$data['claimed_options'] = array("all" => "All") + $this->globals->category_claimed();
 			$data['action'] = 'admin/mtechcategory_admissions_report';
-			$this->form_validation->set_rules('category', 'Category', 'required');
+			$this->form_validation->set_rules('category_allotted', 'Category', 'required');
+			$this->form_validation->set_rules('category_claimed', 'Category', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
 			if ($this->form_validation->run() === FALSE) {
 
 				$this->admin_template->show('admin/mtechcategory_admissions_report', $data);
 			} else {
-				$data['category'] = $this->input->post('category');
+				$data['category_allotted'] = $this->input->post('category_allotted');
+				$data['category_claimed'] = $this->input->post('category_claimed');
+				$data['gender'] = $this->input->post('gender');
 
-				$admissions = $this->admin_model->getmtechAdmissions_category($data['currentAcademicYear'], $data['category'])->result();
+				$admissions = $this->admin_model->getmtechAdmissions_category($data['currentAcademicYear'], $data['category_allotted'], $data['category_claimed'], $data['gender'])->result();
 
 				// var_dump($admissions); die();
 
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
+					$print_fields = array('S.No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Aadhaar Number', 'Quota', 'Sub Quota', 'Status', 'Admit. Date');
 					$this->table->set_heading($print_fields);
 
 					$i = 1;
@@ -12182,6 +12213,7 @@ With good wishes";
 							//   $enquiries1->academic_year,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 							$dmn,
 							$admissions1->aadhaar,
 							$admissions1->quota,
@@ -12230,7 +12262,7 @@ With good wishes";
 			$admissionStatusColor = $this->globals->admissionStatusColor();
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
 			$data['admissions'] = $this->admin_model->mtechdetails(
-				'id, app_no, adm_no, quota, dept_id, sub_quota, student_name, mobile, usn, status',
+				'id, app_no, adm_no, quota, dept_id, sub_quota, student_name, gender, mobile, usn, status',
 				'status',
 				$status,
 				'academic_year',
@@ -12243,7 +12275,7 @@ With good wishes";
 				if (count($admissions)) {
 					$table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2" >');
 					$this->table->set_template($table_setup);
-					$print_fields = array('S.NO', 'App No', 'Applicant Name', 'Mobile', 'Course', 'Quota', 'Sub Quota', 'Status');
+					$print_fields = array('S.NO', 'App No', 'Applicant Name', 'Mobile', 'Gender', 'Course', 'Quota', 'Sub Quota', 'Status');
 					$this->table->set_heading($print_fields);
 
 					$i = 1;
@@ -12258,6 +12290,7 @@ With good wishes";
 							$admissions1->app_no,
 							$admissions1->student_name,
 							$admissions1->mobile,
+							$admissions1->gender,
 
 							$this->admin_model->get_dept_by_id($admissions1->dept_id)["department_name"],
 							$admissions1->quota,
@@ -12631,5 +12664,210 @@ With good wishes";
 			redirect('admin', 'refresh');
 		}
 	}
+
+	public function consolidated_report($download = 0)
+{
+    if ($this->session->userdata('logged_in')) {
+        $session_data = $this->session->userdata('logged_in');
+        $data['id'] = $session_data['id'];
+        $data['username'] = $session_data['username'];
+        $data['full_name'] = $session_data['full_name'];
+        $data['role'] = $session_data['role'];
+
+        $data['page_title'] = "Consolidated 2024-25 1st year & 3rd semester student list";
+        $data['menu'] = "reports";
+
+        // Get the current academic year (You can modify this based on your requirements)
+        $currentAcademicYear = $this->globals->currentAcademicYear();
+
+        // Fetch the student data from the model
+        $students = $this->admin_model->getConsolidatedReport($currentAcademicYear)->result();
+
+        // Set up table structure
+        $table_setup = array('table_open' => '<table class="table table-bordered" border="1" id="example2">');
+        $this->table->set_template($table_setup);
+
+        // Table headers
+		$print_fields = array(
+			'S.No', 'Student Name', 'Usn', 'Course', 'College Code', 'Quota', 'Sub Quota', 'Category Claimed', 'Category Allotted', 'Admit Date', 'Admission Number', 
+			'Student Registration No', 'Cet Rank', 'Admission Based On', 'Blood Group', 'College Fees Paid', 'College Fees Receipt No', 'College Fees Receipt Date',
+			'CET/COMEDK Fees Paid', 'CET/COMEDK Fees Receipt No', 'CET/COMEDK Fees Receipt Date', 'Birth Date', 'Gender', 'Current Address', 'Current City', 
+			'Current State', 'Current Pincode', 'Current Country', 'Permanent Address', 'Permanent City', 'Permanent State', 'Permanent Pincode', 'Permanent Country', 
+			'Mobile', 'Email', 'Domicile', 'Birth Place', 'Birth Country', 'Nationality', 'Religion', 'Caste', 'Mother Tongue', 'Disability', 'Type of Disability', 
+			'Economically Backward', 'Hobbies', 'Sports', 'Sports Name', 'Aadhar number', 'Father Occupation', 'Father Name', 'Father Annual Income', 'Father EmailID', 
+			'Father Mobile 1', 'Mother Occupation', 'Mother Name', 'Mother Annual Income', 'Mother EmailID', 'Mother Mobile 1', 'Guardian Occupation', 'Guardian Name', 
+			'Guardian Annual Income', 'Guardian EmailID', 'Guardian Mobile 1', 'Education Level 1', 'Education Level 2', 'Education Level 1 Institution Board', 'Education Level 2 Institution Board',
+			'Education Level 1 Institution Name', 'Education Level 2 Institution Name', 'Education Level 1 Institution Address', 'Education Level 2 Institution Address',
+			'Education Level 1 Institution City', 'Education Level 2 Institution City', 'Education Level 1 Year of Passing', 'Education Level 2 Year of Passing', 
+			'Education Level 1 Institution State', 'Education Level 2 Institution State', 'Education Level 1 Institution Country', 'Education Level 2 Institution Country', 
+			'Education Level 1 Medium of Instruction', 'Education Level 2 Medium of Instruction', 'Education Level 1 Percentage', 'Education Level 2 Percentage', 
+			'Education Level 1 Register Number', 'Education Level 2 Register Number');
+		$this->table->set_heading($print_fields);
+
+		// Add data rows to the table
+		$i = 1;
+		foreach ($students as $student) {
+			$dmm = $this->admin_model->get_dept_by_id($student->dept_id)["department_name"];
+
+			// Split the education_level into two parts (if it's comma-separated)
+			$education_levels = explode(',', $student->education_level);
+			$education_level_1 = isset($education_levels[0]) ? $education_levels[0] : '';  // First part
+			$education_level_2 = isset($education_levels[1]) ? $education_levels[1] : '';  // Second part
+
+			// Split the inst_board into two parts (if it's comma-separated)
+			$inst_boards = explode(',', $student->inst_board);
+			$inst_board_1 = isset($inst_boards[0]) ? $inst_boards[0] : '';  // First part
+			$inst_board_2 = isset($inst_boards[1]) ? $inst_boards[1] : '';  // Second part
+			// Split the inst_name into two parts (if it's comma-separated)
+			$inst_names = explode(',', $student->inst_name);
+			$inst_name_1 = isset($inst_names[0]) ? $inst_names[0] : '';  // First part
+			$inst_name_2 = isset($inst_names[1]) ? $inst_names[1] : '';  // Second part
+			// Split the inst_address into two parts (if it's comma-separated)
+			$inst_addresss = explode(',', $student->inst_address);
+			$inst_address_1 = isset($inst_addresss[0]) ? $inst_addresss[0] : '';  // First part
+			$inst_address_2 = isset($inst_addresss[1]) ? $inst_addresss[1] : '';  // Second part
+			// Split the inst_city into two parts (if it's comma-separated)
+			$inst_citys = explode(',', $student->inst_city);
+			$inst_city_1 = isset($inst_citys[0]) ? $inst_citys[0] : '';  // First part
+			$inst_city_2 = isset($inst_citys[1]) ? $inst_citys[1] : '';  // Second part
+			// Split the year_of_passing into two parts (if it's comma-separated)
+			$year_of_passings = explode(',', $student->year_of_passing);
+			$year_of_passing_1 = isset($year_of_passings[0]) ? $year_of_passings[0] : '';  // First part
+			$year_of_passing_2 = isset($year_of_passings[1]) ? $year_of_passings[1] : '';  // Second part
+			// Split the inst_state into two parts (if it's comma-separated)
+			$inst_states = explode(',', $student->inst_state);
+			$inst_state_1 = isset($inst_states[0]) ? $inst_states[0] : '';  // First part
+			$inst_state_2 = isset($inst_states[1]) ? $inst_states[1] : '';  // Second part
+			// Split the inst_country into two parts (if it's comma-separated)
+			$inst_countrys = explode(',', $student->inst_country);
+			$inst_country_1 = isset($inst_countrys[0]) ? $inst_countrys[0] : '';  // First part
+			$inst_country_2 = isset($inst_countrys[1]) ? $inst_countrys[1] : '';  // Second part
+			// Split the medium_of_instruction into two parts (if it's comma-separated)
+			$medium_of_instructions = explode(',', $student->medium_of_instruction);
+			$medium_of_instruction_1 = isset($medium_of_instructions[0]) ? $medium_of_instructions[0] : '';  // First part
+			$medium_of_instruction_2 = isset($medium_of_instructions[1]) ? $medium_of_instructions[1] : '';  // Second part
+			// Split the aggregate into two parts (if it's comma-separated)
+			$aggregates = explode(',', $student->aggregate);
+			$aggregate_1 = isset($aggregates[0]) ? $aggregates[0] : '';  // First part
+			$aggregate_2 = isset($aggregates[1]) ? $aggregates[1] : '';  // Second part
+			// Split the register_number into two parts (if it's comma-separated)
+			$register_numbers = explode(',', $student->register_number);
+			$register_number_1 = isset($register_numbers[0]) ? $register_numbers[0] : '';  // First part
+			$register_number_2 = isset($register_numbers[1]) ? $register_numbers[1] : '';  // Second part
+
+			$result_array = array(
+				$i++,  // Serial number
+				$student->student_name,
+				$student->usn,
+				$dmm,  // Department name
+				$student->college_code,
+				$student->quota,
+				$student->sub_quota,
+				$student->category_claimed,
+				$student->category_allotted,
+				$student->admit_date,
+				$student->admission_order_no,
+				$student->entrance_reg_no,
+				$student->exam_rank,
+				$student->admission_based,
+				$student->blood_group,
+				$student->amount,
+				$student->receipt_no,
+				$student->receipt_date,
+				$student->fees_paid,
+				$student->fees_receipt_no,
+				$student->fees_receipt_date,
+				$student->date_of_birth,
+				$student->gender,
+				$student->current_address,
+				$student->current_city,
+				$student->current_state,
+				$student->current_pincode,
+				$student->current_country,
+				$student->present_address,
+				$student->present_city,
+				$student->present_state,
+				$student->present_pincode,
+				$student->present_country,
+				$student->mobile,
+				$student->email,
+				$student->domicile_of_state,
+				$student->place_of_birth,
+				$student->country_of_birth,
+				$student->nationality,
+				$student->religion,
+				$student->caste,
+				$student->mother_tongue,
+				$student->disability,
+				$student->type_of_disability,
+				$student->economically_backward,
+				$student->hobbies,
+				$student->sports,
+				$student->sports_activity,
+				$student->aadhaar,
+				$student->father_occupation,
+				$student->father_name,
+				$student->father_annual_income,
+				$student->father_email,
+				$student->father_mobile,
+				$student->mother_occupation,
+				$student->mother_name,
+				$student->mother_annual_income,
+				$student->mother_email,
+				$student->mother_mobile,
+				$student->guardian_occupation,
+				$student->guardian_name,
+				$student->guardian_annual_income,
+				$student->guardian_email,
+				$student->guardian_mobile,
+				$education_level_1,  
+				$education_level_2,  
+				$inst_board_1,
+				$inst_board_2,
+				$inst_name_1,
+				$inst_name_2,
+				$inst_address_1,
+				$inst_address_2,
+				$inst_city_1,
+				$inst_city_2,
+				$year_of_passing_1,
+				$year_of_passing_2,
+				$inst_state_1,
+				$inst_state_2,
+				$inst_country_1,
+				$inst_country_2,
+				$medium_of_instruction_1,
+				$medium_of_instruction_2,
+				$aggregate_1,
+				$aggregate_2,
+				$register_number_1,
+				$register_number_2,
+			);
+
+			$this->table->add_row($result_array);
+		}
+
+		// Generate the table
+		$data['table'] = $this->table->generate();
+
+        // If download is set (the link was clicked with the download parameter), trigger file download
+        if ($download) {
+            // Set headers for Excel download
+            header("Content-type: application/vnd.ms-excel");
+            header("Content-Disposition: attachment; filename=consolidated_report_" . date('Y-m-d') . ".xls");
+            header("Pragma: no-cache");
+            header("Expires: 0");
+
+            // Output the table HTML as the Excel content
+            echo $data['table'];
+            exit;
+        } else {
+            // Otherwise, show the report
+            $this->admin_template->show('admin/consolidated_report', $data);
+        }
+    } else {
+        redirect('admin/timeout');
+    }
+}
 
 }

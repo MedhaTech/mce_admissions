@@ -24,14 +24,31 @@
 
                       <div class="form-row">
 
+                         <div class="col-md-4 col-sm-12">
+                              <div class="form-group">
+                                 
+                              <p> Category Allotted</p>
+                              <?php 
+                                 echo form_dropdown('category_allotted', $type_options, (set_value('category_allotted')) ? set_value('category_allotted') : $category_allotted, 'class="form-control form-control" id="category_allotted"'); 
+                              ?>
+                                  <span class="text-danger"><?php echo form_error('category_allotted'); ?></span>
+                              </div>
+                          </div>
                           <div class="col-md-4 col-sm-12">
                               <div class="form-group">
                                  
-                    
+                              <p> Category Claimed</p>
                               <?php 
-                                 echo form_dropdown('category', $type_options, (set_value('category')) ? set_value('category') : $category_claimed, 'class="form-control form-control" id="category"'); 
+                                 echo form_dropdown('category_claimed', $claimed_options, (set_value('category_claimed')) ? set_value('category_claimed') : $category_claimed, 'class="form-control form-control" id="category_claimed"'); 
                               ?>
-                                  <span class="text-danger"><?php echo form_error('category'); ?></span>
+                                  <span class="text-danger"><?php echo form_error('category_claimed'); ?></span>
+                              </div>
+                          </div>
+                          <div class="col-md-4 col-sm-12">
+                              <div class="form-group">
+                              <p> Gender </p>
+                                  <?php $gender_options = array("all" => "All", "Male" => "Male", "Female" => "Female", "Not Prefer to Say" => "Not Prefer to Say"); echo form_dropdown('gender', $gender_options, (set_value('gender')) ? set_value('gender') : 'gender', 'class="form-control" id="gender"'); ?>
+                                  <span class="text-danger"><?php echo form_error('gender'); ?></span>
                               </div>
                           </div>
                           <div class="col-md-4 col-sm-12">

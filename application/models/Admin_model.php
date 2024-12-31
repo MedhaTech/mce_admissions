@@ -781,7 +781,7 @@ class Admin_model extends CI_Model
 
   public function transactions($transaction_status) 
 {
-    $this->db->select('admissions.id, admissions.app_no, admissions.dept_id, admissions.adm_no, admissions.student_name, admissions.mobile, admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.amount, transactions.remarks, transactions.transaction_status');
+    $this->db->select('admissions.id, admissions.app_no, admissions.dept_id, admissions.adm_no, admissions.student_name,admissions.gender, admissions.mobile, admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.amount, transactions.remarks, transactions.transaction_status');
     if ($transaction_status != null) {
         $this->db->where('transactions.transaction_status', $transaction_status);
     }
@@ -804,10 +804,18 @@ class Admin_model extends CI_Model
     return $this->db->get('transactions');
   }
 
-  function getAdmissions_category($academic_year, $category_claimed)
+  function getAdmissions_category($academic_year,$category_allotted, $category_claimed, $gender)
   {
     $this->db->where('academic_year', $academic_year);
+    if($category_allotted!='all'){
+      $this->db->where('category_allotted', $category_allotted);
+      }    
+    if($category_claimed!='all'){
     $this->db->where('category_claimed', $category_claimed);
+    }
+    if($gender!='all'){
+    $this->db->where('gender', $gender);
+    }
     $this->db->where('admissions.stream_id', '1'); 
     $this->db->order_by('admit_date', 'DESC');
     return $this->db->get('admissions');
@@ -823,6 +831,18 @@ class Admin_model extends CI_Model
     return $this->db->get('admissions');
   }
 
+  function getAdmissions_coursereport($academic_year, $course, $gender, $status)
+  {
+    $this->db->where('academic_year', $academic_year);
+    $this->db->where('admissions.stream_id', '1');
+    $this->db->where('dept_id', $course);
+    if($gender!='all'){
+      $this->db->where('gender', $gender);
+      }
+    $this->db->where('status', $status);
+    $this->db->order_by('admit_date', 'DESC');
+    return $this->db->get('admissions');
+  }
 
   function paidfee($id1, $value1, $id2, $value2, $tableName)
   {
@@ -1104,11 +1124,14 @@ class Admin_model extends CI_Model
     return $query;
   }
 
-  function getphdAdmissions_course($academic_year, $course, $status)
+  function getphdAdmissions_course($academic_year, $course, $gender, $status)
   {
     $this->db->where('academic_year', $academic_year);
     $this->db->where('admissions.stream_id', '3');
     $this->db->where('dept_id', $course);
+    if($gender!='all'){
+      $this->db->where('gender', $gender);
+      }
     $this->db->where('status', $status);
     $this->db->order_by('admit_date', 'DESC');
     return $this->db->get('admissions');
@@ -1259,18 +1282,21 @@ class Admin_model extends CI_Model
     return $this->db->get();
 }
 
-function getmtechAdmissions_course($academic_year, $course, $status)
+function getmtechAdmissions_course($academic_year, $course, $gender, $status)
 {
   $this->db->where('academic_year', $academic_year);
   $this->db->where('admissions.stream_id', '2');
   $this->db->where('dept_id', $course);
+  if($gender!='all'){
+    $this->db->where('gender', $gender);
+    }
   $this->db->where('status', $status);
   $this->db->order_by('admit_date', 'DESC');
   return $this->db->get('admissions');
 }
 function mtechtransactions($transaction_status) 
 {
-    $this->db->select('admissions.id, admissions.app_no, admissions.dept_id, admissions.adm_no, admissions.student_name, admissions.mobile, admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.amount, transactions.remarks, transactions.transaction_status');
+    $this->db->select('admissions.id, admissions.app_no, admissions.dept_id, admissions.adm_no, admissions.student_name, admissions.mobile, admissions.gender, admissions.status, transactions.id as transactions_id, transactions.receipt_no, transactions.transaction_date, transactions.transaction_type, transactions.bank_name, transactions.reference_no, transactions.reference_date, transactions.amount, transactions.remarks, transactions.transaction_status');
 
     if ($transaction_status != null) {
         $this->db->where('transactions.transaction_status', $transaction_status);
@@ -1283,10 +1309,18 @@ function mtechtransactions($transaction_status)
     return $this->db->get('transactions');
 }
 
-function getmtechAdmissions_category($academic_year, $category_claimed)
+function getmtechAdmissions_category($academic_year, $category_allotted, $category_claimed, $gender)
 {
     $this->db->where('academic_year', $academic_year);
+    if($category_allotted!='all'){
+      $this->db->where('category_allotted', $category_allotted);
+      }    
+    if($category_claimed!='all'){
     $this->db->where('category_claimed', $category_claimed);
+    }
+    if($gender!='all'){
+    $this->db->where('gender', $gender);
+    }
     $this->db->where('stream_id', '2'); 
     $this->db->order_by('admit_date', 'DESC');
     return $this->db->get('admissions');
@@ -1377,6 +1411,119 @@ function getbeEnquiries($academic_year)
     $this->db->where('admission_based !=', 'BE'); // Exclude those with admission_based as 'BE'
     $this->db->order_by('reg_date', 'DESC');
     return $this->db->get('enquiries');
+}
+
+public function getConsolidatedReport($academic_year)
+{
+    $this->db->select('
+        a.usn,
+        a.student_name,
+        a.dept_id,
+        a.quota,
+        a.sub_quota,
+        a.college_code,
+        a.category_claimed,
+        a.category_allotted,
+        a.admit_date,
+        a.admission_order_no,
+        a.entrance_reg_no,
+        a.exam_rank,
+        a.admission_based,
+        a.blood_group,
+        MAX(t.amount) AS amount, 
+        MAX(t.receipt_no) AS receipt_no,
+        MAX(t.receipt_date) AS receipt_date,  
+        a.fees_paid,
+        a.fees_receipt_no,
+        a.fees_receipt_date,
+        a.date_of_birth,
+        a.gender,
+        a.current_address,
+        a.current_city,
+        a.current_state,
+        a.current_pincode,
+        a.current_country,
+        a.present_address,
+        a.present_city,
+        a.present_state,
+        a.present_pincode,
+        a.present_country,
+        a.mobile,
+        a.email,
+        a.domicile_of_state,
+        a.place_of_birth,
+        a.country_of_birth,
+        a.nationality,
+        a.religion,
+        a.caste,
+        a.mother_tongue,
+        a.disability,
+        a.type_of_disability,
+        a.economically_backward,
+        a.hobbies,
+        a.sports,
+        a.sports_activity,
+        a.aadhaar,
+        a.father_occupation,
+        a.father_name,
+        a.father_annual_income,
+        a.father_email,
+        a.father_mobile,
+        a.mother_occupation,
+        a.mother_name,
+        a.mother_annual_income,
+        a.mother_email,
+        a.mother_mobile,
+        a.guardian_name,
+        a.guardian_annual_income,
+        a.guardian_email,
+        a.guardian_mobile,
+        a.guardian_occupation,
+        
+        -- Concatenate all education levels and institution boards for each student
+        GROUP_CONCAT(e.education_level ORDER BY e.id ASC) AS education_level,  
+        GROUP_CONCAT(e.inst_board ORDER BY e.id ASC) AS inst_board,
+        GROUP_CONCAT(e.inst_name ORDER BY e.id ASC) AS inst_name,
+        GROUP_CONCAT(e.inst_address ORDER BY e.id ASC) AS inst_address,
+        GROUP_CONCAT(e.inst_city ORDER BY e.id ASC) AS inst_city,
+        GROUP_CONCAT(e.year_of_passing ORDER BY e.id ASC) AS year_of_passing,
+        GROUP_CONCAT(e.inst_state ORDER BY e.id ASC) AS inst_state,
+        GROUP_CONCAT(e.inst_country ORDER BY e.id ASC) AS inst_country,
+        GROUP_CONCAT(e.medium_of_instruction ORDER BY e.id ASC) AS medium_of_instruction,
+        GROUP_CONCAT(e.aggregate ORDER BY e.id ASC) AS aggregate,
+        GROUP_CONCAT(e.register_number ORDER BY e.id ASC) AS register_number
+    ');
+
+    $this->db->from('admissions AS a');
+    
+    // Join with student_education_details on student_id (assuming e.student_id is correct)
+    $this->db->join('student_education_details AS e', 'e.student_id = a.id', 'left');
+
+    // Joining the fee_master table based on 'student_id' (assuming student_id in fee_master matches 'id' in admissions)
+    $this->db->join('fee_master AS f', 'f.student_id = a.id', 'left');
+
+    // Joining the fee_master table based on 'id' (assuming student_id in fee_transactions matches 'id' in admissions)
+    $this->db->join('fee_transactions AS t', 't.id = a.id', 'left');
+
+    // Filter by academic year and stream (assuming stream_id = 1 is valid)
+    $this->db->where('a.academic_year', $academic_year);  
+    $this->db->where('a.stream_id', 1);  
+
+    // Group by student (using student ID) to ensure only one row per student
+    $this->db->group_by('a.id');  
+
+    // Order the result by student name in ascending order
+    $this->db->order_by('a.student_name', 'ASC');
+
+    // Execute the query and return the result
+    $query = $this->db->get();
+
+    // Check if results exist
+    if ($query->num_rows() > 0) {
+        return $query;
+    } else {
+        return [];  // Return an empty array if no students are found
+    }
 }
 
 }
