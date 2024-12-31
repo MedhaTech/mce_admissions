@@ -73,7 +73,7 @@
                                       <li><?php echo anchor('admin/category_admissions_report', 'Category wise Admissions Report'); ?> </li>
                                       <li><?php echo anchor('admin/admissionsyearbook', 'Admission Year Book'); ?> </li>
                                       <!-- <li><?php echo anchor('admin/consolidated_report', 'Consolidated 2024-25 1st year & 3rd semester student list'); ?> </li> -->
-                                      <li><?php echo anchor('admin/consolidated_report/1', 'Consolidated 2024-25 1st year & 3rd semester student list'); ?></li>
+                                      <li><?php echo anchor('admin/consolidated_report/1', 'Consolidated B.E. Students List'); ?></li>
 
 
                                   </ul>
