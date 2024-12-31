@@ -11531,7 +11531,7 @@ With good wishes";
 
 			$pdf->Ln(4);
 
-			$pdf->MultiCell(0, 5, "       There is likelihood of some seats remaining vacant after the counseling of Government PG-CET lateral process for 1st semester M.Tech program and if so, your request for admission will be considered. If for any reasons seats are filled by the Government PG-CET lateral process, you have no right to seek admissions.Your admission is strictly subjected to the approval of the Government.");
+			$pdf->MultiCell(0, 5, "       There is likelihood of some seats remaining vacant after the counseling of Government PG-CET process for 1st semester M.Tech program and if so, your request for admission will be considered. If for any reasons seats are filled by the Government PG-CET process, you have no right to seek admissions.Your admission is strictly subjected to the approval of the Government.");
 			$pdf->Ln(4);
 
 			$pdf->MultiCell(0, 5, "       In the meanwhile subject to the above conditions you are instructed to approach the Principal, Malnad College of Engineering, and to pay the required fee, produce the certificate in original and provisionally get admitted as per rules prescribed by State Government and the Visweswaraiah Technological University, Belgaum.");
